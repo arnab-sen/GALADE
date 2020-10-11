@@ -1,0 +1,244 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using Libraries;
+using ProgrammingParadigms;
+using DomainAbstractions;
+using WPFCanvas = System.Windows.Controls.Canvas;
+using System.IO;
+using System.Windows.Input;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Application;
+
+namespace TestApplication
+{
+    /// <summary>
+    /// This version of GALADE is standalone, i.e. it is a single executable.
+    /// </summary>
+    public class Application
+    {
+        // Public fields and properties
+
+        // Private fields
+        private MainWindow mainWindow = new MainWindow("GALADE");
+
+        // Methods
+        private Application Initialize()
+        {
+            Wiring.PostWiringInitialize();
+            return this;
+        }
+
+        private void AddNewNode(VisualPortGraph graph, StateTransition<Enums.DiagramMode> stateTransition, UndoHistory undoHistory, VisualStyle nodeStyle, VisualStyle portStyle)
+        {
+            VisualPortGraphNode newNode = new VisualPortGraphNode()
+            {
+                Graph = graph,
+                StateTransition = stateTransition,
+                NodeStyle = nodeStyle,
+                PortStyle = portStyle,
+                Ports = new List<Port> { new Port() { Type = "Port", Name = "p0", IsInputPort = true } }
+            };
+
+            newNode.ActionPerformed += undoHistory.Push;
+            newNode.Initialise();
+
+            newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
+
+            if (graph.GetRoot() == null)
+            {
+                graph.AddNode(newNode);
+            }
+        }
+
+        [STAThread]
+        public static void Main()
+        {
+            Application app = new Application();
+            app.Initialize().mainWindow.Run();
+        }
+
+        private Application()
+        {
+            #region Set up directory and file paths
+            string APP_DIRECTORY = Utilities.GetApplicationDirectory();
+
+            var userGuidePaths = new Dictionary<string, string>()
+            {
+                { "Functionality", System.IO.Path.Combine(APP_DIRECTORY, "Documentation/newUserGuide_Functionality.txt") },
+                { "Controls", System.IO.Path.Combine(APP_DIRECTORY, "Documentation/newUserGuide_Controls.txt") },
+                { "Menu", System.IO.Path.Combine(APP_DIRECTORY, "Documentation/newUserGuide_Menu.txt") }
+            };
+
+            string SETTINGS_FILEPATH = System.IO.Path.Combine(APP_DIRECTORY, "settings.json");
+            string WIRING_LOG_FILEPATH = System.IO.Path.Combine(APP_DIRECTORY, "wiringLog.log");
+            string RUNTIME_LOG_FILEPATH = System.IO.Path.Combine(APP_DIRECTORY, "runtimeLog.log");
+            string LOG_ARCHIVE_DIRECTORY = System.IO.Path.Combine(APP_DIRECTORY, "Logs");
+            string BACKUPS_DIRECTORY = System.IO.Path.Combine(APP_DIRECTORY, "Backups");
+
+            // Initialise and clear logs
+            if (!System.IO.Directory.Exists(APP_DIRECTORY)) System.IO.Directory.CreateDirectory(APP_DIRECTORY);
+            if (!System.IO.Directory.Exists(LOG_ARCHIVE_DIRECTORY)) System.IO.Directory.CreateDirectory(LOG_ARCHIVE_DIRECTORY);
+            if (!System.IO.Directory.Exists(BACKUPS_DIRECTORY)) System.IO.Directory.CreateDirectory(BACKUPS_DIRECTORY);
+            Logging.WriteText(path: WIRING_LOG_FILEPATH, content: "", createNewFile: true); // Create a blank log for wiring
+            Logging.WriteText(path: RUNTIME_LOG_FILEPATH, content: "", createNewFile: true); // Create a blank log for all exceptions and general runtime output
+
+            if (!File.Exists(SETTINGS_FILEPATH))
+            {
+                var obj = new JObject();
+                obj["LatestDiagramFilePath"] = "";
+                obj["LatestCodeFilePath"] = "";
+                obj["ProjectFolderPath"] = "";
+
+                File.WriteAllText(SETTINGS_FILEPATH, obj.ToString());
+            }
+            #endregion
+
+            #region Diagram constants and singletons
+            VisualPortGraph mainGraph = new VisualPortGraph() { InstanceName = "MainGraph", DebugOutputAll = false };
+            StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
+            {
+                InstanceName = "stateTransition",
+                Matches = (flag, currentState) => (flag & currentState) != 0
+            };
+
+            UndoHistory undoHistory = new UndoHistory() { InstanceName = "graphHistory" };
+            mainGraph.ActionPerformed += source => undoHistory.Push(source);
+
+            var PRIMARY_UX_BG_COLOUR = new SolidColorBrush(Color.FromRgb(249, 249, 249));
+            var PRIMARY_UX_FG_COLOUR = Brushes.Black;
+
+            VisualStyle defaultStyle = new VisualStyle();
+
+            VisualStyle nodeStyle = new VisualStyle()
+            {
+                Background = Brushes.LightSkyBlue,
+                BackgroundHighlight = Brushes.Aquamarine,
+                Foreground = Brushes.Black,
+                Border = Brushes.Black,
+                BorderHighlight = Brushes.Orange,
+                BorderThickness = 3,
+                Width = 200,
+                Height = 50
+            };
+
+            VisualStyle portStyle = new VisualStyle()
+            {
+                Background = Brushes.White,
+                Foreground = Brushes.Black,
+                Border = Brushes.Black,
+                BorderHighlight = Brushes.LightSkyBlue,
+                BorderThickness = 1,
+                Width = 50,
+                Height = 25
+            };
+
+            VisualStyle dragRectStyle = new VisualStyle()
+            {
+                Background = new SolidColorBrush(Color.FromArgb(100, 171, 233, 255)),
+                Border = Brushes.LightSkyBlue,
+                BorderThickness = 1,
+            };
+
+            #endregion
+
+            #region Set up logging
+            Wiring.Output += output => Logging.Log(output, WIRING_LOG_FILEPATH); // Print all WireTos to a log file
+            Logging.LogOutput += output =>
+            {
+                if (output is Exception)
+                {
+                    Logging.Log(output as Exception, RUNTIME_LOG_FILEPATH);
+                }
+                else if (output is string)
+                {
+                    Logging.Log(output as string, RUNTIME_LOG_FILEPATH);
+                }
+                else
+                {
+                    Logging.Log(output, RUNTIME_LOG_FILEPATH);
+                }
+            };
+
+            AppDomain.CurrentDomain.FirstChanceException += (sender, e) => Logging.Log(e.Exception, RUNTIME_LOG_FILEPATH);
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                // Save a timestamped copy of the current runtime log
+                Logging.Log(e.ExceptionObject as Exception ?? e.ExceptionObject, RUNTIME_LOG_FILEPATH);
+                File.Copy(RUNTIME_LOG_FILEPATH, System.IO.Path.Combine(LOG_ARCHIVE_DIRECTORY, $"{Utilities.GetCurrentTime()}.log")); // Archive current log when app shuts down unexpectedly
+
+                // Save a timestamped backup of the current diagram
+                var diagramContents = mainGraph.Serialise();
+                File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
+            };
+            #endregion
+
+
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
+            Vertical id_ea85b5660fa34695a17f480b7baa0f75 = new Vertical() {  };
+            CanvasDisplay id_a449a298df024d5b9f381ca0b70b5dc2 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_0c4d5964332d4a6586b9416e03fa62a5 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
+            KeyEvent id_b06a584e3df240fa8373980dc2205c5c = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            EventLambda id_d1b1b3f74d48453cb458e1d7e2cfc6c5 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
+
+            // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
+            mainWindow.WireTo(id_ea85b5660fa34695a17f480b7baa0f75, "iuiStructure");
+            id_ea85b5660fa34695a17f480b7baa0f75.WireTo(id_a449a298df024d5b9f381ca0b70b5dc2, "children");
+            id_a449a298df024d5b9f381ca0b70b5dc2.WireTo(id_0c4d5964332d4a6586b9416e03fa62a5, "canvasOutput");
+            id_a449a298df024d5b9f381ca0b70b5dc2.WireTo(id_b06a584e3df240fa8373980dc2205c5c, "eventHandlers");
+            id_b06a584e3df240fa8373980dc2205c5c.WireTo(id_d1b1b3f74d48453cb458e1d7e2cfc6c5, "eventHappened");
+            // END AUTO-GENERATED WIRING FOR Application.xmind
+
+            // BEGIN MANUAL INSTANTIATIONS
+            // END MANUAL INSTANTIATIONS
+
+            // BEGIN MANUAL WIRING
+            // END MANUAL WIRING
+
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

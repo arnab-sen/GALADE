@@ -46,6 +46,15 @@ namespace ProgrammingParadigms
         public double Height { get; set; } = 50;
         public Port SelectedPort { get; set; }
 
+        public UIElement ContextMenu
+        {
+            get => nodeRect?.ContextMenu;
+            set
+            {
+                if (nodeRect != null) nodeRect.ContextMenu = value as ContextMenu;
+            }
+        }
+
         public bool PortsAreEditable
         {
             get => _editPortMode;
