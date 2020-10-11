@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73472884-6FE9-412C-9D2C-44D04239233F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Abstractions</RootNamespace>
+    <AssemblyName>Abstractions</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DomainAbstractions\Apply.cs" />
+    <Compile Include="DomainAbstractions\ApplyAction.cs" />
+    <Compile Include="DomainAbstractions\Button.cs" />
+    <Compile Include="DomainAbstractions\CanvasDisplay.cs" />
+    <Compile Include="DomainAbstractions\Cast.cs" />
+    <Compile Include="DomainAbstractions\ClassFileGenerator.cs" />
+    <Compile Include="DomainAbstractions\Collection.cs" />
+    <Compile Include="DomainAbstractions\ConditionalData.cs" />
+    <Compile Include="DomainAbstractions\ContextMenu.cs" />
+    <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
+    <Compile Include="DomainAbstractions\Data.cs" />
+    <Compile Include="DomainAbstractions\DropDownMenu.cs" />
+    <Compile Include="DomainAbstractions\EventLambda.cs" />
+    <Compile Include="DomainAbstractions\EventSubscriber.cs" />
+    <Compile Include="DomainAbstractions\FileBrowser.cs" />
+    <Compile Include="DomainAbstractions\FileReader.cs" />
+    <Compile Include="DomainAbstractions\FileSplit.cs" />
+    <Compile Include="DomainAbstractions\FileWriter.cs" />
+    <Compile Include="DomainAbstractions\FolderBrowser.cs" />
+    <Compile Include="DomainAbstractions\ForEach.cs" />
+    <Compile Include="DomainAbstractions\Horizontal.cs" />
+    <Compile Include="DomainAbstractions\IfElse.cs" />
+    <Compile Include="DomainAbstractions\InverseStringFormat.cs" />
+    <Compile Include="DomainAbstractions\JSONEditor.cs" />
+    <Compile Include="DomainAbstractions\JSONParser.cs" />
+    <Compile Include="DomainAbstractions\JSONWriter.cs" />
+    <Compile Include="DomainAbstractions\KeyEvent.cs" />
+    <Compile Include="DomainAbstractions\LookupTable.cs" />
+    <Compile Include="DomainAbstractions\Loop.cs" />
+    <Compile Include="DomainAbstractions\MainWindow.cs" />
+    <Compile Include="DomainAbstractions\MenuBar.cs" />
+    <Compile Include="DomainAbstractions\MenuItem.cs" />
+    <Compile Include="DomainAbstractions\MouseButtonEvent.cs" />
+    <Compile Include="DomainAbstractions\MouseEvent.cs" />
+    <Compile Include="DomainAbstractions\Operation.cs" />
+    <Compile Include="DomainAbstractions\PopupWindow.cs" />
+    <Compile Include="DomainAbstractions\PortGraphConnection.cs" />
+    <Compile Include="DomainAbstractions\RightTreeLayout.cs" />
+    <Compile Include="DomainAbstractions\RoutedEventSubscriber.cs" />
+    <Compile Include="DomainAbstractions\Select.cs" />
+    <Compile Include="DomainAbstractions\SelectMany.cs" />
+    <Compile Include="DomainAbstractions\StateChangeListener.cs" />
+    <Compile Include="DomainAbstractions\StateTransitionEvent.cs" />
+    <Compile Include="DomainAbstractions\StringMap.cs" />
+    <Compile Include="DomainAbstractions\StringSequenceExtractor.cs" />
+    <Compile Include="DomainAbstractions\Tab.cs" />
+    <Compile Include="DomainAbstractions\TabContainer.cs" />
+    <Compile Include="DomainAbstractions\Text.cs" />
+    <Compile Include="DomainAbstractions\TextBox.cs" />
+    <Compile Include="DomainAbstractions\TextClipboard.cs" />
+    <Compile Include="DomainAbstractions\ToolTip.cs" />
+    <Compile Include="DomainAbstractions\Vertical.cs" />
+    <Compile Include="DomainAbstractions\VisualPortGraphNode.cs" />
+    <Compile Include="DomainAbstractions\Where.cs" />
+    <Compile Include="Libraries\Logging.cs" />
+    <Compile Include="Libraries\Utilities.cs" />
+    <Compile Include="Libraries\Wiring.cs" />
+    <Compile Include="ProgrammingParadigms\DataFlowConnector.cs" />
+    <Compile Include="ProgrammingParadigms\Enums.cs" />
+    <Compile Include="ProgrammingParadigms\EventConnector.cs" />
+    <Compile Include="ProgrammingParadigms\EventHandlerConnector.cs" />
+    <Compile Include="ProgrammingParadigms\IEventHandler.cs" />
+    <Compile Include="ProgrammingParadigms\IMemento.cs" />
+    <Compile Include="ProgrammingParadigms\IPortConnection.cs" />
+    <Compile Include="ProgrammingParadigms\IUI.cs" />
+    <Compile Include="ProgrammingParadigms\IVisualPortGraphNode.cs" />
+    <Compile Include="ProgrammingParadigms\Port.cs" />
+    <Compile Include="ProgrammingParadigms\StateTransition.cs" />
+    <Compile Include="ProgrammingParadigms\UndoHistory.cs" />
+    <Compile Include="ProgrammingParadigms\VisualPortGraph.cs" />
+    <Compile Include="ProgrammingParadigms\VisualStyle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

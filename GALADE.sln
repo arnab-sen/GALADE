@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALACore", "Abstractions\ALACore.csproj", "{73472884-6FE9-412C-9D2C-44D04239233F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73472884-6FE9-412C-9D2C-44D04239233F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73472884-6FE9-412C-9D2C-44D04239233F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73472884-6FE9-412C-9D2C-44D04239233F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73472884-6FE9-412C-9D2C-44D04239233F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A48E0430-9FE1-4BCD-8F83-834D24BEB857}
+	EndGlobalSection
+EndGlobal
