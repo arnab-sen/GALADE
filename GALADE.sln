@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALACore", "Abstractions\ALACore.csproj", "{73472884-6FE9-412C-9D2C-44D04239233F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ALACore", "ALACore\ALACore.csproj", "{73472884-6FE9-412C-9D2C-44D04239233F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GALADE_Standalone", "GALADE_Standalone\GALADE_Standalone.csproj", "{AA8283D6-3FED-4C9D-ACA1-38B0089313C2}"
 EndProject

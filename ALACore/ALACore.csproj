@@ -7,8 +7,8 @@
     <ProjectGuid>{73472884-6FE9-412C-9D2C-44D04239233F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Abstractions</RootNamespace>
-    <AssemblyName>Abstractions</AssemblyName>
+    <RootNamespace>ALACore</RootNamespace>
+    <AssemblyName>ALACore</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

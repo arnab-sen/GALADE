@@ -100,11 +100,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Abstractions\ALACore.csproj">
+    <ProjectReference Include="..\ALACore\ALACore.csproj">
       <Project>{73472884-6fe9-412c-9d2c-44d04239233f}</Project>
       <Name>ALACore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
