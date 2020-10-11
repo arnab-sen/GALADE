@@ -13,9 +13,11 @@ namespace DomainAbstractions
     public class KeyEvent : IEventHandler
     {
         // Public fields and properties
-        public string InstanceName = "Default";
-        public KeyEventHandler Lambda;
-        public Predicate<KeyEventArgs> Condition;
+        public string InstanceName { get; set; } = "Default";
+        public KeyEventHandler Lambda { get; set; }
+        public Predicate<KeyEventArgs> Condition { get; set; }
+        public Key Key { get; set; } = Key.None;
+        public Key[] Keys { get; set; }
 
         // Private fields
         private string eventToHandle;
@@ -55,6 +57,49 @@ namespace DomainAbstractions
             {
                 // Subscribe the user-specified lambda
                 if (Lambda != null) senderEvent.AddEventHandler(sender, Lambda);
+
+                if (Condition == null)
+                {
+                    Predicate<KeyEventArgs> keyCondition;
+                    Predicate<KeyEventArgs> keysCondition;
+
+                    Predicate<Key> keyCheck = null;
+
+                    if (eventToHandle == "KeyDown")
+                    {
+                        keyCheck = Keyboard.IsKeyDown;
+                    }
+                    else if (eventToHandle == "KeyUp")
+                    {
+                        keyCheck = Keyboard.IsKeyUp;
+                    }
+
+                    if (keyCheck != null)
+                    {
+                        if (Key != Key.None)
+                        {
+                            Condition = args => Keyboard.IsKeyDown(Key);
+                        }
+                        else if (Keys != null)
+                        {
+                            Condition = args =>
+                            {
+                                var satisfied = true;
+
+                                foreach (var key in Keys)
+                                {
+                                    if (!Keyboard.IsKeyDown(key))
+                                    {
+                                        satisfied = false;
+                                        break;
+                                    }
+                                }
+
+                                return satisfied;
+                            };
+                        }
+                    }
+                } 
 
                 // Propagate the sender, args, and event (as an IEvent) after the event has been handled by the user-specified lambda
                 senderEvent.AddEventHandler(sender, new KeyEventHandler((o, args) =>
