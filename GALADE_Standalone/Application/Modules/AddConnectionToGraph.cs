@@ -29,6 +29,10 @@ namespace Application
         public VisualPortGraph Graph { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UndoHistory UndoHistory { get; set; }
+        public IVisualPortGraphNode Source { get; set; }
+        public IVisualPortGraphNode Destination { get; set; }
+        public Port SourcePort { get; set; }
+        public Port DestinationPort { get; set; }
 
         // Private fields
         
@@ -69,7 +73,7 @@ namespace Application
 
         }
 
-        private void AddToGraph(VisualPortGraphNode source, VisualPortGraphNode destination, Port sourcePort, Port destinationPort)
+        public void AddToGraph(VisualPortGraphNode source, VisualPortGraphNode destination, Port sourcePort, Port destinationPort)
         {
             if (source == null) return;
 

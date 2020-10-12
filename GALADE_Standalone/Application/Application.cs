@@ -24,7 +24,9 @@ namespace Application
 
         // Private fields
         private MainWindow mainWindow = new MainWindow("GALADE");
+        private VisualPortGraph mainGraph = new VisualPortGraph() { InstanceName = "mainGraph", DebugOutputAll = false };
         private DataFlowConnector<Dictionary<string, JToken>> abstractionTemplatesConnector = new DataFlowConnector<Dictionary<string, JToken>> { InstanceName = "abstractionTemplatesConnector" };
+        private Dictionary<string, string> nodeReferences = new Dictionary<string, string>();
 
         // Methods
         private Application Initialize()
@@ -54,7 +56,6 @@ namespace Application
                 graph.AddNode(newNode);
             }
 
-            var templates = abstractionTemplatesConnector.Data;
         }
 
         private JObject GetTemplate(string type, Dictionary<string, JToken> templates)
@@ -79,6 +80,50 @@ namespace Application
             }
 
             return default;
+        }
+
+        /// <summary>
+        /// Stores the id of a node so that it can be retreived later by just the variable name of the node.
+        /// </summary>
+        /// <param name="node"></param>
+        private void StoreNodeReference(VisualPortGraphNode node)
+        {
+            nodeReferences[node.Name] = node.Id;
+        }
+
+        private string GetNodeIdByName(string variableName)
+        {
+            if (nodeReferences.ContainsKey(variableName))
+            {
+                return nodeReferences[variableName];
+            }
+
+            return "";
+        }
+
+        private void ConvertWireCodeToConnection(string wireTo)
+        {
+            var inverseStringFormat = new InverseStringFormat()
+            {
+                Format = "{A}.WireTo({B}, \"{SourcePort}\");"
+            };
+
+            var dfc = new DataFlowConnector<Dictionary<string, string>>();
+
+            inverseStringFormat.WireTo(dfc);
+
+            (inverseStringFormat as IDataFlow<string>).Data = wireTo;
+
+            var parsed = dfc.Data;
+
+            var source = mainGraph.GetNode(GetNodeIdByName(parsed["A"])) as VisualPortGraphNode;
+            var destination = mainGraph.GetNode(GetNodeIdByName(parsed["B"])) as VisualPortGraphNode;
+            var sourcePort = (source as VisualPortGraphNode).GetPort(parsed["SourcePort"]);
+
+            (new AddConnectionToGraph()
+            {
+                Graph = mainGraph
+            }).AddToGraph(source, destination, sourcePort, null);
         }
 
         [STAThread]
@@ -125,7 +170,6 @@ namespace Application
             #endregion
 
             #region Diagram constants and singletons
-            VisualPortGraph mainGraph = new VisualPortGraph() { InstanceName = "MainGraph", DebugOutputAll = false };
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
                 InstanceName = "stateTransition",
@@ -234,13 +278,14 @@ namespace Application
             Apply<Tuple<string,Dictionary<string,string>>,string> id_94bc4bb4b0eb4992b073d93e6e62df61 = new Apply<Tuple<string,Dictionary<string,string>>,string>() { InstanceName = "Default", Lambda = t => t.Item2["AbstractionType"] };
             ApplyAction<IPortConnection> id_f42e25cc193c489aa8f52222148e000e = new ApplyAction<IPortConnection>() { InstanceName = "Default", Lambda = cxn => {var pgc = (cxn as PortGraphConnection); pgc.Opacity = pgc.Opacity < 1 ? 1.0 : 0.1;} };
             ApplyAction<IVisualPortGraphNode> id_19025a1dc84447a2a4487d854e4b3c09 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = true };
-            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(GetTemplate(node.Type,abstractionTemplatesConnector.Data)); node.RecreateUI();} };
+            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(GetTemplate(node.Type,abstractionTemplatesConnector.Data)); node.RecreateUI(); StoreNodeReference(node);} };
             ApplyAction<IVisualPortGraphNode> id_54d29674558c4b2ab6340b22704eadff = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = node => {mainGraph.SelectNode(node.Id); (node as VisualPortGraphNode)?.GetTypeTextBoxFocus();} };
             ApplyAction<IVisualPortGraphNode> id_a59158c8c97545dea21d401b8dbf77d4 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => { if (!mainGraph.NodeTypes.Contains((n as VisualPortGraphNode).Type)) { mainGraph.NodeTypes.Add((n as VisualPortGraphNode).Type); } } };
             ApplyAction<IVisualPortGraphNode> id_fc4da39a45c14a299cf156681769ddd1 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = false };
             ApplyAction<JToken> loadNewAbstractionTypeTemplate = new ApplyAction<JToken>() { InstanceName = "loadNewAbstractionTypeTemplate", Lambda = jt => {var obj = jt as JObject; var node = mainGraph.GetSelectedNode() as VisualPortGraphNode; node?.Deserialise(obj); node?.RecreateUI();} };
             ApplyAction<KeyEventArgs> id_841df8fb3e4145e4845a4b87fb425b8e = new ApplyAction<KeyEventArgs>() { InstanceName = "Default", Lambda = args => args.Handled = true };
             ApplyAction<List<string>> id_47e785e85e8f4706a2cd54676ddeee07 = new ApplyAction<List<string>>() { InstanceName = "Default", Lambda = input => { mainGraph.NodeTypes = input; } };
+            ApplyAction<string> id_10d10f38b39240fc90cf66bf0c7cddfe = new ApplyAction<string>() { InstanceName = "Default", Lambda = input => ConvertWireCodeToConnection(input) };
             ApplyAction<string> id_f9a70bf4ccf346ec94c389aa45151170 = new ApplyAction<string>() { InstanceName = "Default", Lambda = input => {var cxn = mainGraph.GetConnection(input) as PortGraphConnection; cxn.SelectHandle(selectSourceHandle: false);} };
             ApplyAction<WPFCanvas> id_0b17dda4de874253b7ac486bd5f63d04 = new ApplyAction<WPFCanvas>() { InstanceName = "Default", Lambda = c => mainGraph.MainCanvas = c };
             Button id_2f3f5348a9f44aad90e115c61bde205a = new Button("Browse" ) { InstanceName = "Default", Margin = new Thickness(5) };
@@ -565,6 +610,7 @@ namespace Application
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
             id_7af338faa6bb48c29d1b583377d6d0f0.WireTo(id_e6fc28cbe37d4bdd86378e9e54b500ba, "output"); // (Apply<string,IEnumerable<string>> (id_7af338faa6bb48c29d1b583377d6d0f0).output) -- [IDataFlow<IEnumerable<string>>] --> (ForEach<string> (id_e6fc28cbe37d4bdd86378e9e54b500ba).collectionInput)
+            id_e6fc28cbe37d4bdd86378e9e54b500ba.WireTo(id_10d10f38b39240fc90cf66bf0c7cddfe, "elementOutput"); // (ForEach<string> (id_e6fc28cbe37d4bdd86378e9e54b500ba).elementOutput) -- [IDataFlow<string>] --> (ApplyAction<string> (id_10d10f38b39240fc90cf66bf0c7cddfe).input)
             id_5f6a7fde612d41749444eaab610a2a50.WireTo(id_5a075d3abdd94340bf112c17d9d3738f, "children"); // (MenuItem (id_5f6a7fde612d41749444eaab610a2a50).children) -- [IUI] --> (MenuItem (id_5a075d3abdd94340bf112c17d9d3738f).child)
             id_5a075d3abdd94340bf112c17d9d3738f.WireTo(id_d4cff65ce0a24619b2f59178001f2041, "clickedEvent"); // (MenuItem (id_5a075d3abdd94340bf112c17d9d3738f).clickedEvent) -- [IEvent] --> (PopupWindow (id_d4cff65ce0a24619b2f59178001f2041).open)
             id_d4cff65ce0a24619b2f59178001f2041.WireTo(id_218f2d941be344289ee5dd3d54b3dedd, "children"); // (PopupWindow (id_d4cff65ce0a24619b2f59178001f2041).children) -- [IUI] --> (Vertical (id_218f2d941be344289ee5dd3d54b3dedd).child)

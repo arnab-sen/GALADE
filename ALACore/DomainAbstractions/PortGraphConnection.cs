@@ -209,7 +209,7 @@ namespace DomainAbstractions
 
             destHandle.PositionChanged += () => { DestinationPosition = destHandle.Position; };
 
-            StateTransition.StateChanged += transition =>
+            if (StateTransition != null) StateTransition.StateChanged += transition =>
             {
                 if (selected)
                 {
