@@ -55,7 +55,10 @@ namespace DomainAbstractions
         private string _accessLevel = "any";
 
         // Ports
+        private IDataFlow<List<string>> members;
         private IDataFlow<List<string>> classes;
+        private IDataFlow<List<string>> interfaces;
+        private IDataFlow<List<string>> enums;
         private IDataFlow<List<string>> fields;
         private IDataFlow<List<string>> properties;
         private IDataFlow<List<string>> methods;
@@ -102,9 +105,21 @@ namespace DomainAbstractions
 
         private List<string> ExtractStrings(IEnumerable<SyntaxNode> nodes, bool preserveSurroundings = false) => nodes.Select(d => preserveSurroundings ? d.ToFullString() : d.ToString()).ToList();
 
+        // Get all members
+        public IEnumerable<SyntaxNode> GetMembers(string code) => GetMembers(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetMembers(SyntaxNode root) => root.DescendantNodes().OfType<MemberDeclarationSyntax>();
+
         // Get classes
         public IEnumerable<SyntaxNode> GetClasses(string code) => GetClasses(GetRoot(code));
         private IEnumerable<SyntaxNode> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
+
+        // Get interfaces
+        public IEnumerable<SyntaxNode> GetInterfaces(string code) => GetInterfaces(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+
+        // Get enums
+        public IEnumerable<SyntaxNode> GetEnums(string code) => GetEnums(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetEnums(SyntaxNode root) => root.DescendantNodes().OfType<EnumDeclarationSyntax>();
 
         // Get fields
         public IEnumerable<SyntaxNode> GetFields(string code) => GetFields(GetRoot(code));
@@ -146,7 +161,10 @@ namespace DomainAbstractions
 
                 try
                 {
+                    if (members != null) members.Data = GenerateOutput(_root, GetMembers);
                     if (classes != null) classes.Data = GenerateOutput(_root, GetClasses);
+                    if (interfaces != null) interfaces.Data = GenerateOutput(_root, GetInterfaces);
+                    if (enums != null) enums.Data = GenerateOutput(_root, GetEnums);
                     if (fields != null) fields.Data = GenerateOutput(_root, GetFields);
                     if (properties != null) properties.Data = GenerateOutput(_root, GetProperties);
                     if (methods != null) methods.Data = GenerateOutput(_root, GetMethods);
