@@ -12,6 +12,8 @@ using System.IO;
 using System.Windows.Input;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Application
 {
@@ -126,6 +128,20 @@ namespace Application
             }).AddToGraph(source, destination, sourcePort, null);
         }
 
+        private void TestRoslyn(string path)
+        {
+            try
+            {
+                var codeFileContents = File.ReadAllText(path);
+                var parser = new CodeParser();
+                parser.Test(codeFileContents);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         [STAThread]
         public static void Main()
         {
@@ -135,6 +151,7 @@ namespace Application
 
         private Application()
         {
+            TestRoslyn(@"C:\ProgramData\GALADE\TestCodeInsertion.cs");
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
 
