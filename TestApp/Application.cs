@@ -52,14 +52,9 @@ namespace Application
 
             newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
 
-            // If the diagram is empty, add a new root. Else, add the new node as a child of the currently selected node
             if (graph.GetRoot() == null)
             {
                 graph.AddNode(newNode);
-            }
-            else
-            {
-
             }
         }
 
