@@ -37,7 +37,6 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public bool PreserveSurroundings { get; set; } = false;
         
         public string AccessLevel // private, public, protected, or any (invalid values will also be set to any)
         {
@@ -93,7 +92,7 @@ namespace DomainAbstractions
                 }
             }
 
-            result = ExtractStrings(nodes, PreserveSurroundings);
+            result = ExtractStrings(nodes);
 
             return result;
         }
