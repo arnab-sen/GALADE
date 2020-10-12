@@ -189,7 +189,7 @@ namespace ProgrammingParadigms
         public IEnumerable<IVisualPortGraphNode> GetChildren(string nodeId)
         {
             var childIds = ConnectionsContaining(nodeId, asSource: true).Select(conn => conn.DestinationId);
-            return childIds.Select(id => _nodesById[id]).Where(node => node.Render.Visibility == Visibility.Visible);
+            return childIds.Where(id => _nodesById.ContainsKey(id)).Select(id => _nodesById[id]).Where(node => node.Render.Visibility == Visibility.Visible);
         }
 
         public void SelectNode(string id, bool multiSelect = false)

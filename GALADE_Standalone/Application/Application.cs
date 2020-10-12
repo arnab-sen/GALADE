@@ -24,6 +24,7 @@ namespace Application
 
         // Private fields
         private MainWindow mainWindow = new MainWindow("GALADE");
+        private DataFlowConnector<Dictionary<string, JToken>> abstractionTemplatesConnector = new DataFlowConnector<Dictionary<string, JToken>> { InstanceName = "abstractionTemplatesConnector" };
 
         // Methods
         private Application Initialize()
@@ -52,6 +53,8 @@ namespace Application
             {
                 graph.AddNode(newNode);
             }
+
+            var templates = abstractionTemplatesConnector.Data;
         }
 
         [STAThread]
@@ -177,6 +180,11 @@ namespace Application
             };
             #endregion
 
+            // BEGIN MANUAL INSTANTIATIONS
+            // END MANUAL INSTANTIATIONS
+
+            // BEGIN MANUAL WIRING
+            // END MANUAL WIRING
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
             AddConnectionToGraph addPastedConnections = new AddConnectionToGraph() { InstanceName = "addPastedConnections", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory };
@@ -202,6 +210,8 @@ namespace Application
             Apply<Tuple<string,Dictionary<string,string>>,string> id_94bc4bb4b0eb4992b073d93e6e62df61 = new Apply<Tuple<string,Dictionary<string,string>>,string>() { InstanceName = "Default", Lambda = t => t.Item2["AbstractionType"] };
             ApplyAction<IPortConnection> id_f42e25cc193c489aa8f52222148e000e = new ApplyAction<IPortConnection>() { InstanceName = "Default", Lambda = cxn => {var pgc = (cxn as PortGraphConnection); pgc.Opacity = pgc.Opacity < 1 ? 1.0 : 0.1;} };
             ApplyAction<IVisualPortGraphNode> id_19025a1dc84447a2a4487d854e4b3c09 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = true };
+            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(abstractionTemplatesConnector.Data["Data<T>"] as JObject); node.RecreateUI();} };
+            ApplyAction<IVisualPortGraphNode> id_33fca3f47adf4ae09e8f6fcfacfc0b2d = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(abstractionTemplatesConnector.Data["Data<T>"] as JObject); node.RecreateUI();} };
             ApplyAction<IVisualPortGraphNode> id_54d29674558c4b2ab6340b22704eadff = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = node => {mainGraph.SelectNode(node.Id); (node as VisualPortGraphNode)?.GetTypeTextBoxFocus();} };
             ApplyAction<IVisualPortGraphNode> id_a59158c8c97545dea21d401b8dbf77d4 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => { if (!mainGraph.NodeTypes.Contains((n as VisualPortGraphNode).Type)) { mainGraph.NodeTypes.Add((n as VisualPortGraphNode).Type); } } };
             ApplyAction<IVisualPortGraphNode> id_fc4da39a45c14a299cf156681769ddd1 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = false };
@@ -249,13 +259,13 @@ namespace Application
             Data<string> id_5db913688cf343229b5b022d9d9eef4d = new Data<string>() { InstanceName = "Default", storedData = "Type" };
             Data<string> id_b0c2ff43748f4ee4aabc3e9bed58b99d = new Data<string>() { InstanceName = "Default" };
             Data<string> setDomainAbstractionTemplatesFileLocation = new Data<string>() { InstanceName = "setDomainAbstractionTemplatesFileLocation", storedData = System.IO.Path.Combine(APP_DIRECTORY,"abstractionTemplates.json") };
-            DataFlowConnector<Dictionary<string,JToken>> id_94e7d2ab600b4046b9115aa70b4b6dea = new DataFlowConnector<Dictionary<string,JToken>>() { InstanceName = "Default" };
             DataFlowConnector<Dictionary<string,string>> id_3ab6567c18b44f8698401afb8ba7b0c7 = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
             DataFlowConnector<Dictionary<string,string>> id_41c01831f2c548eea710bc7766db0ee2 = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
             DataFlowConnector<Dictionary<string,string>> id_e471de7bcb1845a1a60f0b824230a00f = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_44388caa4a964fb588bbb8632f7b5fae = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_4bfcbdfaa7514af7ad35513cc6be635c = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_512b7d0231ac4dc59a1a9a22bcc6e650 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
+            DataFlowConnector<IVisualPortGraphNode> id_57f1e5bdd918406e849d9f0eb5c6f848 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_5e6e3fe1f77d40f0ac8320a38a5ca32f = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_706acb0a3ea545b59bd8d3d022a1ddb5 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
             DataFlowConnector<IVisualPortGraphNode> id_a5ae3d0cd5ea4f89a79279b161b0f8ef = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
@@ -528,6 +538,7 @@ namespace Application
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_c16ca284660f45679a81fd52607fec03, "portsInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).portsInput) -- [IDataFlowB<List<Port>>] --> (DataFlowConnector<List<Port>> (id_c16ca284660f45679a81fd52607fec03).returnDataB)
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_e471de7bcb1845a1a60f0b824230a00f, "namedConstructorArgumentsInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).namedConstructorArgumentsInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_e471de7bcb1845a1a60f0b824230a00f).dataOutputB)
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_41c01831f2c548eea710bc7766db0ee2, "nodePropertiesInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).nodePropertiesInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_41c01831f2c548eea710bc7766db0ee2).dataOutputB)
+            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_2c7a7667a1a441a09259e9878a9d8319, "nodeOutput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_2c7a7667a1a441a09259e9878a9d8319).input)
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
             id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
             id_7af338faa6bb48c29d1b583377d6d0f0.WireTo(id_e6fc28cbe37d4bdd86378e9e54b500ba, "output"); // (Apply<string,IEnumerable<string>> (id_7af338faa6bb48c29d1b583377d6d0f0).output) -- [IDataFlow<IEnumerable<string>>] --> (ForEach<string> (id_e6fc28cbe37d4bdd86378e9e54b500ba).collectionInput)
@@ -609,9 +620,11 @@ namespace Application
             addNewNodeConnector.WireTo(refreshDiagramLayout, "complete"); // (EventConnector (addNewNodeConnector).complete) -- [IEvent] --> (Data<IVisualPortGraphNode> (refreshDiagramLayout).start)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_00be3421cb494a9d98415a4f0c5cf240, "typeInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).typeInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_00be3421cb494a9d98415a4f0c5cf240).returnDataB)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_7cfec3ed54d04f169a715c147700ed47, "portsInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).portsInput) -- [IDataFlowB<List<Port>>] --> (DataFlowConnector<List<Port>> (id_7cfec3ed54d04f169a715c147700ed47).returnDataB)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_512b7d0231ac4dc59a1a9a22bcc6e650, "nodeOutput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_512b7d0231ac4dc59a1a9a22bcc6e650).dataInput)
+            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_57f1e5bdd918406e849d9f0eb5c6f848, "nodeOutput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).dataInput)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
+            id_57f1e5bdd918406e849d9f0eb5c6f848.WireTo(id_33fca3f47adf4ae09e8f6fcfacfc0b2d, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_33fca3f47adf4ae09e8f6fcfacfc0b2d).input)
+            id_57f1e5bdd918406e849d9f0eb5c6f848.WireTo(id_512b7d0231ac4dc59a1a9a22bcc6e650, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_512b7d0231ac4dc59a1a9a22bcc6e650).dataInput)
             id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_63ed925f29684c5db385cefefb6b6dfa, "saveTemplate"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).saveTemplate) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_63ed925f29684c5db385cefefb6b6dfa).start)
             id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_23a5fe2b3587408e9df5e94256ead20a, "enablePortEditing"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).enablePortEditing) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_23a5fe2b3587408e9df5e94256ead20a).start)
             id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_ad282ca7505348ffa6e1580db6073003, "disablePortEditing"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).disablePortEditing) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_ad282ca7505348ffa6e1580db6073003).start)
@@ -619,7 +632,7 @@ namespace Application
             id_44388caa4a964fb588bbb8632f7b5fae.WireTo(id_2a44ae50994a441b97eae994df2bb1d2, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_44388caa4a964fb588bbb8632f7b5fae).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (Apply<IVisualPortGraphNode,Tuple<string,JToken>> (id_2a44ae50994a441b97eae994df2bb1d2).input)
             id_44388caa4a964fb588bbb8632f7b5fae.WireTo(id_a59158c8c97545dea21d401b8dbf77d4, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_44388caa4a964fb588bbb8632f7b5fae).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_a59158c8c97545dea21d401b8dbf77d4).input)
             id_2a44ae50994a441b97eae994df2bb1d2.WireTo(abstractionTemplates, "output"); // (Apply<IVisualPortGraphNode,Tuple<string,JToken>> (id_2a44ae50994a441b97eae994df2bb1d2).output) -- [IDataFlow<Tuple<string,JToken>>] --> (LookupTable<string,JToken> (abstractionTemplates).pairInput)
-            abstractionTemplates.WireTo(id_94e7d2ab600b4046b9115aa70b4b6dea, "initialDictionaryInput"); // (LookupTable<string,JToken> (abstractionTemplates).initialDictionaryInput) -- [IDataFlowB<Dictionary<string,JToken>>] --> (DataFlowConnector<Dictionary<string,JToken>> (id_94e7d2ab600b4046b9115aa70b4b6dea).NEEDNAME)
+            abstractionTemplates.WireTo(abstractionTemplatesConnector, "initialDictionaryInput"); // (LookupTable<string,JToken> (abstractionTemplates).initialDictionaryInput) -- [IDataFlowB<Dictionary<string,JToken>>] --> (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).NEEDNAME)
             abstractionTemplates.WireTo(saveAbstractionTemplatesToFile, "dictionaryOutput"); // (LookupTable<string,JToken> (abstractionTemplates).dictionaryOutput) -- [IDataFlow<Dictionary<string,JToken>>] --> (JSONWriter<Dictionary<string,JToken>> (saveAbstractionTemplatesToFile).valueInput)
             abstractionTemplates.WireTo(currentAbstractionTemplate, "valueOutput"); // (LookupTable<string,JToken> (abstractionTemplates).valueOutput) -- [IDataFlow<JToken>] --> (DataFlowConnector<JToken> (currentAbstractionTemplate).dataInput)
             currentAbstractionTemplate.WireTo(loadNewAbstractionTypeTemplate, "fanoutList"); // (DataFlowConnector<JToken> (currentAbstractionTemplate).fanoutList) -- [IDataFlow<JToken>] --> (ApplyAction<JToken> (loadNewAbstractionTypeTemplate).input)
@@ -738,8 +751,8 @@ namespace Application
             id_725d235d635a4146a1742630192b5698.WireTo(setDomainAbstractionTemplatesFileLocation, "fanoutList"); // (EventConnector (id_725d235d635a4146a1742630192b5698).fanoutList) -- [IEvent] --> (Data<string> (setDomainAbstractionTemplatesFileLocation).start)
             setDomainAbstractionTemplatesFileLocation.WireTo(id_f034fbe6dce3465cbe6edada65c8d263, "dataOutput"); // (Data<string> (setDomainAbstractionTemplatesFileLocation).dataOutput) -- [IDataFlow<string>] --> (FileReader (id_f034fbe6dce3465cbe6edada65c8d263).filePathInput)
             id_f034fbe6dce3465cbe6edada65c8d263.WireTo(getTemplatesFromJSON, "fileContentOutput"); // (FileReader (id_f034fbe6dce3465cbe6edada65c8d263).fileContentOutput) -- [IDataFlow<string>] --> (Apply<string,Dictionary<string,JToken>> (getTemplatesFromJSON).input)
-            getTemplatesFromJSON.WireTo(id_94e7d2ab600b4046b9115aa70b4b6dea, "output"); // (Apply<string,Dictionary<string,JToken>> (getTemplatesFromJSON).output) -- [IDataFlow<Dictionary<string,JToken>>] --> (DataFlowConnector<Dictionary<string,JToken>> (id_94e7d2ab600b4046b9115aa70b4b6dea).dataInput)
-            id_94e7d2ab600b4046b9115aa70b4b6dea.WireTo(id_eb63936eb29948f9bef6b22f54b7abcd, "fanoutList"); // (DataFlowConnector<Dictionary<string,JToken>> (id_94e7d2ab600b4046b9115aa70b4b6dea).fanoutList) -- [IDataFlow<Dictionary<string,JToken>>] --> (Apply<Dictionary<string,JToken>,List<string>> (id_eb63936eb29948f9bef6b22f54b7abcd).input)
+            getTemplatesFromJSON.WireTo(abstractionTemplatesConnector, "output"); // (Apply<string,Dictionary<string,JToken>> (getTemplatesFromJSON).output) -- [IDataFlow<Dictionary<string,JToken>>] --> (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).dataInput)
+            abstractionTemplatesConnector.WireTo(id_eb63936eb29948f9bef6b22f54b7abcd, "fanoutList"); // (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).fanoutList) -- [IDataFlow<Dictionary<string,JToken>>] --> (Apply<Dictionary<string,JToken>,List<string>> (id_eb63936eb29948f9bef6b22f54b7abcd).input)
             id_eb63936eb29948f9bef6b22f54b7abcd.WireTo(abstractionTemplateTypes, "output"); // (Apply<Dictionary<string,JToken>,List<string>> (id_eb63936eb29948f9bef6b22f54b7abcd).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (abstractionTemplateTypes).dataInput)
             abstractionTemplateTypes.WireTo(id_47e785e85e8f4706a2cd54676ddeee07, "fanoutList"); // (DataFlowConnector<List<string>> (abstractionTemplateTypes).fanoutList) -- [IDataFlow<List<string>>] --> (ApplyAction<List<string>> (id_47e785e85e8f4706a2cd54676ddeee07).input)
             id_2ac88ef7fe0b47bbba634a8a45702a81.WireTo(settingsFilePath, "filePathInput"); // (GetSetting (id_2ac88ef7fe0b47bbba634a8a45702a81).filePathInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (settingsFilePath).returnDataB)
@@ -751,12 +764,6 @@ namespace Application
             id_f92ce910e32c48928f518addb5063e8d.WireTo(id_1fbd51c85a7a4f5d9861b9059f95d9bc, "fanoutList"); // (DataFlowConnector<string> (id_f92ce910e32c48928f518addb5063e8d).fanoutList) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).dataInput)
             id_f92ce910e32c48928f518addb5063e8d.WireTo(id_8de11133b1074cfe915e847951e130a8, "fanoutList"); // (DataFlowConnector<string> (id_f92ce910e32c48928f518addb5063e8d).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_8de11133b1074cfe915e847951e130a8).textInput)
             // END AUTO-GENERATED WIRING FOR Application.xmind
-
-            // BEGIN MANUAL INSTANTIATIONS
-            // END MANUAL INSTANTIATIONS
-
-            // BEGIN MANUAL WIRING
-            // END MANUAL WIRING
 
         }
     }
