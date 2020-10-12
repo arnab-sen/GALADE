@@ -57,6 +57,30 @@ namespace Application
             var templates = abstractionTemplatesConnector.Data;
         }
 
+        private JObject GetTemplate(string type, Dictionary<string, JToken> templates)
+        {
+            if (templates.ContainsKey(type))
+            {
+                return templates[type] as JObject;
+            }
+            else
+            {
+                try
+                {
+                    var baseType = type.Split(new[] {"<"}, StringSplitOptions.None).First();
+                    var match = templates.Keys.First(key => key.StartsWith(baseType));
+
+                    return templates[match] as JObject;
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
+            return default;
+        }
+
         [STAThread]
         public static void Main()
         {
@@ -210,8 +234,7 @@ namespace Application
             Apply<Tuple<string,Dictionary<string,string>>,string> id_94bc4bb4b0eb4992b073d93e6e62df61 = new Apply<Tuple<string,Dictionary<string,string>>,string>() { InstanceName = "Default", Lambda = t => t.Item2["AbstractionType"] };
             ApplyAction<IPortConnection> id_f42e25cc193c489aa8f52222148e000e = new ApplyAction<IPortConnection>() { InstanceName = "Default", Lambda = cxn => {var pgc = (cxn as PortGraphConnection); pgc.Opacity = pgc.Opacity < 1 ? 1.0 : 0.1;} };
             ApplyAction<IVisualPortGraphNode> id_19025a1dc84447a2a4487d854e4b3c09 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = true };
-            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(abstractionTemplatesConnector.Data["Data<T>"] as JObject); node.RecreateUI();} };
-            ApplyAction<IVisualPortGraphNode> id_33fca3f47adf4ae09e8f6fcfacfc0b2d = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(abstractionTemplatesConnector.Data["Data<T>"] as JObject); node.RecreateUI();} };
+            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(GetTemplate(node.Type,abstractionTemplatesConnector.Data)); node.RecreateUI();} };
             ApplyAction<IVisualPortGraphNode> id_54d29674558c4b2ab6340b22704eadff = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = node => {mainGraph.SelectNode(node.Id); (node as VisualPortGraphNode)?.GetTypeTextBoxFocus();} };
             ApplyAction<IVisualPortGraphNode> id_a59158c8c97545dea21d401b8dbf77d4 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => { if (!mainGraph.NodeTypes.Contains((n as VisualPortGraphNode).Type)) { mainGraph.NodeTypes.Add((n as VisualPortGraphNode).Type); } } };
             ApplyAction<IVisualPortGraphNode> id_fc4da39a45c14a299cf156681769ddd1 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = false };
@@ -623,7 +646,6 @@ namespace Application
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_57f1e5bdd918406e849d9f0eb5c6f848, "nodeOutput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).dataInput)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
             id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
-            id_57f1e5bdd918406e849d9f0eb5c6f848.WireTo(id_33fca3f47adf4ae09e8f6fcfacfc0b2d, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_33fca3f47adf4ae09e8f6fcfacfc0b2d).input)
             id_57f1e5bdd918406e849d9f0eb5c6f848.WireTo(id_512b7d0231ac4dc59a1a9a22bcc6e650, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_512b7d0231ac4dc59a1a9a22bcc6e650).dataInput)
             id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_63ed925f29684c5db385cefefb6b6dfa, "saveTemplate"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).saveTemplate) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_63ed925f29684c5db385cefefb6b6dfa).start)
             id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_23a5fe2b3587408e9df5e94256ead20a, "enablePortEditing"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).enablePortEditing) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_23a5fe2b3587408e9df5e94256ead20a).start)
