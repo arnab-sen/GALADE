@@ -38,10 +38,22 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public bool PreserveSurroundings { get; set; } = false;
+        
+        public string AccessLevel // private, public, protected, or any (invalid values will also be set to any)
+        {
+            get => _accessLevel;
+            set
+            {
+                var level = value.ToLower();
+                _accessLevel = _accessLevels.Contains(level) ? level : "any";
+            }
+        }
 
         // Private fields
         private string _unparsedCode = "";
         private SyntaxNode _root = null;
+        private readonly HashSet<string> _accessLevels = new HashSet<string>() { "any", "public", "protected", "private" };
+        private string _accessLevel = "any";
 
         // Ports
         private IDataFlow<List<string>> classes;
@@ -56,12 +68,34 @@ namespace DomainAbstractions
         {
             if (_root == null) _root = GetRoot(code);
 
-            var classes = GetClasses(_root);
-            var fields = GetFields(_root);
-            var properties = GetProperties(_root);
-            var methods = GetMethods(_root);
-            var parameters = GetParameters(_root);
+            var fields = GetFields(_root).Where(f => ((FieldDeclarationSyntax)f).Modifiers.Any(SyntaxKind.PrivateKeyword));
 
+        }
+
+        private List<string> GenerateOutput(SyntaxNode root, Func<SyntaxNode, IEnumerable<SyntaxNode>> nodeExtractor)
+        {
+            var result = new List<string>();
+            var nodes = nodeExtractor(root);
+
+            if (AccessLevel != "any")
+            {
+                if (AccessLevel == "private")
+                {
+                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PrivateKeyword));
+                }
+                else if (AccessLevel == "protected")
+                {
+                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.ProtectedKeyword));
+                }
+                else if (AccessLevel == "public")
+                {
+                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PublicKeyword));
+                }
+            }
+
+            result = ExtractStrings(nodes, PreserveSurroundings);
+
+            return result;
         }
 
         private SyntaxTree GetSyntaxTree(string code) => CSharpSyntaxTree.ParseText(code);
@@ -70,30 +104,30 @@ namespace DomainAbstractions
         private List<string> ExtractStrings(IEnumerable<SyntaxNode> nodes, bool preserveSurroundings = false) => nodes.Select(d => preserveSurroundings ? d.ToFullString() : d.ToString()).ToList();
 
         // Get classes
-        public List<string> GetClasses(string code) => GetClasses(GetRoot(code));
-        private List<string> GetClasses(SyntaxNode root) => ExtractStrings(root.DescendantNodes().OfType<ClassDeclarationSyntax>(), PreserveSurroundings);
+        public IEnumerable<SyntaxNode> GetClasses(string code) => GetClasses(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
 
         // Get fields
-        public List<string> GetFields(string code) => GetFields(GetRoot(code));
-        private List<string> GetFields(SyntaxNode root) => ExtractStrings(root.DescendantNodes().OfType<FieldDeclarationSyntax>(), PreserveSurroundings);
+        public IEnumerable<SyntaxNode> GetFields(string code) => GetFields(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetFields(SyntaxNode root) => root.DescendantNodes().OfType<FieldDeclarationSyntax>();
 
         // Get properties
-        public List<string> GetProperties(string code) => GetProperties(GetRoot(code));
-        private List<string> GetProperties(SyntaxNode root) => ExtractStrings(root.DescendantNodes().OfType<PropertyDeclarationSyntax>(), PreserveSurroundings);
+        public IEnumerable<SyntaxNode> GetProperties(string code) => GetProperties(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetProperties(SyntaxNode root) => root.DescendantNodes().OfType<PropertyDeclarationSyntax>();
 
         // Get methods
-        public List<string> GetMethods(string code) => GetMethods(GetRoot(code));
-        private List<string> GetMethods(SyntaxNode root) => ExtractStrings(root.DescendantNodes().OfType<MethodDeclarationSyntax>(), PreserveSurroundings);
+        public IEnumerable<SyntaxNode> GetMethods(string code) => GetMethods(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetMethods(SyntaxNode root) => root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
         // Get parameters
-        public List<string> GetParameters(string code) => GetParameters(GetRoot(code));
-        private List<string> GetParameters(SyntaxNode root)
+        public IEnumerable<SyntaxNode> GetParameters(string code) => GetParameters(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetParameters(SyntaxNode root)
         {
-            var parameters = new List<string>();
+            var parameters = new List<SyntaxNode>();
 
             foreach (var method in root.DescendantNodes().OfType<MethodDeclarationSyntax>())
             {
-                parameters.AddRange(ExtractStrings(method.ParameterList.Parameters));
+                parameters.AddRange(method.ParameterList.Parameters);
             }
 
             return parameters;
@@ -113,11 +147,11 @@ namespace DomainAbstractions
 
                 try
                 {
-                    if (classes != null) classes.Data = GetClasses(_root);
-                    if (fields != null) fields.Data = GetFields(_root);
-                    if (properties != null) properties.Data = GetProperties(_root);
-                    if (methods != null) methods.Data = GetMethods(_root);
-                    if (parameters != null) parameters.Data = GetParameters(_root);
+                    if (classes != null) classes.Data = GenerateOutput(_root, GetClasses);
+                    if (fields != null) fields.Data = GenerateOutput(_root, GetFields);
+                    if (properties != null) properties.Data = GenerateOutput(_root, GetProperties);
+                    if (methods != null) methods.Data = GenerateOutput(_root, GetMethods);
+                    if (parameters != null) parameters.Data = GenerateOutput(_root, GetParameters);
                 }
                 catch (Exception e)
                 {

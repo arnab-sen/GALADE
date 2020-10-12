@@ -59,7 +59,7 @@ namespace TestApplication
             }
         }
 
-        private void Test()
+        private void Test(object o)
         {
         }
 
