@@ -121,7 +121,7 @@ namespace Application
 
             sb.Append(flattenedString);
 
-            return sb.ToString();
+            return "//[" + Environment.NewLine + sb.ToString() + Environment.NewLine + "//]";
         }
 
         public string GetWiringCode(IPortConnection wire)

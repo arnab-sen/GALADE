@@ -12,9 +12,8 @@ using System.IO;
 using System.Windows.Input;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Application;
 
-namespace TestApplication
+namespace Application
 {
     /// <summary>
     /// This version of GALADE is standalone, i.e. it is a single executable.
@@ -180,19 +179,29 @@ namespace TestApplication
 
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_ea85b5660fa34695a17f480b7baa0f75 = new Vertical() {  };
-            CanvasDisplay id_a449a298df024d5b9f381ca0b70b5dc2 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_0c4d5964332d4a6586b9416e03fa62a5 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
-            KeyEvent id_b06a584e3df240fa8373980dc2205c5c = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
-            EventLambda id_d1b1b3f74d48453cb458e1d7e2cfc6c5 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            //[
+            Vertical id_172afe41f7454049980dd511632e5587 = new Vertical() {  };
+            //]
+            //[
+            CanvasDisplay id_abf55f687d3249fbbcd35264b42e9070 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            //]
+            //[
+            ApplyAction<System.Windows.Controls.Canvas> id_007c610f5ec648e6812dd736d97c5ccd = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
+            //]
+            //[
+            KeyEvent id_9cf43d430709481a813ed7000970beda = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.A } };
+            //]
+            //[
+            EventLambda id_14b289d63312435dad322f7115da7262 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            //]
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_ea85b5660fa34695a17f480b7baa0f75, "iuiStructure");
-            id_ea85b5660fa34695a17f480b7baa0f75.WireTo(id_a449a298df024d5b9f381ca0b70b5dc2, "children");
-            id_a449a298df024d5b9f381ca0b70b5dc2.WireTo(id_0c4d5964332d4a6586b9416e03fa62a5, "canvasOutput");
-            id_a449a298df024d5b9f381ca0b70b5dc2.WireTo(id_b06a584e3df240fa8373980dc2205c5c, "eventHandlers");
-            id_b06a584e3df240fa8373980dc2205c5c.WireTo(id_d1b1b3f74d48453cb458e1d7e2cfc6c5, "eventHappened");
+            mainWindow.WireTo(id_172afe41f7454049980dd511632e5587, "iuiStructure");
+            id_172afe41f7454049980dd511632e5587.WireTo(id_abf55f687d3249fbbcd35264b42e9070, "children");
+            id_abf55f687d3249fbbcd35264b42e9070.WireTo(id_007c610f5ec648e6812dd736d97c5ccd, "canvasOutput");
+            id_abf55f687d3249fbbcd35264b42e9070.WireTo(id_9cf43d430709481a813ed7000970beda, "eventHandlers");
+            id_9cf43d430709481a813ed7000970beda.WireTo(id_14b289d63312435dad322f7115da7262, "eventHappened");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -204,6 +213,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 

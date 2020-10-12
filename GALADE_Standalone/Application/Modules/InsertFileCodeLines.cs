@@ -81,7 +81,7 @@ namespace Application
         public InsertFileCodeLines()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR InsertFileCodeLines.xmind
-            Apply<List<string>,string> id_f307f8006532496184c67f270e1ddb03 = new Apply<List<string>,string>() { InstanceName = "Default", Lambda = list => {var sb = new StringBuilder(); foreach (string line in list) {sb.AppendLine(Indent + line);} return sb.ToString();} };
+            Apply<List<string>,string> id_f307f8006532496184c67f270e1ddb03 = new Apply<List<string>,string>() { InstanceName = "Default", Lambda = list => { var sb = new StringBuilder(); foreach (string line in list) { var newStr = line.Replace(Environment.NewLine, Environment.NewLine + Indent); sb.AppendLine(Indent + newStr); } return sb.ToString(); } };
             ConvertToEvent<string> id_3211377b14454d869f561996fa3c1a1d = new ConvertToEvent<string>() { InstanceName = "Default" };
             Data<string> id_40ab4f737292414e8585b145ba849f3d = new Data<string>() { InstanceName = "Default" };
             DataFlowConnector<string> id_89da89b45693446e9ed8ce1a5b10cb25 = new DataFlowConnector<string>() { InstanceName = "Default" };
