@@ -1,7 +1,7 @@
 {
   "Nodes": [
     {
-      "Id": "7ed915dc24994ec8a8e0ca68ad176092",
+      "Id": "02e3ef035ba9408a82e0e14483533c94",
       "Type": "MainWindow",
       "Name": "@mainWindow",
       "TreeParent": "",
@@ -19,7 +19,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "7b21c42c5f574f60b850beef5d280c8a"
+            "7185d9009e3243b1a8f388971841f49e"
           ]
         },
         {
@@ -41,10 +41,10 @@
       "Visible": true
     },
     {
-      "Id": "172afe41f7454049980dd511632e5587",
+      "Id": "1644eb13c7fc41c989f1fc9256053da5",
       "Type": "Vertical",
       "Name": "",
-      "TreeParent": "7ed915dc24994ec8a8e0ca68ad176092",
+      "TreeParent": "02e3ef035ba9408a82e0e14483533c94",
       "Ports": [
         {
           "Type": "IUI",
@@ -59,7 +59,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "b11482bfc37244fca318149fc2cef8d1"
+            "c7f2e0a045ba4f2c8359393d136e4508"
           ]
         },
         {
@@ -74,10 +74,10 @@
       "Visible": true
     },
     {
-      "Id": "abf55f687d3249fbbcd35264b42e9070",
+      "Id": "fed1cf6009d840589b4e017a8b129971",
       "Type": "CanvasDisplay",
       "Name": "",
-      "TreeParent": "172afe41f7454049980dd511632e5587",
+      "TreeParent": "1644eb13c7fc41c989f1fc9256053da5",
       "Ports": [
         {
           "Type": "IUI",
@@ -92,7 +92,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "5802e921fb104d2291ef0adb815e92c5"
+            "3b1a909280224c3b81b7909d807c2ea0"
           ]
         },
         {
@@ -101,7 +101,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "d60f3015ff354c3b9946fd8f418f4a7a"
+            "5d98a46c026143ca8c2c9d9cca5b5062"
           ]
         }
       ],
@@ -130,10 +130,10 @@
       "Visible": true
     },
     {
-      "Id": "007c610f5ec648e6812dd736d97c5ccd",
+      "Id": "dad1533490424c3cae894e1cbdb0b876",
       "Type": "ApplyAction<System.Windows.Controls.Canvas>",
       "Name": "",
-      "TreeParent": "abf55f687d3249fbbcd35264b42e9070",
+      "TreeParent": "fed1cf6009d840589b4e017a8b129971",
       "Ports": [
         {
           "Type": "IDataFlow<System.Windows.Controls.Canvas>",
@@ -153,10 +153,10 @@
       "Visible": true
     },
     {
-      "Id": "9cf43d430709481a813ed7000970beda",
+      "Id": "03bccbfa0f674702b17c25aa9790743f",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "abf55f687d3249fbbcd35264b42e9070",
+      "TreeParent": "fed1cf6009d840589b4e017a8b129971",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -185,7 +185,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "166c2b0818984970bb016a4864e82ef4"
+            "1e361f1403034289917948330a6b0e9c"
           ]
         }
       ],
@@ -197,17 +197,22 @@
         },
         {
           "Name": "Keys",
-          "Value": "new[] { Key.LeftCtrl, Key.A }",
+          "Value": "new[] { Key.A }",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Condition",
+          "Value": "args => stateTransition.CurrentStateMatches(\r\n\tEnums.DiagramMode.Idle | \r\n\tEnums.DiagramMode.IdleSelected)",
           "ParameterType": "Property"
         }
       ],
       "Visible": true
     },
     {
-      "Id": "14b289d63312435dad322f7115da7262",
+      "Id": "9ec838be5152456f85ccd1f1986ff544",
       "Type": "EventLambda",
       "Name": "",
-      "TreeParent": "9cf43d430709481a813ed7000970beda",
+      "TreeParent": "03bccbfa0f674702b17c25aa9790743f",
       "Ports": [
         {
           "Type": "IEvent",
@@ -235,27 +240,27 @@
     }
   ],
   "NodeIds": [
-    "7ed915dc24994ec8a8e0ca68ad176092",
-    "172afe41f7454049980dd511632e5587",
-    "abf55f687d3249fbbcd35264b42e9070",
-    "007c610f5ec648e6812dd736d97c5ccd",
-    "9cf43d430709481a813ed7000970beda",
-    "14b289d63312435dad322f7115da7262"
+    "02e3ef035ba9408a82e0e14483533c94",
+    "1644eb13c7fc41c989f1fc9256053da5",
+    "fed1cf6009d840589b4e017a8b129971",
+    "dad1533490424c3cae894e1cbdb0b876",
+    "03bccbfa0f674702b17c25aa9790743f",
+    "9ec838be5152456f85ccd1f1986ff544"
   ],
   "Connections": [
     {
-      "Id": "7b21c42c5f574f60b850beef5d280c8a",
-      "SourceId": "7ed915dc24994ec8a8e0ca68ad176092",
+      "Id": "7185d9009e3243b1a8f388971841f49e",
+      "SourceId": "02e3ef035ba9408a82e0e14483533c94",
       "SourcePort": {
         "Type": "IUI",
         "Name": "iuiStructure",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "7b21c42c5f574f60b850beef5d280c8a"
+          "7185d9009e3243b1a8f388971841f49e"
         ]
       },
-      "DestinationId": "172afe41f7454049980dd511632e5587",
+      "DestinationId": "1644eb13c7fc41c989f1fc9256053da5",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -266,18 +271,18 @@
       "Visible": true
     },
     {
-      "Id": "b11482bfc37244fca318149fc2cef8d1",
-      "SourceId": "172afe41f7454049980dd511632e5587",
+      "Id": "c7f2e0a045ba4f2c8359393d136e4508",
+      "SourceId": "1644eb13c7fc41c989f1fc9256053da5",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "b11482bfc37244fca318149fc2cef8d1"
+          "c7f2e0a045ba4f2c8359393d136e4508"
         ]
       },
-      "DestinationId": "abf55f687d3249fbbcd35264b42e9070",
+      "DestinationId": "fed1cf6009d840589b4e017a8b129971",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -288,18 +293,18 @@
       "Visible": true
     },
     {
-      "Id": "5802e921fb104d2291ef0adb815e92c5",
-      "SourceId": "abf55f687d3249fbbcd35264b42e9070",
+      "Id": "3b1a909280224c3b81b7909d807c2ea0",
+      "SourceId": "fed1cf6009d840589b4e017a8b129971",
       "SourcePort": {
         "Type": "IDataFlow<System.Windows.Controls.Canvas>",
         "Name": "canvasOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "5802e921fb104d2291ef0adb815e92c5"
+          "3b1a909280224c3b81b7909d807c2ea0"
         ]
       },
-      "DestinationId": "007c610f5ec648e6812dd736d97c5ccd",
+      "DestinationId": "dad1533490424c3cae894e1cbdb0b876",
       "DestinationPort": {
         "Type": "IDataFlow<System.Windows.Controls.Canvas>",
         "Name": "input",
@@ -310,18 +315,18 @@
       "Visible": true
     },
     {
-      "Id": "d60f3015ff354c3b9946fd8f418f4a7a",
-      "SourceId": "abf55f687d3249fbbcd35264b42e9070",
+      "Id": "5d98a46c026143ca8c2c9d9cca5b5062",
+      "SourceId": "fed1cf6009d840589b4e017a8b129971",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "d60f3015ff354c3b9946fd8f418f4a7a"
+          "5d98a46c026143ca8c2c9d9cca5b5062"
         ]
       },
-      "DestinationId": "9cf43d430709481a813ed7000970beda",
+      "DestinationId": "03bccbfa0f674702b17c25aa9790743f",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -332,18 +337,18 @@
       "Visible": true
     },
     {
-      "Id": "166c2b0818984970bb016a4864e82ef4",
-      "SourceId": "9cf43d430709481a813ed7000970beda",
+      "Id": "1e361f1403034289917948330a6b0e9c",
+      "SourceId": "03bccbfa0f674702b17c25aa9790743f",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "eventHappened",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "166c2b0818984970bb016a4864e82ef4"
+          "1e361f1403034289917948330a6b0e9c"
         ]
       },
-      "DestinationId": "14b289d63312435dad322f7115da7262",
+      "DestinationId": "9ec838be5152456f85ccd1f1986ff544",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",

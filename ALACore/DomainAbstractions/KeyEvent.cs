@@ -58,57 +58,57 @@ namespace DomainAbstractions
                 // Subscribe the user-specified lambda
                 if (Lambda != null) senderEvent.AddEventHandler(sender, Lambda);
 
-                if (Condition == null)
+                Predicate<KeyEventArgs> keyCondition = null;
+                Predicate<Key> keyCheck = null;
+
+                if (eventToHandle == "KeyDown")
                 {
-                    Predicate<KeyEventArgs> keyCondition;
-                    Predicate<KeyEventArgs> keysCondition;
+                    keyCheck = Keyboard.IsKeyDown;
+                }
+                else if (eventToHandle == "KeyUp")
+                {
+                    keyCheck = Keyboard.IsKeyUp;
+                }
 
-                    Predicate<Key> keyCheck = null;
-
-                    if (eventToHandle == "KeyDown")
+                if (keyCheck != null)
+                {
+                    if (Key != Key.None)
                     {
-                        keyCheck = Keyboard.IsKeyDown;
+                        keyCondition = args => Keyboard.IsKeyDown(Key);
                     }
-                    else if (eventToHandle == "KeyUp")
+                    else if (Keys != null)
                     {
-                        keyCheck = Keyboard.IsKeyUp;
-                    }
+                        keyCondition = args =>
+                        {
+                            var satisfied = true;
 
-                    if (keyCheck != null)
-                    {
-                        if (Key != Key.None)
-                        {
-                            Condition = args => Keyboard.IsKeyDown(Key);
-                        }
-                        else if (Keys != null)
-                        {
-                            Condition = args =>
+                            foreach (var key in Keys)
                             {
-                                var satisfied = true;
-
-                                foreach (var key in Keys)
+                                if (!Keyboard.IsKeyDown(key))
                                 {
-                                    if (!Keyboard.IsKeyDown(key))
-                                    {
-                                        satisfied = false;
-                                        break;
-                                    }
+                                    satisfied = false;
+                                    break;
                                 }
+                            }
 
-                                return satisfied;
-                            };
-                        }
+                            return satisfied;
+                        };
                     }
-                } 
+                }
+
+                if (keyCondition == null) keyCondition = args => true;
 
                 // Propagate the sender, args, and event (as an IEvent) after the event has been handled by the user-specified lambda
                 senderEvent.AddEventHandler(sender, new KeyEventHandler((o, args) =>
                 {
-                    if (Condition?.Invoke(args) ?? true)
+                    if (keyCondition(args))
                     {
-                        if (senderOutput != null) senderOutput.Data = sender;
-                        if (argsOutput != null) argsOutput.Data = args;
-                        eventHappened?.Execute(); 
+                        if (Condition?.Invoke(args) ?? true)
+                        {
+                            if (senderOutput != null) senderOutput.Data = sender;
+                            if (argsOutput != null) argsOutput.Data = args;
+                            eventHappened?.Execute();
+                        } 
                     }
                 }));
                 

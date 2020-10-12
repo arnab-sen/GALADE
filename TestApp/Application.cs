@@ -40,7 +40,11 @@ namespace Application
                 StateTransition = stateTransition,
                 NodeStyle = nodeStyle,
                 PortStyle = portStyle,
-                Ports = new List<Port> { new Port() { Type = "Port", Name = "p0", IsInputPort = true } }
+                Ports = new List<Port>
+                {
+                    new Port() { Type = "Port", Name = "p0", IsInputPort = true },
+                    new Port() { Type = "Port", Name = "p1", IsInputPort = false }
+                }
             };
 
             newNode.ActionPerformed += undoHistory.Push;
@@ -48,9 +52,14 @@ namespace Application
 
             newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
 
+            // If the diagram is empty, add a new root. Else, add the new node as a child of the currently selected node
             if (graph.GetRoot() == null)
             {
                 graph.AddNode(newNode);
+            }
+            else
+            {
+
             }
         }
 
@@ -180,28 +189,28 @@ namespace Application
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
             //[
-            Vertical id_172afe41f7454049980dd511632e5587 = new Vertical() {  };
+            Vertical id_1644eb13c7fc41c989f1fc9256053da5 = new Vertical() {  };
             //]
             //[
-            CanvasDisplay id_abf55f687d3249fbbcd35264b42e9070 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            CanvasDisplay id_fed1cf6009d840589b4e017a8b129971 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
             //]
             //[
-            ApplyAction<System.Windows.Controls.Canvas> id_007c610f5ec648e6812dd736d97c5ccd = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
+            ApplyAction<System.Windows.Controls.Canvas> id_dad1533490424c3cae894e1cbdb0b876 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
             //]
             //[
-            KeyEvent id_9cf43d430709481a813ed7000970beda = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.A } };
+            KeyEvent id_03bccbfa0f674702b17c25aa9790743f = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
             //]
             //[
-            EventLambda id_14b289d63312435dad322f7115da7262 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            EventLambda id_9ec838be5152456f85ccd1f1986ff544 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
             //]
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_172afe41f7454049980dd511632e5587, "iuiStructure");
-            id_172afe41f7454049980dd511632e5587.WireTo(id_abf55f687d3249fbbcd35264b42e9070, "children");
-            id_abf55f687d3249fbbcd35264b42e9070.WireTo(id_007c610f5ec648e6812dd736d97c5ccd, "canvasOutput");
-            id_abf55f687d3249fbbcd35264b42e9070.WireTo(id_9cf43d430709481a813ed7000970beda, "eventHandlers");
-            id_9cf43d430709481a813ed7000970beda.WireTo(id_14b289d63312435dad322f7115da7262, "eventHappened");
+            mainWindow.WireTo(id_1644eb13c7fc41c989f1fc9256053da5, "iuiStructure");
+            id_1644eb13c7fc41c989f1fc9256053da5.WireTo(id_fed1cf6009d840589b4e017a8b129971, "children");
+            id_fed1cf6009d840589b4e017a8b129971.WireTo(id_dad1533490424c3cae894e1cbdb0b876, "canvasOutput");
+            id_fed1cf6009d840589b4e017a8b129971.WireTo(id_03bccbfa0f674702b17c25aa9790743f, "eventHandlers");
+            id_03bccbfa0f674702b17c25aa9790743f.WireTo(id_9ec838be5152456f85ccd1f1986ff544, "eventHappened");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -213,6 +222,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
