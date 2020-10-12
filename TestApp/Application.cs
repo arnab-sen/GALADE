@@ -10,10 +10,11 @@ using DomainAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
 using System.Windows.Input;
+using Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Application
+namespace TestApplication
 {
     /// <summary>
     /// This version of GALADE is standalone, i.e. it is a single executable.

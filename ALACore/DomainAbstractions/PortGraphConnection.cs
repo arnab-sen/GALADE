@@ -506,16 +506,16 @@ namespace DomainAbstractions
         {
             if (SourcePort != null && DestinationPort != null)
             {
-                if (SourcePort.Type != DestinationPort.Type)
-                {
-                    Stroke = Brushes.Red;
-                    Render.Stroke = Brushes.Red;
-                }
-                else
-                {
-                    Stroke = Brushes.Black;
-                    Render.Stroke = Brushes.Black;
-                }
+                // if (SourcePort.Type != DestinationPort.Type)
+                // {
+                //     Stroke = Brushes.Red;
+                //     Render.Stroke = Brushes.Red;
+                // }
+                // else
+                // {
+                //     Stroke = Brushes.Black;
+                //     Render.Stroke = Brushes.Black;
+                // }
 
                 sourceHandle.Hide();
                 destHandle.Hide();
