@@ -27,11 +27,13 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;string&gt; code: The compilable input code to parse.</para>
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; classes: A list of the full text representation of every class declared in the input code.
     /// The IntelliSense/documentation code above every class will also be preserved, e.g. between &lt;summary&gt; tags, if PreserveSurroundings is set to true.</para>
-    /// <para>3. IDataFlow&lt;List&lt;string&gt;&gt; fields: A list of the full text representation of every field declared in the input code.</para>
-    /// <para>4. IDataFlow&lt;List&lt;string&gt;&gt; properties: A list of the full text representation of every property declared in the input code.</para>
-    /// <para>5. IDataFlow&lt;List&lt;string&gt;&gt; methods: A list of the full text representation of every method declared in the input code.</para>
-    /// <para>6. IDataFlow&lt;List&lt;string&gt;&gt; parameters: A list of the full text representation of every parameter declared in the input code.</para>
-    /// <para>7. IDataFlow&lt;List&lt;string&gt;&gt; documentationBlocks: A list of the full text representation of every document block (between &lt;summary&gt; tags) written in the input code.</para>
+    /// <para>3. IDataFlow&lt;List&lt;string&gt;&gt; interfaces: A list of the full text representation of every interface declared in the input code.</para>
+    /// <para>4. IDataFlow&lt;List&lt;string&gt;&gt; enums: A list of the full text representation of every enum declared in the input code.</para>
+    /// <para>5. IDataFlow&lt;List&lt;string&gt;&gt; fields: A list of the full text representation of every field declared in the input code.</para>
+    /// <para>6. IDataFlow&lt;List&lt;string&gt;&gt; properties: A list of the full text representation of every property declared in the input code.</para>
+    /// <para>7. IDataFlow&lt;List&lt;string&gt;&gt; methods: A list of the full text representation of every method declared in the input code.</para>
+    /// <para>8. IDataFlow&lt;List&lt;string&gt;&gt; parameters: A list of the full text representation of every parameter declared in the input code.</para>
+    /// <para>9. IDataFlow&lt;List&lt;string&gt;&gt; documentationBlocks: A list of the full text representation of every document block (between &lt;summary&gt; tags) written in the input code.</para>
     /// </summary>
     public class CodeParser : IDataFlow<string>
     {
