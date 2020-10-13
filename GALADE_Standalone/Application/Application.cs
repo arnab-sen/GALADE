@@ -151,7 +151,7 @@ namespace Application
 
         private Application()
         {
-            TestRoslyn(@"C:\ProgramData\GALADE\TestCodeInsertion.cs");
+            TestRoslyn(@"C:\ProgramData\GALADE\TestRoslyn.cs");
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
 

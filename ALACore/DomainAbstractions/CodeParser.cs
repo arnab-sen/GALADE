@@ -70,7 +70,15 @@ namespace DomainAbstractions
         {
             if (_root == null) _root = GetRoot(code);
 
-            var fields = GetFields(_root).Where(f => ((FieldDeclarationSyntax)f).Modifiers.Any(SyntaxKind.PrivateKeyword));
+            // Get every mention of mainWindow
+            // mainWindow declaration:
+            var mwDec = _root.DescendantNodes().OfType<VariableDeclaratorSyntax>()
+                .FirstOrDefault(v => v.Identifier.Text == "mainWindow")?.Identifier.Text;
+
+            // All occurrences of mainWindow instantiation or wiring
+            var mw = _root.DescendantNodes()
+                .Where(n => n is VariableDeclaratorSyntax | n is MemberAccessExpressionSyntax)
+                .Where(n => n.ToString().Contains("mainWindow")).ToList();
 
         }
 
