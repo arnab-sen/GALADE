@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>A generic parser for any compilable C# code. The expected usage is that a chain of CodeParser instances would be used to extract the information required.</para>
     /// <para>For example:</para>
-    /// <para>From an input Data&lt;string&gt;, codeData, that contains some compilable code, the constructor parameters from its first class' constructor will be sent to an output
+    /// <para>From an input Data&lt;string&gt;, codeData, that contains some compilable code, the constructor parameters from its first class' first found method will be sent to an output
     /// Data&lt;string&gt;, resultData:</para>
     /// <code>var classParser = new CodeParser();</code>
     /// <code>var methodParser = new CodeParser();</code>
