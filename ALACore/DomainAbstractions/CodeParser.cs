@@ -28,12 +28,14 @@ namespace DomainAbstractions
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; classes: A list of the full text representation of every class declared in the input code.
     /// The IntelliSense/documentation code above every class will also be preserved, e.g. between &lt;summary&gt; tags, if PreserveSurroundings is set to true.</para>
     /// <para>3. IDataFlow&lt;List&lt;string&gt;&gt; interfaces: A list of the full text representation of every interface declared in the input code.</para>
-    /// <para>4. IDataFlow&lt;List&lt;string&gt;&gt; enums: A list of the full text representation of every enum declared in the input code.</para>
-    /// <para>5. IDataFlow&lt;List&lt;string&gt;&gt; fields: A list of the full text representation of every field declared in the input code.</para>
-    /// <para>6. IDataFlow&lt;List&lt;string&gt;&gt; properties: A list of the full text representation of every property declared in the input code.</para>
-    /// <para>7. IDataFlow&lt;List&lt;string&gt;&gt; methods: A list of the full text representation of every method declared in the input code.</para>
-    /// <para>8. IDataFlow&lt;List&lt;string&gt;&gt; parameters: A list of the full text representation of every parameter declared in the input code.</para>
-    /// <para>9. IDataFlow&lt;List&lt;string&gt;&gt; documentationBlocks: A list of the full text representation of every document block (between &lt;summary&gt; tags) written in the input code.</para>
+    /// <para>4. IDataFlow&lt;List&lt;string&gt;&gt; baseObjects: A list of the full text representation of every base object
+    /// (i.e. inherited base classes or implemented interfaces) declared in the input code.</para>
+    /// <para>5. IDataFlow&lt;List&lt;string&gt;&gt; enums: A list of the full text representation of every enum declared in the input code.</para>
+    /// <para>6. IDataFlow&lt;List&lt;string&gt;&gt; fields: A list of the full text representation of every field declared in the input code.</para>
+    /// <para>7. IDataFlow&lt;List&lt;string&gt;&gt; properties: A list of the full text representation of every property declared in the input code.</para>
+    /// <para>8. IDataFlow&lt;List&lt;string&gt;&gt; methods: A list of the full text representation of every method declared in the input code.</para>
+    /// <para>9. IDataFlow&lt;List&lt;string&gt;&gt; parameters: A list of the full text representation of every parameter declared in the input code.</para>
+    /// <para>10. IDataFlow&lt;List&lt;string&gt;&gt; documentationBlocks: A list of the full text representation of every document block (between &lt;summary&gt; tags) written in the input code.</para>
     /// </summary>
     public class CodeParser : IDataFlow<string>
     {
@@ -60,6 +62,7 @@ namespace DomainAbstractions
         private IDataFlow<List<string>> members;
         private IDataFlow<List<string>> classes;
         private IDataFlow<List<string>> interfaces;
+        private IDataFlow<List<string>> baseObjects;
         private IDataFlow<List<string>> enums;
         private IDataFlow<List<string>> fields;
         private IDataFlow<List<string>> properties;
@@ -81,6 +84,9 @@ namespace DomainAbstractions
             var mw = _root.DescendantNodes()
                 .Where(n => n is VariableDeclaratorSyntax | n is MemberAccessExpressionSyntax)
                 .Where(n => n.ToString().Contains("mainWindow")).ToList();
+
+            var c = GetClasses(_root).First();
+            var implemented = GetBaseObjects(_root);
 
         }
 
@@ -126,6 +132,10 @@ namespace DomainAbstractions
         // Get interfaces
         public IEnumerable<SyntaxNode> GetInterfaces(string code) => GetInterfaces(GetRoot(code));
         private IEnumerable<SyntaxNode> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+
+        // Get base classes and interfaces
+        public IEnumerable<SyntaxNode> GetBaseObjects(string code) => GetBaseObjects(GetRoot(code));
+        private IEnumerable<SyntaxNode> GetBaseObjects(SyntaxNode root) => root.DescendantNodes().OfType<BaseListSyntax>();
 
         // Get enums
         public IEnumerable<SyntaxNode> GetEnums(string code) => GetEnums(GetRoot(code));
