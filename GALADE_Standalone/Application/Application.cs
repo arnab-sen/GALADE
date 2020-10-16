@@ -128,13 +128,13 @@ namespace Application
             }).AddToGraph(source, destination, sourcePort, null);
         }
 
-        private void TestRoslyn(string path)
+        private void TestRoslyn(string path, string appDirectory)
         {
             try
             {
                 var codeFileContents = File.ReadAllText(path);
                 var parser = new CodeParser();
-                parser.Test(codeFileContents);
+                parser.Test(codeFileContents, appDirectory);
             }
             catch (Exception e)
             {
@@ -151,7 +151,6 @@ namespace Application
 
         private Application()
         {
-            TestRoslyn(@"C:\ProgramData\GALADE\TestRoslyn.cs");
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
 
@@ -264,6 +263,8 @@ namespace Application
                 File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
             };
             #endregion
+
+            TestRoslyn(@"C:\ProgramData\GALADE\TestRoslyn.cs", System.IO.Path.Combine(APP_DIRECTORY, "TestFiles"));
 
             // BEGIN MANUAL INSTANTIATIONS
             // END MANUAL INSTANTIATIONS

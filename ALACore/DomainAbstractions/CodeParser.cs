@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,7 +72,7 @@ namespace DomainAbstractions
         private IDataFlow<List<string>> documentationBlocks;
 
         // Methods
-        public void Test(string code)
+        public void Test(string code, string projectPath = "")
         {
             if (_root == null) _root = GetRoot(code);
 
@@ -88,6 +89,20 @@ namespace DomainAbstractions
             var c = GetClasses(_root).First();
             var implemented = GetBaseObjects(_root);
 
+            // Test getting all interfaces in ProgrammingParadigms
+            var programmingParadigmsPath = Path.Combine(projectPath, "ProgrammingParadigms");
+            var domainAbstractionsPath = Path.Combine(projectPath, "DomainAbstractions");
+
+            var paradigmPaths = Directory.GetFiles(programmingParadigmsPath);
+            var abstractionPaths = Directory.GetFiles(domainAbstractionsPath);
+
+            var interfaces = new List<string>();
+            // Get programmiung paradigms
+            foreach (var paradigmPath in paradigmPaths)
+            {
+                var fileContent = Utilities.ReadFileSafely(paradigmPath);
+                interfaces.AddRange(ExtractStrings(GetInterfaces(fileContent)));
+            }
         }
 
         private List<string> GenerateOutput(SyntaxNode root, Func<SyntaxNode, IEnumerable<SyntaxNode>> nodeExtractor)
