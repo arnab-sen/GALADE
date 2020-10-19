@@ -72,6 +72,11 @@ namespace TestApplication
 
         private Application()
         {
+
+            var reg = new Registry();
+            reg.Add("testId", 10);
+            reg.Delete("testId");
+
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
 
