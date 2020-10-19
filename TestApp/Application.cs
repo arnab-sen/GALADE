@@ -73,9 +73,9 @@ namespace TestApplication
         private Application()
         {
 
-            var reg = new Registry();
-            reg.Add("testId", 10);
-            reg.Delete("testId");
+            List<object> objs = new List<object>() {true, "str"};
+            var a = objs.FirstOrDefault(obj => obj is bool b && b == true);
+            var c = objs.FirstOrDefault(obj => obj is string s && s == "str");
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -194,28 +194,32 @@ namespace TestApplication
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
             //[
-            Vertical id_e0eb49f7ac924e38a54b51d314b111bc = new Vertical() {  };
+            Vertical id_317828cbed944a0f9c06e98da66f4e68 = new Vertical() {  };
             //]
             //[
-            CanvasDisplay id_f6620f37a8b34d51ad89945af76222b1 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            CanvasDisplay id_90563a9de57e422ca8e3bf94f6df2561 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
             //]
             //[
-            ApplyAction<System.Windows.Controls.Canvas> id_790d486186fd42699f8a643d7d6fe381 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
+            ApplyAction<System.Windows.Controls.Canvas> id_3cfddfeefaca4303bd319c47138f3ded = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
             //]
             //[
-            KeyEvent id_ab1beb5efde94699b26aa17e18a222d8 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
+            KeyEvent id_d56c0c187bd24e06826396fccd3064fb = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
             //]
             //[
-            EventLambda id_5d66261ea4684c1da7dad3fac65820fb = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            EventLambda id_551f14de0b614f79aa4a23b1660312d0 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            //]
+            //[
+            KeyEvent id_553e18cf4a094582b8e00b03ee978a02 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.S } };
             //]
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_e0eb49f7ac924e38a54b51d314b111bc, "iuiStructure");
-            id_e0eb49f7ac924e38a54b51d314b111bc.WireTo(id_f6620f37a8b34d51ad89945af76222b1, "children");
-            id_f6620f37a8b34d51ad89945af76222b1.WireTo(id_790d486186fd42699f8a643d7d6fe381, "canvasOutput");
-            id_f6620f37a8b34d51ad89945af76222b1.WireTo(id_ab1beb5efde94699b26aa17e18a222d8, "eventHandlers");
-            id_ab1beb5efde94699b26aa17e18a222d8.WireTo(id_5d66261ea4684c1da7dad3fac65820fb, "eventHappened");
+            mainWindow.WireTo(id_317828cbed944a0f9c06e98da66f4e68, "iuiStructure");
+            id_317828cbed944a0f9c06e98da66f4e68.WireTo(id_90563a9de57e422ca8e3bf94f6df2561, "children");
+            id_317828cbed944a0f9c06e98da66f4e68.WireTo(id_553e18cf4a094582b8e00b03ee978a02, "eventHandlers");
+            id_90563a9de57e422ca8e3bf94f6df2561.WireTo(id_3cfddfeefaca4303bd319c47138f3ded, "canvasOutput");
+            id_90563a9de57e422ca8e3bf94f6df2561.WireTo(id_d56c0c187bd24e06826396fccd3064fb, "eventHandlers");
+            id_d56c0c187bd24e06826396fccd3064fb.WireTo(id_551f14de0b614f79aa4a23b1660312d0, "eventHappened");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -227,6 +231,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

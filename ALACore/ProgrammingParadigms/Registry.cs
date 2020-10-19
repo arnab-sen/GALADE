@@ -15,6 +15,12 @@ namespace ProgrammingParadigms
         // Public properties
         public string InstanceName { get; set; } = "DefaultRegistry";
 
+        // Public fields
+        public delegate void RegistryUpdateDelegate(string id, object newValue, object oldValue = null);
+        public RegistryUpdateDelegate PairAdded;
+        public RegistryUpdateDelegate PairChanged;
+        public RegistryUpdateDelegate PairDeleted;
+
         // Private fields
         private Dictionary<string, object> _registry = new Dictionary<string, object>();
 
@@ -47,6 +53,8 @@ namespace ProgrammingParadigms
             else
             {
                 _registry[id] = val;
+
+                PairAdded?.Invoke(id, val);
             }
         }
 
@@ -63,7 +71,11 @@ namespace ProgrammingParadigms
             }
             else
             {
+                var oldVal = Get(id);
+
                 _registry[id] = val;
+
+                PairChanged?.Invoke(id, val, oldVal);
             }
         }
 
@@ -86,7 +98,14 @@ namespace ProgrammingParadigms
 
         public void Delete(string id)
         {
-            if (Contains(id)) _registry.Remove(id);
+            if (Contains(id))
+            {
+                var oldVal = Get(id);
+
+                _registry.Remove(id);
+
+                PairDeleted?.Invoke(id, null, oldVal);
+            }
         }
     }
 }

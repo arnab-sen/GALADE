@@ -14,7 +14,7 @@ namespace DomainAbstractions
     public class Vertical : IUI, IDataFlow<bool>, IEvent
     {
         // properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         /// <summary>
         /// Layout of it's sub elements, 0 for auto sizing, 2 for averagely sharing
@@ -42,8 +42,9 @@ namespace DomainAbstractions
             }
         }
 
-        // outputs
+        // Ports
         private List<IUI> children = new List<IUI>();
+        private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // private fields
         private System.Windows.Controls.Grid gridPanel = new System.Windows.Controls.Grid();
@@ -122,6 +123,14 @@ namespace DomainAbstractions
         {
             gridPanel.Children.Clear();
             (this as IUI).GetWPFElement();
+        }
+
+        private void PostWiringInitialize()
+        {
+            foreach (var eventHandler in eventHandlers)
+            {
+                eventHandler.Sender = gridPanel;
+            }
         }
     }
 }

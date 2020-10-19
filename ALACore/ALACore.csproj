@@ -120,6 +120,7 @@
     <Compile Include="DomainAbstractions\MouseEvent.cs" />
     <Compile Include="DomainAbstractions\Operation.cs" />
     <Compile Include="DomainAbstractions\PopupWindow.cs" />
+    <Compile Include="DomainAbstractions\PortGraph.cs" />
     <Compile Include="DomainAbstractions\PortGraphConnection.cs" />
     <Compile Include="DomainAbstractions\RightTreeLayout.cs" />
     <Compile Include="DomainAbstractions\RoutedEventSubscriber.cs" />
