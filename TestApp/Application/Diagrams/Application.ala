@@ -1,0 +1,309 @@
+{
+  "Nodes": [
+    {
+      "Id": "bd5314e7d00c4d569b5817141245efdd",
+      "Type": "MainWindow",
+      "Name": "@mainWindow",
+      "TreeParent": "",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "shutdown",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IUI",
+          "Name": "iuiStructure",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "0dfd04aac4da46229bf5f8590b9959ac"
+          ]
+        },
+        {
+          "Type": "IEvent",
+          "Name": "appStart",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<bool>",
+          "Name": "visible",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "9e4a43bc80d3442a951b9bf75501a572",
+      "Type": "Vertical",
+      "Name": "",
+      "TreeParent": "bd5314e7d00c4d569b5817141245efdd",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "child",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IUI",
+          "Name": "children",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "875df7b089724116922d4251f49eb142"
+          ]
+        },
+        {
+          "Type": "IDataFlow<bool>",
+          "Name": "visible",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEventHandler",
+          "Name": "eventHandlers",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "b5b1ec1c57844275b522718127503d8a",
+      "Type": "CanvasDisplay",
+      "Name": "",
+      "TreeParent": "9e4a43bc80d3442a951b9bf75501a572",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "child",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<System.Windows.Controls.Canvas>",
+          "Name": "canvasOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "152953590eac406dbad1a13dfacb6b7c"
+          ]
+        },
+        {
+          "Type": "IEventHandler",
+          "Name": "eventHandlers",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": [
+            "16932b8c2a154c2d9ea8acc708c6b64e"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Width",
+          "Value": "1920",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Height",
+          "Value": "600",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Background",
+          "Value": "Brushes.White",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "StateTransition",
+          "Value": "stateTransition",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "2dcc29f5ee8146b3a2d9b5d34803afcd",
+      "Type": "ApplyAction<System.Windows.Controls.Canvas>",
+      "Name": "",
+      "TreeParent": "b5b1ec1c57844275b522718127503d8a",
+      "Ports": [
+        {
+          "Type": "IDataFlow<System.Windows.Controls.Canvas>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "canvas => mainCanvas = canvas",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "3d80934198744b479e544caadddcfeed",
+      "Type": "KeyEvent",
+      "Name": "",
+      "TreeParent": "b5b1ec1c57844275b522718127503d8a",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<KeyEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"KeyDown\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "Keys",
+          "Value": "new[] { Key.A }",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    }
+  ],
+  "NodeIds": [
+    "bd5314e7d00c4d569b5817141245efdd",
+    "9e4a43bc80d3442a951b9bf75501a572",
+    "b5b1ec1c57844275b522718127503d8a",
+    "2dcc29f5ee8146b3a2d9b5d34803afcd",
+    "3d80934198744b479e544caadddcfeed"
+  ],
+  "Connections": [
+    {
+      "Id": "0dfd04aac4da46229bf5f8590b9959ac",
+      "SourceId": "bd5314e7d00c4d569b5817141245efdd",
+      "SourcePort": {
+        "Type": "IUI",
+        "Name": "iuiStructure",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "0dfd04aac4da46229bf5f8590b9959ac"
+        ]
+      },
+      "DestinationId": "9e4a43bc80d3442a951b9bf75501a572",
+      "DestinationPort": {
+        "Type": "IUI",
+        "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "875df7b089724116922d4251f49eb142",
+      "SourceId": "9e4a43bc80d3442a951b9bf75501a572",
+      "SourcePort": {
+        "Type": "IUI",
+        "Name": "children",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "875df7b089724116922d4251f49eb142"
+        ]
+      },
+      "DestinationId": "b5b1ec1c57844275b522718127503d8a",
+      "DestinationPort": {
+        "Type": "IUI",
+        "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "152953590eac406dbad1a13dfacb6b7c",
+      "SourceId": "b5b1ec1c57844275b522718127503d8a",
+      "SourcePort": {
+        "Type": "IDataFlow<System.Windows.Controls.Canvas>",
+        "Name": "canvasOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "152953590eac406dbad1a13dfacb6b7c"
+        ]
+      },
+      "DestinationId": "2dcc29f5ee8146b3a2d9b5d34803afcd",
+      "DestinationPort": {
+        "Type": "IDataFlow<System.Windows.Controls.Canvas>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "16932b8c2a154c2d9ea8acc708c6b64e",
+      "SourceId": "b5b1ec1c57844275b522718127503d8a",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "16932b8c2a154c2d9ea8acc708c6b64e"
+        ]
+      },
+      "DestinationId": "3d80934198744b479e544caadddcfeed",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    }
+  ]
+}

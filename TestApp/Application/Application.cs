@@ -13,7 +13,6 @@ using System.Windows.Input;
 using Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Windows.Controls;
 
 namespace TestApplication
 {
@@ -73,6 +72,8 @@ namespace TestApplication
 
         private Application()
         {
+            object node = new VisualPortGraphNode() { Type = "TestType", Name = "TestName" };
+            var id = node.GetHashCode();
 
             List<object> objs = new List<object>() {true, "str"};
             var a = objs.FirstOrDefault(obj => obj is bool b && b == true);
@@ -192,20 +193,23 @@ namespace TestApplication
             };
             #endregion
 
-            Canvas mainCanvas;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_9e4a43bc80d3442a951b9bf75501a572 = new Vertical() {  };
-            CanvasDisplay id_b5b1ec1c57844275b522718127503d8a = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_2dcc29f5ee8146b3a2d9b5d34803afcd = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_3d80934198744b479e544caadddcfeed = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            Vertical id_047184b35e4e483abd4c733600566811 = new Vertical() {  };
+            CanvasDisplay id_55a34d4e1c6e4055a5c12ae9a9b0c7ab = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_d78a1ffda0ee4b558da29cfe0a750023 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
+            KeyEvent id_4be463c700a34e21b198984f679b25d0 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
+            EventLambda id_5cc7d1c4bc334cceb6f1df349b9f2690 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
+            KeyEvent id_ee5e28c21e354ae9bc817253a9176f9e = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.S } };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_9e4a43bc80d3442a951b9bf75501a572, "iuiStructure");
-            id_9e4a43bc80d3442a951b9bf75501a572.WireTo(id_b5b1ec1c57844275b522718127503d8a, "children");
-            id_b5b1ec1c57844275b522718127503d8a.WireTo(id_2dcc29f5ee8146b3a2d9b5d34803afcd, "canvasOutput");
-            id_b5b1ec1c57844275b522718127503d8a.WireTo(id_3d80934198744b479e544caadddcfeed, "eventHandlers");
+            mainWindow.WireTo(id_047184b35e4e483abd4c733600566811, "iuiStructure");
+            id_047184b35e4e483abd4c733600566811.WireTo(id_55a34d4e1c6e4055a5c12ae9a9b0c7ab, "children");
+            id_047184b35e4e483abd4c733600566811.WireTo(id_ee5e28c21e354ae9bc817253a9176f9e, "eventHandlers");
+            id_55a34d4e1c6e4055a5c12ae9a9b0c7ab.WireTo(id_d78a1ffda0ee4b558da29cfe0a750023, "canvasOutput");
+            id_55a34d4e1c6e4055a5c12ae9a9b0c7ab.WireTo(id_4be463c700a34e21b198984f679b25d0, "eventHandlers");
+            id_4be463c700a34e21b198984f679b25d0.WireTo(id_5cc7d1c4bc334cceb6f1df349b9f2690, "eventHappened");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -217,14 +221,6 @@ namespace TestApplication
         }
     }
 }
-
-
-
-
-
-
-
-
 
 
 
