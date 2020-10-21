@@ -137,6 +137,7 @@
     <Compile Include="DomainAbstractions\TextClipboard.cs" />
     <Compile Include="DomainAbstractions\ToolTip.cs" />
     <Compile Include="DomainAbstractions\Vertical.cs" />
+    <Compile Include="DomainAbstractions\VisualNode.cs" />
     <Compile Include="DomainAbstractions\VisualPortGraphNode.cs" />
     <Compile Include="DomainAbstractions\Where.cs" />
     <Compile Include="Libraries\Logging.cs" />
