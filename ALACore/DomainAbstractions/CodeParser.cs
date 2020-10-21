@@ -74,35 +74,35 @@ namespace DomainAbstractions
         // Methods
         public void Test(string code, string projectPath = "")
         {
-            if (_root == null) _root = GetRoot(code);
-
-            // Get every mention of mainWindow
-            // mainWindow declaration:
-            var mwDec = _root.DescendantNodes().OfType<VariableDeclaratorSyntax>()
-                .FirstOrDefault(v => v.Identifier.Text == "mainWindow")?.Identifier.Text;
-
-            // All occurrences of mainWindow instantiation or wiring
-            var mw = _root.DescendantNodes()
-                .Where(n => n is VariableDeclaratorSyntax | n is MemberAccessExpressionSyntax)
-                .Where(n => n.ToString().Contains("mainWindow")).ToList();
-
-            var c = GetClasses(_root).First();
-            var implemented = GetBaseObjects(_root);
-
-            // Test getting all interfaces in ProgrammingParadigms
-            var programmingParadigmsPath = Path.Combine(projectPath, "ProgrammingParadigms");
-            var domainAbstractionsPath = Path.Combine(projectPath, "DomainAbstractions");
-
-            var paradigmPaths = Directory.GetFiles(programmingParadigmsPath);
-            var abstractionPaths = Directory.GetFiles(domainAbstractionsPath);
-
-            var interfaces = new List<string>();
-            // Get programmiung paradigms
-            foreach (var paradigmPath in paradigmPaths)
-            {
-                var fileContent = Utilities.ReadFileSafely(paradigmPath);
-                interfaces.AddRange(ExtractStrings(GetInterfaces(fileContent)));
-            }
+            // if (_root == null) _root = GetRoot(code);
+            //
+            // // Get every mention of mainWindow
+            // // mainWindow declaration:
+            // var mwDec = _root.DescendantNodes().OfType<VariableDeclaratorSyntax>()
+            //     .FirstOrDefault(v => v.Identifier.Text == "mainWindow")?.Identifier.Text;
+            //
+            // // All occurrences of mainWindow instantiation or wiring
+            // var mw = _root.DescendantNodes()
+            //     .Where(n => n is VariableDeclaratorSyntax | n is MemberAccessExpressionSyntax)
+            //     .Where(n => n.ToString().Contains("mainWindow")).ToList();
+            //
+            // var c = GetClasses(_root).First();
+            // var implemented = GetBaseObjects(_root);
+            //
+            // // Test getting all interfaces in ProgrammingParadigms
+            // var programmingParadigmsPath = Path.Combine(projectPath, "ProgrammingParadigms");
+            // var domainAbstractionsPath = Path.Combine(projectPath, "DomainAbstractions");
+            //
+            // var paradigmPaths = Directory.GetFiles(programmingParadigmsPath);
+            // var abstractionPaths = Directory.GetFiles(domainAbstractionsPath);
+            //
+            // var interfaces = new List<string>();
+            // // Get programmiung paradigms
+            // foreach (var paradigmPath in paradigmPaths)
+            // {
+            //     var fileContent = Utilities.ReadFileSafely(paradigmPath);
+            //     interfaces.AddRange(ExtractStrings(GetInterfaces(fileContent)));
+            // }
         }
 
         private List<string> GenerateOutput(SyntaxNode root, Func<SyntaxNode, IEnumerable<SyntaxNode>> nodeExtractor)

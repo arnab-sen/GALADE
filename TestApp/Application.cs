@@ -34,36 +34,6 @@ namespace TestApplication
             return this;
         }
 
-        private void AddNewNode(VisualPortGraph graph, StateTransition<Enums.DiagramMode> stateTransition, UndoHistory undoHistory, VisualStyle nodeStyle, VisualStyle portStyle)
-        {
-            VisualPortGraphNode newNode = new VisualPortGraphNode()
-            {
-                Graph = graph,
-                StateTransition = stateTransition,
-                NodeStyle = nodeStyle,
-                PortStyle = portStyle,
-                Ports = new List<Port>
-                {
-                    new Port() { Type = "Port", Name = "p0", IsInputPort = true },
-                    new Port() { Type = "Port", Name = "p1", IsInputPort = false }
-                }
-            };
-
-            newNode.ActionPerformed += undoHistory.Push;
-            newNode.Initialise();
-
-            newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
-
-            if (graph.GetRoot() == null)
-            {
-                graph.AddNode(newNode);
-            }
-        }
-
-        private void Test(object o)
-        {
-        }
-
         [STAThread]
         public static void Main()
         {
