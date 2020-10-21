@@ -96,6 +96,7 @@
     <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
     <Compile Include="DomainAbstractions\DropDownMenu.cs" />
+    <Compile Include="DomainAbstractions\DynamicWiring.cs" />
     <Compile Include="DomainAbstractions\EventLambda.cs" />
     <Compile Include="DomainAbstractions\EventSubscriber.cs" />
     <Compile Include="DomainAbstractions\FileBrowser.cs" />
@@ -120,7 +121,6 @@
     <Compile Include="DomainAbstractions\MouseEvent.cs" />
     <Compile Include="DomainAbstractions\Operation.cs" />
     <Compile Include="DomainAbstractions\PopupWindow.cs" />
-    <Compile Include="DomainAbstractions\PortGraph.cs" />
     <Compile Include="DomainAbstractions\PortGraphConnection.cs" />
     <Compile Include="DomainAbstractions\RightTreeLayout.cs" />
     <Compile Include="DomainAbstractions\RoutedEventSubscriber.cs" />
@@ -146,14 +146,12 @@
     <Compile Include="ProgrammingParadigms\Enums.cs" />
     <Compile Include="ProgrammingParadigms\EventConnector.cs" />
     <Compile Include="ProgrammingParadigms\EventHandlerConnector.cs" />
-    <Compile Include="ProgrammingParadigms\IAttachable.cs" />
     <Compile Include="ProgrammingParadigms\IEventHandler.cs" />
     <Compile Include="ProgrammingParadigms\IMemento.cs" />
     <Compile Include="ProgrammingParadigms\IPortConnection.cs" />
     <Compile Include="ProgrammingParadigms\IUI.cs" />
     <Compile Include="ProgrammingParadigms\IVisualPortGraphNode.cs" />
     <Compile Include="ProgrammingParadigms\Port.cs" />
-    <Compile Include="ProgrammingParadigms\Registry.cs" />
     <Compile Include="ProgrammingParadigms\StateTransition.cs" />
     <Compile Include="ProgrammingParadigms\UndoHistory.cs" />
     <Compile Include="ProgrammingParadigms\VisualPortGraph.cs" />
