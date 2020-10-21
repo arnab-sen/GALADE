@@ -193,23 +193,20 @@ namespace TestApplication
             };
             #endregion
 
+            WPFCanvas mainCanvas;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_047184b35e4e483abd4c733600566811 = new Vertical() {  };
-            CanvasDisplay id_55a34d4e1c6e4055a5c12ae9a9b0c7ab = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_d78a1ffda0ee4b558da29cfe0a750023 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = input => mainGraph.MainCanvas = input };
-            KeyEvent id_4be463c700a34e21b198984f679b25d0 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            EventLambda id_5cc7d1c4bc334cceb6f1df349b9f2690 = new EventLambda() { Lambda = () => AddNewNode(mainGraph, stateTransition, undoHistory, nodeStyle, portStyle) };
-            KeyEvent id_ee5e28c21e354ae9bc817253a9176f9e = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.S } };
+            Vertical id_402c9185776043e6bb5c31e0154bd356 = new Vertical() {  };
+            CanvasDisplay id_85ff816b38524be9816c48a9a5cec794 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_3acf4a6c541a4685b9993359a7326ed0 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_fdf4d081c20447d7a428c0c1d4e985a6 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_047184b35e4e483abd4c733600566811, "iuiStructure");
-            id_047184b35e4e483abd4c733600566811.WireTo(id_55a34d4e1c6e4055a5c12ae9a9b0c7ab, "children");
-            id_047184b35e4e483abd4c733600566811.WireTo(id_ee5e28c21e354ae9bc817253a9176f9e, "eventHandlers");
-            id_55a34d4e1c6e4055a5c12ae9a9b0c7ab.WireTo(id_d78a1ffda0ee4b558da29cfe0a750023, "canvasOutput");
-            id_55a34d4e1c6e4055a5c12ae9a9b0c7ab.WireTo(id_4be463c700a34e21b198984f679b25d0, "eventHandlers");
-            id_4be463c700a34e21b198984f679b25d0.WireTo(id_5cc7d1c4bc334cceb6f1df349b9f2690, "eventHappened");
+            mainWindow.WireTo(id_402c9185776043e6bb5c31e0154bd356, "iuiStructure");
+            id_402c9185776043e6bb5c31e0154bd356.WireTo(id_85ff816b38524be9816c48a9a5cec794, "children");
+            id_85ff816b38524be9816c48a9a5cec794.WireTo(id_3acf4a6c541a4685b9993359a7326ed0, "canvasOutput");
+            id_85ff816b38524be9816c48a9a5cec794.WireTo(id_fdf4d081c20447d7a428c0c1d4e985a6, "eventHandlers");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -221,6 +218,16 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

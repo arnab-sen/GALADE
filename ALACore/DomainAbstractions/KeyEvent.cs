@@ -8,7 +8,7 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>Subscribes a KeyEventHandler to an IEventHandler with a user-specified lambda, and propagates the sender, args, and event (as an IEvent) as outputs
     /// if the Condition is true.</para>
-    /// <para>The Lambda definition should follow the following format:<code>Lambda = (sender, args) => { ... }</code></para>
+    /// <para>The Keys[] array represents the key combination should be considered.</para>
     /// </summary>
     public class KeyEvent : IEventHandler
     {
@@ -17,7 +17,7 @@ namespace DomainAbstractions
         public KeyEventHandler Lambda { get; set; }
         public Predicate<KeyEventArgs> Condition { get; set; }
         public Key Key { get; set; } = Key.None;
-        public Key[] Keys { get; set; }
+        public Key[] Keys { get; set; } // The key combination that must be pressed
 
         // Private fields
         private string eventToHandle;
