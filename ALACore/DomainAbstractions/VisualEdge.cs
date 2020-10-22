@@ -15,6 +15,7 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public string Id { get; private set; }
+        public object Payload { get; set; }
         public UIElement Render { get; set; }
 
         // Private fields
