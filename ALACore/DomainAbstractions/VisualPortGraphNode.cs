@@ -435,7 +435,7 @@ namespace ProgrammingParadigms
 
                         args.Handled = true;
                     }
-                    else if (Keyboard.Modifiers == ModifierKeys.Shift)
+                    else if ((Keyboard.Modifiers & ModifierKeys.Shift) == 0)
                     {
                         // Return to the main graph
                         Keyboard.ClearFocus();
@@ -1456,7 +1456,7 @@ namespace ProgrammingParadigms
                 // Track indentation
                 valueTextBox.PreviewKeyDown += (sender, args) =>
                 {
-                    if (args.Key == Key.Return)
+                    if (args.Key == Key.Return && Keyboard.Modifiers == ModifierKeys.Shift)
                     {
                         args.Handled = true; // Handle enter press here rather than externally
 
