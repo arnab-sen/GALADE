@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="DomainAbstractions\Apply.cs" />
     <Compile Include="DomainAbstractions\ApplyAction.cs" />
+    <Compile Include="DomainAbstractions\Box.cs" />
     <Compile Include="DomainAbstractions\Button.cs" />
     <Compile Include="DomainAbstractions\CanvasDisplay.cs" />
     <Compile Include="DomainAbstractions\Cast.cs" />
