@@ -105,6 +105,7 @@
     <Compile Include="DomainAbstractions\FileWriter.cs" />
     <Compile Include="DomainAbstractions\FolderBrowser.cs" />
     <Compile Include="DomainAbstractions\ForEach.cs" />
+    <Compile Include="DomainAbstractions\Graph.cs" />
     <Compile Include="DomainAbstractions\Horizontal.cs" />
     <Compile Include="DomainAbstractions\IfElse.cs" />
     <Compile Include="DomainAbstractions\InverseStringFormat.cs" />
