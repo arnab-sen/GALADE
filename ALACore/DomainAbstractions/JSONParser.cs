@@ -137,7 +137,7 @@ namespace DomainAbstractions
         {
             if (parsedOutput != null) parsedOutput.Data = parsedDictionary;
             if (jTokenOutput != null) jTokenOutput.Data = currentJToken;
-            if (jsonOutput != null) jsonOutput.Data = currentJToken.ToString();
+            if (jsonOutput != null) jsonOutput.Data = currentJToken?.ToString();
         }
 
         // IDataFlow<string> implementation
