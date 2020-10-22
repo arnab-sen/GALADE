@@ -79,11 +79,8 @@ namespace DomainAbstractions
             if (objectOutput != null) objectOutput.Data = instance;
         }
 
-        public DynamicWiring(string type, string sourcePort)
+        private void PostWiringInitialize()
         {
-            _type = type;
-            _sourcePort = sourcePort;
-
             _portMapping = new Dictionary<string, object>()
             {
                 { "DataFlow", wireDataFlow },
@@ -91,6 +88,12 @@ namespace DomainAbstractions
                 { "UI", wireUi },
                 { "EventHandler", wireEventHandler }
             };
+        }
+
+        public DynamicWiring(string type, string sourcePort)
+        {
+            _type = type;
+            _sourcePort = sourcePort;
         }
     }
 }

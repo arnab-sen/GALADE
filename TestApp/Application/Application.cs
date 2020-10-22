@@ -193,24 +193,28 @@ namespace TestApplication
             };
             #endregion
 
-            WPFCanvas mainCanvas;
+            WPFCanvas mainCanvas = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_142ad4ac224642e0a6108a77685e8a62 = new Vertical() {  };
-            CanvasDisplay id_a7903a1f8e444c34839922bbbe9912da = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_02b08a38492b48fc9156cfc6b19583f9 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_8de0aa8f3c6a441a9f5300400d24fef2 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
-            Data<object> id_a3952a2ba1ee4c71b68cb4ab356287eb = new Data<object>() { Lambda = () => new VisualNode() };
-            DynamicWiring<object> id_f0363a1f0b134be288ffcdfd7b4c09be = new DynamicWiring<object>(type: "UI", sourcePort: "uiLayout") {  };
+            Vertical id_a82e08b4b54e442c875a592c7144e557 = new Vertical() {  };
+            CanvasDisplay id_fa98abe4716244d287a155872f500ffd = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_6fbc73910d274b879ac09b04ae3db95f = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_8d6c977fce064800ba9376a786be2151 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            Data<object> id_8975dd31a6ab40e1a10b6a324551b7b6 = new Data<object>() { Lambda = () => new VisualNode() };
+            DynamicWiring<object> id_85b693e727094176b5df63b206f55259 = new DynamicWiring<object>(type: "UI", sourcePort: "uiLayout") {  };
+            Box id_ea37425e89764c9fac7551cf4767e2d7 = new Box() { Width = 200, Height = 50 };
+            ApplyAction<object> id_a92e990057ba41a4bf1f1863ec059def = new ApplyAction<object>() { Lambda = input =>{(input as VisualNode).InitialiseUI();var render = (input as VisualNode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_142ad4ac224642e0a6108a77685e8a62, "iuiStructure");
-            id_142ad4ac224642e0a6108a77685e8a62.WireTo(id_a7903a1f8e444c34839922bbbe9912da, "children");
-            id_a7903a1f8e444c34839922bbbe9912da.WireTo(id_02b08a38492b48fc9156cfc6b19583f9, "canvasOutput");
-            id_a7903a1f8e444c34839922bbbe9912da.WireTo(id_8de0aa8f3c6a441a9f5300400d24fef2, "eventHandlers");
-            id_8de0aa8f3c6a441a9f5300400d24fef2.WireTo(id_a3952a2ba1ee4c71b68cb4ab356287eb, "eventHappened");
-            id_a3952a2ba1ee4c71b68cb4ab356287eb.WireTo(id_f0363a1f0b134be288ffcdfd7b4c09be, "dataOutput");
+            mainWindow.WireTo(id_a82e08b4b54e442c875a592c7144e557, "iuiStructure");
+            id_a82e08b4b54e442c875a592c7144e557.WireTo(id_fa98abe4716244d287a155872f500ffd, "children");
+            id_fa98abe4716244d287a155872f500ffd.WireTo(id_6fbc73910d274b879ac09b04ae3db95f, "canvasOutput");
+            id_fa98abe4716244d287a155872f500ffd.WireTo(id_8d6c977fce064800ba9376a786be2151, "eventHandlers");
+            id_8d6c977fce064800ba9376a786be2151.WireTo(id_8975dd31a6ab40e1a10b6a324551b7b6, "eventHappened");
+            id_8975dd31a6ab40e1a10b6a324551b7b6.WireTo(id_85b693e727094176b5df63b206f55259, "dataOutput");
+            id_85b693e727094176b5df63b206f55259.WireTo(id_a92e990057ba41a4bf1f1863ec059def, "objectOutput");
+            id_85b693e727094176b5df63b206f55259.WireTo(id_ea37425e89764c9fac7551cf4767e2d7, "wireUi");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -222,6 +226,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

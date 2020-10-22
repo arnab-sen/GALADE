@@ -56,13 +56,13 @@ namespace DomainAbstractions
         private Border _uiContainer;
 
         // Ports
-        private IUI child;
+        private IUI uiLayout;
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            _uiContainer.Child = child?.GetWPFElement();
+            _uiContainer.Child = uiLayout?.GetWPFElement();
             return _uiContainer;
         }
 
