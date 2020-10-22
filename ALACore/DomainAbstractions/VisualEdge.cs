@@ -10,16 +10,11 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    public class VisualNode
+    public class VisualEdge : IEdge
     {
         // Public fields and properties
-        public string Id { get; set; }
-        public string Type { get; set; } = "DefaultNode";
-        public string Name { get; set; }
-        public object Payload { get; set; }
+        public string InstanceName { get; set; } = "Default";
+        public string Id { get; private set; }
         public UIElement Render { get; set; }
 
         // Private fields
@@ -27,13 +22,17 @@ namespace DomainAbstractions
         // Ports
         private IUI uiLayout;
 
+        // IEdge implementation
+        public object Source { get; set; }
+        public object Destination { get; set; }
+
         // Methods
         public void InitialiseUI()
         {
             if (uiLayout != null) Render = uiLayout.GetWPFElement();
         }
 
-        public VisualNode()
+        public VisualEdge()
         {
             Id = Utilities.GetUniqueId();
         }
