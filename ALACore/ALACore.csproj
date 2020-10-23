@@ -150,6 +150,7 @@
     <Compile Include="ProgrammingParadigms\Enums.cs" />
     <Compile Include="ProgrammingParadigms\EventConnector.cs" />
     <Compile Include="ProgrammingParadigms\EventHandlerConnector.cs" />
+    <Compile Include="ProgrammingParadigms\IAttachable.cs" />
     <Compile Include="ProgrammingParadigms\IEdge.cs" />
     <Compile Include="ProgrammingParadigms\IEventHandler.cs" />
     <Compile Include="ProgrammingParadigms\IGraph.cs" />
