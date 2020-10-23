@@ -22,9 +22,9 @@ namespace DomainAbstractions
         // Ports
 
         // IGraph implementation
-        HashSet<string> IGraph.NodeIds => _nodeDictionary.Keys.ToHashSet();
+        public HashSet<string> NodeIds => _nodeDictionary.Keys.ToHashSet();
 
-        HashSet<string> IGraph.EdgeIds => _edgeDictionary.Keys.ToHashSet();
+        public HashSet<string> EdgeIds => _edgeDictionary.Keys.ToHashSet();
 
         public void AddNode(string id, object node)
         {
