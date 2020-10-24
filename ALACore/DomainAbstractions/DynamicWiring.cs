@@ -67,8 +67,8 @@ namespace DomainAbstractions
         /// DynamicWirings through the objectOutput port.</para>
         /// <para>Ports:</para>
         /// <para>1. IDataFlow&lt;object&gt; objectInput: The input receiving the instance to wire.</para>
-        /// <para>2. IDataFlow&lt;object&gt; objectOutput: The port that propagates the instance.</para>
-        /// <para>3. T wire: The port to wire.</para>
+        /// <para>2. T wire: The port to wire.</para>
+        /// <para>3. IDataFlow&lt;object&gt; objectOutput: The port that propagates the instance.</para>
         /// </summary>
         /// <typeparam name="T">The type of the port to wire.</typeparam>
         public DynamicWiring()
