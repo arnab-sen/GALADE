@@ -58,6 +58,8 @@ namespace DomainAbstractions
         // Methods
         private void SetWiring(object instance)
         {
+            if (_portMapping == null) CreatePortMapping();
+
             if (_portMapping.ContainsKey(_type))
             {
                 instance.WireTo(_portMapping[_type], _sourcePort);
@@ -79,7 +81,7 @@ namespace DomainAbstractions
             if (objectOutput != null) objectOutput.Data = instance;
         }
 
-        private void PostWiringInitialize()
+        private void CreatePortMapping()
         {
             _portMapping = new Dictionary<string, object>()
             {

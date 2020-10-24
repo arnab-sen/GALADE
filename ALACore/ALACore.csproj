@@ -96,6 +96,7 @@
     <Compile Include="DomainAbstractions\ContextMenu.cs" />
     <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
+    <Compile Include="DomainAbstractions\UIFactory.cs" />
     <Compile Include="DomainAbstractions\VisualEdge.cs" />
     <Compile Include="DomainAbstractions\DropDownMenu.cs" />
     <Compile Include="DomainAbstractions\DynamicWiring.cs" />

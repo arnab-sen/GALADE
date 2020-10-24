@@ -11,6 +11,9 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Box : IUI
     {
         // Public fields and properties
@@ -87,7 +90,7 @@ namespace DomainAbstractions
             {
                 Background = Brushes.LightBlue,
                 BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(2)
+                BorderThickness = new Thickness(1)
             };
         }
     }

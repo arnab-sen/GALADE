@@ -56,6 +56,8 @@ namespace DomainAbstractions
         // IUI implmentation -----------------------------------------------------------
         UIElement IUI.GetWPFElement()
         {
+            gridPanel.Children.Clear();
+
             if (Background != null) gridPanel.Background = Background;
 
             for (var i = 0; i < children.Count; i++)

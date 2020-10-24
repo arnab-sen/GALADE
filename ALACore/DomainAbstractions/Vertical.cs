@@ -70,6 +70,8 @@ namespace DomainAbstractions
         // IUI implementation -------------------------------------------------------
         UIElement IUI.GetWPFElement()
         {
+            gridPanel.Children.Clear();
+
             if (Layouts.Length < children.Count)
             {
                 var newLayout = new int[children.Count];
