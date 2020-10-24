@@ -55,8 +55,11 @@ namespace DomainAbstractions
             set => _uiContainer.CornerRadius = value;
         }
 
+        public Border Render => _uiContainer;
+
         // Private fields
         private Border _uiContainer;
+        private bool _sentToEventHandlers = false;
 
         // Ports
         private IUI uiLayout;
@@ -66,6 +69,7 @@ namespace DomainAbstractions
         UIElement IUI.GetWPFElement()
         {
             _uiContainer.Child = uiLayout?.GetWPFElement();
+            SendToEventHandlers();
             return _uiContainer;
         }
 
@@ -73,14 +77,13 @@ namespace DomainAbstractions
         public void InitialiseUI()
         {
             (this as IUI).GetWPFElement();
-            PostWiringInitialize();
         }
 
-        private void PostWiringInitialize()
+        private void SendToEventHandlers()
         {
             foreach (var eventHandler in eventHandlers)
             {
-                eventHandler.Sender = _uiContainer;
+                eventHandler.Sender = Render;
             }
         }
 
@@ -90,7 +93,8 @@ namespace DomainAbstractions
             {
                 Background = Brushes.LightBlue,
                 BorderBrush = Brushes.Black,
-                BorderThickness = new Thickness(1)
+                BorderThickness = new Thickness(1),
+                Focusable = true
             };
         }
     }
