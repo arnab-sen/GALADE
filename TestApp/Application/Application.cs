@@ -201,7 +201,7 @@ namespace TestApplication
             ApplyAction<System.Windows.Controls.Canvas> id_e56454e2c855475d8c7f515ccae43457 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
             KeyEvent id_a1ad1a3780db461abed34979b7b89ee3 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
             Data<object> id_fc33bec81c2342388cf7288370eed57c = new Data<object>() { Lambda = () => new VisualNode() };
-            DynamicWiring<IUI> id_dea7360d71d4459095a5b2a744c9299c = new DynamicWiring<IUI>() { SourcePort = "children" };
+            DynamicWiring<IUI> id_dea7360d71d4459095a5b2a744c9299c = new DynamicWiring<IUI>() { SourcePort = "uiLayout" };
             ApplyAction<object> id_05c6d783d609460ca4791b60a7cddb62 = new ApplyAction<object>() { Lambda = input =>{(input as VisualNode).InitialiseUI();var render = (input as VisualNode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
             PortGraphNodeUI id_88e658677296466593d3ec8260a796ee = new PortGraphNodeUI() {  };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
