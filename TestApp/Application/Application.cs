@@ -196,25 +196,25 @@ namespace TestApplication
             WPFCanvas mainCanvas = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_314fd627b50541668a19a51aef1dde3c = new Vertical() {  };
-            CanvasDisplay id_eb4b364ce8d2486bb8031eaaf70e283e = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_3ae9cfc2c55e4539a8b4031fc9403956 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_9fdafc15758447c686a0176b2a9a8e7d = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
-            Data<object> id_1241d791b92746539ac6eb6f464bb0f1 = new Data<object>() { Lambda = () => new VisualNode() };
-            DynamicWiring<object> id_c099799c5d5e4b2cb83521715c5adb8d = new DynamicWiring<object>(type: "UI", sourcePort: "uiLayout") {  };
-            ApplyAction<object> id_4befce9ae63d4b2482a8d76ccce3e882 = new ApplyAction<object>() { Lambda = input =>{(input as VisualNode).InitialiseUI();var render = (input as VisualNode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
-            PortGraphNodeUI id_febcb7c4612a4ab5907111763ee19bbb = new PortGraphNodeUI() {  };
+            Vertical id_cf1d60deccd5416ba7f0cfbd6a385584 = new Vertical() {  };
+            CanvasDisplay id_9c920130f692490db5161a7d1c17b2c6 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_e56454e2c855475d8c7f515ccae43457 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_a1ad1a3780db461abed34979b7b89ee3 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            Data<object> id_fc33bec81c2342388cf7288370eed57c = new Data<object>() { Lambda = () => new VisualNode() };
+            DynamicWiring<IUI> id_dea7360d71d4459095a5b2a744c9299c = new DynamicWiring<IUI>() { SourcePort = "children" };
+            ApplyAction<object> id_05c6d783d609460ca4791b60a7cddb62 = new ApplyAction<object>() { Lambda = input =>{(input as VisualNode).InitialiseUI();var render = (input as VisualNode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
+            PortGraphNodeUI id_88e658677296466593d3ec8260a796ee = new PortGraphNodeUI() {  };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_314fd627b50541668a19a51aef1dde3c, "iuiStructure");
-            id_314fd627b50541668a19a51aef1dde3c.WireTo(id_eb4b364ce8d2486bb8031eaaf70e283e, "children");
-            id_eb4b364ce8d2486bb8031eaaf70e283e.WireTo(id_3ae9cfc2c55e4539a8b4031fc9403956, "canvasOutput");
-            id_eb4b364ce8d2486bb8031eaaf70e283e.WireTo(id_9fdafc15758447c686a0176b2a9a8e7d, "eventHandlers");
-            id_9fdafc15758447c686a0176b2a9a8e7d.WireTo(id_1241d791b92746539ac6eb6f464bb0f1, "eventHappened");
-            id_1241d791b92746539ac6eb6f464bb0f1.WireTo(id_c099799c5d5e4b2cb83521715c5adb8d, "dataOutput");
-            id_c099799c5d5e4b2cb83521715c5adb8d.WireTo(id_4befce9ae63d4b2482a8d76ccce3e882, "objectOutput");
-            id_c099799c5d5e4b2cb83521715c5adb8d.WireTo(id_febcb7c4612a4ab5907111763ee19bbb, "wireUi");
+            mainWindow.WireTo(id_cf1d60deccd5416ba7f0cfbd6a385584, "iuiStructure");
+            id_cf1d60deccd5416ba7f0cfbd6a385584.WireTo(id_9c920130f692490db5161a7d1c17b2c6, "children");
+            id_9c920130f692490db5161a7d1c17b2c6.WireTo(id_e56454e2c855475d8c7f515ccae43457, "canvasOutput");
+            id_9c920130f692490db5161a7d1c17b2c6.WireTo(id_a1ad1a3780db461abed34979b7b89ee3, "eventHandlers");
+            id_a1ad1a3780db461abed34979b7b89ee3.WireTo(id_fc33bec81c2342388cf7288370eed57c, "eventHappened");
+            id_fc33bec81c2342388cf7288370eed57c.WireTo(id_dea7360d71d4459095a5b2a744c9299c, "dataOutput");
+            id_dea7360d71d4459095a5b2a744c9299c.WireTo(id_05c6d783d609460ca4791b60a7cddb62, "objectOutput");
+            id_dea7360d71d4459095a5b2a744c9299c.WireTo(id_88e658677296466593d3ec8260a796ee, "wire");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -226,6 +226,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

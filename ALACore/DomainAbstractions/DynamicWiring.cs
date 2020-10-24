@@ -9,39 +9,27 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// <para>Wires an instance to any current programming paradigm port. When programming paradigms are added, this abstraction should be updated.</para>
-    /// <para>The programming paradigm type and the instance's output port should be given in through the constructor.</para>
-    /// <para>Only one port should be used per instance. If you want to wire multiple ports, you can chain together a sequence of
+    /// <para>Wires an instance to a port of a given type.</para>
+    /// <para>Only one port can be wired per instance of DynamicWiring. If you want to wire multiple ports, you can chain together a sequence of
     /// DynamicWirings through the objectOutput port.</para>
-    /// <para>An example instantiation:</para>
-    /// <code>new DynamicWiring&lt;int&gt;("DataFlow", "myOutputPort")</code>
-    /// <para>Note that when specifying "DataFlow" (which represents "IDataFlow&lt;int&gt;" here), the starting "I" and ending generic type are excluded.</para>
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;object&gt; objectInput: The input receiving the instance to wire.</para>
     /// <para>2. IDataFlow&lt;object&gt; objectOutput: The port that propagates the instance.</para>
-    /// <para>3. IDataFlow&lt;T&gt; wireDataFlow: The IDataFlow port to wire.</para>
-    /// <para>4. IEvent wireEvent: The IEvent port to wire.</para>
-    /// <para>5. IUI wireUi: The IUI port to wire.</para>
-    /// <para>6. IEventHandler wireEventHandler: The IEventHandler port to wire.</para>
+    /// <para>3. T wire: The port to wire.</para>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the port to wire.</typeparam>
     public class DynamicWiring<T> : IDataFlow<object>
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public string SourcePort { get; set; }
 
         // Private fields
         private object _instance;
-        private string _type;
-        private string _sourcePort;
-        private Dictionary<string, object> _portMapping;
 
         // Ports
         private IDataFlow<object> objectOutput;
-        private IDataFlow<T> wireDataFlow;
-        private IEvent wireEvent;
-        private IUI wireUi;
-        private IEventHandler wireEventHandler;
+        private T wire;
 
         // IDataFlow<object> implementation
         object IDataFlow<object>.Data
@@ -50,29 +38,21 @@ namespace DomainAbstractions
             set
             {
                 _instance = value;
-                SetWiring(_instance);
+                SetWiring(_instance, SourcePort);
                 Output(_instance);
             }
         }
 
         // Methods
-        private void SetWiring(object instance)
+        private void SetWiring(object instance, string port = "")
         {
-            if (_portMapping == null) CreatePortMapping();
-
-            if (_portMapping.ContainsKey(_type))
+            if (!string.IsNullOrWhiteSpace(port))
             {
-                instance.WireTo(_portMapping[_type], _sourcePort);
+                instance.WireTo(wire, port);
             }
             else
             {
-                var sb = new StringBuilder();
-                foreach (var type in _portMapping.Keys)
-                {
-                    sb.Append(" " + type);
-                }
-
-                throw new Exception($"Invalid type {_type} in DynamicWiring. Valid types are:{sb}");
+                instance.WireTo(wire);
             }
         }
 
@@ -81,21 +61,19 @@ namespace DomainAbstractions
             if (objectOutput != null) objectOutput.Data = instance;
         }
 
-        private void CreatePortMapping()
+        /// <summary>
+        /// <para>Wires an instance to a port of a given type.</para>
+        /// <para>Only one port can be wired per instance of DynamicWiring. If you want to wire multiple ports, you can chain together a sequence of
+        /// DynamicWirings through the objectOutput port.</para>
+        /// <para>Ports:</para>
+        /// <para>1. IDataFlow&lt;object&gt; objectInput: The input receiving the instance to wire.</para>
+        /// <para>2. IDataFlow&lt;object&gt; objectOutput: The port that propagates the instance.</para>
+        /// <para>3. T wire: The port to wire.</para>
+        /// </summary>
+        /// <typeparam name="T">The type of the port to wire.</typeparam>
+        public DynamicWiring()
         {
-            _portMapping = new Dictionary<string, object>()
-            {
-                { "DataFlow", wireDataFlow },
-                { "Event", wireEvent },
-                { "UI", wireUi },
-                { "EventHandler", wireEventHandler }
-            };
-        }
 
-        public DynamicWiring(string type, string sourcePort)
-        {
-            _type = type;
-            _sourcePort = sourcePort;
         }
     }
 }
