@@ -277,15 +277,6 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "71cd502049dc4825a630abdbd103dc13"
-          ]
-        },
-        {
           "Type": "IUI",
           "Name": "wire",
           "IsInputPort": false,
@@ -293,7 +284,16 @@
           "ConnectionIds": [
             "3f330fce71ba491dbf86ca1b3752f149"
           ]
-        }
+        },        
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "71cd502049dc4825a630abdbd103dc13"
+          ]
+        }		
       ],
       "NodeParameters": [
         {

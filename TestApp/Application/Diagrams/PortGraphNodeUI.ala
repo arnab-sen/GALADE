@@ -665,21 +665,21 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "a83305bd301d43d9bdd7edba793fc912"
-          ]
-        },
-        {
           "Type": "IUI",
           "Name": "wire",
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
             "7e090321ee9046fd8be00e49e8d7708e"
+          ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "a83305bd301d43d9bdd7edba793fc912"
           ]
         }
       ],
@@ -1005,21 +1005,21 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "7d73797751144880a8c9d18e7fa46a50"
-          ]
-        },
-        {
           "Type": "IUI",
           "Name": "wire",
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
             "f3bea82aaa2047a0b03295000441fbf5"
+          ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "7d73797751144880a8c9d18e7fa46a50"
           ]
         }
       ],
@@ -1660,13 +1660,6 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
           "Type": "IEventHandler",
           "Name": "wire",
           "IsInputPort": false,
@@ -1674,6 +1667,13 @@
           "ConnectionIds": [
             "24dc8d08323e44f1bd21730d4b75b09b"
           ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
         }
       ],
       "NodeParameters": [
@@ -1699,21 +1699,21 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "6d2b25c159fa4cf99fb5046ac2c4afb2"
-          ]
-        },
-        {
           "Type": "IUI",
           "Name": "wire",
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
             "5bd18ff415a54c4bafcfe0a0c91f020f"
+          ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "6d2b25c159fa4cf99fb5046ac2c4afb2"
           ]
         }
       ],
@@ -1772,21 +1772,21 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "0eed08e59d034043b989c6b623731c11"
-          ]
-        },
-        {
           "Type": "IUI",
           "Name": "wire",
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
             "8d071b9bc31241d5a38802d7c696ef75"
+          ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "0eed08e59d034043b989c6b623731c11"
           ]
         }
       ],
@@ -1813,13 +1813,6 @@
           "ConnectionIds": []
         },
         {
-          "Type": "IDataFlow<object>",
-          "Name": "objectOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
           "Type": "IEventHandler",
           "Name": "wire",
           "IsInputPort": false,
@@ -1827,6 +1820,13 @@
           "ConnectionIds": [
             "fe80504710da46659b553fc84527ad53"
           ]
+        },
+		{
+          "Type": "IDataFlow<object>",
+          "Name": "objectOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
         }
       ],
       "NodeParameters": [
