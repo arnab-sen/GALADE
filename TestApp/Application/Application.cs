@@ -72,12 +72,12 @@ namespace TestApplication
 
         private Application()
         {
-            object node = new VisualPortGraphNode() { Type = "TestType", Name = "TestName" };
-            var id = node.GetHashCode();
-
-            List<object> objs = new List<object>() {true, "str"};
-            var a = objs.FirstOrDefault(obj => obj is bool b && b == true);
-            var c = objs.FirstOrDefault(obj => obj is string s && s == "str");
+            // object node = new VisualPortGraphNode() { Type = "TestType", Name = "TestName" };
+            // var id = node.GetHashCode();
+            //
+            // List<object> objs = new List<object>() {true, "str"};
+            // var a = objs.FirstOrDefault(obj => obj is bool b && b == true);
+            // var c = objs.FirstOrDefault(obj => obj is string s && s == "str");
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();

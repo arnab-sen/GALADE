@@ -10,7 +10,7 @@ namespace ProgrammingParadigms
     /// <summary>
     /// <para>A generic graph data structure. Stores a set of node ids and a set of edge ids.
     /// Nodes and edges are passed as objects, to keep IGraph abstract and decoupled.</para>
-    /// <para>It also has several operation functions, to add/get/delete nodes and edges.</para>
+    /// <para>It also has several operation functions, to add/delete nodes and edges.</para>
     /// <para>Each node and edge should have a unique associated string id.
     /// It is up to the class implementing IGraph to decide how it wants to store the objects themselves.
     /// A simple Dictionary&lt;string, object&gt; is recommended, although not enforced, to allow for the objects to be processed
@@ -18,17 +18,15 @@ namespace ProgrammingParadigms
     /// </summary>
     public interface IGraph
     {
-        HashSet<string> NodeIds { get; }
-        HashSet<string> EdgeIds { get; }
+        HashSet<object> Nodes { get; }
+        HashSet<object> Edges { get; }
 
-        void AddNode(string id, object node);
-        bool ContainsNode(string id);
-        object GetNode(string id);
-        void DeleteNode(string id);
+        void AddNode(object node);
+        bool ContainsNode(object node);
+        void DeleteNode(object node);
 
-        void AddEdge(string id, object edge);
-        bool ContainsEdge(string id);
-        object GetEdge(string id);
-        void DeleteEdge(string id);
+        void AddEdge(object edge);
+        bool ContainsEdge(object edge);
+        void DeleteEdge(object edge);
     }
 }
