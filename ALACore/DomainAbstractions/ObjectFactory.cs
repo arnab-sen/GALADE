@@ -9,8 +9,8 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// An abstraction that creates an object using a given delegate.
-    /// Ports:
+    /// <para>An abstraction that creates an object using a given delegate.</para>
+    /// <para>Ports:</para>
     /// <para>IEvent create: The event to start the creation and output process.</para>
     /// <para>IDataFlow&lt;object&gt; objectOutput: The output port where the created object is sent.</para>
     /// </summary>
@@ -34,8 +34,8 @@ namespace DomainAbstractions
         // Methods
 
         /// <summary>
-        /// An abstraction that creates an object using a given delegate.
-        /// Ports:
+        /// <para>An abstraction that creates an object using a given delegate.</para>
+        /// <para>Ports:</para>
         /// <para>IEvent create: The event to start the creation and output process.</para>
         /// <para>IDataFlow&lt;object&gt; objectOutput: The output port where the created object is sent.</para>
         /// </summary>
