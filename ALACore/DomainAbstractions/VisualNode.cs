@@ -19,7 +19,7 @@ namespace DomainAbstractions
         public string Id { get; set; }
         public string Type { get; set; } = "DefaultNode";
         public string Name { get; set; }
-        public object Payload { get; set; }
+        public Dictionary<string, object> Payload { get; set; }
         public UIElement Render { get; set; }
 
         // Private fields

@@ -10,5 +10,6 @@ namespace ProgrammingParadigms
     {
         object Source { get; set; }
         object Destination { get; set; }
+        Dictionary<string, object> Payload { get; set; }
     }
 }
