@@ -14,8 +14,6 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public string Id { get; private set; }
-        public Dictionary<string, object> Payload { get; set; } = new Dictionary<string, object>();
         public UIElement Render { get; set; }
 
         // Private fields
@@ -26,6 +24,7 @@ namespace DomainAbstractions
         // IEdge implementation
         public object Source { get; set; }
         public object Destination { get; set; }
+        public Dictionary<string, object> Payload { get; set; } = new Dictionary<string, object>();
 
         // Methods
         public void InitialiseUI()
@@ -35,7 +34,7 @@ namespace DomainAbstractions
 
         public VisualEdge()
         {
-            Id = Utilities.GetUniqueId();
+
         }
     }
 }

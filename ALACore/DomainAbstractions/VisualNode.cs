@@ -16,7 +16,6 @@ namespace DomainAbstractions
     public class VisualNode
     {
         // Public fields and properties
-        public string Id { get; set; }
         public string Type { get; set; } = "DefaultNode";
         public string Name { get; set; }
         public Dictionary<string, object> Payload { get; set; }
@@ -35,7 +34,7 @@ namespace DomainAbstractions
 
         public VisualNode()
         {
-            Id = Utilities.GetUniqueId();
+
         }
     }
 }
