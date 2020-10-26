@@ -60,6 +60,7 @@ namespace DomainAbstractions
         private double currentZoomLevel = 1; // Represents the zoom multiplier for the visuals within foregroundCanvas
         private double minZoomLevel = 0.25;
         private Matrix zoomMatrix = new Matrix();
+        private bool _panning = false;
 
         // Ports
         private IDataFlow<Canvas> canvasOutput;
@@ -122,9 +123,22 @@ namespace DomainAbstractions
                 }
             };
 
+            backgroundCanvas.MouseRightButtonDown += (sender, args) =>
+            {
+                lastMousePosition = args.GetPosition(backgroundCanvas);
+                _panning = true;
+                Mouse.Capture(backgroundCanvas);
+            };
+
+            backgroundCanvas.MouseRightButtonUp += (sender, args) =>
+            {
+                _panning = false;
+                if (Mouse.Captured == backgroundCanvas) Mouse.Capture(null);
+            };
+
             backgroundCanvas.MouseMove += (sender, args) =>
             {
-                if (Mouse.RightButton == MouseButtonState.Pressed)
+                if (_panning)
                 {
                     // Calculate relative mouse movement
                     Point currentMousePosition = args.GetPosition(backgroundCanvas);
@@ -136,6 +150,7 @@ namespace DomainAbstractions
                     var top = System.Windows.Controls.Canvas.GetTop(foregroundCanvas);
                     System.Windows.Controls.Canvas.SetLeft(foregroundCanvas, left + relativeMouseMovementX);
                     System.Windows.Controls.Canvas.SetTop(foregroundCanvas, top + relativeMouseMovementY);
+                    Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
 
                     lastMousePosition = currentMousePosition;
                 }
@@ -145,10 +160,6 @@ namespace DomainAbstractions
 
             };
 
-            backgroundCanvas.MouseRightButtonDown += (sender, args) =>
-            {
-                lastMousePosition = args.GetPosition(backgroundCanvas);
-            };
 
             foregroundCanvas.RenderTransform = new ScaleTransform(1, 1);
 
