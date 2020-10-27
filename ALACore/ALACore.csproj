@@ -96,6 +96,7 @@
     <Compile Include="DomainAbstractions\ContextMenu.cs" />
     <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
+    <Compile Include="DomainAbstractions\AbstractionModel.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\UIFactory.cs" />
     <Compile Include="DomainAbstractions\VisualEdge.cs" />
@@ -166,6 +167,8 @@
     <Compile Include="ProgrammingParadigms\VisualPortGraph.cs" />
     <Compile Include="ProgrammingParadigms\VisualStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequirementsAbstractions\ALAEdge.cs" />
+    <Compile Include="RequirementsAbstractions\ALANode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -175,6 +178,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
