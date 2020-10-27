@@ -30,6 +30,13 @@ namespace DomainAbstractions
         // Ports
 
         // Methods
+        public List<KeyValuePair<string, string>> GetConstructorArgs() => _constructorArgs.ToList();
+        public List<KeyValuePair<string, string>> GetFields() => _fields.ToList();
+        public List<KeyValuePair<string, string>> GetProperties() => _properties.ToList();
+        public List<KeyValuePair<string, string>> GetImplementedPorts() => _implementedPorts.ToList();
+        public List<KeyValuePair<string, string>> GetAcceptedPorts() => _acceptedPorts.ToList();
+        public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
+
         public void AddConstructorArg(string name, string initialValue = "")
         {
             _constructorArgs["name"] = initialValue;
@@ -81,21 +88,17 @@ namespace DomainAbstractions
             {
                 _properties[name] = value;
             }
+        }
 
-            if (_implementedPorts.ContainsKey(name))
-            {
-                _implementedPorts[name] = value;
-            }
+        public void SetImplementedPort(string type, string name) => _implementedPorts[name] = type;
+        public void SetAcceptedPort(string type, string name) => _acceptedPorts[name] = type;
 
-            if (_acceptedPorts.ContainsKey(name))
+        public void SetGeneric(string identifier, string type)
+        {
+            if (_generics.ContainsKey(identifier))
             {
-                _acceptedPorts[name] = value;
-            }
-
-            if (_generics.ContainsKey(name))
-            {
-                _generics[name] = value;
-                UpdateGeneric(name, value);
+                _generics[identifier] = type;
+                UpdateGeneric(identifier, type);
             }
         }
 
