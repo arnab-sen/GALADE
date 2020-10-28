@@ -16,13 +16,15 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public RoutedEventHandler Lambda { get; set; }
         public Predicate<RoutedEventArgs> Condition { get; set; }
-        public Func<object, object> ExtractSource { get; set; }
+        public Func<object, object> ExtractSender { get; set; }
 
         // Private fields
         private string eventToHandle;
+        private object _source;
         private object _sender;
 
         // Ports
+        private IDataFlow<object> sourceOutput;
         private IDataFlow<object> senderOutput;
         private IDataFlow<RoutedEventArgs> argsOutput;
         private IEvent eventHappened;
@@ -42,7 +44,8 @@ namespace DomainAbstractions
             get => _sender;
             set
             {
-                _sender = ExtractSource != null ? ExtractSource(value) : value;
+                _source = value;
+                _sender = ExtractSender != null ? ExtractSender(value) : value;
 
                 Subscribe(eventToHandle, _sender);
             }
@@ -63,6 +66,7 @@ namespace DomainAbstractions
                 {
                     if (Condition?.Invoke(args) ?? true)
                     {
+                        if (sourceOutput != null) sourceOutput.Data = _source;
                         if (senderOutput != null) senderOutput.Data = sender;
                         if (argsOutput != null) argsOutput.Data = args;
                         eventHappened?.Execute(); 
