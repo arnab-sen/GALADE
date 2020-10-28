@@ -20,6 +20,8 @@ namespace RequirementsAbstractions
         public Graph Graph { get; set; }
         public Canvas Canvas { get; set; }
         public UIElement Render { get; set; }
+        public object Source { get; set; }
+        public object Destination { get; set; }
         public Box SourcePort { get; set; }
         public Box DestinationPort { get; set; }
 
