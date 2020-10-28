@@ -20,8 +20,8 @@ namespace RequirementsAbstractions
         public Graph Graph { get; set; }
         public Canvas Canvas { get; set; }
         public UIElement Render { get; set; }
-        public Port SourcePort { get; set; }
-        public Port DestinationPort { get; set; }
+        public Box SourcePort { get; set; }
+        public Box DestinationPort { get; set; }
 
         // Private fields
         private Box rootUI;
@@ -29,6 +29,27 @@ namespace RequirementsAbstractions
         // Ports
 
         // Methods
+        private Point GetCanvasPosition(UIElement element) => element.TranslatePoint(new Point(0, 0), Canvas);
+
+        public void Paint()
+        {
+            var bezier = new BezierCurve();
+
+            bezier.Point0 = GetCanvasPosition(SourcePort.Render); // Start
+            bezier.Point3 = GetCanvasPosition(DestinationPort.Render); // End
+
+            var midX= (bezier.Point0.X + bezier.Point0.X) / 2;
+
+            bezier.Point1 = new Point(midX, bezier.Point0.Y);
+            bezier.Point2 = new Point(midX, bezier.Point3.Y);
+
+            var render = (bezier as IUI).GetWPFElement();
+
+            Canvas.Children.Add(render);
+            Canvas.SetLeft(render, 0);
+            Canvas.SetTop(render, 0);
+        }
+
         private void SetWiring()
         {
             rootUI = new Box() { Background = Brushes.Transparent };
@@ -40,19 +61,6 @@ namespace RequirementsAbstractions
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
-        }
-
-        private AbstractionModel CreateDummyAbstractionModel()
-        {
-            var model = new AbstractionModel();
-            model.AddImplementedPort("IEvent", "input1");
-            model.AddImplementedPort("IEvent", "input2");
-            model.AddImplementedPort("IEvent", "input3");
-            model.AddAcceptedPort("IEvent", "complete");
-            model.AddProperty("Type", "Box");
-            model.AddProperty("Name", "test");
-
-            return model;
         }
 
         public void CreateInternals()

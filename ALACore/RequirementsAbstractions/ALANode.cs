@@ -171,12 +171,10 @@ namespace RequirementsAbstractions
         private AbstractionModel CreateDummyAbstractionModel()
         {
             var model = new AbstractionModel();
-            model.AddImplementedPort("IEvent", "input1");
-            model.AddImplementedPort("IEvent", "input2");
-            model.AddImplementedPort("IEvent", "input3");
-            model.AddAcceptedPort("IEvent", "complete");
-            model.AddProperty("Type", "Box");
-            model.AddProperty("Name", "test");
+            model.AddImplementedPort("Port", "input");
+            model.AddAcceptedPort("Port", "output");
+            model.AddProperty("Type", "NewNode");
+            model.AddProperty("Name", "");
 
             return model;
         }

@@ -201,7 +201,9 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "3b41548e27064981b3a7a49715e9483b"
+            "3b41548e27064981b3a7a49715e9483b",
+            "9edf7b6794a44290b2352058121db7f0",
+            "d8635adf87544cc4ad139dff850b8bf2"
           ]
         }
       ],
@@ -214,6 +216,11 @@
         {
           "Name": "Keys",
           "Value": "new[] { Key.A }",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Condition",
+          "Value": "args => mainGraph.Get(\"SelectedNode\") != null",
           "ParameterType": "Property"
         }
       ],
@@ -266,7 +273,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\r\n\tnode.CreateInternals();\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -289,7 +296,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\t(input as ALANode).CreateInternals();\r\n\tvar render = (input as ALANode).Render;\r\n\tmainCanvas.Children.Add(render);\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Payload[\"LatestNode\"] = input;\r\n\tif (mainGraph.Payload[\"SelectedNode\"] == null)\r\n\t{\r\n\t\tmainGraph.Payload[\"SelectedNode\"] = input;\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\tmainCanvas.Children.Add(render);\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -357,6 +364,127 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "8773ccf908c143a881dada490f8f4d1f",
+      "Type": "Data<object>",
+      "Name": "",
+      "TreeParent": "a8270d833df44ab9b2d89e42bedbb7cd",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<object>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<object>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": [
+            "144f408339d642c0b61c9a997b28f76d"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\t\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "44a327d318304d7ebd725a8d408f1ea7",
+      "Type": "EventConnector",
+      "Name": "",
+      "TreeParent": "a8270d833df44ab9b2d89e42bedbb7cd",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "eventInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "fanoutList",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEventB",
+          "Name": "eventOutputB",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "bb84830b84994a498d9e072c41789aa7",
+      "Type": "Apply<object, object>",
+      "Name": "",
+      "TreeParent": "8773ccf908c143a881dada490f8f4d1f",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar source = mainGraph.Get(\"SelectedNode\") as ALANode;\r\n\tvar destination = input as ALANode;\r\n\tvar sourcePort = source.GetSelectedPort(inputPort: false);\r\n\tvar destinationPort = destination.GetSelectedPort(inputPort: true);\r\n\t\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = mainGraph,\r\n\t\tCanvas = mainCanvas,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destinationPort\r\n\t};\r\n\t\r\n\t\r\n\twire.Paint();\r\n\t\r\n\treturn wire;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -368,7 +496,10 @@
     "fc5582fc4dce41aca28a2a74309dccc4",
     "1e5f950bb0514f239def1a62b6c1cae9",
     "dafcfa4f8fe94e2693182d542ef47ce8",
-    "3e60ba9810c74042b22a60f5b67b41a7"
+    "3e60ba9810c74042b22a60f5b67b41a7",
+    "8773ccf908c143a881dada490f8f4d1f",
+    "44a327d318304d7ebd725a8d408f1ea7",
+    "bb84830b84994a498d9e072c41789aa7"
   ],
   "Connections": [
     {
@@ -502,6 +633,50 @@
       "Visible": true
     },
     {
+      "Id": "9edf7b6794a44290b2352058121db7f0",
+      "SourceId": "a8270d833df44ab9b2d89e42bedbb7cd",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventHappened",
+        "IsInputPort": false,
+        "Index": 2,
+        "ConnectionIds": [
+          "3b41548e27064981b3a7a49715e9483b",
+          "9edf7b6794a44290b2352058121db7f0",
+          "d8635adf87544cc4ad139dff850b8bf2"
+        ]
+      },
+      "DestinationId": "44a327d318304d7ebd725a8d408f1ea7",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "eventInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "d8635adf87544cc4ad139dff850b8bf2",
+      "SourceId": "44a327d318304d7ebd725a8d408f1ea7",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "DestinationId": "8773ccf908c143a881dada490f8f4d1f",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
       "Id": "14d1e396f34f4c24aa72b376dec5d1ab",
       "SourceId": "fc5582fc4dce41aca28a2a74309dccc4",
       "SourcePort": {
@@ -539,6 +714,28 @@
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "144f408339d642c0b61c9a997b28f76d",
+      "SourceId": "8773ccf908c143a881dada490f8f4d1f",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "dataOutput",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "144f408339d642c0b61c9a997b28f76d"
+        ]
+      },
+      "DestinationId": "bb84830b84994a498d9e072c41789aa7",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

@@ -28,6 +28,16 @@ namespace DomainAbstractions
             set => _path.StrokeThickness = value;
         }
 
+        public Point Point0
+        {
+            get => _point0;
+            set
+            {
+                _point0 = value;
+                Update();
+            }
+        }
+
         public Point Point1
         {
             get => _point1;
@@ -61,10 +71,12 @@ namespace DomainAbstractions
         public UIElement Render => _path;
 
         // Private fields
+        private Point _point0 = new Point(0, 0);
         private Point _point1 = new Point(0, 0);
         private Point _point2 = new Point(0, 0);
         private Point _point3 = new Point(0, 0);
         private Path _path = new Path();
+        private PathFigure _pathFigure = new PathFigure();
         private BezierSegment _bezier = new BezierSegment();
 
         // Ports
@@ -73,30 +85,24 @@ namespace DomainAbstractions
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            _bezier = new BezierSegment()
+            Update();
+
+            _pathFigure.Segments = new PathSegmentCollection()
             {
-                Point1 = Point1,
-                Point2 = Point2,
-                Point3 = Point3
+                _bezier
             };
 
             _path = new Path()
             {
                 Focusable = true,
                 FocusVisualStyle = null,
-                Stroke = Colour,
-                StrokeThickness = StrokeThickness,
+                Stroke = Brushes.Black,
+                StrokeThickness = 3,
                 Data = new PathGeometry()
                 {
                     Figures = new PathFigureCollection()
                     {
-                        new PathFigure()
-                        {
-                            Segments = new PathSegmentCollection()
-                            {
-                                _bezier
-                            }
-                        }
+                        _pathFigure
                     }
                 }
             };
@@ -112,6 +118,7 @@ namespace DomainAbstractions
         // Methods
         private void Update()
         {
+            _pathFigure.StartPoint = Point0;
             _bezier.Point1 = Point1;
             _bezier.Point2 = Point2;
             _bezier.Point3 = Point3;

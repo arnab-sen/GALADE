@@ -12,9 +12,9 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public Dictionary<string, object> Payload { get; } = new Dictionary<string, object>();
 
         // Private fields
+        private Dictionary<string, object> _payload { get; } = new Dictionary<string, object>();
 
         // Ports
 
@@ -58,6 +58,9 @@ namespace DomainAbstractions
             }
 
         }
+
+        public object Get(string key) => _payload.ContainsKey(key) ? _payload[key] : null;
+        public void Set(string key, object value) => _payload[key] = value;
 
 
         // Methods
