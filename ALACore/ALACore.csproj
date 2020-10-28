@@ -95,6 +95,7 @@
     <Compile Include="DomainAbstractions\ConditionalData.cs" />
     <Compile Include="DomainAbstractions\ContextMenu.cs" />
     <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
+    <Compile Include="DomainAbstractions\BezierCurve.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
     <Compile Include="DomainAbstractions\AbstractionModel.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="ProgrammingParadigms\VisualPortGraph.cs" />
     <Compile Include="ProgrammingParadigms\VisualStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequirementsAbstractions\ALAEdge.cs" />
+    <Compile Include="RequirementsAbstractions\ALAWire.cs" />
     <Compile Include="RequirementsAbstractions\ALANode.cs" />
   </ItemGroup>
   <ItemGroup>
