@@ -20,12 +20,12 @@ namespace DomainAbstractions
         public string VariableName { get; set; } = "myObject";
 
         // Private fields
-        public Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
-        public Dictionary<string, string> _fields = new Dictionary<string, string>(); // name : value
-        public Dictionary<string, string> _properties = new Dictionary<string, string>(); // name : value
-        public Dictionary<string, string> _implementedPorts = new Dictionary<string, string>(); // name : type
-        public Dictionary<string, string> _acceptedPorts = new Dictionary<string, string>(); // name : type
-        public Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
+        private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
+        private Dictionary<string, string> _fields = new Dictionary<string, string>(); // name : value
+        private Dictionary<string, string> _properties = new Dictionary<string, string>(); // name : value
+        private Dictionary<string, string> _implementedPorts = new Dictionary<string, string>(); // name : type
+        private Dictionary<string, string> _acceptedPorts = new Dictionary<string, string>(); // name : type
+        private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
 
         // Ports
 
@@ -39,27 +39,27 @@ namespace DomainAbstractions
 
         public void AddConstructorArg(string name, string initialValue = "")
         {
-            _constructorArgs["name"] = initialValue;
+            _constructorArgs[name] = initialValue;
         }
 
         public void AddField(string name, string initialValue = "")
         {
-            _fields["name"] = initialValue;
+            _fields[name] = initialValue;
         }
 
         public void AddProperty(string name, string initialValue = "")
         {
-            _properties["name"] = initialValue;
+            _properties[name] = initialValue;
         }
 
         public void AddImplementedPort(string type, string name)
         {
-            _implementedPorts[type] = name;
+            _implementedPorts[name] = type;
         }
 
         public void AddAcceptedPort(string type, string name)
         {
-            _acceptedPorts[type] = name;
+            _acceptedPorts[name] = type;
         }
 
         public void AddGeneric(string generic, string initialValue = "")

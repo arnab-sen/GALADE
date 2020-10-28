@@ -12,13 +12,41 @@ using System.Windows.Input;
 
 namespace DomainAbstractions
 {
-    public class DropDownMenu : ComboBox, IUI, IDataFlow<List<string>>, IDataFlow<string>
+    public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string>
     {
         // Public fields and properties
         public string InstanceName = "Default";
         public bool SortItems = true;
 
+        public string Text
+        {
+            get => dropDown.Dispatcher.Invoke(() => dropDown.Text);
+            set
+            {
+                dropDown.Dispatcher.Invoke(() => dropDown.Text = value);
+            }
+        }
+
+        public Thickness Margin
+        {
+            get => dropDown.Margin;
+            set => dropDown.Margin = value;
+        }
+
+        public double Width
+        {
+            get => dropDown.Width;
+            set => dropDown.Width = value;
+        }
+
+        public double Height
+        {
+            get => dropDown.Height;
+            set => dropDown.Height = value;
+        }
+
         // Private fields
+        private ComboBox dropDown = new ComboBox();
         private List<string> items = new List<string>();
 
         // Ports
@@ -27,32 +55,32 @@ namespace DomainAbstractions
 
         public DropDownMenu()
         {
-            IsEditable = true;
-            SelectionChanged += (sender, args) =>
+            dropDown.IsEditable = true;
+            dropDown.SelectionChanged += (sender, args) =>
             {
                 if (selectedItem != null)
                 {
-                    selectedItem.Data = Text;
+                    selectedItem.Data = dropDown.Text;
                 }
             };
 
             TextChangedEventHandler textChangedEventHandler = (sender, args) =>
             {
-                if (selectedItem != null) selectedItem.Data = Text;
+                if (selectedItem != null) selectedItem.Data = dropDown.Text;
             };
 
-            KeyDown += (sender, args) =>
+            dropDown.KeyDown += (sender, args) =>
             {
                 if (args.Key == Key.Enter) eventEnterPressed?.Execute();
             };
 
-            AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
+            dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
         }
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            return this;
+            return dropDown;
         }
 
         // IDataFlow<List<string>> implementation
@@ -63,7 +91,7 @@ namespace DomainAbstractions
             {
                 items = value;
                 if (SortItems) items.Sort();
-                ItemsSource = items;
+                dropDown.ItemsSource = items;
             }
         }
 
@@ -73,9 +101,9 @@ namespace DomainAbstractions
             get => items.FirstOrDefault();
             set
             {
-                Text = value;
+                dropDown.Text = value;
 
-                if (selectedItem != null) selectedItem.Data = Text;
+                if (selectedItem != null) selectedItem.Data = dropDown.Text;
             }
         }
     }

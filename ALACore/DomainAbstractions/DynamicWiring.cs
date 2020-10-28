@@ -23,6 +23,7 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public string SourcePort { get; set; }
+        public bool Reverse { get; set; } = false;
 
         // Private fields
         private object _instance;
@@ -48,11 +49,25 @@ namespace DomainAbstractions
         {
             if (!string.IsNullOrWhiteSpace(port))
             {
-                instance.WireTo(wire, port);
+                if (!Reverse)
+                {
+                    instance.WireTo(wire, port);
+                }
+                else
+                {
+                    instance.WireFrom(wire, port);
+                }
             }
             else
             {
-                instance.WireTo(wire);
+                if (!Reverse)
+                {
+                    instance.WireTo(wire);
+                }
+                else
+                {
+                    instance.WireFrom(wire);
+                }
             }
         }
 

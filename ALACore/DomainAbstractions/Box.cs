@@ -21,45 +21,45 @@ namespace DomainAbstractions
 
         public double Width
         {
-            get => _uiContainer.Width;
-            set => _uiContainer.Width = value;
+            get => Render.MinWidth;
+            set => Render.MinWidth = value;
         }
 
         public double Height
         {
-            get => _uiContainer.Height;
-            set => _uiContainer.Height = value;
+            get => Render.MinWidth;
+            set => Render.MinWidth = value;
         }
         
         public Brush Background
         {
-            get => _uiContainer.Background;
-            set => _uiContainer.Background = value;
+            get => Render.Background;
+            set => Render.Background = value;
         }
 
         public Brush BorderColour
         {
-            get => _uiContainer.BorderBrush;
-            set => _uiContainer.BorderBrush = value;
+            get => Render.BorderBrush;
+            set => Render.BorderBrush = value;
         }
 
         public Thickness BorderThickness
         {
-            get => _uiContainer.BorderThickness;
-            set => _uiContainer.BorderThickness = value;
+            get => Render.BorderThickness;
+            set => Render.BorderThickness = value;
         }
 
         public CornerRadius CornerRadius
         {
-            get => _uiContainer.CornerRadius;
-            set => _uiContainer.CornerRadius = value;
+            get => Render.CornerRadius;
+            set => Render.CornerRadius = value;
         }
 
-        public Border Render => _uiContainer;
+        public object Payload { get; set; }
+
+        public Border Render { get; set; } = new Border();
 
         // Private fields
-        private Border _uiContainer;
-        private bool _sentToEventHandlers = false;
 
         // Ports
         private IUI uiLayout;
@@ -68,9 +68,10 @@ namespace DomainAbstractions
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            _uiContainer.Child = uiLayout?.GetWPFElement();
+            if (uiLayout != null) Render.Child = uiLayout.GetWPFElement();
             SendToEventHandlers();
-            return _uiContainer;
+
+            return Render;
         }
 
         // Methods
@@ -87,9 +88,11 @@ namespace DomainAbstractions
             }
         }
 
+        public object GetPayload() => Payload;
+
         public Box()
         {
-            _uiContainer = new Border()
+            Render = new Border()
             {
                 Background = Brushes.LightBlue,
                 BorderBrush = Brushes.Black,

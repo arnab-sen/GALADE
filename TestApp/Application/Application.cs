@@ -7,6 +7,7 @@ using System.Windows.Shapes;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
+using RequirementsAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
 using System.Windows.Input;
@@ -196,25 +197,21 @@ namespace TestApplication
             WPFCanvas mainCanvas = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_cf1d60deccd5416ba7f0cfbd6a385584 = new Vertical() {  };
-            CanvasDisplay id_9c920130f692490db5161a7d1c17b2c6 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_e56454e2c855475d8c7f515ccae43457 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_a1ad1a3780db461abed34979b7b89ee3 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
-            Data<object> id_fc33bec81c2342388cf7288370eed57c = new Data<object>() { Lambda = () => new VisualNode() };
-            DynamicWiring<IUI> id_dea7360d71d4459095a5b2a744c9299c = new DynamicWiring<IUI>() { SourcePort = "uiLayout" };
-            ApplyAction<object> id_05c6d783d609460ca4791b60a7cddb62 = new ApplyAction<object>() { Lambda = input =>{(input as VisualNode).InitialiseUI();var render = (input as VisualNode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
-            PortGraphNodeUI id_88e658677296466593d3ec8260a796ee = new PortGraphNodeUI() {  };
+            Vertical id_c28b72560452489d8f1252537e6b18bf = new Vertical() {  };
+            CanvasDisplay id_d4f4bccd98be42faa5597f261a21193d = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_6f9728dcb0a5419389d617db05e89e86 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_d40480d56c8847f7bc4d7cd875be4088 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            Data<object> id_07f390015aaf4b529f5232eca8572a6e = new Data<object>() { Lambda = () => {var node = new ALANode();return node;} };
+            ApplyAction<object> id_8e108fbbee2b40a4a3c55a8ebd2feb96 = new ApplyAction<object>() { Lambda = input =>{(input as ALANode).CreateInternals();var render = (input as ALANode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_cf1d60deccd5416ba7f0cfbd6a385584, "iuiStructure");
-            id_cf1d60deccd5416ba7f0cfbd6a385584.WireTo(id_9c920130f692490db5161a7d1c17b2c6, "children");
-            id_9c920130f692490db5161a7d1c17b2c6.WireTo(id_e56454e2c855475d8c7f515ccae43457, "canvasOutput");
-            id_9c920130f692490db5161a7d1c17b2c6.WireTo(id_a1ad1a3780db461abed34979b7b89ee3, "eventHandlers");
-            id_a1ad1a3780db461abed34979b7b89ee3.WireTo(id_fc33bec81c2342388cf7288370eed57c, "eventHappened");
-            id_fc33bec81c2342388cf7288370eed57c.WireTo(id_dea7360d71d4459095a5b2a744c9299c, "dataOutput");
-            id_dea7360d71d4459095a5b2a744c9299c.WireTo(id_05c6d783d609460ca4791b60a7cddb62, "objectOutput");
-            id_dea7360d71d4459095a5b2a744c9299c.WireTo(id_88e658677296466593d3ec8260a796ee, "wire");
+            mainWindow.WireTo(id_c28b72560452489d8f1252537e6b18bf, "iuiStructure");
+            id_c28b72560452489d8f1252537e6b18bf.WireTo(id_d4f4bccd98be42faa5597f261a21193d, "children");
+            id_d4f4bccd98be42faa5597f261a21193d.WireTo(id_6f9728dcb0a5419389d617db05e89e86, "canvasOutput");
+            id_d4f4bccd98be42faa5597f261a21193d.WireTo(id_d40480d56c8847f7bc4d7cd875be4088, "eventHandlers");
+            id_d40480d56c8847f7bc4d7cd875be4088.WireTo(id_07f390015aaf4b529f5232eca8572a6e, "eventHappened");
+            id_07f390015aaf4b529f5232eca8572a6e.WireTo(id_8e108fbbee2b40a4a3c55a8ebd2feb96, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -226,6 +223,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
