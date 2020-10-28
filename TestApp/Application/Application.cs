@@ -115,7 +115,9 @@ namespace TestApplication
             #endregion
 
             #region Diagram constants and singletons
-            VisualPortGraph mainGraph = new VisualPortGraph() { InstanceName = "MainGraph", DebugOutputAll = false };
+
+            Graph mainGraph = new Graph();
+
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
                 InstanceName = "stateTransition",
@@ -123,7 +125,6 @@ namespace TestApplication
             };
 
             UndoHistory undoHistory = new UndoHistory() { InstanceName = "graphHistory" };
-            mainGraph.ActionPerformed += source => undoHistory.Push(source);
 
             var PRIMARY_UX_BG_COLOUR = new SolidColorBrush(Color.FromRgb(249, 249, 249));
             var PRIMARY_UX_FG_COLOUR = Brushes.Black;
@@ -189,29 +190,29 @@ namespace TestApplication
                 File.Copy(RUNTIME_LOG_FILEPATH, System.IO.Path.Combine(LOG_ARCHIVE_DIRECTORY, $"{Utilities.GetCurrentTime()}.log")); // Archive current log when app shuts down unexpectedly
 
                 // Save a timestamped backup of the current diagram
-                var diagramContents = mainGraph.Serialise();
-                File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
+                // var diagramContents = mainGraph.Serialise();
+                // File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
             };
             #endregion
 
             WPFCanvas mainCanvas = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_c28b72560452489d8f1252537e6b18bf = new Vertical() {  };
-            CanvasDisplay id_d4f4bccd98be42faa5597f261a21193d = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_6f9728dcb0a5419389d617db05e89e86 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_d40480d56c8847f7bc4d7cd875be4088 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
-            Data<object> id_07f390015aaf4b529f5232eca8572a6e = new Data<object>() { Lambda = () => {var node = new ALANode();return node;} };
-            ApplyAction<object> id_8e108fbbee2b40a4a3c55a8ebd2feb96 = new ApplyAction<object>() { Lambda = input =>{(input as ALANode).CreateInternals();var render = (input as ALANode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
+            Vertical id_4b575b5cb18b4eaf9d0eba0959da9dab = new Vertical() {  };
+            CanvasDisplay id_2152b761938046cda7787f184716ba65 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_a480790424c040098d4adee302321fb6 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_ed5587c10f6c43bfb22a2efcba4278ce = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A } };
+            Data<object> id_99df84ddc4144b4c8ebe9a9454e04079 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;return node;} };
+            ApplyAction<object> id_9ac6d1f88493445aab7e7c713451179e = new ApplyAction<object>() { Lambda = input =>{(input as ALANode).CreateInternals();var render = (input as ALANode).Render;mainCanvas.Children.Add(render);WPFCanvas.SetLeft(render, 20);WPFCanvas.SetTop(render, 20);} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_c28b72560452489d8f1252537e6b18bf, "iuiStructure");
-            id_c28b72560452489d8f1252537e6b18bf.WireTo(id_d4f4bccd98be42faa5597f261a21193d, "children");
-            id_d4f4bccd98be42faa5597f261a21193d.WireTo(id_6f9728dcb0a5419389d617db05e89e86, "canvasOutput");
-            id_d4f4bccd98be42faa5597f261a21193d.WireTo(id_d40480d56c8847f7bc4d7cd875be4088, "eventHandlers");
-            id_d40480d56c8847f7bc4d7cd875be4088.WireTo(id_07f390015aaf4b529f5232eca8572a6e, "eventHappened");
-            id_07f390015aaf4b529f5232eca8572a6e.WireTo(id_8e108fbbee2b40a4a3c55a8ebd2feb96, "dataOutput");
+            mainWindow.WireTo(id_4b575b5cb18b4eaf9d0eba0959da9dab, "iuiStructure");
+            id_4b575b5cb18b4eaf9d0eba0959da9dab.WireTo(id_2152b761938046cda7787f184716ba65, "children");
+            id_2152b761938046cda7787f184716ba65.WireTo(id_a480790424c040098d4adee302321fb6, "canvasOutput");
+            id_2152b761938046cda7787f184716ba65.WireTo(id_ed5587c10f6c43bfb22a2efcba4278ce, "eventHandlers");
+            id_ed5587c10f6c43bfb22a2efcba4278ce.WireTo(id_99df84ddc4144b4c8ebe9a9454e04079, "eventHappened");
+            id_99df84ddc4144b4c8ebe9a9454e04079.WireTo(id_9ac6d1f88493445aab7e7c713451179e, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -223,6 +224,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
