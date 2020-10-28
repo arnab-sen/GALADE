@@ -84,7 +84,7 @@ namespace DomainAbstractions
         {
             foreach (var eventHandler in eventHandlers)
             {
-                eventHandler.Sender = Render;
+                eventHandler.Sender = this;
             }
         }
 

@@ -18,6 +18,7 @@ namespace DomainAbstractions
         public Predicate<KeyEventArgs> Condition { get; set; }
         public Key Key { get; set; } = Key.None;
         public Key[] Keys { get; set; } // The key combination that must be pressed
+        public Func<object, object> ExtractSender { get; set; }
 
         // Private fields
         private string eventToHandle;
@@ -43,7 +44,8 @@ namespace DomainAbstractions
             get => _sender;
             set
             {
-                _sender = value;
+                _sender = ExtractSender != null ? ExtractSender(value) : value;
+
                 Subscribe(eventToHandle, _sender);
             }
         }

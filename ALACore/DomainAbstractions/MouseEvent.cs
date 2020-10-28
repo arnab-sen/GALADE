@@ -14,8 +14,9 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName = "Default";
-        public MouseEventHandler Lambda;
-        public Predicate<MouseEventArgs> Condition;
+        public MouseEventHandler Lambda { get; set; }
+        public Predicate<MouseEventArgs> Condition { get; set; }
+        public Func<object, object> ExtractSender { get; set; }
 
         // Private fields
         private string eventToHandle;
@@ -41,7 +42,8 @@ namespace DomainAbstractions
             get => _sender;
             set
             {
-                _sender = value;
+                _sender = ExtractSender != null ? ExtractSender(value) : value;
+
                 Subscribe(eventToHandle, _sender);
             }
         }

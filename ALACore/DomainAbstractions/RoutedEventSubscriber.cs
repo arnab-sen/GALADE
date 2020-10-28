@@ -13,9 +13,10 @@ namespace DomainAbstractions
     public class RoutedEventSubscriber : IEventHandler
     {
         // Public fields and properties
-        public string InstanceName = "Default";
-        public RoutedEventHandler Lambda;
-        public Predicate<RoutedEventArgs> Condition;
+        public string InstanceName { get; set; } = "Default";
+        public RoutedEventHandler Lambda { get; set; }
+        public Predicate<RoutedEventArgs> Condition { get; set; }
+        public Func<object, object> ExtractSender { get; set; }
 
         // Private fields
         private string eventToHandle;
@@ -41,7 +42,8 @@ namespace DomainAbstractions
             get => _sender;
             set
             {
-                _sender = value;
+                _sender = ExtractSender != null ? ExtractSender(value) : value;
+
                 Subscribe(eventToHandle, _sender);
             }
         }
