@@ -16,7 +16,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public EventHandler Lambda { get; set; }
         public Predicate<EventArgs> Condition { get; set; }
-        public Func<object, object> ExtractSender { get; set; }
+        public Func<object, object> ExtractSource { get; set; }
 
         // Private fields
         private string eventToHandle;
@@ -42,7 +42,7 @@ namespace DomainAbstractions
             get => _sender;
             set
             {
-                _sender = ExtractSender != null ? ExtractSender(value) : value;
+                _sender = ExtractSource != null ? ExtractSource(value) : value;
                 Subscribe(eventToHandle, _sender);
             }
         }
