@@ -204,31 +204,31 @@ namespace TestApplication
             WPFCanvas mainCanvas = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_600f73920f3440a6b8f32d0a4bc1d3cc = new Vertical() {  };
-            CanvasDisplay id_531426ffff0b4d12b7945f01a6cdfc48 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_51ee6df332aa4cdb9cd48d37b8194aa1 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_a8270d833df44ab9b2d89e42bedbb7cd = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null };
-            Data<object> id_fc5582fc4dce41aca28a2a74309dccc4 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.CreateInternals();return node;} };
+            Vertical id_8939e832f3b14830a1b27fadb0a79daa = new Vertical() {  };
+            CanvasDisplay id_83f47e04ae0c4a11bbade7875955e40c = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_31ed703723ce4f1088eb0980f773acff = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_9691632fbef243b09e9d3beed5fc7745 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null };
+            Data<object> id_7caf8f00cb44435f8d2a8418fccd8df3 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.CreateInternals();return node;} };
             ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;mainCanvas.Children.Add(render);var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);mainGraph.Roots.Add(input);}} };
-            ContextMenu id_dafcfa4f8fe94e2693182d542ef47ce8 = new ContextMenu() {  };
-            MenuItem id_3e60ba9810c74042b22a60f5b67b41a7 = new MenuItem(header: "Add root") {  };
-            Data<object> id_8773ccf908c143a881dada490f8f4d1f = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
-            EventConnector id_44a327d318304d7ebd725a8d408f1ea7 = new EventConnector() {  };
-            Apply<object, object> id_bb84830b84994a498d9e072c41789aa7 = new Apply<object, object>() { Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,SourcePort = sourcePort,DestinationPort = destinationPort};wire.Paint();return wire;} };
+            ContextMenu id_99892a3bb1954e84973ac2bba494347a = new ContextMenu() {  };
+            MenuItem id_d0a3c8af78ff406b98741b0e8dfde13a = new MenuItem(header: "Add root") {  };
+            Data<object> id_96a652247a1443b9a5e10c6cf0ad51f6 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            EventConnector id_7bad36566d7147c4a170883622b970a3 = new EventConnector() {  };
+            Apply<object, object> id_a6b73ae404d943ed8640df339cf2b9b0 = new Apply<object, object>() { Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,SourcePort = sourcePort,DestinationPort = destinationPort};source.PositionChanged += () => wire.Refresh();destination.PositionChanged += () => wire.Refresh();wire.Paint();return wire;} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_600f73920f3440a6b8f32d0a4bc1d3cc, "iuiStructure");
-            id_600f73920f3440a6b8f32d0a4bc1d3cc.WireTo(id_531426ffff0b4d12b7945f01a6cdfc48, "children");
-            id_531426ffff0b4d12b7945f01a6cdfc48.WireTo(id_51ee6df332aa4cdb9cd48d37b8194aa1, "canvasOutput");
-            id_531426ffff0b4d12b7945f01a6cdfc48.WireTo(id_a8270d833df44ab9b2d89e42bedbb7cd, "eventHandlers");
-            id_531426ffff0b4d12b7945f01a6cdfc48.WireTo(id_dafcfa4f8fe94e2693182d542ef47ce8, "contextMenu");
-            id_3e60ba9810c74042b22a60f5b67b41a7.WireTo(id_fc5582fc4dce41aca28a2a74309dccc4, "clickedEvent");
-            id_a8270d833df44ab9b2d89e42bedbb7cd.WireTo(id_44a327d318304d7ebd725a8d408f1ea7, "eventHappened");
-            id_44a327d318304d7ebd725a8d408f1ea7.WireTo(id_8773ccf908c143a881dada490f8f4d1f, "fanoutList");
-            id_fc5582fc4dce41aca28a2a74309dccc4.WireTo(initialiseNode, "dataOutput");
-            id_dafcfa4f8fe94e2693182d542ef47ce8.WireTo(id_3e60ba9810c74042b22a60f5b67b41a7, "children");
-            id_8773ccf908c143a881dada490f8f4d1f.WireTo(id_bb84830b84994a498d9e072c41789aa7, "dataOutput");
+            mainWindow.WireTo(id_8939e832f3b14830a1b27fadb0a79daa, "iuiStructure");
+            id_8939e832f3b14830a1b27fadb0a79daa.WireTo(id_83f47e04ae0c4a11bbade7875955e40c, "children");
+            id_83f47e04ae0c4a11bbade7875955e40c.WireTo(id_31ed703723ce4f1088eb0980f773acff, "canvasOutput");
+            id_83f47e04ae0c4a11bbade7875955e40c.WireTo(id_9691632fbef243b09e9d3beed5fc7745, "eventHandlers");
+            id_83f47e04ae0c4a11bbade7875955e40c.WireTo(id_99892a3bb1954e84973ac2bba494347a, "contextMenu");
+            id_9691632fbef243b09e9d3beed5fc7745.WireTo(id_7bad36566d7147c4a170883622b970a3, "eventHappened");
+            id_7caf8f00cb44435f8d2a8418fccd8df3.WireTo(initialiseNode, "dataOutput");
+            id_99892a3bb1954e84973ac2bba494347a.WireTo(id_d0a3c8af78ff406b98741b0e8dfde13a, "children");
+            id_d0a3c8af78ff406b98741b0e8dfde13a.WireTo(id_7caf8f00cb44435f8d2a8418fccd8df3, "clickedEvent");
+            id_96a652247a1443b9a5e10c6cf0ad51f6.WireTo(id_a6b73ae404d943ed8640df339cf2b9b0, "dataOutput");
+            id_7bad36566d7147c4a170883622b970a3.WireTo(id_96a652247a1443b9a5e10c6cf0ad51f6, "fanoutList");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -240,6 +240,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 
