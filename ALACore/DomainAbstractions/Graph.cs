@@ -12,6 +12,7 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public Dictionary<string, object> Payload { get; } = new Dictionary<string, object>();
 
         // Private fields
 
@@ -20,7 +21,7 @@ namespace DomainAbstractions
         // IGraph implementation
         public HashSet<object> Nodes { get; } = new HashSet<object>();
         public HashSet<object> Edges { get; } = new HashSet<object>();
-
+        public HashSet<object> Roots { get; } = new HashSet<object>();
 
         public void AddNode(object node)
         {

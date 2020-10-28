@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Documents;
 
 namespace DomainAbstractions
 {
@@ -61,6 +62,7 @@ namespace DomainAbstractions
         private double minZoomLevel = 0.25;
         private Matrix zoomMatrix = new Matrix();
         private bool _panning = false;
+        private bool _canOpenCtxMenu = true;
 
         // Ports
         private IDataFlow<Canvas> canvasOutput;
@@ -70,6 +72,7 @@ namespace DomainAbstractions
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
         private IEvent canvasLoaded;
         private IEventB resetFocus;
+        private IUI contextMenu;
 
         public CanvasDisplay()
         {
@@ -97,6 +100,15 @@ namespace DomainAbstractions
 
                 backgroundCanvas.Children.Add(foregroundCanvas);
                 // foregroundCanvas.Loaded += (sender, args) => canvasLoaded?.Execute();
+            }
+
+            if (contextMenu != null)
+            {
+                backgroundCanvas.ContextMenu = contextMenu.GetWPFElement() as System.Windows.Controls.ContextMenu;
+                backgroundCanvas.ContextMenuOpening += (sender, args) =>
+                {
+                    if (!_canOpenCtxMenu) args.Handled = true;
+                };
             }
 
             System.Windows.Controls.Canvas.SetLeft(foregroundCanvas, 0);
@@ -128,6 +140,7 @@ namespace DomainAbstractions
                 lastMousePosition = args.GetPosition(backgroundCanvas);
                 _panning = true;
                 Mouse.Capture(backgroundCanvas);
+                _canOpenCtxMenu = true;
             };
 
             backgroundCanvas.MouseRightButtonUp += (sender, args) =>
@@ -153,6 +166,7 @@ namespace DomainAbstractions
                     Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
 
                     lastMousePosition = currentMousePosition;
+                    _canOpenCtxMenu = false;
                 }
 
                 if (currentMousePositionOutput != null) currentMousePositionOutput.Data = args.GetPosition(backgroundCanvas);
