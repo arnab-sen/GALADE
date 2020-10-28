@@ -289,7 +289,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\t(input as ALANode).CreateInternals();\r\n\tvar render = (input as ALANode).Render;\r\n\tmainCanvas.Children.Add(render);\r\n\t\r\n\tmainGraph.Payload[\"LatestNode\"] = input;\r\n\tif (mainGraph.Payload[\"SelectedNode\"] == null)\r\n\t{\r\n\t\tmainGraph.Payload[\"SelectedNode\"] = input;\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
+          "Value": "input =>\r\n{\r\n\t(input as ALANode).CreateInternals();\r\n\tvar render = (input as ALANode).Render;\r\n\tmainCanvas.Children.Add(render);\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Payload[\"LatestNode\"] = input;\r\n\tif (mainGraph.Payload[\"SelectedNode\"] == null)\r\n\t{\r\n\t\tmainGraph.Payload[\"SelectedNode\"] = input;\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
