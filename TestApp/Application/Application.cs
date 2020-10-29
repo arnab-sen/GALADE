@@ -223,6 +223,7 @@ namespace TestApplication
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
             DataFlowConnector<ALANode> id_aaaa34e9e11548fe8ba394a0c5b9c43a = new DataFlowConnector<ALANode>() {  };
             ApplyAction<ALANode> id_02c44df8844d43e9b8b76d61e542b3b6 = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
+            KeyEvent id_dc314dc6074343839a75e93957d05c3c = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -231,6 +232,7 @@ namespace TestApplication
             id_58d47835aa804f72b65834c3f2cf5941.WireTo(id_a0c000fa91fe442aaaa81edf29205c42, "children");
             id_a0c000fa91fe442aaaa81edf29205c42.WireTo(id_0a036ddd76474b9a86c2b07055c6e230, "canvasOutput");
             id_a0c000fa91fe442aaaa81edf29205c42.WireTo(id_92d19af29da649afa586f0e9996c9e6d, "eventHandlers");
+            id_a0c000fa91fe442aaaa81edf29205c42.WireTo(id_dc314dc6074343839a75e93957d05c3c, "eventHandlers");
             id_a0c000fa91fe442aaaa81edf29205c42.WireTo(id_c7c3f07e6bba4f5a9320ea65cffcb083, "contextMenu");
             id_92d19af29da649afa586f0e9996c9e6d.WireTo(id_fb4c2692a9b24c9abeecbe03b40f9e6b, "eventHappened");
             id_196a977bbe1d4c3c89d1e93a7712a641.WireTo(initialiseNode, "dataOutput");
@@ -240,6 +242,7 @@ namespace TestApplication
             id_fb4c2692a9b24c9abeecbe03b40f9e6b.WireTo(id_f3efdcf09a8442bb8164abb109a386a4, "fanoutList");
             id_fb4c2692a9b24c9abeecbe03b40f9e6b.WireTo(layoutDiagram, "complete");
             id_b899ded467fc4404a59ac992245ddd60.WireTo(id_aaaa34e9e11548fe8ba394a0c5b9c43a, "dataOutput");
+            id_dc314dc6074343839a75e93957d05c3c.WireTo(layoutDiagram, "eventHappened");
             layoutDiagram.WireTo(id_b899ded467fc4404a59ac992245ddd60, "fanoutList");
             id_aaaa34e9e11548fe8ba394a0c5b9c43a.WireTo(id_1fa70ade349f40bc9b3f6f68e4832c3e, "fanoutList");
             id_aaaa34e9e11548fe8ba394a0c5b9c43a.WireTo(id_02c44df8844d43e9b8b76d61e542b3b6, "fanoutList");
@@ -254,6 +257,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

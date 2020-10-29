@@ -109,7 +109,8 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "d91b291d93eb4218b0c5225ce4b1526b"
+            "d91b291d93eb4218b0c5225ce4b1526b",
+            "0743b61c69244c669606f2d6fb8b9e96"
           ]
         },
         {
@@ -653,7 +654,9 @@
           "Name": "eventInput",
           "IsInputPort": true,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "90b53dd5990f4b2ebf0cf5ec7f643a17"
+          ]
         },
         {
           "Type": "IEvent",
@@ -738,6 +741,62 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "dc314dc6074343839a75e93957d05c3c",
+      "Type": "KeyEvent",
+      "Name": "",
+      "TreeParent": "a0c000fa91fe442aaaa81edf29205c42",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<KeyEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": [
+            "90b53dd5990f4b2ebf0cf5ec7f643a17"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"KeyDown\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "Keys",
+          "Value": "new[] { Key.R }",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Condition",
+          "Value": "args => stateTransition.CurrentStateMatches(\r\n\tEnums.DiagramMode.Idle | \r\n\tEnums.DiagramMode.IdleSelected)",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -758,7 +817,8 @@
     "1fa70ade349f40bc9b3f6f68e4832c3e",
     "00fe09d2411c4a6a9e6a2e7262948ce2",
     "aaaa34e9e11548fe8ba394a0c5b9c43a",
-    "02c44df8844d43e9b8b76d61e542b3b6"
+    "02c44df8844d43e9b8b76d61e542b3b6",
+    "dc314dc6074343839a75e93957d05c3c"
   ],
   "Connections": [
     {
@@ -860,10 +920,34 @@
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "d91b291d93eb4218b0c5225ce4b1526b"
+          "d91b291d93eb4218b0c5225ce4b1526b",
+          "0743b61c69244c669606f2d6fb8b9e96"
         ]
       },
       "DestinationId": "92d19af29da649afa586f0e9996c9e6d",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "0743b61c69244c669606f2d6fb8b9e96",
+      "SourceId": "a0c000fa91fe442aaaa81edf29205c42",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "d91b291d93eb4218b0c5225ce4b1526b",
+          "0743b61c69244c669606f2d6fb8b9e96"
+        ]
+      },
+      "DestinationId": "dc314dc6074343839a75e93957d05c3c",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -1045,7 +1129,9 @@
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "90b53dd5990f4b2ebf0cf5ec7f643a17"
+        ]
       },
       "Visible": true
     },
@@ -1068,6 +1154,30 @@
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "90b53dd5990f4b2ebf0cf5ec7f643a17",
+      "SourceId": "dc314dc6074343839a75e93957d05c3c",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventHappened",
+        "IsInputPort": false,
+        "Index": 2,
+        "ConnectionIds": [
+          "90b53dd5990f4b2ebf0cf5ec7f643a17"
+        ]
+      },
+      "DestinationId": "00fe09d2411c4a6a9e6a2e7262948ce2",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "eventInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "90b53dd5990f4b2ebf0cf5ec7f643a17"
+        ]
       },
       "Visible": true
     },
