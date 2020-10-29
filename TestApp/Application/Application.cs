@@ -249,6 +249,8 @@ namespace TestApplication
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
+            var AMM = new AbstractionModelManager();
+            AMM.OpenFile();
             // END MANUAL INSTANTIATIONS
 
             // BEGIN MANUAL WIRING
@@ -257,6 +259,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

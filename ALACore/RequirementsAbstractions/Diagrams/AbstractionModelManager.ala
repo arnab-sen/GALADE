@@ -1,0 +1,102 @@
+{
+  "Nodes": [
+    {
+      "Id": "a28e1e7929f14f148f5e7c011ceb1b92",
+      "Type": "EventConnector",
+      "Name": "",
+      "TreeParent": "",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "eventInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "fanoutList",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "7e94d7417e2c44a98d086a81ee8a6e77"
+          ]
+        },
+        {
+          "Type": "IEventB",
+          "Name": "eventOutputB",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "57584fd9a1ce4cf1b8bc1eb0d2eab4ed",
+      "Type": "FileBrowser",
+      "Name": "fileBrowser",
+      "TreeParent": "a28e1e7929f14f148f5e7c011ceb1b92",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "openBrowser",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "selectedFilePathOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Mode",
+          "Value": "\"Open\"",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    }
+  ],
+  "NodeIds": [
+    "a28e1e7929f14f148f5e7c011ceb1b92",
+    "57584fd9a1ce4cf1b8bc1eb0d2eab4ed"
+  ],
+  "Connections": [
+    {
+      "Id": "7e94d7417e2c44a98d086a81ee8a6e77",
+      "SourceId": "a28e1e7929f14f148f5e7c011ceb1b92",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "7e94d7417e2c44a98d086a81ee8a6e77"
+        ]
+      },
+      "DestinationId": "57584fd9a1ce4cf1b8bc1eb0d2eab4ed",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "openBrowser",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    }
+  ]
+}
