@@ -220,7 +220,7 @@
         },
         {
           "Name": "Condition",
-          "Value": "args => mainGraph.Get(\"SelectedNode\") != null",
+          "Value": "args => mainGraph.Get(\"SelectedNode\") != null\r\n\t&& \r\n\tstateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)",
           "ParameterType": "Property"
         }
       ],

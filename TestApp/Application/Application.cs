@@ -209,7 +209,7 @@ namespace TestApplication
             Vertical id_58d47835aa804f72b65834c3f2cf5941 = new Vertical() {  };
             CanvasDisplay id_a0c000fa91fe442aaaa81edf29205c42 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
             ApplyAction<System.Windows.Controls.Canvas> id_0a036ddd76474b9a86c2b07055c6e230 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_92d19af29da649afa586f0e9996c9e6d = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null };
+            KeyEvent id_92d19af29da649afa586f0e9996c9e6d = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
             Data<object> id_196a977bbe1d4c3c89d1e93a7712a641 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);mainGraph.Roots.Add(input);}} };
             ContextMenu id_c7c3f07e6bba4f5a9320ea65cffcb083 = new ContextMenu() {  };
@@ -257,6 +257,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
