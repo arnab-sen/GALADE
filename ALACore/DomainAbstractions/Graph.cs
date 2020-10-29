@@ -25,9 +25,9 @@ namespace DomainAbstractions
         // Ports
 
         // IGraph implementation
-        public HashSet<object> Nodes { get; } = new HashSet<object>();
-        public HashSet<object> Edges { get; } = new HashSet<object>();
-        public HashSet<object> Roots { get; } = new HashSet<object>();
+        public List<object> Nodes { get; } = new List<object>();
+        public List<object> Edges { get; } = new List<object>();
+        public List<object> Roots { get; } = new List<object>();
 
         public void AddNode(object node)
         {

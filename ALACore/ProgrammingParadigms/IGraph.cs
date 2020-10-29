@@ -18,8 +18,8 @@ namespace ProgrammingParadigms
     /// </summary>
     public interface IGraph
     {
-        HashSet<object> Nodes { get; }
-        HashSet<object> Edges { get; }
+        List<object> Nodes { get; }
+        List<object> Edges { get; }
 
         void AddNode(object node);
         bool ContainsNode(object node);
