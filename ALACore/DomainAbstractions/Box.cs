@@ -21,14 +21,14 @@ namespace DomainAbstractions
 
         public double Width
         {
-            get => Render.MinWidth;
+            get => Render.ActualWidth;
             set => Render.MinWidth = value;
         }
 
         public double Height
         {
-            get => Render.MinWidth;
-            set => Render.MinWidth = value;
+            get => Render.ActualHeight;
+            set => Render.MinHeight = value;
         }
         
         public Brush Background

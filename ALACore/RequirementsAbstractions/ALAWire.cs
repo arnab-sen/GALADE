@@ -16,6 +16,7 @@ namespace RequirementsAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public string Id { get; set; }
         public string Label { get; set; } = "";
         public Graph Graph { get; set; }
         public Canvas Canvas { get; set; }
@@ -50,13 +51,59 @@ namespace RequirementsAbstractions
             Canvas.SetTop(render, 0);
         }
 
+        public Point GetAttachmentPoint(bool inputPort = false)
+        {
+            var point = new Point();
+
+            if (inputPort)
+            {
+                var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
+                                                             (wire.DestinationPort == DestinationPort)).ToList();
+
+                var index = portConnections.IndexOf(this);
+
+                var pos = GetCanvasPosition(DestinationPort.Render);
+
+                point.X = pos.X + DestinationPort.Width;
+
+                var vertDisplacement = index * 5 + 5;
+                point.Y = pos.Y + vertDisplacement;
+
+                if (vertDisplacement > DestinationPort.Height) DestinationPort.Height += 10;
+
+            }
+            else
+            {
+                var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
+                                                             (wire.SourcePort == SourcePort)).ToList();
+
+                var index = portConnections.IndexOf(this);
+
+                var pos = GetCanvasPosition(SourcePort.Render);
+
+                point.X = pos.X + SourcePort.Width;
+
+                var vertDisplacement = index * 5 + 5;
+                point.Y = pos.Y + vertDisplacement;
+
+                if (vertDisplacement > SourcePort.Height) SourcePort.Height += 10;
+            }
+
+            return point;
+        }
+
         /// <summary>
         /// Have the curve check its start and end points and update accordingly.
         /// </summary>
         public void Refresh()
         {
-            _bezier.Point0 = GetCanvasPosition(SourcePort.Render); // Start
-            _bezier.Point3 = GetCanvasPosition(DestinationPort.Render); // End
+            // Start point
+            // _bezier.Point0 = GetCanvasPosition(SourcePort.Render);
+            _bezier.Point0 = GetAttachmentPoint(inputPort: false);
+
+            // End point
+            // _bezier.Point3 = GetCanvasPosition(DestinationPort.Render); 
+            _bezier.Point3 = GetAttachmentPoint(inputPort: true); 
 
             var midX = (_bezier.Point0.X + _bezier.Point0.X) / 2;
 
@@ -84,7 +131,7 @@ namespace RequirementsAbstractions
 
         public ALAWire()
         {
-
+            Id = Utilities.GetUniqueId();
         }
     }
 }

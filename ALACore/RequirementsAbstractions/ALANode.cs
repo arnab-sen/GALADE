@@ -12,6 +12,7 @@ using ProgrammingParadigms;
 using DomainAbstractions;
 using Button = DomainAbstractions.Button;
 using TextBox = DomainAbstractions.TextBox;
+using System.Windows.Forms.VisualStyles;
 
 namespace RequirementsAbstractions
 {
@@ -19,12 +20,14 @@ namespace RequirementsAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public string Id { get; set; }
         public string Type { get; set; } = "?";
         public string Name { get; set; } = "";
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
         public List<string> AvailableDomainAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
         public Graph Graph { get; set; }
+        public List<object> Edges { get; } = new List<object>();
         public Canvas Canvas { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UIElement Render { get; set; }
@@ -34,6 +37,7 @@ namespace RequirementsAbstractions
         public delegate void SomethingChangedDelegate();
 
         public SomethingChangedDelegate PositionChanged;
+        public Func<Port, Point> GetAttachmentPoint { get; set; }
 
         // Private fields
         private Box rootUI;
@@ -208,7 +212,7 @@ namespace RequirementsAbstractions
 
         public ALANode()
         {
-
+            Id = Utilities.GetUniqueId();
         }
     }
 }

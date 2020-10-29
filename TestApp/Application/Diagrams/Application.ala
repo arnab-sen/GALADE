@@ -1,7 +1,7 @@
 {
   "Nodes": [
     {
-      "Id": "5294d64e04c949538585772fa0b05f9b",
+      "Id": "2b96f6ac3b9a40479fb00aafedf28156",
       "Type": "MainWindow",
       "Name": "@mainWindow",
       "TreeParent": "",
@@ -19,7 +19,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "01f94306c6cd46d8a264302d4569e78c"
+            "70ec96ef778b450b8627cf99f86e6000"
           ]
         },
         {
@@ -41,10 +41,10 @@
       "Visible": true
     },
     {
-      "Id": "036e37b83c974b9ebe246d8e38f1ad72",
+      "Id": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
       "Type": "Vertical",
       "Name": "",
-      "TreeParent": "5294d64e04c949538585772fa0b05f9b",
+      "TreeParent": "2b96f6ac3b9a40479fb00aafedf28156",
       "Ports": [
         {
           "Type": "IUI",
@@ -59,7 +59,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "1fdcd671a7fd4930a3465e36427a7042"
+            "47a6a3e5a1b74662969594faacb49495",
+            "bc83bf9d62d749d3a222faa10228097b"
           ]
         },
         {
@@ -81,10 +82,10 @@
       "Visible": true
     },
     {
-      "Id": "acb4e7868c6440ca8761ccfadcd784a8",
+      "Id": "8376074377e74660851783f14addefdc",
       "Type": "CanvasDisplay",
       "Name": "",
-      "TreeParent": "036e37b83c974b9ebe246d8e38f1ad72",
+      "TreeParent": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
       "Ports": [
         {
           "Type": "IUI",
@@ -99,7 +100,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "999846443b6141c2be51b8f38b370c33"
+            "88c1c3e2cf814b9a88a750d70958058c"
           ]
         },
         {
@@ -108,7 +109,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "bda4c790dbcf4d00bd4d5899e203ca82"
+            "4a97adc47790452db78de638e29c1a8a"
           ]
         },
         {
@@ -117,7 +118,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "8d95d2f053eb4998bfe8ce6b99721a4c"
+            "a34efe281e8a4bc2bf78e8c7acf3f520"
           ]
         }
       ],
@@ -146,10 +147,10 @@
       "Visible": true
     },
     {
-      "Id": "4b65d0d6ff9c43e7a493ccdbfcda0125",
+      "Id": "2ea55c5429104478b38dfa3fda14b86e",
       "Type": "ApplyAction<System.Windows.Controls.Canvas>",
       "Name": "",
-      "TreeParent": "acb4e7868c6440ca8761ccfadcd784a8",
+      "TreeParent": "8376074377e74660851783f14addefdc",
       "Ports": [
         {
           "Type": "IDataFlow<System.Windows.Controls.Canvas>",
@@ -169,10 +170,10 @@
       "Visible": true
     },
     {
-      "Id": "c844845370eb47bc920c5a7e14a922dd",
+      "Id": "28109be3d0d74940a67318187916543e",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "acb4e7868c6440ca8761ccfadcd784a8",
+      "TreeParent": "8376074377e74660851783f14addefdc",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -201,7 +202,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "06541171ee3a467495ba78b1275c026a"
+            "9af3e89918d742f4b732c1f371cde3dc"
           ]
         }
       ],
@@ -225,10 +226,10 @@
       "Visible": true
     },
     {
-      "Id": "33403cec3fc94119844c4c2c4e6eafac",
+      "Id": "3ac17524a5274cc3a0b9a90fd1865c8f",
       "Type": "Data<object>",
       "Name": "",
-      "TreeParent": "e9750bfa53e643a489192debe7d5b763",
+      "TreeParent": "f24e673bdbc2404f8a7462eb7c58e01d",
       "Ports": [
         {
           "Type": "IEvent",
@@ -264,24 +265,24 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "40705650fada44c898f0e0090b3b419a"
+            "4f664fc442244ed98b4f374fd88273bf"
           ]
         }
       ],
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\r\n\tnode.CreateInternals();\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
       "Visible": true
     },
     {
-      "Id": "8529f521ab1c44d0b8546475926324ac",
+      "Id": "4a921f0af0cf4848871c17d67fbdc174",
       "Type": "ApplyAction<object>",
       "Name": "initialiseNode",
-      "TreeParent": "33403cec3fc94119844c4c2c4e6eafac",
+      "TreeParent": "3ac17524a5274cc3a0b9a90fd1865c8f",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -294,17 +295,17 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\tmainCanvas.Children.Add(render);\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
       "Visible": true
     },
     {
-      "Id": "a1d5f6af32ae4f7f9bccc1a262bf1a66",
+      "Id": "34ccd1f4c4f14af9aa327ac9d0d8bd9d",
       "Type": "ContextMenu",
       "Name": "",
-      "TreeParent": "acb4e7868c6440ca8761ccfadcd784a8",
+      "TreeParent": "8376074377e74660851783f14addefdc",
       "Ports": [
         {
           "Type": "IUI",
@@ -319,7 +320,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "0a92fd3cb56e4908879b185a8c6117d6"
+            "435a2b3d395d4158bea1ff2d530eeb3d"
           ]
         }
       ],
@@ -327,10 +328,10 @@
       "Visible": true
     },
     {
-      "Id": "e9750bfa53e643a489192debe7d5b763",
+      "Id": "f24e673bdbc2404f8a7462eb7c58e01d",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "a1d5f6af32ae4f7f9bccc1a262bf1a66",
+      "TreeParent": "34ccd1f4c4f14af9aa327ac9d0d8bd9d",
       "Ports": [
         {
           "Type": "IUI",
@@ -352,7 +353,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "094f140082044a1a869735fb2f35734f"
+            "c6de3ccf592f4242a5b56d729fc998c3"
           ]
         }
       ],
@@ -366,10 +367,10 @@
       "Visible": true
     },
     {
-      "Id": "8001ec3f23fa4710bd17be87d2fb640d",
+      "Id": "4de437deb06d42738be809733aec8169",
       "Type": "Data<object>",
       "Name": "",
-      "TreeParent": "924142fb66114bc9a83b5ebbcc40b3da",
+      "TreeParent": "5a0dd0e6dd944d6f8eb83774fcab4a36",
       "Ports": [
         {
           "Type": "IEvent",
@@ -405,24 +406,24 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "cfb9a5c1cb9b487c8e0aa8fa8a68b215"
+            "5315824a44bf4f939aa229d3e9f8add2"
           ]
         }
       ],
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\t\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
       "Visible": true
     },
     {
-      "Id": "924142fb66114bc9a83b5ebbcc40b3da",
+      "Id": "5a0dd0e6dd944d6f8eb83774fcab4a36",
       "Type": "EventConnector",
       "Name": "",
-      "TreeParent": "c844845370eb47bc920c5a7e14a922dd",
+      "TreeParent": "28109be3d0d74940a67318187916543e",
       "Ports": [
         {
           "Type": "IEvent",
@@ -437,7 +438,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "2b8ec1801e2246e08f3e8e89cfc1e42c"
+            "b8a8acddb6fb426396e6460cdd7205d9"
           ]
         },
         {
@@ -459,10 +460,10 @@
       "Visible": true
     },
     {
-      "Id": "fdc94e5fd0934371b561571160740dab",
+      "Id": "a8fcbe5979a04c7794811f2949e96f9f",
       "Type": "Apply<object, object>",
-      "Name": "",
-      "TreeParent": "8001ec3f23fa4710bd17be87d2fb640d",
+      "Name": "createAndPaintALAWire",
+      "TreeParent": "4de437deb06d42738be809733aec8169",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -482,41 +483,72 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar source = mainGraph.Get(\"SelectedNode\") as ALANode;\r\n\tvar destination = input as ALANode;\r\n\tvar sourcePort = source.GetSelectedPort(inputPort: false);\r\n\tvar destinationPort = destination.GetSelectedPort(inputPort: true);\r\n\t\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = mainGraph,\r\n\t\tCanvas = mainCanvas,\r\n\t\tSource = source,\r\n\t\tDestination = destination,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destinationPort\r\n\t};\r\n\t\r\n\tsource.PositionChanged += () => wire.Refresh();\r\n\tdestination.PositionChanged += () => wire.Refresh();\r\n\twire.Paint();\r\n\t\r\n\tmainGraph.AddEdge(wire);\r\n\t\r\n\treturn wire;\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar source = mainGraph.Get(\"SelectedNode\") as ALANode;\r\n\tvar destination = input as ALANode;\r\n\tvar sourcePort = source.GetSelectedPort(inputPort: false);\r\n\tvar destinationPort = destination.GetSelectedPort(inputPort: true);\r\n\t\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = mainGraph,\r\n\t\tCanvas = mainCanvas,\r\n\t\tSource = source,\r\n\t\tDestination = destination,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destinationPort\r\n\t};\r\n\t\r\n\tmainGraph.AddEdge(wire);\r\n\t\r\n\tsource.PositionChanged += () => wire.Refresh();\r\n\tdestination.PositionChanged += () => wire.Refresh();\r\n\t\r\n\twire.Paint();\r\n\t\r\n\treturn wire;\r\n}",
           "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "9197a74876a6407ab06476c401fa8202",
+      "Type": "UIFactory",
+      "Name": "setUpGraph",
+      "TreeParent": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "create",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "uiInstanceOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "getUIContainer",
+          "Value": "() =>\r\n{\r\n\t/* \r\n\tThis lambda executes during the UI setup \r\n\tcall, which occurs before the app event flow.\r\n\tThe reason for putting this lambda here is that this\r\n\tensures that mainGraph is set up before being passed\r\n\tinto the scope of other delegates down the line \r\n\t(before the app event flow)\r\n\t*/\r\n\r\n\tmainGraph = new Graph();\r\n\tmainGraph.EdgeAdded += edge => \r\n\t{\r\n\t\tvar wire = edge as ALAWire;\r\n\t\t\r\n\t\tvar src = wire.Source as ALANode;\r\n\t\tsrc.Edges.Add(edge);\r\n\t\t\r\n\t\tvar dest = wire.Destination as ALANode;\r\n\t\tdest.Edges.Add(edge);\r\n\t};\r\n\t\r\n\tmainGraph.EdgeDeleted += edge => \r\n\t{\r\n\t\tvar wire = edge as ALAWire;\r\n\t\t\r\n\t\tvar src = wire.Source as ALANode;\r\n\t\tsrc.Edges.Remove(edge);\r\n\t\t\r\n\t\tvar dest = wire.Destination as ALANode;\r\n\t\tdest.Edges.Remove(edge);\r\n\t};\r\n\r\n\t/* Return a dummy invisible IUI */\r\n\treturn new Text(\"\", visible: false);\r\n}",
+          "ParameterType": "Constructor"
         }
       ],
       "Visible": true
     }
   ],
   "NodeIds": [
-    "5294d64e04c949538585772fa0b05f9b",
-    "036e37b83c974b9ebe246d8e38f1ad72",
-    "acb4e7868c6440ca8761ccfadcd784a8",
-    "4b65d0d6ff9c43e7a493ccdbfcda0125",
-    "c844845370eb47bc920c5a7e14a922dd",
-    "33403cec3fc94119844c4c2c4e6eafac",
-    "8529f521ab1c44d0b8546475926324ac",
-    "a1d5f6af32ae4f7f9bccc1a262bf1a66",
-    "e9750bfa53e643a489192debe7d5b763",
-    "8001ec3f23fa4710bd17be87d2fb640d",
-    "924142fb66114bc9a83b5ebbcc40b3da",
-    "fdc94e5fd0934371b561571160740dab"
+    "2b96f6ac3b9a40479fb00aafedf28156",
+    "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
+    "8376074377e74660851783f14addefdc",
+    "2ea55c5429104478b38dfa3fda14b86e",
+    "28109be3d0d74940a67318187916543e",
+    "3ac17524a5274cc3a0b9a90fd1865c8f",
+    "4a921f0af0cf4848871c17d67fbdc174",
+    "34ccd1f4c4f14af9aa327ac9d0d8bd9d",
+    "f24e673bdbc2404f8a7462eb7c58e01d",
+    "4de437deb06d42738be809733aec8169",
+    "5a0dd0e6dd944d6f8eb83774fcab4a36",
+    "a8fcbe5979a04c7794811f2949e96f9f",
+    "9197a74876a6407ab06476c401fa8202"
   ],
   "Connections": [
     {
-      "Id": "01f94306c6cd46d8a264302d4569e78c",
-      "SourceId": "5294d64e04c949538585772fa0b05f9b",
+      "Id": "70ec96ef778b450b8627cf99f86e6000",
+      "SourceId": "2b96f6ac3b9a40479fb00aafedf28156",
       "SourcePort": {
         "Type": "IUI",
         "Name": "iuiStructure",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "01f94306c6cd46d8a264302d4569e78c"
+          "70ec96ef778b450b8627cf99f86e6000"
         ]
       },
-      "DestinationId": "036e37b83c974b9ebe246d8e38f1ad72",
+      "DestinationId": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -527,18 +559,42 @@
       "Visible": true
     },
     {
-      "Id": "1fdcd671a7fd4930a3465e36427a7042",
-      "SourceId": "036e37b83c974b9ebe246d8e38f1ad72",
+      "Id": "47a6a3e5a1b74662969594faacb49495",
+      "SourceId": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "1fdcd671a7fd4930a3465e36427a7042"
+          "47a6a3e5a1b74662969594faacb49495",
+          "bc83bf9d62d749d3a222faa10228097b"
         ]
       },
-      "DestinationId": "acb4e7868c6440ca8761ccfadcd784a8",
+      "DestinationId": "9197a74876a6407ab06476c401fa8202",
+      "DestinationPort": {
+        "Type": "IUI",
+        "Name": "create",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "bc83bf9d62d749d3a222faa10228097b",
+      "SourceId": "0d7eb18bc2fc46a9acc8d9052b9b0ad2",
+      "SourcePort": {
+        "Type": "IUI",
+        "Name": "children",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "47a6a3e5a1b74662969594faacb49495",
+          "bc83bf9d62d749d3a222faa10228097b"
+        ]
+      },
+      "DestinationId": "8376074377e74660851783f14addefdc",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -549,18 +605,18 @@
       "Visible": true
     },
     {
-      "Id": "999846443b6141c2be51b8f38b370c33",
-      "SourceId": "acb4e7868c6440ca8761ccfadcd784a8",
+      "Id": "88c1c3e2cf814b9a88a750d70958058c",
+      "SourceId": "8376074377e74660851783f14addefdc",
       "SourcePort": {
         "Type": "IDataFlow<System.Windows.Controls.Canvas>",
         "Name": "canvasOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "999846443b6141c2be51b8f38b370c33"
+          "88c1c3e2cf814b9a88a750d70958058c"
         ]
       },
-      "DestinationId": "4b65d0d6ff9c43e7a493ccdbfcda0125",
+      "DestinationId": "2ea55c5429104478b38dfa3fda14b86e",
       "DestinationPort": {
         "Type": "IDataFlow<System.Windows.Controls.Canvas>",
         "Name": "input",
@@ -571,18 +627,18 @@
       "Visible": true
     },
     {
-      "Id": "bda4c790dbcf4d00bd4d5899e203ca82",
-      "SourceId": "acb4e7868c6440ca8761ccfadcd784a8",
+      "Id": "4a97adc47790452db78de638e29c1a8a",
+      "SourceId": "8376074377e74660851783f14addefdc",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "bda4c790dbcf4d00bd4d5899e203ca82"
+          "4a97adc47790452db78de638e29c1a8a"
         ]
       },
-      "DestinationId": "c844845370eb47bc920c5a7e14a922dd",
+      "DestinationId": "28109be3d0d74940a67318187916543e",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -593,18 +649,18 @@
       "Visible": true
     },
     {
-      "Id": "8d95d2f053eb4998bfe8ce6b99721a4c",
-      "SourceId": "acb4e7868c6440ca8761ccfadcd784a8",
+      "Id": "a34efe281e8a4bc2bf78e8c7acf3f520",
+      "SourceId": "8376074377e74660851783f14addefdc",
       "SourcePort": {
         "Type": "IUI",
         "Name": "contextMenu",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "8d95d2f053eb4998bfe8ce6b99721a4c"
+          "a34efe281e8a4bc2bf78e8c7acf3f520"
         ]
       },
-      "DestinationId": "a1d5f6af32ae4f7f9bccc1a262bf1a66",
+      "DestinationId": "34ccd1f4c4f14af9aa327ac9d0d8bd9d",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -615,18 +671,18 @@
       "Visible": true
     },
     {
-      "Id": "06541171ee3a467495ba78b1275c026a",
-      "SourceId": "c844845370eb47bc920c5a7e14a922dd",
+      "Id": "9af3e89918d742f4b732c1f371cde3dc",
+      "SourceId": "28109be3d0d74940a67318187916543e",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "eventHappened",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "06541171ee3a467495ba78b1275c026a"
+          "9af3e89918d742f4b732c1f371cde3dc"
         ]
       },
-      "DestinationId": "924142fb66114bc9a83b5ebbcc40b3da",
+      "DestinationId": "5a0dd0e6dd944d6f8eb83774fcab4a36",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
@@ -637,18 +693,18 @@
       "Visible": true
     },
     {
-      "Id": "40705650fada44c898f0e0090b3b419a",
-      "SourceId": "33403cec3fc94119844c4c2c4e6eafac",
+      "Id": "4f664fc442244ed98b4f374fd88273bf",
+      "SourceId": "3ac17524a5274cc3a0b9a90fd1865c8f",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "40705650fada44c898f0e0090b3b419a"
+          "4f664fc442244ed98b4f374fd88273bf"
         ]
       },
-      "DestinationId": "8529f521ab1c44d0b8546475926324ac",
+      "DestinationId": "4a921f0af0cf4848871c17d67fbdc174",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -659,18 +715,18 @@
       "Visible": true
     },
     {
-      "Id": "0a92fd3cb56e4908879b185a8c6117d6",
-      "SourceId": "a1d5f6af32ae4f7f9bccc1a262bf1a66",
+      "Id": "435a2b3d395d4158bea1ff2d530eeb3d",
+      "SourceId": "34ccd1f4c4f14af9aa327ac9d0d8bd9d",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "0a92fd3cb56e4908879b185a8c6117d6"
+          "435a2b3d395d4158bea1ff2d530eeb3d"
         ]
       },
-      "DestinationId": "e9750bfa53e643a489192debe7d5b763",
+      "DestinationId": "f24e673bdbc2404f8a7462eb7c58e01d",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -681,18 +737,18 @@
       "Visible": true
     },
     {
-      "Id": "094f140082044a1a869735fb2f35734f",
-      "SourceId": "e9750bfa53e643a489192debe7d5b763",
+      "Id": "c6de3ccf592f4242a5b56d729fc998c3",
+      "SourceId": "f24e673bdbc2404f8a7462eb7c58e01d",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "094f140082044a1a869735fb2f35734f"
+          "c6de3ccf592f4242a5b56d729fc998c3"
         ]
       },
-      "DestinationId": "33403cec3fc94119844c4c2c4e6eafac",
+      "DestinationId": "3ac17524a5274cc3a0b9a90fd1865c8f",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -703,18 +759,18 @@
       "Visible": true
     },
     {
-      "Id": "cfb9a5c1cb9b487c8e0aa8fa8a68b215",
-      "SourceId": "8001ec3f23fa4710bd17be87d2fb640d",
+      "Id": "5315824a44bf4f939aa229d3e9f8add2",
+      "SourceId": "4de437deb06d42738be809733aec8169",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "cfb9a5c1cb9b487c8e0aa8fa8a68b215"
+          "5315824a44bf4f939aa229d3e9f8add2"
         ]
       },
-      "DestinationId": "fdc94e5fd0934371b561571160740dab",
+      "DestinationId": "a8fcbe5979a04c7794811f2949e96f9f",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -725,18 +781,18 @@
       "Visible": true
     },
     {
-      "Id": "2b8ec1801e2246e08f3e8e89cfc1e42c",
-      "SourceId": "924142fb66114bc9a83b5ebbcc40b3da",
+      "Id": "b8a8acddb6fb426396e6460cdd7205d9",
+      "SourceId": "5a0dd0e6dd944d6f8eb83774fcab4a36",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "2b8ec1801e2246e08f3e8e89cfc1e42c"
+          "b8a8acddb6fb426396e6460cdd7205d9"
         ]
       },
-      "DestinationId": "8001ec3f23fa4710bd17be87d2fb640d",
+      "DestinationId": "4de437deb06d42738be809733aec8169",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
