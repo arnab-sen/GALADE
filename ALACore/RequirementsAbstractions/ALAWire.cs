@@ -64,7 +64,7 @@ namespace RequirementsAbstractions
 
                 var pos = GetCanvasPosition(DestinationPort.Render);
 
-                point.X = pos.X + DestinationPort.Width;
+                point.X = pos.X;
 
                 var vertDisplacement = index * 5 + 5;
                 point.Y = pos.Y + vertDisplacement;
