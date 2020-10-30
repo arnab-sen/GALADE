@@ -110,67 +110,80 @@ namespace DomainAbstractions
             var result = new List<string>();
             var nodes = nodeExtractor(root);
 
-            if (AccessLevel != "any")
-            {
-                if (AccessLevel == "private")
-                {
-                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PrivateKeyword));
-                }
-                else if (AccessLevel == "protected")
-                {
-                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.ProtectedKeyword));
-                }
-                else if (AccessLevel == "public")
-                {
-                    nodes = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PublicKeyword));
-                }
-            }
+            nodes = FilterByAccessLevel(nodes, accessLevel: AccessLevel);
 
             result = ExtractStrings(nodes);
 
             return result;
         }
 
-        private SyntaxTree GetSyntaxTree(string code) => CSharpSyntaxTree.ParseText(code);
-        private SyntaxNode GetRoot(string code) => GetSyntaxTree(code).GetRoot();
+        public IEnumerable<SyntaxNode> FilterByAccessLevel(IEnumerable<SyntaxNode> nodes, string accessLevel = "any")
+        {
+            IEnumerable<SyntaxNode> result = default;
 
-        private List<string> ExtractStrings(IEnumerable<SyntaxNode> nodes, bool preserveSurroundings = false) => nodes.Select(d => preserveSurroundings ? d.ToFullString() : d.ToString()).ToList();
+            if (accessLevel != "any")
+            {
+                if (accessLevel == "private")
+                {
+                    result = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PrivateKeyword));
+                }
+                else if (accessLevel == "protected")
+                {
+                    result = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.ProtectedKeyword));
+                }
+                else if (accessLevel == "public")
+                {
+                    result = nodes.Where(node => ((MemberDeclarationSyntax)node).Modifiers.Any(SyntaxKind.PublicKeyword));
+                }
+            }
+            else
+            {
+                result = nodes;
+            }
+
+            return result;
+        }
+
+        public SyntaxTree GetSyntaxTree(string code) => CSharpSyntaxTree.ParseText(code);
+        public SyntaxNode GetRoot(string code) => GetSyntaxTree(code).GetRoot();
+
+        public List<string> ExtractStrings(IEnumerable<SyntaxNode> nodes, bool preserveSurroundings = false) => nodes.Select(d => preserveSurroundings ? d.ToFullString() : d.ToString()).ToList();
 
         // Get all members
         public IEnumerable<SyntaxNode> GetMembers(string code) => GetMembers(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetMembers(SyntaxNode root) => root.DescendantNodes().OfType<MemberDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetMembers(SyntaxNode root) => root.DescendantNodes().OfType<MemberDeclarationSyntax>();
 
         // Get classes
         public IEnumerable<SyntaxNode> GetClasses(string code) => GetClasses(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
 
         // Get interfaces
         public IEnumerable<SyntaxNode> GetInterfaces(string code) => GetInterfaces(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
 
         // Get base classes and interfaces
         public IEnumerable<SyntaxNode> GetBaseObjects(string code) => GetBaseObjects(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetBaseObjects(SyntaxNode root) => root.DescendantNodes().OfType<BaseListSyntax>();
+        public IEnumerable<SyntaxNode> GetBaseObjects(SyntaxNode root) => root.DescendantNodes().OfType<BaseListSyntax>();
 
         // Get enums
         public IEnumerable<SyntaxNode> GetEnums(string code) => GetEnums(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetEnums(SyntaxNode root) => root.DescendantNodes().OfType<EnumDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetEnums(SyntaxNode root) => root.DescendantNodes().OfType<EnumDeclarationSyntax>();
 
         // Get fields
         public IEnumerable<SyntaxNode> GetFields(string code) => GetFields(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetFields(SyntaxNode root) => root.DescendantNodes().OfType<FieldDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetFields(SyntaxNode root) => root.DescendantNodes().OfType<FieldDeclarationSyntax>();
 
         // Get properties
         public IEnumerable<SyntaxNode> GetProperties(string code) => GetProperties(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetProperties(SyntaxNode root) => root.DescendantNodes().OfType<PropertyDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetProperties(SyntaxNode root) => root.DescendantNodes().OfType<PropertyDeclarationSyntax>();
 
         // Get methods
         public IEnumerable<SyntaxNode> GetMethods(string code) => GetMethods(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetMethods(SyntaxNode root) => root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+        public IEnumerable<SyntaxNode> GetMethods(SyntaxNode root) => root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
         // Get parameters
         public IEnumerable<SyntaxNode> GetParameters(string code) => GetParameters(GetRoot(code));
-        private IEnumerable<SyntaxNode> GetParameters(SyntaxNode root)
+        public IEnumerable<SyntaxNode> GetParameters(SyntaxNode root)
         {
             var parameters = new List<SyntaxNode>();
 
