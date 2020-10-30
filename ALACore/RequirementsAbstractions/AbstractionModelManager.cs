@@ -137,6 +137,8 @@ namespace RequirementsAbstractions
             foreach (var line in lines)
             {
                 var cleanedLine = line
+                    .Replace("&lt;", "<")
+                    .Replace("&gt;", ">")
                     .Replace("<summary>", "")
                     .Replace("</summary>", "")
                     .Replace("<para>", "")
@@ -173,6 +175,8 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 
 
