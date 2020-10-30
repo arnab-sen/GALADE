@@ -26,6 +26,7 @@ namespace DomainAbstractions
         private Dictionary<string, string> _implementedPorts = new Dictionary<string, string>(); // name : type
         private Dictionary<string, string> _acceptedPorts = new Dictionary<string, string>(); // name : type
         private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
+        private string _documentation = "";
 
         // Ports
 
@@ -65,6 +66,11 @@ namespace DomainAbstractions
         public void AddGeneric(string generic, string initialValue = "")
         {
             _generics[generic] = initialValue;
+        }
+
+        public void AddDocumentation(string documentation)
+        {
+            _documentation = documentation;
         }
 
         /// <summary>

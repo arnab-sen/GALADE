@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Win32;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Text.RegularExpressions;
 
 namespace RequirementsAbstractions
 {
@@ -53,6 +54,7 @@ namespace RequirementsAbstractions
             SetImplementedPorts(classNode, model);
             SetAcceptedPorts(classNode, model);
             SetProperties(classNode, model);
+            SetDocumentation(classNode, model);
 
             return model;
         }
@@ -120,6 +122,35 @@ namespace RequirementsAbstractions
             {
                 model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default");
             }
+        }
+
+        public void SetDocumentation(ClassDeclarationSyntax classNode, AbstractionModel model)
+        {
+            var parser = new CodeParser();
+
+            var rawText = classNode.GetLeadingTrivia().ToString();
+
+            var lines = rawText.Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
+
+            var sb = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                var cleanedLine = line
+                    .Replace("<summary>", "")
+                    .Replace("</summary>", "")
+                    .Replace("<para>", "")
+                    .Replace("</para>", "")
+                    .Replace("<code>", "")
+                    .Replace("</code>", "")
+                    .Replace("<remarks>", "")
+                    .Replace("</remarks>", "");
+
+                if (!string.IsNullOrWhiteSpace(cleanedLine)) sb.AppendLine(cleanedLine);
+            }
+
+            var documentation = sb.ToString().Trim('\r', '\n');
+            model.AddDocumentation(documentation);
         }
 
         public AbstractionModelManager()
