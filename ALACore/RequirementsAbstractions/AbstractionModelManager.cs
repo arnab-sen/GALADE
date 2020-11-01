@@ -24,6 +24,7 @@ namespace RequirementsAbstractions
         private FolderBrowser _folderBrowser;
         private FileReader _fileReader;
         private List<string> _programmingParadigms = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler" };
+        private Dictionary<string, AbstractionModel> _abstractionModels = new Dictionary<string, AbstractionModel>();
 
         // Ports
 
@@ -40,9 +41,10 @@ namespace RequirementsAbstractions
             }
         }
 
-        public AbstractionModel CreateAbstractionModel(string code)
+
+        public AbstractionModel CreateAbstractionModel(string code, AbstractionModel updateModel = null)
         {
-            var model = new AbstractionModel();
+            var model = updateModel ?? new AbstractionModel();
 
             var parser = new CodeParser();
 
@@ -54,8 +56,13 @@ namespace RequirementsAbstractions
             SetProperties(classNode, model);
             SetDocumentation(classNode, model);
 
+            _abstractionModels[model.Type] = model;
+
             return model;
         }
+
+        public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;
+        public List<string> GetAbstractionTypes() => _abstractionModels.Keys.ToList();
 
         private bool StartMatch(string candidate, IEnumerable<string> set)
         {
@@ -195,16 +202,16 @@ namespace RequirementsAbstractions
         public AbstractionModelManager()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            EventConnector id_4cfdb9dc71404071bb4968f219f5330b = new EventConnector() {  };
+            EventConnector id_eb1953a144974727a832f23a86dcc0cb = new EventConnector() {  };
             FileBrowser fileBrowser = new FileBrowser() { InstanceName = "fileBrowser", Mode = "Open" };
             FileReader fileReader = new FileReader() { InstanceName = "fileReader" };
-            Apply<string, AbstractionModel> id_12f764aba7ab45c7bc5aa5bb64ff4737 = new Apply<string, AbstractionModel>() { Lambda = CreateAbstractionModel };
+            Apply<string, AbstractionModel> id_2bd6685559f44fcb8055935c12b7e3e5 = new Apply<string, AbstractionModel>() { Lambda = filePath => CreateAbstractionModel(filePath) };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
-            id_4cfdb9dc71404071bb4968f219f5330b.WireTo(fileBrowser, "fanoutList");
+            id_eb1953a144974727a832f23a86dcc0cb.WireTo(fileBrowser, "fanoutList");
             fileBrowser.WireTo(fileReader, "selectedFilePathOutput");
-            fileReader.WireTo(id_12f764aba7ab45c7bc5aa5bb64ff4737, "fileContentOutput");
+            fileReader.WireTo(id_2bd6685559f44fcb8055935c12b7e3e5, "fileContentOutput");
             // END AUTO-GENERATED WIRING
 
             _fileBrowser = fileBrowser;
@@ -212,6 +219,8 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 
 

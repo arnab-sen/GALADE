@@ -1,7 +1,7 @@
 {
   "Nodes": [
     {
-      "Id": "4cfdb9dc71404071bb4968f219f5330b",
+      "Id": "eb1953a144974727a832f23a86dcc0cb",
       "Type": "EventConnector",
       "Name": "",
       "TreeParent": "",
@@ -19,7 +19,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "ae3e8fc52dd340e68b337a7c4d5b41dc"
+            "d941972ec3484aba8c695c5cc07951c2"
           ]
         },
         {
@@ -41,10 +41,10 @@
       "Visible": true
     },
     {
-      "Id": "837e02c3198f4cdeacde565f6db3a60a",
+      "Id": "1ffb1ff7f26c4f9d817114a161cea93c",
       "Type": "FileBrowser",
       "Name": "fileBrowser",
-      "TreeParent": "4cfdb9dc71404071bb4968f219f5330b",
+      "TreeParent": "eb1953a144974727a832f23a86dcc0cb",
       "Ports": [
         {
           "Type": "IEvent",
@@ -59,7 +59,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "2bade56791524b0ca9b3cb3476be6464"
+            "cac0ae609d204be992e15d42fcd83df0"
           ]
         }
       ],
@@ -73,10 +73,10 @@
       "Visible": true
     },
     {
-      "Id": "4ce53332e36a4652900dd74fee267b61",
+      "Id": "13ed928e34494d0488f3157825e589ab",
       "Type": "FileReader",
       "Name": "fileReader",
-      "TreeParent": "837e02c3198f4cdeacde565f6db3a60a",
+      "TreeParent": "1ffb1ff7f26c4f9d817114a161cea93c",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -91,7 +91,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "651493498ab945cea00ed730c4437287"
+            "6748e26c8dde4930bfc0d2fbe92cddc2"
           ]
         }
       ],
@@ -99,10 +99,10 @@
       "Visible": true
     },
     {
-      "Id": "12f764aba7ab45c7bc5aa5bb64ff4737",
+      "Id": "2bd6685559f44fcb8055935c12b7e3e5",
       "Type": "Apply<string, AbstractionModel>",
       "Name": "",
-      "TreeParent": "4ce53332e36a4652900dd74fee267b61",
+      "TreeParent": "13ed928e34494d0488f3157825e589ab",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -122,7 +122,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "CreateAbstractionModel",
+          "Value": "filePath => CreateAbstractionModel(filePath)",
           "ParameterType": "Property"
         }
       ],
@@ -130,25 +130,25 @@
     }
   ],
   "NodeIds": [
-    "4cfdb9dc71404071bb4968f219f5330b",
-    "837e02c3198f4cdeacde565f6db3a60a",
-    "4ce53332e36a4652900dd74fee267b61",
-    "12f764aba7ab45c7bc5aa5bb64ff4737"
+    "eb1953a144974727a832f23a86dcc0cb",
+    "1ffb1ff7f26c4f9d817114a161cea93c",
+    "13ed928e34494d0488f3157825e589ab",
+    "2bd6685559f44fcb8055935c12b7e3e5"
   ],
   "Connections": [
     {
-      "Id": "ae3e8fc52dd340e68b337a7c4d5b41dc",
-      "SourceId": "4cfdb9dc71404071bb4968f219f5330b",
+      "Id": "d941972ec3484aba8c695c5cc07951c2",
+      "SourceId": "eb1953a144974727a832f23a86dcc0cb",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "ae3e8fc52dd340e68b337a7c4d5b41dc"
+          "d941972ec3484aba8c695c5cc07951c2"
         ]
       },
-      "DestinationId": "837e02c3198f4cdeacde565f6db3a60a",
+      "DestinationId": "1ffb1ff7f26c4f9d817114a161cea93c",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "openBrowser",
@@ -159,18 +159,18 @@
       "Visible": true
     },
     {
-      "Id": "2bade56791524b0ca9b3cb3476be6464",
-      "SourceId": "837e02c3198f4cdeacde565f6db3a60a",
+      "Id": "cac0ae609d204be992e15d42fcd83df0",
+      "SourceId": "1ffb1ff7f26c4f9d817114a161cea93c",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "selectedFilePathOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "2bade56791524b0ca9b3cb3476be6464"
+          "cac0ae609d204be992e15d42fcd83df0"
         ]
       },
-      "DestinationId": "4ce53332e36a4652900dd74fee267b61",
+      "DestinationId": "13ed928e34494d0488f3157825e589ab",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "filePathInput",
@@ -181,18 +181,18 @@
       "Visible": true
     },
     {
-      "Id": "651493498ab945cea00ed730c4437287",
-      "SourceId": "4ce53332e36a4652900dd74fee267b61",
+      "Id": "6748e26c8dde4930bfc0d2fbe92cddc2",
+      "SourceId": "13ed928e34494d0488f3157825e589ab",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "fileContentOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "651493498ab945cea00ed730c4437287"
+          "6748e26c8dde4930bfc0d2fbe92cddc2"
         ]
       },
-      "DestinationId": "12f764aba7ab45c7bc5aa5bb64ff4737",
+      "DestinationId": "2bd6685559f44fcb8055935c12b7e3e5",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",

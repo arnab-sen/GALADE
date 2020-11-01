@@ -214,6 +214,11 @@
           "Name": "Width",
           "Value": "100",
           "ParameterType": "Property"
+        },
+        {
+          "Name": "Items",
+          "Value": "AvailableDomainAbstractions",
+          "ParameterType": "Property"
         }
       ],
       "Visible": true
@@ -1842,6 +1847,11 @@
           "Name": "ExtractSender",
           "Value": "source => (source as Box).Render",
           "ParameterType": "Property"
+        },
+        {
+          "Name": "Condition",
+          "Value": "",
+          "ParameterType": "Property"
         }
       ],
       "Visible": true
@@ -2008,7 +2018,7 @@
         },
         {
           "Name": "Condition",
-          "Value": "args => Mouse.LeftButton == MouseButtonState.Pressed",
+          "Value": "args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift)",
           "ParameterType": "Property"
         }
       ],

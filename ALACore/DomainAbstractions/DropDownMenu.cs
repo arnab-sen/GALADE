@@ -15,39 +15,45 @@ namespace DomainAbstractions
     public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
-        public bool SortItems = true;
+        public string InstanceName { get; set; } = "Default";
+        public bool SortItems { get; set; } = true;
+
+        public IEnumerable<string> Items
+        {
+            get => _items;
+            set => SetItemSource(value);
+        }
 
         public string Text
         {
-            get => dropDown.Dispatcher.Invoke(() => dropDown.Text);
+            get => _dropDown.Dispatcher.Invoke(() => _dropDown.Text);
             set
             {
-                dropDown.Dispatcher.Invoke(() => dropDown.Text = value);
+                _dropDown.Dispatcher.Invoke(() => _dropDown.Text = value);
             }
         }
 
         public Thickness Margin
         {
-            get => dropDown.Margin;
-            set => dropDown.Margin = value;
+            get => _dropDown.Margin;
+            set => _dropDown.Margin = value;
         }
 
         public double Width
         {
-            get => dropDown.Width;
-            set => dropDown.Width = value;
+            get => _dropDown.Width;
+            set => _dropDown.Width = value;
         }
 
         public double Height
         {
-            get => dropDown.Height;
-            set => dropDown.Height = value;
+            get => _dropDown.Height;
+            set => _dropDown.Height = value;
         }
 
         // Private fields
-        private ComboBox dropDown = new ComboBox();
-        private List<string> items = new List<string>();
+        private ComboBox _dropDown = new ComboBox();
+        private IEnumerable<string> _items = new List<string>();
 
         // Ports
         private IDataFlow<string> selectedItem;
@@ -55,56 +61,58 @@ namespace DomainAbstractions
 
         public DropDownMenu()
         {
-            dropDown.IsEditable = true;
-            dropDown.SelectionChanged += (sender, args) =>
+            _dropDown.IsEditable = true;
+            _dropDown.SelectionChanged += (sender, args) =>
             {
                 if (selectedItem != null)
                 {
-                    selectedItem.Data = dropDown.Text;
+                    selectedItem.Data = _dropDown.Text;
                 }
             };
 
             TextChangedEventHandler textChangedEventHandler = (sender, args) =>
             {
-                if (selectedItem != null) selectedItem.Data = dropDown.Text;
+                if (selectedItem != null) selectedItem.Data = _dropDown.Text;
             };
 
-            dropDown.KeyDown += (sender, args) =>
+            _dropDown.KeyDown += (sender, args) =>
             {
                 if (args.Key == Key.Enter) eventEnterPressed?.Execute();
             };
 
-            dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
+            _dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
         }
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            return dropDown;
+            return _dropDown;
         }
 
         // IDataFlow<List<string>> implementation
         List<string> IDataFlow<List<string>>.Data
         {
-            get => items;
-            set
-            {
-                items = value;
-                if (SortItems) items.Sort();
-                dropDown.ItemsSource = items;
-            }
+            get => _items.ToList();
+            set => SetItemSource(value);
         }
 
         // IDataFlow<string> implementation
         string IDataFlow<string>.Data
         {
-            get => items.FirstOrDefault();
+            get => _items.FirstOrDefault();
             set
             {
-                dropDown.Text = value;
+                _dropDown.Text = value;
 
-                if (selectedItem != null) selectedItem.Data = dropDown.Text;
+                if (selectedItem != null) selectedItem.Data = _dropDown.Text;
             }
+        }
+
+        // Methods
+        private void SetItemSource(IEnumerable<string> items)
+        {
+            _items = items;
+            _dropDown.ItemsSource = _items;
         }
     }
 }

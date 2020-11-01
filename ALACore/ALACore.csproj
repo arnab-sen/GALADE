@@ -98,6 +98,7 @@
     <Compile Include="DomainAbstractions\BezierCurve.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
     <Compile Include="DomainAbstractions\AbstractionModel.cs" />
+    <Compile Include="DomainAbstractions\DirectorySearch.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\UIFactory.cs" />

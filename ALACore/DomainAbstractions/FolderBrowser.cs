@@ -19,7 +19,13 @@ namespace DomainAbstractions
     public class FolderBrowser : IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
+
+        public string Description
+        {
+            get => browser.Description;
+            set => browser.Description = value;
+        }
 
         // Private fields
         private FolderBrowserDialog browser = new FolderBrowserDialog(); // There is no folder browser in WPF, so the one from Windows Forms is being used

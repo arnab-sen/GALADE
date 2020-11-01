@@ -204,54 +204,74 @@ namespace TestApplication
             Graph mainGraph = new Graph();
 
             WPFCanvas mainCanvas = null;
+            AbstractionModelManager abstractionModelManager = new AbstractionModelManager();
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_d21d2945c9ba49b192539c2315b443e1 = new Vertical() {  };
-            CanvasDisplay id_8fa4bfdd517046468590c363d7900021 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_d3316ebb2f114f8db5fe61656666804e = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_dd1da52ac65847de9dee879eefcb7953 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
-            Data<object> id_be58e624d1a74b5f829670c346102b51 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Vertical id_e231535a158a41bf883566c7fb90067f = new Vertical() {  };
+            CanvasDisplay id_af59f5e023724a249779314ea5335b6a = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_9c7e3d90eb6c4f67aadc41e0d2ef4197 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_233a4b035e0f47f4a4eb688f5d118acd = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
+            Data<object> id_9934608829a049aebef6fba88b0d9363 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);mainGraph.Roots.Add(input);}} };
-            ContextMenu id_d1aa06b708c848448c939614917140ff = new ContextMenu() {  };
-            MenuItem id_bbf2ca6074504d689219cdda0b96b663 = new MenuItem(header: "Add root") {  };
-            EventConnector id_c85c703fde4c40ce802d3a7620a71770 = new EventConnector() {  };
+            ContextMenu id_644990acc9d841d482d3ec40a67c0696 = new ContextMenu() {  };
+            MenuItem id_5a2f90317ced4ca9963b1fb8355f7eaa = new MenuItem(header: "Add root") {  };
+            EventConnector id_2abda330913b432aa6f4c707bdecd5fb = new EventConnector() {  };
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,Source = source,Destination = destination,SourcePort = sourcePort,DestinationPort = destinationPort};mainGraph.AddEdge(wire);source.PositionChanged += () => wire.Refresh();destination.PositionChanged += () => wire.Refresh();wire.Paint();return wire;} };
             UIFactory setUpGraph = new UIFactory(getUIContainer: () =>{/* This lambda executes during the UI setup call, which occurs before the app event flow.The reason for putting this lambda here is that thisensures that mainGraph is set up before being passedinto the scope of other delegates down the line (before the app event flow)*/mainGraph = new Graph();mainGraph.EdgeAdded += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Add(edge);var dest = wire.Destination as ALANode;dest.Edges.Add(edge);};mainGraph.EdgeDeleted += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Remove(edge);var dest = wire.Destination as ALANode;dest.Edges.Remove(edge);};/* Return a dummy invisible IUI */return new Text("", visible: false);}) { InstanceName = "setUpGraph" };
-            Data<ALANode> id_8c4d3cda89db4df2b9f28b5bc214cc0b = new Data<ALANode>() { Lambda = () => mainGraph.Roots.First() as ALANode };
-            RightTreeLayout<ALANode> id_9c456c78c01a4eb8923d7fa275908e4b = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
+            Data<ALANode> id_ea27a0e2d48b4870841e9d04a81490a2 = new Data<ALANode>() { Lambda = () => mainGraph.Roots.First() as ALANode };
+            RightTreeLayout<ALANode> id_03aedd0e50f148f4bdb901929bc1ae66 = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
-            DataFlowConnector<ALANode> id_3c2306fcb87f42de8ec2d11d04731a60 = new DataFlowConnector<ALANode>() {  };
-            ApplyAction<ALANode> id_b74c28ea30914f05aad673bcffb3371a = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
-            KeyEvent id_d1662608820f413cbe9986c43d10a40d = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            FileBrowser id_0e3a5666a7b247aa8429a217d2ccbe67 = new FileBrowser() { Mode = "Open" };
-            Apply<string, object> id_23c2e39597f2410f99fc1bea12967472 = new Apply<string, object>() { Lambda = input =>{var manager = new AbstractionModelManager();var model = manager.CreateAbstractionModel(input);return model;} };
-            FileReader id_00f9695360e3431ab609862bc8993ad0 = new FileReader() {  };
-            Apply<object, object> id_175d51de63bb46bea492bd901c3c4fe7 = new Apply<object, object>() { Lambda = input => {var node = new ALANode();node.Model = input as AbstractionModel;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            DataFlowConnector<ALANode> id_f8ca8a9169ae47bca361dae84c3b57ed = new DataFlowConnector<ALANode>() {  };
+            ApplyAction<ALANode> id_75c407aa6c5642e29e730d2d55c75fd5 = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
+            KeyEvent id_1880adec211d481c81f1f6bf9d68bb44 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
+            Apply<AbstractionModel, object> id_2b7993c7c45b463cb6e6bb67d9da4859 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            MenuBar id_fc4988b6201345f3b672a5d09d799a46 = new MenuBar() {  };
+            MenuItem id_1e72afed9a9243a986e2537e69645d8f = new MenuItem(header: "File") {  };
+            MenuItem id_b9c48dd303ab43709d7ad870490ae587 = new MenuItem(header: "Open Project") {  };
+            FolderBrowser id_aa32d532df564af79473ecbab4babfbe = new FolderBrowser() { Description = "" };
+            DirectorySearch id_7ed9e624f7074dfca8249bebace7945b = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions" }) { FilenameFilter = "*.cs" };
+            Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_c24618240076440b9fd8e242ff63d492 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("DomainAbstractions")){list = input["DomainAbstractions"];}return list;} };
+            ForEach<string> id_3ea196e603934fd0995b8a05b2240e9b = new ForEach<string>() {  };
+            FileReader id_9e540f6fb2d14f798ebe82a810b7e841 = new FileReader() {  };
+            ApplyAction<string> id_09d933f3cdb04ba8823a74ae06256d01 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModel(input);} };
+            Data<string> id_b6f624d01b74402db0d0cf8daafe0eaf = new Data<string>() { storedData = "Apply<T1, T2>" };
+            Apply<string, AbstractionModel> id_921f6ad099bf4800ad55ed55f4b7dd0e = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
+            Data<string> id_af65024e6f414a59967f286a1997494f = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_d21d2945c9ba49b192539c2315b443e1, "iuiStructure");
-            id_d21d2945c9ba49b192539c2315b443e1.WireTo(setUpGraph, "children");
-            id_d21d2945c9ba49b192539c2315b443e1.WireTo(id_8fa4bfdd517046468590c363d7900021, "children");
-            id_8fa4bfdd517046468590c363d7900021.WireTo(id_d3316ebb2f114f8db5fe61656666804e, "canvasOutput");
-            id_8fa4bfdd517046468590c363d7900021.WireTo(id_dd1da52ac65847de9dee879eefcb7953, "eventHandlers");
-            id_8fa4bfdd517046468590c363d7900021.WireTo(id_d1662608820f413cbe9986c43d10a40d, "eventHandlers");
-            id_8fa4bfdd517046468590c363d7900021.WireTo(id_d1aa06b708c848448c939614917140ff, "contextMenu");
-            id_dd1da52ac65847de9dee879eefcb7953.WireTo(id_c85c703fde4c40ce802d3a7620a71770, "eventHappened");
-            id_be58e624d1a74b5f829670c346102b51.WireTo(initialiseNode, "dataOutput");
-            id_d1aa06b708c848448c939614917140ff.WireTo(id_bbf2ca6074504d689219cdda0b96b663, "children");
-            id_bbf2ca6074504d689219cdda0b96b663.WireTo(id_be58e624d1a74b5f829670c346102b51, "clickedEvent");
-            id_175d51de63bb46bea492bd901c3c4fe7.WireTo(createAndPaintALAWire, "output");
-            id_c85c703fde4c40ce802d3a7620a71770.WireTo(id_0e3a5666a7b247aa8429a217d2ccbe67, "fanoutList");
-            id_c85c703fde4c40ce802d3a7620a71770.WireTo(layoutDiagram, "complete");
-            id_8c4d3cda89db4df2b9f28b5bc214cc0b.WireTo(id_3c2306fcb87f42de8ec2d11d04731a60, "dataOutput");
-            layoutDiagram.WireTo(id_8c4d3cda89db4df2b9f28b5bc214cc0b, "fanoutList");
-            id_3c2306fcb87f42de8ec2d11d04731a60.WireTo(id_9c456c78c01a4eb8923d7fa275908e4b, "fanoutList");
-            id_3c2306fcb87f42de8ec2d11d04731a60.WireTo(id_b74c28ea30914f05aad673bcffb3371a, "fanoutList");
-            id_d1662608820f413cbe9986c43d10a40d.WireTo(layoutDiagram, "eventHappened");
-            id_0e3a5666a7b247aa8429a217d2ccbe67.WireTo(id_00f9695360e3431ab609862bc8993ad0, "selectedFilePathOutput");
-            id_00f9695360e3431ab609862bc8993ad0.WireTo(id_23c2e39597f2410f99fc1bea12967472, "fileContentOutput");
-            id_23c2e39597f2410f99fc1bea12967472.WireTo(id_175d51de63bb46bea492bd901c3c4fe7, "output");
+            mainWindow.WireTo(id_e231535a158a41bf883566c7fb90067f, "iuiStructure");
+            mainWindow.WireTo(id_af65024e6f414a59967f286a1997494f, "appStart");
+            id_e231535a158a41bf883566c7fb90067f.WireTo(setUpGraph, "children");
+            id_e231535a158a41bf883566c7fb90067f.WireTo(id_fc4988b6201345f3b672a5d09d799a46, "children");
+            id_e231535a158a41bf883566c7fb90067f.WireTo(id_af59f5e023724a249779314ea5335b6a, "children");
+            id_af59f5e023724a249779314ea5335b6a.WireTo(id_9c7e3d90eb6c4f67aadc41e0d2ef4197, "canvasOutput");
+            id_af59f5e023724a249779314ea5335b6a.WireTo(id_233a4b035e0f47f4a4eb688f5d118acd, "eventHandlers");
+            id_af59f5e023724a249779314ea5335b6a.WireTo(id_1880adec211d481c81f1f6bf9d68bb44, "eventHandlers");
+            id_af59f5e023724a249779314ea5335b6a.WireTo(id_644990acc9d841d482d3ec40a67c0696, "contextMenu");
+            id_233a4b035e0f47f4a4eb688f5d118acd.WireTo(id_2abda330913b432aa6f4c707bdecd5fb, "eventHappened");
+            id_9934608829a049aebef6fba88b0d9363.WireTo(initialiseNode, "dataOutput");
+            id_644990acc9d841d482d3ec40a67c0696.WireTo(id_5a2f90317ced4ca9963b1fb8355f7eaa, "children");
+            id_5a2f90317ced4ca9963b1fb8355f7eaa.WireTo(id_9934608829a049aebef6fba88b0d9363, "clickedEvent");
+            id_2abda330913b432aa6f4c707bdecd5fb.WireTo(id_b6f624d01b74402db0d0cf8daafe0eaf, "fanoutList");
+            id_2abda330913b432aa6f4c707bdecd5fb.WireTo(layoutDiagram, "complete");
+            id_ea27a0e2d48b4870841e9d04a81490a2.WireTo(id_f8ca8a9169ae47bca361dae84c3b57ed, "dataOutput");
+            layoutDiagram.WireTo(id_ea27a0e2d48b4870841e9d04a81490a2, "fanoutList");
+            id_f8ca8a9169ae47bca361dae84c3b57ed.WireTo(id_03aedd0e50f148f4bdb901929bc1ae66, "fanoutList");
+            id_f8ca8a9169ae47bca361dae84c3b57ed.WireTo(id_75c407aa6c5642e29e730d2d55c75fd5, "fanoutList");
+            id_1880adec211d481c81f1f6bf9d68bb44.WireTo(layoutDiagram, "eventHappened");
+            id_921f6ad099bf4800ad55ed55f4b7dd0e.WireTo(id_2b7993c7c45b463cb6e6bb67d9da4859, "output");
+            id_2b7993c7c45b463cb6e6bb67d9da4859.WireTo(createAndPaintALAWire, "output");
+            id_fc4988b6201345f3b672a5d09d799a46.WireTo(id_1e72afed9a9243a986e2537e69645d8f, "children");
+            id_1e72afed9a9243a986e2537e69645d8f.WireTo(id_b9c48dd303ab43709d7ad870490ae587, "children");
+            id_b9c48dd303ab43709d7ad870490ae587.WireTo(id_aa32d532df564af79473ecbab4babfbe, "clickedEvent");
+            id_aa32d532df564af79473ecbab4babfbe.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "selectedFolderPathOutput");
+            id_af65024e6f414a59967f286a1997494f.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "dataOutput");
+            id_7ed9e624f7074dfca8249bebace7945b.WireTo(id_c24618240076440b9fd8e242ff63d492, "foundFiles");
+            id_c24618240076440b9fd8e242ff63d492.WireTo(id_3ea196e603934fd0995b8a05b2240e9b, "output");
+            id_3ea196e603934fd0995b8a05b2240e9b.WireTo(id_9e540f6fb2d14f798ebe82a810b7e841, "elementOutput");
+            id_9e540f6fb2d14f798ebe82a810b7e841.WireTo(id_09d933f3cdb04ba8823a74ae06256d01, "fileContentOutput");
+            id_b6f624d01b74402db0d0cf8daafe0eaf.WireTo(id_921f6ad099bf4800ad55ed55f4b7dd0e, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -269,6 +289,44 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -55,6 +55,14 @@ namespace RequirementsAbstractions
         /// <returns></returns>
         public Box GetSelectedPort(bool inputPort = false) => _selectedPort ?? PortBoxes.FirstOrDefault(box => box.Payload is Port port && port.IsInputPort == inputPort);
 
+        /// <summary>
+        /// Refreshes the node's UI from its model.
+        /// </summary>
+        public void UpdateUI()
+        {
+
+        }
+
         private void SetWiring()
         {
             rootUI = new Box()
@@ -68,7 +76,7 @@ namespace RequirementsAbstractions
             Horizontal id_353509dd183e4ce987b73df859c82c31 = new Horizontal() {  };
             Vertical nodeMiddle = new Vertical() { InstanceName = "nodeMiddle", Margin = new Thickness(1, 0, 1, 0) };
             Horizontal nodeIdRow = new Horizontal() { InstanceName = "nodeIdRow" };
-            DropDownMenu nodeTypeDropDownMenu = new DropDownMenu() { InstanceName = "nodeTypeDropDownMenu", Text = Model.Type, Width = 100 };
+            DropDownMenu nodeTypeDropDownMenu = new DropDownMenu() { InstanceName = "nodeTypeDropDownMenu", Text = Model.Type, Width = 100, Items = AvailableDomainAbstractions };
             TextBox nodeNameTextBox = new TextBox() { InstanceName = "nodeNameTextBox", Text = Model.Name, Width = 50 };
             UIFactory id_0472b3a1b70247d38b4dccbe38aa40e0 = new UIFactory(getUIContainer: () =>{var inputPortsVert = new Vertical();inputPortsVert.Margin = new Thickness(0);return inputPortsVert;}) {  };
             DataFlowConnector<object> inputPortsVertConnector = new DataFlowConnector<object>() { InstanceName = "inputPortsVertConnector" };
@@ -114,12 +122,12 @@ namespace RequirementsAbstractions
             RoutedEventSubscriber id_bcc0907eecca4144b7d1ae9f0317bc83 = new RoutedEventSubscriber(eventName: "GotFocus") { ExtractSender = source => (source as Box).Render };
             RoutedEventSubscriber id_df2b3b1510fd4a19a3edf133bd1ee0ca = new RoutedEventSubscriber(eventName: "LostFocus") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_42ec2980e40945f9a74a41c037ba92f3 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.LightSkyBlue;} };
-            MouseButtonEvent id_701bec1a8c2540b4b5eae91eea4733cc = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
+            MouseButtonEvent id_701bec1a8c2540b4b5eae91eea4733cc = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render, Condition =  };
             ApplyAction<object> id_b77709e411bd4616a0011ed7dbb538af = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) ui.Focus();} };
             ApplyAction<object> id_433a13d054ab4484be384a3ba22b3afe = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
             DataFlowConnector<object> id_f012ff5b1a7449898cddcfb48d2041ec = new DataFlowConnector<object>() {  };
             ApplyAction<object> id_e5dbefe2a26049e69a193e917d4a851e = new ApplyAction<object>() { Lambda = input =>{StateTransition.Update(Enums.DiagramMode.IdleSelected);} };
-            MouseEvent id_b47431f47f8e4e09b40f9e9e914e5594 = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed };
+            MouseEvent id_b47431f47f8e4e09b40f9e9e914e5594 = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift) };
             ApplyAction<object> id_703445ea5fb94d7e995fa3811c4640dc = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));Canvas.SetLeft(render, mousePos.X - _mousePosInBox.X);Canvas.SetTop(render, mousePos.Y - _mousePosInBox.Y);PositionChanged?.Invoke();} };
             MouseButtonEvent id_24494b8b4c0d4e07bfc670b28c397c20 = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_b340bcc2ab47409dbbb6685f3cf072f8 = new ApplyAction<object>() { Lambda = input =>{if (Mouse.Captured == (input as Box).Render) Mouse.Capture(null);} };
@@ -220,6 +228,16 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
