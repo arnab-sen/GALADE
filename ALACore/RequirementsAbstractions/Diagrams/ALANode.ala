@@ -511,7 +511,9 @@
           "Name": "complete",
           "IsInputPort": false,
           "Index": 1,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "4b6d9897d515423c90add11a39be3038"
+          ]
         }
       ],
       "NodeParameters": [],
@@ -2161,6 +2163,36 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "c6cd63c78f484af58436307a00897fe8",
+      "Type": "EventLambda",
+      "Name": "",
+      "TreeParent": "166038de576d427cb40f3516f21d12b6",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "() => \r\n{\r\n\tvar toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };\r\n\trootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };\r\n\trootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2224,7 +2256,8 @@
     "24494b8b4c0d4e07bfc670b28c397c20",
     "b340bcc2ab47409dbbb6685f3cf072f8",
     "62b700698cb845e59b9df043e5055623",
-    "5f381b56b6814af2be8d0e9ea9bf26df"
+    "5f381b56b6814af2be8d0e9ea9bf26df",
+    "c6cd63c78f484af58436307a00897fe8"
   ],
   "Connections": [
     {
@@ -2733,6 +2766,28 @@
       "DestinationPort": {
         "Type": "IDataFlow<T1>",
         "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "4b6d9897d515423c90add11a39be3038",
+      "SourceId": "166038de576d427cb40f3516f21d12b6",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "complete",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "4b6d9897d515423c90add11a39be3038"
+        ]
+      },
+      "DestinationId": "c6cd63c78f484af58436307a00897fe8",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

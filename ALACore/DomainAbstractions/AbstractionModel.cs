@@ -37,6 +37,7 @@ namespace DomainAbstractions
         public List<KeyValuePair<string, string>> GetImplementedPorts() => _implementedPorts.ToList();
         public List<KeyValuePair<string, string>> GetAcceptedPorts() => _acceptedPorts.ToList();
         public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
+        public string GetDocumentation() => _documentation;
 
         public void AddConstructorArg(string name, string initialValue = "")
         {

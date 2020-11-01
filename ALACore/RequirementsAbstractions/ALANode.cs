@@ -125,6 +125,7 @@ namespace RequirementsAbstractions
             ApplyAction<object> id_b340bcc2ab47409dbbb6685f3cf072f8 = new ApplyAction<object>() { Lambda = input =>{if (Mouse.Captured == (input as Box).Render) Mouse.Capture(null);} };
             ApplyAction<object> id_62b700698cb845e59b9df043e5055623 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
             ApplyAction<object> id_5f381b56b6814af2be8d0e9ea9bf26df = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
+            EventLambda id_c6cd63c78f484af58436307a00897fe8 = new EventLambda() { Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -149,6 +150,7 @@ namespace RequirementsAbstractions
             id_33c6cfd0055a4ab6bfe092fba44a1ca4.WireTo(id_b428e1f9c5d64392ac64a579b8c5dd00, "dataOutput");
             id_b428e1f9c5d64392ac64a579b8c5dd00.WireTo(id_166038de576d427cb40f3516f21d12b6, "output");
             id_166038de576d427cb40f3516f21d12b6.WireTo(id_d4a201c0755e49a58427744ebf7a6763, "elementOutput");
+            id_166038de576d427cb40f3516f21d12b6.WireTo(id_c6cd63c78f484af58436307a00897fe8, "complete");
             id_d4a201c0755e49a58427744ebf7a6763.WireTo(setUpInputPortBox, "output");
             setUpInputPortBox.WireTo(id_043e7bcb31a64159807f74a868191040, "output");
             id_3dca2721c00b4138ab790767114046ca.WireTo(outputPortsVertConnector, "uiInstanceOutput");
@@ -218,6 +220,14 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
