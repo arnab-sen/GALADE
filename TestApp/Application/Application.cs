@@ -252,7 +252,8 @@ namespace TestApplication
             var AMM = new AbstractionModelManager();
             // AMM.OpenFile();
             var code = File.ReadAllText(
-                "F:\\Projects\\GALADE\\ALACore\\DomainAbstractions\\CodeParser.cs");
+                // "F:\\Projects\\GALADE\\ALACore\\DomainAbstractions\\CodeParser.cs");
+                "D:\\Coding\\C#\\Projects\\GALADE\\ALACore\\DomainAbstractions\\ExampleDomainAbstraction.cs");
             var model = AMM.CreateAbstractionModel(code);
             // END MANUAL INSTANTIATIONS
 

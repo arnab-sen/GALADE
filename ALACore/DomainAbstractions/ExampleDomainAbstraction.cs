@@ -22,6 +22,10 @@ namespace DomainAbstractions
 
         // Private fields
         private string _ignoreStringField = "";
+		private Data<int> _testData = new Data<int>()
+        {
+            storedData = 10
+        };
 
         // Ports
         private IDataFlow<string> stringPort;
