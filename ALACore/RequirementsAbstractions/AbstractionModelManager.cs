@@ -47,10 +47,8 @@ namespace RequirementsAbstractions
             var parser = new CodeParser();
 
             var classNode = parser.GetClasses(code).First() as ClassDeclarationSyntax;
-            var className = classNode.Identifier.ValueText;
-
-            model.Type = className;
-
+            
+            SetType(classNode, model);
             SetImplementedPorts(classNode, model);
             SetAcceptedPorts(classNode, model);
             SetProperties(classNode, model);
@@ -75,84 +73,123 @@ namespace RequirementsAbstractions
             return matches;
         }
 
+        public void SetType(ClassDeclarationSyntax classNode, AbstractionModel model)
+        {
+            var identifier = classNode.Identifier.ToString();
+
+            var type = identifier;
+
+            if (classNode.TypeParameterList != null) type += classNode.TypeParameterList.ToString();
+
+            model.Type = type;
+        }
+
         public void SetAcceptedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
         {
-            var parser = new CodeParser()
+            try
             {
-                AccessLevel = "private"
-            };
+                var parser = new CodeParser()
+                {
+                    AccessLevel = "private"
+                };
 
-            var privateFields = parser.GetFields(classNode);
-            var portSyntaxes = privateFields.Where(n =>
-                n is FieldDeclarationSyntax field && StartMatch(field.Declaration.Type.ToString(), _programmingParadigms)).Select(s => s as FieldDeclarationSyntax);
+                var privateFields = parser.GetFields(classNode);
+                var portSyntaxes = privateFields.Where(n =>
+                    n is FieldDeclarationSyntax field && StartMatch(field.Declaration.Type.ToString(), _programmingParadigms)).Select(s => s as FieldDeclarationSyntax);
 
-            var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().ToString(), IsInputPort = false }).ToList();
+                var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().ToString(), IsInputPort = false }).ToList();
 
-            foreach (var port in portList)
+                foreach (var port in portList)
+                {
+                    model.AddAcceptedPort(port.Type, port.Name);
+                }
+            }
+            catch (Exception e)
             {
-                model.AddAcceptedPort(port.Type, port.Name);
+                Logging.Log($"Failed to set accepted ports in AbstractionModelManager.\nError: {e}");
             }
         }
 
         public void SetImplementedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
         {
-            var parser = new CodeParser();
-
-            var implementedList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
-
-            var portList = implementedList.Where(n => StartMatch(n.ToString(), _programmingParadigms))
-                .Select(s => new Port() { Type = s.Type.ToString(), Name = "?" + s.Type.ToString(), IsInputPort = true}).ToList();
-
-            foreach (var port in portList)
+            try
             {
-                model.AddImplementedPort(port.Type, port.Name);
+                var parser = new CodeParser();
+
+                var implementedList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
+
+                var portList = implementedList.Where(n => StartMatch(n.ToString(), _programmingParadigms))
+                    .Select(s => new Port() { Type = s.Type.ToString(), Name = "?" + s.Type.ToString().Replace("<", "_").Replace(">", "_"), IsInputPort = true }).ToList();
+
+                foreach (var port in portList)
+                {
+                    model.AddImplementedPort(port.Type, port.Name);
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to set implemented ports in AbstractionModelManager.\nError: {e}");
             }
         }
 
         public void SetProperties(ClassDeclarationSyntax classNode, AbstractionModel model)
         {
-            var parser = new CodeParser()
+            try
             {
-                AccessLevel = "public"
-            };
+                var parser = new CodeParser()
+                {
+                    AccessLevel = "public"
+                };
 
-            var properties = parser.FilterByAccessLevel(parser.GetProperties(classNode), accessLevel: "public").Select(p => (p as PropertyDeclarationSyntax));
+                var properties = parser.FilterByAccessLevel(parser.GetProperties(classNode), accessLevel: "public").Select(p => (p as PropertyDeclarationSyntax));
 
-            foreach (var property in properties)
+                foreach (var property in properties)
+                {
+                    model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default");
+                }
+            }
+            catch (Exception e)
             {
-                model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default");
+                Logging.Log($"Failed to set properties in AbstractionModelManager.\nError: {e}");
             }
         }
 
         public void SetDocumentation(ClassDeclarationSyntax classNode, AbstractionModel model)
         {
-            var parser = new CodeParser();
-
-            var rawText = classNode.GetLeadingTrivia().ToString();
-
-            var lines = rawText.Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
-
-            var sb = new StringBuilder();
-
-            foreach (var line in lines)
+            try
             {
-                var cleanedLine = line
-                    .Replace("&lt;", "<")
-                    .Replace("&gt;", ">")
-                    .Replace("<summary>", "")
-                    .Replace("</summary>", "")
-                    .Replace("<para>", "")
-                    .Replace("</para>", "")
-                    .Replace("<code>", "")
-                    .Replace("</code>", "")
-                    .Replace("<remarks>", "")
-                    .Replace("</remarks>", "");
+                var parser = new CodeParser();
 
-                if (!string.IsNullOrWhiteSpace(cleanedLine)) sb.AppendLine(cleanedLine);
+                var rawText = classNode.GetLeadingTrivia().ToString();
+
+                var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
+
+                var sb = new StringBuilder();
+
+                foreach (var line in lines)
+                {
+                    var cleanedLine = line
+                        .Replace("&lt;", "<")
+                        .Replace("&gt;", ">")
+                        .Replace("<summary>", "")
+                        .Replace("</summary>", "")
+                        .Replace("<para>", "")
+                        .Replace("</para>", "")
+                        .Replace("<code>", "")
+                        .Replace("</code>", "")
+                        .Replace("<remarks>", "")
+                        .Replace("</remarks>", "");
+
+                    if (!string.IsNullOrWhiteSpace(cleanedLine)) sb.AppendLine(cleanedLine);
+                }
+
+                var documentation = sb.ToString().Trim('\r', '\n');
+                model.AddDocumentation(documentation);
             }
-
-            var documentation = sb.ToString().Trim('\r', '\n');
-            model.AddDocumentation(documentation);
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to set documentation in AbstractionModelManager.\nError: {e}");
+            }
         }
 
         public AbstractionModelManager()
