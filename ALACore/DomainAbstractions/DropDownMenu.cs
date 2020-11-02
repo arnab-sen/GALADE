@@ -26,10 +26,10 @@ namespace DomainAbstractions
 
         public string Text
         {
-            get => _dropDown.Dispatcher.Invoke(() => _dropDown.Text);
+            get => "";// _dropDown.Dispatcher.Invoke(() => _dropDown.SelectedValue.ToString());
             set
             {
-                _dropDown.Dispatcher.Invoke(() => _dropDown.Text = value);
+                //_dropDown.Dispatcher.Invoke(() => _dropDown.SelectedValue = value);
             }
         }
 
@@ -70,17 +70,30 @@ namespace DomainAbstractions
                 }
             };
 
+            _dropDown.StaysOpenOnEdit = true;
+
+            _dropDown.PreviewMouseLeftButtonDown += (sender, args) =>
+            {
+            };
+
+            _dropDown.PreviewLostKeyboardFocus += (sender, args) =>
+            {
+                
+            };
+
             TextChangedEventHandler textChangedEventHandler = (sender, args) =>
             {
                 if (selectedItem != null) selectedItem.Data = _dropDown.Text;
             };
+
+            _dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
+
 
             _dropDown.KeyDown += (sender, args) =>
             {
                 if (args.Key == Key.Enter) eventEnterPressed?.Execute();
             };
 
-            _dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
         }
 
         // IUI implementation

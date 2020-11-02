@@ -116,16 +116,28 @@ namespace DomainAbstractions
 
             backgroundCanvas.Focusable = true; // Ensure that the canvas can raise key press events
             backgroundCanvas.FocusVisualStyle = null; // Remove dashed line when the canvas is focused
-            backgroundCanvas.Loaded += (sender, args) => backgroundCanvas.Focus();
-            backgroundCanvas.PreviewMouseDown += (sender, args) => backgroundCanvas.Focus(); // Use PreviewMouseDown so that this happens before any normal MouseDown events
-
-            backgroundCanvas.PreviewMouseLeftButtonDown += (sender, args) =>
+            // backgroundCanvas.Loaded += (sender, args) => backgroundCanvas.Focus();
+            // backgroundCanvas.PreviewMouseDown += (sender, args) => backgroundCanvas.Focus(); // Use PreviewMouseDown so that this happens before any normal MouseDown events
+            
+            // Right click is used to reset focus to the backgroundCanvas, when it is the only element found from a hit test.
+            // Left click is not used here because elements like combobox dropdown menus are treated as popup windows, and don't appear in the hit test results, meaning
+            // that a left click on one of those elements would be mistaken for a left click on the blank backgroundCanvas, and unintentionally resetting the focus
+            backgroundCanvas.PreviewMouseRightButtonDown += (sender, args) =>
             {
-                if (GetHitTestItems(args.GetPosition(backgroundCanvas)).Count == 1)
+                var hitTestItems = GetHitTestItems(args.GetPosition(backgroundCanvas));
+                if (hitTestItems.Count == 1 && hitTestItems.Last().Equals(backgroundCanvas))
                 {
-                    StateTransition.Update(Enums.DiagramMode.Idle);
+                    backgroundCanvas.Focus();
                 }
             };
+
+            // backgroundCanvas.PreviewMouseLeftButtonDown += (sender, args) =>
+            // {
+            //     if (GetHitTestItems(args.GetPosition(backgroundCanvas)).Count == 1)
+            //     {
+            //         StateTransition.Update(Enums.DiagramMode.Idle);
+            //     }
+            // };
 
             StateTransition.StateChanged += transition =>
             {
@@ -146,7 +158,7 @@ namespace DomainAbstractions
             backgroundCanvas.MouseRightButtonUp += (sender, args) =>
             {
                 _panning = false;
-                if (Mouse.Captured == backgroundCanvas) Mouse.Capture(null);
+                if (Mouse.Captured?.Equals(backgroundCanvas) ?? false) Mouse.Capture(null);
             };
 
             backgroundCanvas.MouseMove += (sender, args) =>

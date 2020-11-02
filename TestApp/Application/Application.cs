@@ -237,6 +237,7 @@ namespace TestApplication
             Data<string> id_b6f624d01b74402db0d0cf8daafe0eaf = new Data<string>() { storedData = "Apply<T1, T2>" };
             Apply<string, AbstractionModel> id_921f6ad099bf4800ad55ed55f4b7dd0e = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
             Data<string> id_af65024e6f414a59967f286a1997494f = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
+            DropDownMenu id_97465d1ac2514c4ca11cf024cf65c705 = new DropDownMenu() { Items = new string[100] };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -264,6 +265,7 @@ namespace TestApplication
             id_2b7993c7c45b463cb6e6bb67d9da4859.WireTo(createAndPaintALAWire, "output");
             id_fc4988b6201345f3b672a5d09d799a46.WireTo(id_1e72afed9a9243a986e2537e69645d8f, "children");
             id_1e72afed9a9243a986e2537e69645d8f.WireTo(id_b9c48dd303ab43709d7ad870490ae587, "children");
+            id_1e72afed9a9243a986e2537e69645d8f.WireTo(id_97465d1ac2514c4ca11cf024cf65c705, "children");
             id_b9c48dd303ab43709d7ad870490ae587.WireTo(id_aa32d532df564af79473ecbab4babfbe, "clickedEvent");
             id_aa32d532df564af79473ecbab4babfbe.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "selectedFolderPathOutput");
             id_af65024e6f414a59967f286a1997494f.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "dataOutput");
@@ -289,6 +291,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

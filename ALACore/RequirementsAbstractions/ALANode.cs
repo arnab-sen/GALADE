@@ -70,7 +70,11 @@ namespace RequirementsAbstractions
                 Background = Brushes.LightSkyBlue
             };
 
-            if (Model == null) Model = CreateDummyAbstractionModel();
+            if (Model == null)
+            {
+                Model = CreateDummyAbstractionModel();
+                AvailableDomainAbstractions.AddRange(new string[100]);
+            }
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             Horizontal id_353509dd183e4ce987b73df859c82c31 = new Horizontal() {  };
@@ -122,18 +126,19 @@ namespace RequirementsAbstractions
             RoutedEventSubscriber id_bcc0907eecca4144b7d1ae9f0317bc83 = new RoutedEventSubscriber(eventName: "GotFocus") { ExtractSender = source => (source as Box).Render };
             RoutedEventSubscriber id_df2b3b1510fd4a19a3edf133bd1ee0ca = new RoutedEventSubscriber(eventName: "LostFocus") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_42ec2980e40945f9a74a41c037ba92f3 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.LightSkyBlue;} };
-            MouseButtonEvent id_701bec1a8c2540b4b5eae91eea4733cc = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render, Condition =  };
             ApplyAction<object> id_b77709e411bd4616a0011ed7dbb538af = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) ui.Focus();} };
             ApplyAction<object> id_433a13d054ab4484be384a3ba22b3afe = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
             DataFlowConnector<object> id_f012ff5b1a7449898cddcfb48d2041ec = new DataFlowConnector<object>() {  };
             ApplyAction<object> id_e5dbefe2a26049e69a193e917d4a851e = new ApplyAction<object>() { Lambda = input =>{StateTransition.Update(Enums.DiagramMode.IdleSelected);} };
             MouseEvent id_b47431f47f8e4e09b40f9e9e914e5594 = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift) };
             ApplyAction<object> id_703445ea5fb94d7e995fa3811c4640dc = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));Canvas.SetLeft(render, mousePos.X - _mousePosInBox.X);Canvas.SetTop(render, mousePos.Y - _mousePosInBox.Y);PositionChanged?.Invoke();} };
-            MouseButtonEvent id_24494b8b4c0d4e07bfc670b28c397c20 = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<object> id_b340bcc2ab47409dbbb6685f3cf072f8 = new ApplyAction<object>() { Lambda = input =>{if (Mouse.Captured == (input as Box).Render) Mouse.Capture(null);} };
             ApplyAction<object> id_62b700698cb845e59b9df043e5055623 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
             ApplyAction<object> id_5f381b56b6814af2be8d0e9ea9bf26df = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
             EventLambda id_c6cd63c78f484af58436307a00897fe8 = new EventLambda() { Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
+            MouseButtonEvent id_47a1db0c751d47b2ba59c7ebef1999e6 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<string> id_ddcc800b4c634c88abc6f16fc5bc5339 = new ApplyAction<string>() { Lambda = input =>{Model.Type = input;} };
+            MouseButtonEvent id_075707539d484c43b7e4e4d34ffac43d = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<object> id_61a284b712ea47888fc8ac41eff97218 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -142,15 +147,16 @@ namespace RequirementsAbstractions
             rootUI.WireTo(id_d0d0e50c56ed4d5c8af41af5f52af11f, "eventHandlers");
             rootUI.WireTo(id_bcc0907eecca4144b7d1ae9f0317bc83, "eventHandlers");
             rootUI.WireTo(id_df2b3b1510fd4a19a3edf133bd1ee0ca, "eventHandlers");
-            rootUI.WireTo(id_701bec1a8c2540b4b5eae91eea4733cc, "eventHandlers");
             rootUI.WireTo(id_b47431f47f8e4e09b40f9e9e914e5594, "eventHandlers");
-            rootUI.WireTo(id_24494b8b4c0d4e07bfc670b28c397c20, "eventHandlers");
+            rootUI.WireTo(id_47a1db0c751d47b2ba59c7ebef1999e6, "eventHandlers");
+            rootUI.WireTo(id_075707539d484c43b7e4e4d34ffac43d, "eventHandlers");
             id_353509dd183e4ce987b73df859c82c31.WireTo(id_0472b3a1b70247d38b4dccbe38aa40e0, "children");
             id_353509dd183e4ce987b73df859c82c31.WireTo(nodeMiddle, "children");
             id_353509dd183e4ce987b73df859c82c31.WireTo(id_3dca2721c00b4138ab790767114046ca, "children");
-            nodeMiddle.WireTo(nodeIdRow, "children");
             nodeIdRow.WireTo(nodeTypeDropDownMenu, "children");
+            nodeMiddle.WireTo(nodeIdRow, "children");
             nodeIdRow.WireTo(nodeNameTextBox, "children");
+            nodeTypeDropDownMenu.WireTo(id_ddcc800b4c634c88abc6f16fc5bc5339, "selectedItem");
             id_0472b3a1b70247d38b4dccbe38aa40e0.WireTo(inputPortsVertConnector, "uiInstanceOutput");
             inputPortsVertConnector.WireTo(id_ed6daba2ec0c4c6b9374275e31704d4c, "fanoutList");
             id_ed6daba2ec0c4c6b9374275e31704d4c.WireTo(id_52a1c05107f44ca994df8bbb87fdacb3, "eventOutput");
@@ -192,13 +198,13 @@ namespace RequirementsAbstractions
             id_d0d0e50c56ed4d5c8af41af5f52af11f.WireTo(id_38d73fe77688482bb1cd9c0179ec0262, "sourceOutput");
             id_bcc0907eecca4144b7d1ae9f0317bc83.WireTo(id_433a13d054ab4484be384a3ba22b3afe, "sourceOutput");
             id_df2b3b1510fd4a19a3edf133bd1ee0ca.WireTo(id_42ec2980e40945f9a74a41c037ba92f3, "sourceOutput");
-            id_701bec1a8c2540b4b5eae91eea4733cc.WireTo(id_f012ff5b1a7449898cddcfb48d2041ec, "sourceOutput");
+            id_47a1db0c751d47b2ba59c7ebef1999e6.WireTo(id_f012ff5b1a7449898cddcfb48d2041ec, "sourceOutput");
             id_f012ff5b1a7449898cddcfb48d2041ec.WireTo(id_b77709e411bd4616a0011ed7dbb538af, "fanoutList");
             id_f012ff5b1a7449898cddcfb48d2041ec.WireTo(id_e5dbefe2a26049e69a193e917d4a851e, "fanoutList");
             id_f012ff5b1a7449898cddcfb48d2041ec.WireTo(id_62b700698cb845e59b9df043e5055623, "fanoutList");
             id_f012ff5b1a7449898cddcfb48d2041ec.WireTo(id_5f381b56b6814af2be8d0e9ea9bf26df, "fanoutList");
             id_b47431f47f8e4e09b40f9e9e914e5594.WireTo(id_703445ea5fb94d7e995fa3811c4640dc, "sourceOutput");
-            id_24494b8b4c0d4e07bfc670b28c397c20.WireTo(id_b340bcc2ab47409dbbb6685f3cf072f8, "sourceOutput");
+            id_075707539d484c43b7e4e4d34ffac43d.WireTo(id_61a284b712ea47888fc8ac41eff97218, "sourceOutput");
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
@@ -228,6 +234,30 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
