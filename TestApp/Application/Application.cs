@@ -224,7 +224,7 @@ namespace TestApplication
             DataFlowConnector<ALANode> id_f8ca8a9169ae47bca361dae84c3b57ed = new DataFlowConnector<ALANode>() {  };
             ApplyAction<ALANode> id_75c407aa6c5642e29e730d2d55c75fd5 = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
             KeyEvent id_1880adec211d481c81f1f6bf9d68bb44 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            Apply<AbstractionModel, object> id_2b7993c7c45b463cb6e6bb67d9da4859 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Apply<AbstractionModel, object> id_2b7993c7c45b463cb6e6bb67d9da4859 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {node.Model = abstractionModelManager.GetAbstractionModel(newType);node.UpdateUI();};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             MenuBar id_fc4988b6201345f3b672a5d09d799a46 = new MenuBar() {  };
             MenuItem id_1e72afed9a9243a986e2537e69645d8f = new MenuItem(header: "File") {  };
             MenuItem id_b9c48dd303ab43709d7ad870490ae587 = new MenuItem(header: "Open Project") {  };
@@ -291,6 +291,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -109,6 +109,50 @@ namespace DomainAbstractions
             }
         }
 
+        public void CloneFrom(AbstractionModel source)
+        {
+            Type = source.Type;
+            Name = source.Name;
+
+            _implementedPorts.Clear();
+            foreach (var pair in source._implementedPorts)
+            {
+                _implementedPorts[pair.Key] = pair.Value;
+            }
+
+            _acceptedPorts.Clear();
+            foreach (var pair in source._acceptedPorts)
+            {
+                _acceptedPorts[pair.Key] = pair.Value;
+            }
+
+            _fields.Clear();
+            foreach (var pair in source._fields)
+            {
+                _fields[pair.Key] = pair.Value;
+            }
+
+            _constructorArgs.Clear();
+            foreach (var pair in source._constructorArgs)
+            {
+                _constructorArgs[pair.Key] = pair.Value;
+            }
+
+            _fields.Clear();
+            foreach (var pair in source._fields)
+            {
+                _fields[pair.Key] = pair.Value;
+            }
+
+            _properties.Clear();
+            foreach (var pair in source._properties)
+            {
+                _properties[pair.Key] = pair.Value;
+            }
+
+            _documentation = source._documentation;
+        }
+
         /// <summary>
         /// Returns the value of the first occurrence of a given variable name.
         /// </summary>

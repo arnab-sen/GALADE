@@ -772,7 +772,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = input;\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "input => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = input;\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tnode.Model = abstractionModelManager.GetAbstractionModel(newType);\r\n\t\tnode.UpdateUI();\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],

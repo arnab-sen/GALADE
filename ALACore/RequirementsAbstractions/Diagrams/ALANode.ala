@@ -308,7 +308,7 @@
       "NodeParameters": [
         {
           "Name": "getUIContainer",
-          "Value": "() =>\r\n{\r\n\tvar inputPortsVert = new Vertical();\r\n\tinputPortsVert.Margin = new Thickness(0);\r\n\t\r\n\treturn inputPortsVert;\r\n}",
+          "Value": "() =>\r\n{\r\n\t_inputPortsVert = new Vertical();\r\n\t_inputPortsVert.Margin = new Thickness(0);\r\n\t\r\n\treturn _inputPortsVert;\r\n}",
           "ParameterType": "Constructor"
         }
       ],
@@ -376,7 +376,7 @@
     {
       "Id": "52a1c05107f44ca994df8bbb87fdacb3",
       "Type": "EventConnector",
-      "Name": "",
+      "Name": "setImplementedPortUI",
       "TreeParent": "ed6daba2ec0c4c6b9374275e31704d4c",
       "Ports": [
         {
@@ -460,7 +460,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "Model.GetImplementedPorts",
+          "Value": "GetImplementedPorts",
           "ParameterType": "Property"
         }
       ],
@@ -617,7 +617,7 @@
       "NodeParameters": [
         {
           "Name": "getUIContainer",
-          "Value": "() =>\r\n{\r\n\tvar outputPortsVert = new Vertical();\r\n\toutputPortsVert.Margin = new Thickness(0);\r\n\t\r\n\treturn outputPortsVert;\r\n}",
+          "Value": "() =>\r\n{\r\n\t_outputPortsVert = new Vertical();\r\n\t_outputPortsVert.Margin = new Thickness(0);\r\n\t\r\n\treturn _outputPortsVert;\r\n}",
           "ParameterType": "Constructor"
         }
       ],
@@ -769,7 +769,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "Model.GetAcceptedPorts",
+          "Value": "GetAcceptedPorts",
           "ParameterType": "Property"
         }
       ],
@@ -2138,7 +2138,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tModel.Type = input;\r\n}",
+          "Value": "input =>\r\n{\r\n\tModel.Type = input;\r\n\tTypeChanged?.Invoke(Model.Type);\r\n}",
           "ParameterType": "Property"
         }
       ],

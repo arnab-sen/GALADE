@@ -33,8 +33,12 @@ namespace RequirementsAbstractions
         public UIElement Render { get; set; }
         public AbstractionModel Model { get; set; }
         public List<Box> PortBoxes { get; } = new List<Box>();
+        public int MaxInputPorts { get; set; } = 10;
+        public int MaxOutputPorts { get; set; } = 10;
 
         public delegate void SomethingChangedDelegate();
+        public delegate void TextChangedDelegate(string text);
+        public TextChangedDelegate TypeChanged;
 
         public SomethingChangedDelegate PositionChanged;
         public Func<Port, Point> GetAttachmentPoint { get; set; }
@@ -43,6 +47,15 @@ namespace RequirementsAbstractions
         private Box rootUI;
         private Box _selectedPort;
         private Point _mousePosInBox = new Point(0, 0);
+
+        // Global instances
+        private DropDownMenu _nodeTypeDropDownMenu;
+        private TextBox _nodeNameTextBox;
+        private EventConnector _setImplementedPortUI;
+        private Apply<object, object> _setUpInputPortBox;
+        private Apply<object, object> _setUpOutputPortBox;
+        private Vertical _inputPortsVert;
+        private Vertical _outputPortsVert;
 
         // Ports
 
@@ -60,7 +73,67 @@ namespace RequirementsAbstractions
         /// </summary>
         public void UpdateUI()
         {
+            (_inputPortsVert as IEvent).Execute();
+            (_outputPortsVert as IEvent).Execute();
+            var implementedPorts = Model.GetImplementedPorts();
+            foreach (var implementedPort in implementedPorts)
+            {
+                var port = new Port
+                {
+                    Type = implementedPort.Value,
+                    Name = implementedPort.Key,
+                    IsInputPort = true
+                };
 
+                _setUpInputPortBox.Lambda(port);
+            }
+
+            var acceptedPorts = Model.GetAcceptedPorts();
+            foreach (var acceptedPort in acceptedPorts)
+            {
+                var port = new Port
+                {
+                    Type = acceptedPort.Value,
+                    Name = acceptedPort.Key,
+                    IsInputPort = false
+                };
+
+                _setUpOutputPortBox.Lambda(port);
+            }
+        }
+
+        List<KeyValuePair<string, string>> GetImplementedPorts()
+        {
+            var real = Model.GetImplementedPorts().Select(kvp => kvp).ToList();
+
+            // int dummyPortCount = MaxInputPorts - real.Count;
+            //
+            // if (dummyPortCount > 0)
+            // {
+            //     for (int i = 0; i < dummyPortCount; i++)
+            //     {
+            //         real.Add(new KeyValuePair<string, string>($"?{i}", "?"));
+            //     }
+            // }
+
+            return real;
+        }
+
+        List<KeyValuePair<string, string>> GetAcceptedPorts()
+        {
+            var real = Model.GetAcceptedPorts().Select(kvp => kvp).ToList();
+
+            // int dummyPortCount = MaxOutputPorts - real.Count;
+            //
+            // if (dummyPortCount > 0)
+            // {
+            //     for (int i = 0; i < dummyPortCount; i++)
+            //     {
+            //         real.Add(new KeyValuePair<string, string>($"?{i}", "?"));
+            //     }
+            // }
+
+            return real;
         }
 
         private void SetWiring()
@@ -82,20 +155,20 @@ namespace RequirementsAbstractions
             Horizontal nodeIdRow = new Horizontal() { InstanceName = "nodeIdRow" };
             DropDownMenu nodeTypeDropDownMenu = new DropDownMenu() { InstanceName = "nodeTypeDropDownMenu", Text = Model.Type, Width = 100, Items = AvailableDomainAbstractions };
             TextBox nodeNameTextBox = new TextBox() { InstanceName = "nodeNameTextBox", Text = Model.Name, Width = 50 };
-            UIFactory id_0472b3a1b70247d38b4dccbe38aa40e0 = new UIFactory(getUIContainer: () =>{var inputPortsVert = new Vertical();inputPortsVert.Margin = new Thickness(0);return inputPortsVert;}) {  };
+            UIFactory id_0472b3a1b70247d38b4dccbe38aa40e0 = new UIFactory(getUIContainer: () =>{_inputPortsVert = new Vertical();_inputPortsVert.Margin = new Thickness(0);return _inputPortsVert;}) {  };
             DataFlowConnector<object> inputPortsVertConnector = new DataFlowConnector<object>() { InstanceName = "inputPortsVertConnector" };
             ConvertToEvent<object> id_ed6daba2ec0c4c6b9374275e31704d4c = new ConvertToEvent<object>() {  };
-            EventConnector id_52a1c05107f44ca994df8bbb87fdacb3 = new EventConnector() {  };
-            Data<object> id_33c6cfd0055a4ab6bfe092fba44a1ca4 = new Data<object>() { Lambda = Model.GetImplementedPorts };
+            EventConnector setImplementedPortUI = new EventConnector() { InstanceName = "setImplementedPortUI" };
+            Data<object> id_33c6cfd0055a4ab6bfe092fba44a1ca4 = new Data<object>() { Lambda = GetImplementedPorts };
             Cast<object, IEnumerable<KeyValuePair<string, string>>> id_b428e1f9c5d64392ac64a579b8c5dd00 = new Cast<object, IEnumerable<KeyValuePair<string, string>>>() {  };
             ForEach<KeyValuePair<string, string>> id_166038de576d427cb40f3516f21d12b6 = new ForEach<KeyValuePair<string, string>>() {  };
             Apply<KeyValuePair<string, string>, object> id_d4a201c0755e49a58427744ebf7a6763 = new Apply<KeyValuePair<string, string>, object>() { Lambda = input =>{var port = new Port();port.Type = input.Value;port.Name = input.Key;port.IsInputPort = true;return port;} };
             Apply<object, object> setUpInputPortBox = new Apply<object, object>() { InstanceName = "setUpInputPortBox", Lambda = input =>{var box = new Box();box.Payload = input;box.Width = 50;box.Height = 15;box.Background = Brushes.White;box.BorderThickness = new Thickness(2);var toolTipLabel = new System.Windows.Controls.Label() { Content = (input as Port).FullName };box.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = (input as Port).ToString();var text = new Text(text: (input as Port).Name);text.HorizAlignment = HorizontalAlignment.Center;box.WireTo(text, "uiLayout");inputPortsVertConnector.Data.WireTo(box, "children");PortBoxes.Add(box);return box;} };
-            UIFactory id_3dca2721c00b4138ab790767114046ca = new UIFactory(getUIContainer: () =>{var outputPortsVert = new Vertical();outputPortsVert.Margin = new Thickness(0);return outputPortsVert;}) {  };
+            UIFactory id_3dca2721c00b4138ab790767114046ca = new UIFactory(getUIContainer: () =>{_outputPortsVert = new Vertical();_outputPortsVert.Margin = new Thickness(0);return _outputPortsVert;}) {  };
             DataFlowConnector<object> outputPortsVertConnector = new DataFlowConnector<object>() { InstanceName = "outputPortsVertConnector" };
             ConvertToEvent<object> id_860408f6dd674d22aabb2de74ae5ae51 = new ConvertToEvent<object>() {  };
             EventConnector id_7aab2768a9c0415a91330b8a8480e3df = new EventConnector() {  };
-            Data<object> id_cc676b51ba9546e598fe1f0ce852fc66 = new Data<object>() { Lambda = Model.GetAcceptedPorts };
+            Data<object> id_cc676b51ba9546e598fe1f0ce852fc66 = new Data<object>() { Lambda = GetAcceptedPorts };
             Cast<object, IEnumerable<KeyValuePair<string, string>>> id_a596b2a5d327495d9a34e0e0b34a9458 = new Cast<object, IEnumerable<KeyValuePair<string, string>>>() {  };
             ForEach<KeyValuePair<string, string>> id_7556eeff4d3643c78d6b863be06d7d41 = new ForEach<KeyValuePair<string, string>>() {  };
             Apply<KeyValuePair<string, string>, object> id_77c97ee1add34c4fb9a560fa02eec367 = new Apply<KeyValuePair<string, string>, object>() { Lambda = input =>{var port = new Port();port.Type = input.Value;port.Name = input.Key;port.IsInputPort = false;return port;} };
@@ -136,7 +209,7 @@ namespace RequirementsAbstractions
             ApplyAction<object> id_5f381b56b6814af2be8d0e9ea9bf26df = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
             EventLambda id_c6cd63c78f484af58436307a00897fe8 = new EventLambda() { Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
             MouseButtonEvent id_47a1db0c751d47b2ba59c7ebef1999e6 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<string> id_ddcc800b4c634c88abc6f16fc5bc5339 = new ApplyAction<string>() { Lambda = input =>{Model.Type = input;} };
+            ApplyAction<string> id_ddcc800b4c634c88abc6f16fc5bc5339 = new ApplyAction<string>() { Lambda = input =>{Model.Type = input;TypeChanged?.Invoke(Model.Type);} };
             MouseButtonEvent id_075707539d484c43b7e4e4d34ffac43d = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_61a284b712ea47888fc8ac41eff97218 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
             // END AUTO-GENERATED INSTANTIATIONS
@@ -159,8 +232,8 @@ namespace RequirementsAbstractions
             nodeTypeDropDownMenu.WireTo(id_ddcc800b4c634c88abc6f16fc5bc5339, "selectedItem");
             id_0472b3a1b70247d38b4dccbe38aa40e0.WireTo(inputPortsVertConnector, "uiInstanceOutput");
             inputPortsVertConnector.WireTo(id_ed6daba2ec0c4c6b9374275e31704d4c, "fanoutList");
-            id_ed6daba2ec0c4c6b9374275e31704d4c.WireTo(id_52a1c05107f44ca994df8bbb87fdacb3, "eventOutput");
-            id_52a1c05107f44ca994df8bbb87fdacb3.WireTo(id_33c6cfd0055a4ab6bfe092fba44a1ca4, "fanoutList");
+            id_ed6daba2ec0c4c6b9374275e31704d4c.WireTo(setImplementedPortUI, "eventOutput");
+            setImplementedPortUI.WireTo(id_33c6cfd0055a4ab6bfe092fba44a1ca4, "fanoutList");
             id_33c6cfd0055a4ab6bfe092fba44a1ca4.WireTo(id_b428e1f9c5d64392ac64a579b8c5dd00, "dataOutput");
             id_b428e1f9c5d64392ac64a579b8c5dd00.WireTo(id_166038de576d427cb40f3516f21d12b6, "output");
             id_166038de576d427cb40f3516f21d12b6.WireTo(id_d4a201c0755e49a58427744ebf7a6763, "elementOutput");
@@ -208,6 +281,13 @@ namespace RequirementsAbstractions
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
+
+            // Instance mapping
+            _nodeTypeDropDownMenu = nodeTypeDropDownMenu;
+            _nodeNameTextBox = nodeNameTextBox;
+            _setImplementedPortUI = setImplementedPortUI;
+            _setUpInputPortBox = setUpInputPortBox;
+            _setUpOutputPortBox = setUpOutputPortBox;
         }
 
         private AbstractionModel CreateDummyAbstractionModel()
@@ -234,6 +314,24 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
