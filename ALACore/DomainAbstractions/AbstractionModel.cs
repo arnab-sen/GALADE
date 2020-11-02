@@ -23,8 +23,8 @@ namespace DomainAbstractions
         private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
         private Dictionary<string, string> _fields = new Dictionary<string, string>(); // name : value
         private Dictionary<string, string> _properties = new Dictionary<string, string>(); // name : value
-        private Dictionary<string, string> _implementedPorts = new Dictionary<string, string>(); // name : type
-        private Dictionary<string, string> _acceptedPorts = new Dictionary<string, string>(); // name : type
+        private Dictionary<string, Port> _implementedPorts = new Dictionary<string, Port>(); // name : type
+        private Dictionary<string, Port> _acceptedPorts = new Dictionary<string, Port>(); // name : type
         private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
         private string _documentation = "";
 
@@ -34,8 +34,8 @@ namespace DomainAbstractions
         public List<KeyValuePair<string, string>> GetConstructorArgs() => _constructorArgs.ToList();
         public List<KeyValuePair<string, string>> GetFields() => _fields.ToList();
         public List<KeyValuePair<string, string>> GetProperties() => _properties.ToList();
-        public List<KeyValuePair<string, string>> GetImplementedPorts() => _implementedPorts.ToList();
-        public List<KeyValuePair<string, string>> GetAcceptedPorts() => _acceptedPorts.ToList();
+        public List<Port> GetImplementedPorts() => _implementedPorts.Values.ToList();
+        public List<Port> GetAcceptedPorts() => _acceptedPorts.Values.ToList();
         public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
         public string GetDocumentation() => _documentation;
 
@@ -56,12 +56,22 @@ namespace DomainAbstractions
 
         public void AddImplementedPort(string type, string name)
         {
-            _implementedPorts[name] = type;
+            _implementedPorts[name] = new Port()
+            {
+                Type = type,
+                Name = name,
+                IsInputPort = true
+            };
         }
 
         public void AddAcceptedPort(string type, string name)
         {
-            _acceptedPorts[name] = type;
+            _acceptedPorts[name] = new Port()
+            {
+                Type = type,
+                Name = name,
+                IsInputPort = false
+            };;
         }
 
         public void AddGeneric(string generic, string initialValue = "")
@@ -97,8 +107,31 @@ namespace DomainAbstractions
             }
         }
 
-        public void SetImplementedPort(string type, string name) => _implementedPorts[name] = type;
-        public void SetAcceptedPort(string type, string name) => _acceptedPorts[name] = type;
+        public void SetImplementedPort(string type, string name)
+        {
+            if (_implementedPorts.ContainsKey(name))
+            {
+                _implementedPorts[name].Type = type;
+                _implementedPorts[name].Name = name;
+            }
+            else
+            {
+                AddImplementedPort(type, name);
+            }
+        }
+
+        public void SetAcceptedPort(string type, string name)
+        {
+            if (_acceptedPorts.ContainsKey(name))
+            {
+                _acceptedPorts[name].Type = type;
+                _acceptedPorts[name].Name = name;
+            }
+            else
+            {
+                AddAcceptedPort(type, name);
+            }
+        }
 
         public void SetGeneric(string identifier, string type)
         {
@@ -176,16 +209,6 @@ namespace DomainAbstractions
                 return _properties[name];
             }
 
-            if (_implementedPorts.ContainsKey(name))
-            {
-                return _implementedPorts[name];
-            }
-
-            if (_acceptedPorts.ContainsKey(name))
-            {
-                return _acceptedPorts[name];
-            }
-
             if (_generics.ContainsKey(name))
             {
                 return _generics[name];
@@ -212,18 +235,6 @@ namespace DomainAbstractions
             {
                 foundAt = _properties;
                 return _properties[name];
-            }
-
-            if (_implementedPorts.ContainsKey(name))
-            {
-                foundAt = _implementedPorts;
-                return _implementedPorts[name];
-            }
-
-            if (_acceptedPorts.ContainsKey(name))
-            {
-                foundAt = _acceptedPorts;
-                return _acceptedPorts[name];
             }
 
             if (_generics.ContainsKey(name))
@@ -306,14 +317,14 @@ namespace DomainAbstractions
             // Apply to port variables
             var portsWithGeneric = new List<string>();
 
-            foreach (var portPair in _implementedPorts)
+            foreach (var port in GetImplementedPorts())
             {
-                if (genericMatch(portPair.Value)) portsWithGeneric.Add(portPair.Key);
+                if (genericMatch(port.Type)) portsWithGeneric.Add(port.Name);
             }
 
-            foreach (var portPair in _acceptedPorts)
+            foreach (var port in GetAcceptedPorts())
             {
-                if (genericMatch(portPair.Value)) portsWithGeneric.Add(portPair.Key);
+                if (genericMatch(port.Type)) portsWithGeneric.Add(port.Name);
             }
 
             foreach (var portName in portsWithGeneric)
@@ -334,11 +345,13 @@ namespace DomainAbstractions
 
                 if (_implementedPorts.ContainsKey(portName))
                 {
-                    _implementedPorts[portName] = Regex.Replace(_implementedPorts[portName], regex, newType);
+                    var type = Regex.Replace(_implementedPorts[portName].Type, regex, newType);
+                    SetImplementedPort(type, portName);
                 }
                 else
                 {
-                    _acceptedPorts[portName] = Regex.Replace(_acceptedPorts[portName], regex, newType);
+                    var type = Regex.Replace(_acceptedPorts[portName].Type, regex, newType);
+                    SetAcceptedPort(type, portName);
                 }
             }
         }

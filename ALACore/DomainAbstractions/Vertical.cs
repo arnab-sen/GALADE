@@ -124,7 +124,7 @@ namespace DomainAbstractions
         void IEvent.Execute() // Refresh UI
         {
             gridPanel.Children.Clear();
-            (this as IUI).GetWPFElement();
+            // (this as IUI).GetWPFElement();
         }
 
         private void PostWiringInitialize()
