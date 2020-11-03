@@ -207,73 +207,73 @@ namespace TestApplication
             AbstractionModelManager abstractionModelManager = new AbstractionModelManager();
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            Vertical id_e231535a158a41bf883566c7fb90067f = new Vertical() {  };
-            CanvasDisplay id_af59f5e023724a249779314ea5335b6a = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            ApplyAction<System.Windows.Controls.Canvas> id_9c7e3d90eb6c4f67aadc41e0d2ef4197 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
-            KeyEvent id_233a4b035e0f47f4a4eb688f5d118acd = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
-            Data<object> id_9934608829a049aebef6fba88b0d9363 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Vertical id_e5fefe7bc8a444b2b9adabbcc5d41291 = new Vertical() {  };
+            CanvasDisplay id_9d592da50c5a4fa5bdcdb08b47f7809a = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
+            ApplyAction<System.Windows.Controls.Canvas> id_0ecc0e7b9fec45f19c95287796a4074d = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
+            KeyEvent id_5576b5a7f925477c8674cd1a4057bf2a = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
+            Data<object> id_f066fb4914e3489598fcaeb18cc75098 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Model = abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault());node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = node.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);mainGraph.Roots.Add(input);}} };
-            ContextMenu id_644990acc9d841d482d3ec40a67c0696 = new ContextMenu() {  };
-            MenuItem id_5a2f90317ced4ca9963b1fb8355f7eaa = new MenuItem(header: "Add root") {  };
-            EventConnector id_2abda330913b432aa6f4c707bdecd5fb = new EventConnector() {  };
+            ContextMenu id_570d8e5c11ea4ead875674b9f3336e1f = new ContextMenu() {  };
+            MenuItem id_f575dc072678429c9c384bdd95998f9b = new MenuItem(header: "Add root") {  };
+            EventConnector id_391f7928f2fa4da283d18b46450af68b = new EventConnector() {  };
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,Source = source,Destination = destination,SourcePort = sourcePort,DestinationPort = destinationPort};mainGraph.AddEdge(wire);source.PositionChanged += () => wire.Refresh();destination.PositionChanged += () => wire.Refresh();wire.Paint();return wire;} };
             UIFactory setUpGraph = new UIFactory(getUIContainer: () =>{/* This lambda executes during the UI setup call, which occurs before the app event flow.The reason for putting this lambda here is that thisensures that mainGraph is set up before being passedinto the scope of other delegates down the line (before the app event flow)*/mainGraph = new Graph();mainGraph.EdgeAdded += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Add(edge);var dest = wire.Destination as ALANode;dest.Edges.Add(edge);};mainGraph.EdgeDeleted += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Remove(edge);var dest = wire.Destination as ALANode;dest.Edges.Remove(edge);};/* Return a dummy invisible IUI */return new Text("", visible: false);}) { InstanceName = "setUpGraph" };
-            Data<ALANode> id_ea27a0e2d48b4870841e9d04a81490a2 = new Data<ALANode>() { Lambda = () => mainGraph.Roots.First() as ALANode };
-            RightTreeLayout<ALANode> id_03aedd0e50f148f4bdb901929bc1ae66 = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
+            Data<ALANode> id_444e2026d8a6432195984548e143b0de = new Data<ALANode>() { Lambda = () => mainGraph.Roots.First() as ALANode };
+            RightTreeLayout<ALANode> id_c051baa946f046c5bb253702167ffb2c = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
-            DataFlowConnector<ALANode> id_f8ca8a9169ae47bca361dae84c3b57ed = new DataFlowConnector<ALANode>() {  };
-            ApplyAction<ALANode> id_75c407aa6c5642e29e730d2d55c75fd5 = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
-            KeyEvent id_1880adec211d481c81f1f6bf9d68bb44 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            Apply<AbstractionModel, object> id_2b7993c7c45b463cb6e6bb67d9da4859 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {node.Model = abstractionModelManager.GetAbstractionModel(newType);node.UpdateUI();};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
-            MenuBar id_fc4988b6201345f3b672a5d09d799a46 = new MenuBar() {  };
-            MenuItem id_1e72afed9a9243a986e2537e69645d8f = new MenuItem(header: "File") {  };
-            MenuItem id_b9c48dd303ab43709d7ad870490ae587 = new MenuItem(header: "Open Project") {  };
-            FolderBrowser id_aa32d532df564af79473ecbab4babfbe = new FolderBrowser() { Description = "" };
-            DirectorySearch id_7ed9e624f7074dfca8249bebace7945b = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions" }) { FilenameFilter = "*.cs" };
-            Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_c24618240076440b9fd8e242ff63d492 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("DomainAbstractions")){list = input["DomainAbstractions"];}return list;} };
-            ForEach<string> id_3ea196e603934fd0995b8a05b2240e9b = new ForEach<string>() {  };
-            FileReader id_9e540f6fb2d14f798ebe82a810b7e841 = new FileReader() {  };
-            ApplyAction<string> id_09d933f3cdb04ba8823a74ae06256d01 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModel(input);} };
-            Data<string> id_b6f624d01b74402db0d0cf8daafe0eaf = new Data<string>() { storedData = "Apply<T1, T2>" };
-            Apply<string, AbstractionModel> id_921f6ad099bf4800ad55ed55f4b7dd0e = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
-            Data<string> id_af65024e6f414a59967f286a1997494f = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
-            DropDownMenu id_97465d1ac2514c4ca11cf024cf65c705 = new DropDownMenu() { Items = new string[100] };
+            DataFlowConnector<ALANode> id_fcf0405f4ad749918fe57c071933192e = new DataFlowConnector<ALANode>() {  };
+            ApplyAction<ALANode> id_dfe6763e4f26438aabb920fe2c67fd3f = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
+            KeyEvent id_2d39d2452e3b4f99a1d5b7f88b75af93 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
+            Apply<AbstractionModel, object> id_4e3fab65ad804a6e912f986962f6b0ff = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = node.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            MenuBar id_883773815f7042bda7be8ab58869baed = new MenuBar() {  };
+            MenuItem id_495406eea6e74cfdb0abb7d130c4187e = new MenuItem(header: "File") {  };
+            MenuItem id_c473a6fc883f4ac6a333ea0d7ee370b6 = new MenuItem(header: "Open Project") {  };
+            FolderBrowser id_47a6b84fe07b4c7eb5aa48dcf120b0fd = new FolderBrowser() { Description = "" };
+            DirectorySearch id_6e956301e1d545b39da87cefd4e0070d = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions" }) { FilenameFilter = "*.cs" };
+            Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_88c0cb3840eb40959597060da5c387c0 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("DomainAbstractions")){list = input["DomainAbstractions"];}return list;} };
+            ForEach<string> id_eef4daad84484c61ae41590a6ba437b9 = new ForEach<string>() {  };
+            FileReader id_812743c062cb44b1b57d6d01da5aedd5 = new FileReader() {  };
+            ApplyAction<string> id_93b9f61cd2dc4f8293424d081e8c6db4 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModel(input);} };
+            Data<string> id_3a32e33964294e6f8ff6e65163e8b8dd = new Data<string>() { storedData = "Apply<T1, T2>" };
+            Apply<string, AbstractionModel> id_859f25e7fab44d3eb3fa218f335a479f = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
+            Data<string> id_37f4bd8a31634c1eb9c3d65e8aed10c1 = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
+            DropDownMenu id_1a8ed61b43fe4f9283b1f4d80ce4cf8c = new DropDownMenu() { Items = new string[100] };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_e231535a158a41bf883566c7fb90067f, "iuiStructure");
-            mainWindow.WireTo(id_af65024e6f414a59967f286a1997494f, "appStart");
-            id_e231535a158a41bf883566c7fb90067f.WireTo(setUpGraph, "children");
-            id_e231535a158a41bf883566c7fb90067f.WireTo(id_fc4988b6201345f3b672a5d09d799a46, "children");
-            id_e231535a158a41bf883566c7fb90067f.WireTo(id_af59f5e023724a249779314ea5335b6a, "children");
-            id_af59f5e023724a249779314ea5335b6a.WireTo(id_9c7e3d90eb6c4f67aadc41e0d2ef4197, "canvasOutput");
-            id_af59f5e023724a249779314ea5335b6a.WireTo(id_233a4b035e0f47f4a4eb688f5d118acd, "eventHandlers");
-            id_af59f5e023724a249779314ea5335b6a.WireTo(id_1880adec211d481c81f1f6bf9d68bb44, "eventHandlers");
-            id_af59f5e023724a249779314ea5335b6a.WireTo(id_644990acc9d841d482d3ec40a67c0696, "contextMenu");
-            id_233a4b035e0f47f4a4eb688f5d118acd.WireTo(id_2abda330913b432aa6f4c707bdecd5fb, "eventHappened");
-            id_9934608829a049aebef6fba88b0d9363.WireTo(initialiseNode, "dataOutput");
-            id_644990acc9d841d482d3ec40a67c0696.WireTo(id_5a2f90317ced4ca9963b1fb8355f7eaa, "children");
-            id_5a2f90317ced4ca9963b1fb8355f7eaa.WireTo(id_9934608829a049aebef6fba88b0d9363, "clickedEvent");
-            id_2abda330913b432aa6f4c707bdecd5fb.WireTo(id_b6f624d01b74402db0d0cf8daafe0eaf, "fanoutList");
-            id_2abda330913b432aa6f4c707bdecd5fb.WireTo(layoutDiagram, "complete");
-            id_ea27a0e2d48b4870841e9d04a81490a2.WireTo(id_f8ca8a9169ae47bca361dae84c3b57ed, "dataOutput");
-            layoutDiagram.WireTo(id_ea27a0e2d48b4870841e9d04a81490a2, "fanoutList");
-            id_f8ca8a9169ae47bca361dae84c3b57ed.WireTo(id_03aedd0e50f148f4bdb901929bc1ae66, "fanoutList");
-            id_f8ca8a9169ae47bca361dae84c3b57ed.WireTo(id_75c407aa6c5642e29e730d2d55c75fd5, "fanoutList");
-            id_1880adec211d481c81f1f6bf9d68bb44.WireTo(layoutDiagram, "eventHappened");
-            id_921f6ad099bf4800ad55ed55f4b7dd0e.WireTo(id_2b7993c7c45b463cb6e6bb67d9da4859, "output");
-            id_2b7993c7c45b463cb6e6bb67d9da4859.WireTo(createAndPaintALAWire, "output");
-            id_fc4988b6201345f3b672a5d09d799a46.WireTo(id_1e72afed9a9243a986e2537e69645d8f, "children");
-            id_1e72afed9a9243a986e2537e69645d8f.WireTo(id_b9c48dd303ab43709d7ad870490ae587, "children");
-            id_1e72afed9a9243a986e2537e69645d8f.WireTo(id_97465d1ac2514c4ca11cf024cf65c705, "children");
-            id_b9c48dd303ab43709d7ad870490ae587.WireTo(id_aa32d532df564af79473ecbab4babfbe, "clickedEvent");
-            id_aa32d532df564af79473ecbab4babfbe.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "selectedFolderPathOutput");
-            id_af65024e6f414a59967f286a1997494f.WireTo(id_7ed9e624f7074dfca8249bebace7945b, "dataOutput");
-            id_7ed9e624f7074dfca8249bebace7945b.WireTo(id_c24618240076440b9fd8e242ff63d492, "foundFiles");
-            id_c24618240076440b9fd8e242ff63d492.WireTo(id_3ea196e603934fd0995b8a05b2240e9b, "output");
-            id_3ea196e603934fd0995b8a05b2240e9b.WireTo(id_9e540f6fb2d14f798ebe82a810b7e841, "elementOutput");
-            id_9e540f6fb2d14f798ebe82a810b7e841.WireTo(id_09d933f3cdb04ba8823a74ae06256d01, "fileContentOutput");
-            id_b6f624d01b74402db0d0cf8daafe0eaf.WireTo(id_921f6ad099bf4800ad55ed55f4b7dd0e, "dataOutput");
+            mainWindow.WireTo(id_e5fefe7bc8a444b2b9adabbcc5d41291, "iuiStructure");
+            mainWindow.WireTo(id_37f4bd8a31634c1eb9c3d65e8aed10c1, "appStart");
+            id_e5fefe7bc8a444b2b9adabbcc5d41291.WireTo(setUpGraph, "children");
+            id_e5fefe7bc8a444b2b9adabbcc5d41291.WireTo(id_883773815f7042bda7be8ab58869baed, "children");
+            id_e5fefe7bc8a444b2b9adabbcc5d41291.WireTo(id_9d592da50c5a4fa5bdcdb08b47f7809a, "children");
+            id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_0ecc0e7b9fec45f19c95287796a4074d, "canvasOutput");
+            id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_5576b5a7f925477c8674cd1a4057bf2a, "eventHandlers");
+            id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_2d39d2452e3b4f99a1d5b7f88b75af93, "eventHandlers");
+            id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_570d8e5c11ea4ead875674b9f3336e1f, "contextMenu");
+            id_5576b5a7f925477c8674cd1a4057bf2a.WireTo(id_391f7928f2fa4da283d18b46450af68b, "eventHappened");
+            id_f066fb4914e3489598fcaeb18cc75098.WireTo(initialiseNode, "dataOutput");
+            id_570d8e5c11ea4ead875674b9f3336e1f.WireTo(id_f575dc072678429c9c384bdd95998f9b, "children");
+            id_f575dc072678429c9c384bdd95998f9b.WireTo(id_f066fb4914e3489598fcaeb18cc75098, "clickedEvent");
+            id_391f7928f2fa4da283d18b46450af68b.WireTo(id_3a32e33964294e6f8ff6e65163e8b8dd, "fanoutList");
+            id_391f7928f2fa4da283d18b46450af68b.WireTo(layoutDiagram, "complete");
+            id_444e2026d8a6432195984548e143b0de.WireTo(id_fcf0405f4ad749918fe57c071933192e, "dataOutput");
+            layoutDiagram.WireTo(id_444e2026d8a6432195984548e143b0de, "fanoutList");
+            id_fcf0405f4ad749918fe57c071933192e.WireTo(id_c051baa946f046c5bb253702167ffb2c, "fanoutList");
+            id_fcf0405f4ad749918fe57c071933192e.WireTo(id_dfe6763e4f26438aabb920fe2c67fd3f, "fanoutList");
+            id_2d39d2452e3b4f99a1d5b7f88b75af93.WireTo(layoutDiagram, "eventHappened");
+            id_4e3fab65ad804a6e912f986962f6b0ff.WireTo(createAndPaintALAWire, "output");
+            id_883773815f7042bda7be8ab58869baed.WireTo(id_495406eea6e74cfdb0abb7d130c4187e, "children");
+            id_495406eea6e74cfdb0abb7d130c4187e.WireTo(id_c473a6fc883f4ac6a333ea0d7ee370b6, "children");
+            id_495406eea6e74cfdb0abb7d130c4187e.WireTo(id_1a8ed61b43fe4f9283b1f4d80ce4cf8c, "children");
+            id_c473a6fc883f4ac6a333ea0d7ee370b6.WireTo(id_47a6b84fe07b4c7eb5aa48dcf120b0fd, "clickedEvent");
+            id_47a6b84fe07b4c7eb5aa48dcf120b0fd.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "selectedFolderPathOutput");
+            id_6e956301e1d545b39da87cefd4e0070d.WireTo(id_88c0cb3840eb40959597060da5c387c0, "foundFiles");
+            id_88c0cb3840eb40959597060da5c387c0.WireTo(id_eef4daad84484c61ae41590a6ba437b9, "output");
+            id_eef4daad84484c61ae41590a6ba437b9.WireTo(id_812743c062cb44b1b57d6d01da5aedd5, "elementOutput");
+            id_812743c062cb44b1b57d6d01da5aedd5.WireTo(id_93b9f61cd2dc4f8293424d081e8c6db4, "fileContentOutput");
+            id_3a32e33964294e6f8ff6e65163e8b8dd.WireTo(id_859f25e7fab44d3eb3fa218f335a479f, "dataOutput");
+            id_859f25e7fab44d3eb3fa218f335a479f.WireTo(id_4e3fab65ad804a6e912f986962f6b0ff, "output");
+            id_37f4bd8a31634c1eb9c3d65e8aed10c1.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -291,6 +291,18 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

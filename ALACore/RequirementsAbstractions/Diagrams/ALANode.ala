@@ -1666,7 +1666,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tModel.Type = input;\r\n\tTypeChanged?.Invoke(Model.Type);\r\n}",
+          "Value": "input =>\r\n{\r\n\tTypeChanged?.Invoke(input);\r\n}",
           "ParameterType": "Property"
         }
       ],

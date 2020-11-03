@@ -18,7 +18,7 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public object TestProperty { get; set; }
+        public List<string> TestProperty { get; set; }
 
         // Private fields
         private string _ignoreStringField = "";

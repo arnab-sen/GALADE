@@ -42,9 +42,9 @@ namespace RequirementsAbstractions
         }
 
 
-        public AbstractionModel CreateAbstractionModel(string code, AbstractionModel updateModel = null)
+        public AbstractionModel CreateAbstractionModel(string code)
         {
-            var model = updateModel ?? new AbstractionModel();
+            var model = new AbstractionModel();
 
             var parser = new CodeParser();
 
@@ -59,6 +59,16 @@ namespace RequirementsAbstractions
             _abstractionModels[model.Type] = model;
 
             return model;
+        }
+
+        /// <summary>
+        /// Clones an AbstractionModel source into an AbstractionModel destination.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        public void UpdateAbstractionModel(AbstractionModel source, AbstractionModel destination)
+        {
+            destination.CloneFrom(source);
         }
 
         public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;

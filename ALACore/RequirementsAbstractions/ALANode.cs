@@ -155,7 +155,7 @@ namespace RequirementsAbstractions
             if (notUpdated.Count == 0)
             {
                 var numInputsUpdated = newPorts.Count(p => p.IsInputPort);
-                if (numInputsUpdated > 0)
+                if (numInputsUpdated > 0 || Model.GetImplementedPorts().Count == 0)
                 {
                     for (int i = numInputsUpdated; i < _inputPortBoxes.Count; i++)
                     {
@@ -164,7 +164,7 @@ namespace RequirementsAbstractions
                 }
 
                 var numOutputsUpdated = newPorts.Count(p => !p.IsInputPort);
-                if (numOutputsUpdated > 0)
+                if (numOutputsUpdated > 0 || Model.GetAcceptedPorts().Count == 0)
                 {
                     for (int i = numOutputsUpdated; i < _outputPortBoxes.Count; i++)
                     {
@@ -235,7 +235,7 @@ namespace RequirementsAbstractions
             ApplyAction<object> id_e19b126ecea0467a87b4942dfd33f636 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
             ApplyAction<object> id_2fda92ce35e8477c9ba0a508c38f28e3 = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
             MouseButtonEvent id_e5f23026d915481bb2de15f33627a7af = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<string> id_236b2834f2d34c66a996b4770a534722 = new ApplyAction<string>() { Lambda = input =>{Model.Type = input;TypeChanged?.Invoke(Model.Type);} };
+            ApplyAction<string> id_236b2834f2d34c66a996b4770a534722 = new ApplyAction<string>() { Lambda = input =>{TypeChanged?.Invoke(input);} };
             MouseButtonEvent id_2a78a29c222e4909a8cbad9cc8d347c0 = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_35212c037c7e4204b1b146f7c8a38972 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
             ApplyAction<object> id_8f0907ab847d45bcbac20f4f41b9e66f = new ApplyAction<object>() { Lambda = input =>{(input as Box).InitialiseUI();} };
@@ -333,6 +333,8 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 
 
