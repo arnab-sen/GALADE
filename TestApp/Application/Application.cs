@@ -232,8 +232,7 @@ namespace TestApplication
             DirectorySearch id_6e956301e1d545b39da87cefd4e0070d = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions" }) { FilenameFilter = "*.cs" };
             Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_88c0cb3840eb40959597060da5c387c0 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("DomainAbstractions")){list = input["DomainAbstractions"];}return list;} };
             ForEach<string> id_eef4daad84484c61ae41590a6ba437b9 = new ForEach<string>() {  };
-            FileReader id_812743c062cb44b1b57d6d01da5aedd5 = new FileReader() {  };
-            ApplyAction<string> id_93b9f61cd2dc4f8293424d081e8c6db4 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModel(input);} };
+            ApplyAction<string> id_93b9f61cd2dc4f8293424d081e8c6db4 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModelFromPath(input);} };
             Data<string> id_3a32e33964294e6f8ff6e65163e8b8dd = new Data<string>() { storedData = "Apply<T1, T2>" };
             Apply<string, AbstractionModel> id_859f25e7fab44d3eb3fa218f335a479f = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
             Data<string> id_37f4bd8a31634c1eb9c3d65e8aed10c1 = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
@@ -272,8 +271,7 @@ namespace TestApplication
             id_47a6b84fe07b4c7eb5aa48dcf120b0fd.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "selectedFolderPathOutput");
             id_6e956301e1d545b39da87cefd4e0070d.WireTo(id_88c0cb3840eb40959597060da5c387c0, "foundFiles");
             id_88c0cb3840eb40959597060da5c387c0.WireTo(id_eef4daad84484c61ae41590a6ba437b9, "output");
-            id_eef4daad84484c61ae41590a6ba437b9.WireTo(id_812743c062cb44b1b57d6d01da5aedd5, "elementOutput");
-            id_812743c062cb44b1b57d6d01da5aedd5.WireTo(id_93b9f61cd2dc4f8293424d081e8c6db4, "fileContentOutput");
+            id_eef4daad84484c61ae41590a6ba437b9.WireTo(id_93b9f61cd2dc4f8293424d081e8c6db4, "elementOutput");
             id_3a32e33964294e6f8ff6e65163e8b8dd.WireTo(id_859f25e7fab44d3eb3fa218f335a479f, "dataOutput");
             id_859f25e7fab44d3eb3fa218f335a479f.WireTo(id_4e3fab65ad804a6e912f986962f6b0ff, "output");
             id_37f4bd8a31634c1eb9c3d65e8aed10c1.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "dataOutput");
@@ -295,6 +293,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

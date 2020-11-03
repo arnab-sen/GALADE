@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,9 @@ using ProgrammingParadigms;
 using DomainAbstractions;
 using Button = DomainAbstractions.Button;
 using TextBox = DomainAbstractions.TextBox;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Threading;
+using ContextMenu = DomainAbstractions.ContextMenu;
+using MenuItem = DomainAbstractions.MenuItem;
 
 namespace RequirementsAbstractions
 {
@@ -303,6 +305,13 @@ namespace RequirementsAbstractions
             EventConnector id_d3053e8a06fb4a7f9bb3c23d0902c191 = new EventConnector() {  };
             EventLambda id_b728e4a4198347a6b0238676be69861e = new EventLambda() { Lambda = CreateParameterRows };
             Box id_4b5b1194dbec40a6a1e3a57a620a20a1 = new Box() { Render = new Border() { Child = _parameterRowsPanel } };
+            EventConnector id_c2ddd407c8734d4e89ef6b3333fdf23d = new EventConnector() {  };
+            ContextMenu id_af99c02e14d74583b0bbfb9c0840e62d = new ContextMenu() {  };
+            MenuItem id_004f35d7a6274d2c9cde9d2fd63a9cf1 = new MenuItem(header: "Open source code...") {  };
+            EventLambda id_7524d8a0375e43e4be910c18524ca95b = new EventLambda() { Lambda = () =>{Process.Start(Model.GetCodeFilePath());} };
+            MenuItem id_80f81bfd9d85428fb4893d9f9e2e9411 = new MenuItem(header: "Through your default external editor") {  };
+            MenuItem id_eeeec3efaaad465a96ae8b3ee7160142 = new MenuItem(header: "Through the GALADE text editor") {  };
+            Data<string> id_c3ef4ebed25e4fe7b4d9330fd449b85a = new Data<string>() { Lambda = Model.GetCodeFilePath };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -314,6 +323,7 @@ namespace RequirementsAbstractions
             rootUI.WireTo(id_caec86d0fedb43e78bb4ab8633be664c, "eventHandlers");
             rootUI.WireTo(id_c07dba8ef7914a8ea200e917b33e80d1, "eventHandlers");
             rootUI.WireTo(id_21786151ad44489a9b8be75af23dcbde, "eventHandlers");
+            rootUI.WireTo(id_af99c02e14d74583b0bbfb9c0840e62d, "contextMenu");
             id_ff0351e6ea004c43a1fe6853ffd60569.WireTo(id_ecafe41efc6b4e0b97ede0bfd0074dc1, "children");
             id_ff0351e6ea004c43a1fe6853ffd60569.WireTo(nodeMiddle, "children");
             id_ff0351e6ea004c43a1fe6853ffd60569.WireTo(id_dc754931c65046a18375ef70859e17b0, "children");
@@ -328,7 +338,8 @@ namespace RequirementsAbstractions
             refreshInputPorts.WireTo(id_98b0792875b14bf2963774e056fa09ce, "dataOutput");
             id_9543034122064081bd1734858a85dfc5.WireTo(id_8213cc6c156b436397bdec137cd22480, "output");
             id_8213cc6c156b436397bdec137cd22480.WireTo(setUpPortBox, "elementOutput");
-            id_8213cc6c156b436397bdec137cd22480.WireTo(setNodeToolTip, "complete");
+            id_8213cc6c156b436397bdec137cd22480.WireTo(id_c2ddd407c8734d4e89ef6b3333fdf23d, "complete");
+            id_c2ddd407c8734d4e89ef6b3333fdf23d.WireTo(setNodeToolTip, "fanoutList");
             setUpPortBox.WireTo(id_5f9f1264838f4c659e1471e001534156, "output");
             id_dc754931c65046a18375ef70859e17b0.WireTo(id_d6dfec6b08ae47ef88a05f7c69f17aa9, "uiInstanceOutput");
             id_5f9f1264838f4c659e1471e001534156.WireTo(addUIEventsToPort, "fanoutList");
@@ -369,6 +380,11 @@ namespace RequirementsAbstractions
             parameterRowVert.WireTo(id_4b5b1194dbec40a6a1e3a57a620a20a1, "children");
             id_d3053e8a06fb4a7f9bb3c23d0902c191.WireTo(id_f8baa31ee3804ae79b81455bdf0e9c61, "fanoutList");
             id_d3053e8a06fb4a7f9bb3c23d0902c191.WireTo(id_b728e4a4198347a6b0238676be69861e, "complete");
+            id_af99c02e14d74583b0bbfb9c0840e62d.WireTo(id_004f35d7a6274d2c9cde9d2fd63a9cf1, "children");
+            id_004f35d7a6274d2c9cde9d2fd63a9cf1.WireTo(id_80f81bfd9d85428fb4893d9f9e2e9411, "children");
+            id_004f35d7a6274d2c9cde9d2fd63a9cf1.WireTo(id_eeeec3efaaad465a96ae8b3ee7160142, "children");
+            id_80f81bfd9d85428fb4893d9f9e2e9411.WireTo(id_7524d8a0375e43e4be910c18524ca95b, "clickedEvent");
+            id_eeeec3efaaad465a96ae8b3ee7160142.WireTo(id_c3ef4ebed25e4fe7b4d9330fd449b85a, "clickedEvent");
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
@@ -384,6 +400,16 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

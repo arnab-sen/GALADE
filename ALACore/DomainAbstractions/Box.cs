@@ -63,12 +63,15 @@ namespace DomainAbstractions
 
         // Ports
         private IUI uiLayout;
+        private IUI contextMenu;
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
             if (uiLayout != null) Render.Child = uiLayout.GetWPFElement();
+            if (contextMenu != null) Render.ContextMenu = contextMenu.GetWPFElement() as System.Windows.Controls.ContextMenu;
+
             SendToEventHandlers();
 
             return Render;

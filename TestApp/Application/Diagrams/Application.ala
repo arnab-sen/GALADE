@@ -1010,9 +1010,7 @@
           "Name": "elementOutput",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": [
-            "8da88d74e7fd4843bd48ccd7c07efa68"
-          ]
+          "ConnectionIds": []
         },
         {
           "Type": "IEvent",
@@ -1020,32 +1018,6 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [],
-      "Visible": true
-    },
-    {
-      "Id": "812743c062cb44b1b57d6d01da5aedd5",
-      "Type": "FileReader",
-      "Name": "",
-      "TreeParent": "eef4daad84484c61ae41590a6ba437b9",
-      "Ports": [
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "filePathInput",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "fileContentOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "387d1a7930d6475faeb8769f235f8428"
-          ]
         }
       ],
       "NodeParameters": [],
@@ -1068,7 +1040,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModel(input);\r\n}",
+          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModelFromPath(input);\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -1358,7 +1330,6 @@
     "6e956301e1d545b39da87cefd4e0070d",
     "88c0cb3840eb40959597060da5c387c0",
     "eef4daad84484c61ae41590a6ba437b9",
-    "812743c062cb44b1b57d6d01da5aedd5",
     "93b9f61cd2dc4f8293424d081e8c6db4",
     "3a32e33964294e6f8ff6e65163e8b8dd",
     "859f25e7fab44d3eb3fa218f335a479f",
@@ -2023,38 +1994,14 @@
       "Visible": true
     },
     {
-      "Id": "8da88d74e7fd4843bd48ccd7c07efa68",
+      "Id": "387d1a7930d6475faeb8769f235f8428",
       "SourceId": "eef4daad84484c61ae41590a6ba437b9",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "elementOutput",
         "IsInputPort": false,
         "Index": 0,
-        "ConnectionIds": [
-          "8da88d74e7fd4843bd48ccd7c07efa68"
-        ]
-      },
-      "DestinationId": "812743c062cb44b1b57d6d01da5aedd5",
-      "DestinationPort": {
-        "Type": "IDataFlow<string>",
-        "Name": "filePathInput",
-        "IsInputPort": true,
-        "Index": 0,
         "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "387d1a7930d6475faeb8769f235f8428",
-      "SourceId": "812743c062cb44b1b57d6d01da5aedd5",
-      "SourcePort": {
-        "Type": "IDataFlow<string>",
-        "Name": "fileContentOutput",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "387d1a7930d6475faeb8769f235f8428"
-        ]
       },
       "DestinationId": "93b9f61cd2dc4f8293424d081e8c6db4",
       "DestinationPort": {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,10 +43,11 @@ namespace RequirementsAbstractions
         }
 
 
-        public AbstractionModel CreateAbstractionModel(string code)
+        public AbstractionModel CreateAbstractionModel(string code, string path = "")
         {
             var model = new AbstractionModel();
             model.SourceCode = code;
+            model.CodeFilePath = path;
 
             var parser = new CodeParser();
 
@@ -62,6 +64,19 @@ namespace RequirementsAbstractions
             _abstractionModels[model.Type] = model;
 
             return model;
+        }
+
+        public AbstractionModel CreateAbstractionModelFromPath(string path)
+        {
+            if (File.Exists(path))
+            {
+                var code = File.ReadAllText(path);
+
+                var model = CreateAbstractionModel(code, path: path);
+                return model;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -270,16 +285,16 @@ namespace RequirementsAbstractions
         public AbstractionModelManager()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            EventConnector id_eb1953a144974727a832f23a86dcc0cb = new EventConnector() {  };
+            EventConnector id_8a142e0c2f524b91bfa3af96a6a80c00 = new EventConnector() {  };
             FileBrowser fileBrowser = new FileBrowser() { InstanceName = "fileBrowser", Mode = "Open" };
             FileReader fileReader = new FileReader() { InstanceName = "fileReader" };
-            Apply<string, AbstractionModel> id_2bd6685559f44fcb8055935c12b7e3e5 = new Apply<string, AbstractionModel>() { Lambda = filePath => CreateAbstractionModel(filePath) };
+            Apply<string, AbstractionModel> id_216e4fddfece493282d795635ba9d1b1 = new Apply<string, AbstractionModel>() { Lambda = filePath => CreateAbstractionModelFromPath(filePath) };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
-            id_eb1953a144974727a832f23a86dcc0cb.WireTo(fileBrowser, "fanoutList");
+            id_8a142e0c2f524b91bfa3af96a6a80c00.WireTo(fileBrowser, "fanoutList");
             fileBrowser.WireTo(fileReader, "selectedFilePathOutput");
-            fileReader.WireTo(id_2bd6685559f44fcb8055935c12b7e3e5, "fileContentOutput");
+            fileReader.WireTo(id_216e4fddfece493282d795635ba9d1b1, "fileContentOutput");
             // END AUTO-GENERATED WIRING
 
             _fileBrowser = fileBrowser;
@@ -287,6 +302,8 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 
 

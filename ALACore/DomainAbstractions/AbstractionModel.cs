@@ -19,6 +19,7 @@ namespace DomainAbstractions
         public string Type { get; set; } = "Object";
         public string Name { get; set; } = "";
         public string SourceCode { get; set; }
+        public string CodeFilePath { get; set; }
 
         // Private fields
         private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
@@ -41,6 +42,7 @@ namespace DomainAbstractions
         public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
+        public string GetCodeFilePath() => CodeFilePath;
 
         public void AddConstructorArg(string name, string initialValue = "", string type = "undefined")
         {
@@ -153,6 +155,8 @@ namespace DomainAbstractions
             Type = source.Type;
             Name = source.Name;
             _documentation = source._documentation;
+            SourceCode = source.SourceCode;
+            CodeFilePath = source.GetCodeFilePath();
 
             _implementedPorts.Clear();
             foreach (var pair in source._implementedPorts)
