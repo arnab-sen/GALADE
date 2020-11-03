@@ -72,6 +72,11 @@ namespace DomainAbstractions
             //     }
             // };
 
+            _dropDown.DropDownOpened += (sender, args) =>
+            {
+                (sender as ComboBox).Items.Refresh();
+            };
+
             _dropDown.DropDownClosed += (sender, args) =>
             {
                 if (_dropDown.SelectedValue != null && _dropDown.SelectedValue.ToString() != _lastSentValue)
