@@ -18,6 +18,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Type { get; set; } = "Object";
         public string Name { get; set; } = "";
+        public string SourceCode { get; set; }
 
         // Private fields
         private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value

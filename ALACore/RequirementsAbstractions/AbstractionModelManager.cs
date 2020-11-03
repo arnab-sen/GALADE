@@ -45,6 +45,7 @@ namespace RequirementsAbstractions
         public AbstractionModel CreateAbstractionModel(string code)
         {
             var model = new AbstractionModel();
+            model.SourceCode = code;
 
             var parser = new CodeParser();
 
