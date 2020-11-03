@@ -55,6 +55,7 @@ namespace RequirementsAbstractions
             SetAcceptedPorts(classNode, model);
             SetProperties(classNode, model);
             SetFields(classNode, model);
+            SetConstructorArgs(classNode, model);
             SetDocumentation(classNode, model);
 
             _abstractionModels[model.Type] = model;
@@ -236,6 +237,28 @@ namespace RequirementsAbstractions
             catch (Exception e)
             {
                 Logging.Log($"Failed to set documentation in AbstractionModelManager.\nError: {e}");
+            }
+        }
+
+        public void SetConstructorArgs(ClassDeclarationSyntax classNode, AbstractionModel model)
+        {
+            try
+            {
+                var parser = new CodeParser();
+
+                var ctor = parser.GetConstructors(classNode).FirstOrDefault() as ConstructorDeclarationSyntax;
+                if (ctor == null) return;
+
+                var ctorArgs = ctor.ParameterList.Parameters;
+
+                foreach (var arg in ctorArgs)
+                {
+                    model.AddConstructorArg(arg.Identifier.ToString(), arg.Default?.Value.ToString() ?? "default");
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to set constructor args in AbstractionModelManager.\nError: {e}");
             }
         }
 

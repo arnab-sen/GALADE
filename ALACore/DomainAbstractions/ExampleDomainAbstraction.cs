@@ -51,7 +51,7 @@ namespace DomainAbstractions
 
         // Methods
 
-        public ExampleDomainAbstraction()
+        public ExampleDomainAbstraction(string arg1, string arg2 = "test")
         {
 
         }

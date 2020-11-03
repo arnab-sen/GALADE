@@ -195,6 +195,10 @@ namespace DomainAbstractions
             return parameters;
         }
 
+        // Get constructor args
+        public IEnumerable<SyntaxNode> GetConstructors(string code) => GetConstructors(GetRoot(code));
+        public IEnumerable<SyntaxNode> GetConstructors(SyntaxNode root) => root.DescendantNodes().OfType<ConstructorDeclarationSyntax>();
+
         // Get documentation blocks
         //TODO
 
