@@ -114,7 +114,8 @@ namespace RequirementsAbstractions
                 var privateFields = parser.GetFields(classNode);
                 var portSyntaxes = privateFields.Where(n =>
                     n is FieldDeclarationSyntax field && 
-                        StartMatch(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<"))
+                        (StartMatch(field.Declaration.Type.ToString(), _programmingParadigms) ||
+                        StartMatch(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<")))
                     .Select(s => s as FieldDeclarationSyntax);
 
                 var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().Identifier.ToString(), IsInputPort = false }).ToList();
