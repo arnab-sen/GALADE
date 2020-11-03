@@ -113,7 +113,8 @@
           "Index": 1,
           "ConnectionIds": [
             "bfbb163608144dcfb8064f4af8177ee8",
-            "306cdd524d704475ab479e49281b8d15"
+            "306cdd524d704475ab479e49281b8d15",
+            "f67c0245fb9746a1898cec914cf54193"
           ]
         },
         {
@@ -1254,6 +1255,80 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "1e122d468c4c46f6a51c1ccd8342b13b",
+      "Type": "KeyEvent",
+      "Name": "",
+      "TreeParent": "9d592da50c5a4fa5bdcdb08b47f7809a",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<KeyEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": [
+            "7f4fcce22d0041efb13c0e693a14e141"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"KeyDown\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "Keys",
+          "Value": "new[] { Key.Enter }",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "ab1fe89cf03245909771699a05d7faaf",
+      "Type": "ApplyAction<object>",
+      "Name": "",
+      "TreeParent": "1e122d468c4c46f6a51c1ccd8342b13b",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\t(input as WPFCanvas).Focus();\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -1288,7 +1363,9 @@
     "3a32e33964294e6f8ff6e65163e8b8dd",
     "859f25e7fab44d3eb3fa218f335a479f",
     "37f4bd8a31634c1eb9c3d65e8aed10c1",
-    "1a8ed61b43fe4f9283b1f4d80ce4cf8c"
+    "1a8ed61b43fe4f9283b1f4d80ce4cf8c",
+    "1e122d468c4c46f6a51c1ccd8342b13b",
+    "ab1fe89cf03245909771699a05d7faaf"
   ],
   "Connections": [
     {
@@ -1439,7 +1516,8 @@
         "Index": 1,
         "ConnectionIds": [
           "bfbb163608144dcfb8064f4af8177ee8",
-          "306cdd524d704475ab479e49281b8d15"
+          "306cdd524d704475ab479e49281b8d15",
+          "f67c0245fb9746a1898cec914cf54193"
         ]
       },
       "DestinationId": "5576b5a7f925477c8674cd1a4057bf2a",
@@ -1462,10 +1540,35 @@
         "Index": 1,
         "ConnectionIds": [
           "bfbb163608144dcfb8064f4af8177ee8",
-          "306cdd524d704475ab479e49281b8d15"
+          "306cdd524d704475ab479e49281b8d15",
+          "f67c0245fb9746a1898cec914cf54193"
         ]
       },
       "DestinationId": "2d39d2452e3b4f99a1d5b7f88b75af93",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "f67c0245fb9746a1898cec914cf54193",
+      "SourceId": "9d592da50c5a4fa5bdcdb08b47f7809a",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "bfbb163608144dcfb8064f4af8177ee8",
+          "306cdd524d704475ab479e49281b8d15",
+          "f67c0245fb9746a1898cec914cf54193"
+        ]
+      },
+      "DestinationId": "1e122d468c4c46f6a51c1ccd8342b13b",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -2023,6 +2126,26 @@
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "rootFilePath",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "7f4fcce22d0041efb13c0e693a14e141",
+      "SourceId": "1e122d468c4c46f6a51c1ccd8342b13b",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "senderOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "DestinationId": "ab1fe89cf03245909771699a05d7faaf",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

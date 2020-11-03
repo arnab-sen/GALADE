@@ -238,6 +238,8 @@ namespace TestApplication
             Apply<string, AbstractionModel> id_859f25e7fab44d3eb3fa218f335a479f = new Apply<string, AbstractionModel>() { Lambda = input =>{return abstractionModelManager.GetAbstractionModel(input);} };
             Data<string> id_37f4bd8a31634c1eb9c3d65e8aed10c1 = new Data<string>() { storedData = @"D:\Coding\C#\Projects\GALADE\ALACore" };
             DropDownMenu id_1a8ed61b43fe4f9283b1f4d80ce4cf8c = new DropDownMenu() { Items = new string[100] };
+            KeyEvent id_1e122d468c4c46f6a51c1ccd8342b13b = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.Enter } };
+            ApplyAction<object> id_ab1fe89cf03245909771699a05d7faaf = new ApplyAction<object>() { Lambda = input =>{(input as WPFCanvas).Focus();} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -249,6 +251,7 @@ namespace TestApplication
             id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_0ecc0e7b9fec45f19c95287796a4074d, "canvasOutput");
             id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_5576b5a7f925477c8674cd1a4057bf2a, "eventHandlers");
             id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_2d39d2452e3b4f99a1d5b7f88b75af93, "eventHandlers");
+            id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_1e122d468c4c46f6a51c1ccd8342b13b, "eventHandlers");
             id_9d592da50c5a4fa5bdcdb08b47f7809a.WireTo(id_570d8e5c11ea4ead875674b9f3336e1f, "contextMenu");
             id_5576b5a7f925477c8674cd1a4057bf2a.WireTo(id_391f7928f2fa4da283d18b46450af68b, "eventHappened");
             id_f066fb4914e3489598fcaeb18cc75098.WireTo(initialiseNode, "dataOutput");
@@ -274,6 +277,7 @@ namespace TestApplication
             id_3a32e33964294e6f8ff6e65163e8b8dd.WireTo(id_859f25e7fab44d3eb3fa218f335a479f, "dataOutput");
             id_859f25e7fab44d3eb3fa218f335a479f.WireTo(id_4e3fab65ad804a6e912f986962f6b0ff, "output");
             id_37f4bd8a31634c1eb9c3d65e8aed10c1.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "dataOutput");
+            id_1e122d468c4c46f6a51c1ccd8342b13b.WireTo(id_ab1fe89cf03245909771699a05d7faaf, "senderOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -291,6 +295,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

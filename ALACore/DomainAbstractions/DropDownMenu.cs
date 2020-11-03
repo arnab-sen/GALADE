@@ -103,6 +103,7 @@ namespace DomainAbstractions
                     // eventEnterPressed?.Execute();
                     _lastSentValue = _dropDown.SelectedValue as string;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
+                    Keyboard.ClearFocus();
                 }
             };
 
