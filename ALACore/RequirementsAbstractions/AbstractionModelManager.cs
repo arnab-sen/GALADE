@@ -75,13 +75,13 @@ namespace RequirementsAbstractions
         public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;
         public List<string> GetAbstractionTypes() => _abstractionModels.Keys.ToList();
 
-        private bool StartMatch(string candidate, IEnumerable<string> set)
+        private bool StartMatch(string candidate, IEnumerable<string> set, string prefix = "", string suffix = "")
         {
             bool matches = false;
 
             foreach (var str in set)
             {
-                if (candidate.StartsWith(str))
+                if (candidate.StartsWith(prefix + str + suffix))
                 {
                     matches = true;
                     break;
@@ -113,9 +113,11 @@ namespace RequirementsAbstractions
 
                 var privateFields = parser.GetFields(classNode);
                 var portSyntaxes = privateFields.Where(n =>
-                    n is FieldDeclarationSyntax field && StartMatch(field.Declaration.Type.ToString(), _programmingParadigms)).Select(s => s as FieldDeclarationSyntax);
+                    n is FieldDeclarationSyntax field && 
+                        StartMatch(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<"))
+                    .Select(s => s as FieldDeclarationSyntax);
 
-                var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().ToString(), IsInputPort = false }).ToList();
+                var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().Identifier.ToString(), IsInputPort = false }).ToList();
 
                 foreach (var port in portList)
                 {
