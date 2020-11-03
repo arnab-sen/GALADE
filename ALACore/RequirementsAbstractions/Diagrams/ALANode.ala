@@ -338,7 +338,7 @@
     {
       "Id": "91f9a7cea4cd49e38b03618fda4ebbe9",
       "Type": "Data<object>",
-      "Name": "",
+      "Name": "refreshInputPorts",
       "TreeParent": "04bf50b04eee4b53b9fe2263fde6c75e",
       "Ports": [
         {
@@ -383,7 +383,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "Model.GetImplementedPorts",
+          "Value": "GetImplementedPorts",
           "ParameterType": "Property"
         }
       ],
@@ -474,7 +474,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "port =>\r\n{\r\n\tvar box = new Box();\r\n\tbox.Payload = port;\r\n\tbox.Width = 50;\r\n\tbox.Height = 15;\r\n\tbox.Background = Brushes.White;\r\n\tbox.BorderThickness = new Thickness(2);\r\n\r\n\tvar toolTipLabel = new System.Windows.Controls.Label() { Content = port.ToString()};\r\n\tbox.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };\r\n\tbox.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();\r\n\t\r\n\tvar text = new Text(text: port.Name);\r\n\ttext.HorizAlignment = HorizontalAlignment.Center;\r\n\tbox.Render.Child = (text as IUI).GetWPFElement();\r\n\t\r\n\tif (port.IsInputPort)\r\n\t{\r\n\t\t_inputPortsVert.WireTo(box, \"children\");\r\n\t\t_inputPortBoxes.Add(box);\r\n\t}\r\n\telse\r\n\t{\r\n\t\t_outputPortsVert.WireTo(box, \"children\");\r\n\t\t_outputPortBoxes.Add(box);\r\n\t}\r\n\t\r\n\treturn box;\r\n}",
+          "Value": "port =>\r\n{\r\n\tvar box = new Box();\r\n\tbox.Payload = port;\r\n\tbox.Width = 50;\r\n\tbox.Height = 15;\r\n\tbox.Background = Brushes.White;\r\n\tbox.BorderThickness = new Thickness(2);\r\n\r\n\tvar toolTipLabel = new System.Windows.Controls.Label() { Content = port.ToString()};\r\n\tbox.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };\r\n\tbox.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();\r\n\t\r\n\tvar text = new Text(text: port.Name);\r\n\ttext.HorizAlignment = HorizontalAlignment.Center;\r\n\tbox.Render.Child = (text as IUI).GetWPFElement();\r\n\t\r\n\tif (port.IsInputPort)\r\n\t{\r\n\t\t_inputPortsVert.WireTo(box, \"children\");\r\n\t\t_inputPortBoxes.Add(box);\r\n\t\t(_inputPortsVert as IUI).GetWPFElement(); /* Refresh UI */\r\n\t}\r\n\telse\r\n\t{\r\n\t\t_outputPortsVert.WireTo(box, \"children\");\r\n\t\t_outputPortBoxes.Add(box);\r\n\t\t(_outputPortsVert as IUI).GetWPFElement(); /* Refresh UI */\r\n\t}\r\n\t\r\n\treturn box;\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -1867,7 +1867,7 @@
     {
       "Id": "0b86e7f997954d3d84935470ef68289b",
       "Type": "Data<object>",
-      "Name": "",
+      "Name": "refreshOutputPorts",
       "TreeParent": "3cd8a050b44f43fcb7a83ee1783c7c7a",
       "Ports": [
         {
@@ -1911,7 +1911,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "Model.GetAcceptedPorts",
+          "Value": "GetAcceptedPorts",
           "ParameterType": "Property"
         }
       ],

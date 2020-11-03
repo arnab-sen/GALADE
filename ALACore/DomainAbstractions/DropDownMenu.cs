@@ -54,44 +54,61 @@ namespace DomainAbstractions
         // Private fields
         private ComboBox _dropDown = new ComboBox();
         private IEnumerable<string> _items = new List<string>();
+        private string _lastSentValue = "";
 
         // Ports
         private IDataFlow<string> selectedItem;
-        private IEvent eventEnterPressed;
+        // private IEvent eventEnterPressed;
 
         public DropDownMenu()
         {
             _dropDown.IsEditable = true;
-            _dropDown.SelectionChanged += (sender, args) =>
+            // _dropDown.SelectionChanged += (sender, args) =>
+            // {
+            //     if (selectedItem != null)
+            //     {
+            //         // selectedItem.Data = _dropDown.Text;
+            //         selectedItem.Data = _dropDown.SelectedValue as string;
+            //     }
+            // };
+
+            _dropDown.DropDownClosed += (sender, args) =>
             {
-                if (selectedItem != null)
+                if (_dropDown.SelectedValue.ToString() != _lastSentValue)
                 {
-                    selectedItem.Data = _dropDown.Text;
+                    _lastSentValue = _dropDown.SelectedValue as string;
+                    if (selectedItem != null) selectedItem.Data = _lastSentValue;
                 }
+                
             };
 
             _dropDown.StaysOpenOnEdit = true;
 
-            _dropDown.PreviewMouseLeftButtonDown += (sender, args) =>
-            {
-            };
-
-            _dropDown.PreviewLostKeyboardFocus += (sender, args) =>
-            {
-                
-            };
-
-            TextChangedEventHandler textChangedEventHandler = (sender, args) =>
-            {
-                if (selectedItem != null) selectedItem.Data = _dropDown.Text;
-            };
-
-            _dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
-
+            // TextChangedEventHandler textChangedEventHandler = (sender, args) =>
+            // {
+            //     if (selectedItem != null) selectedItem.Data = _dropDown.Text;
+            // };
+            //
+            // _dropDown.AddHandler(TextBoxBase.TextChangedEvent, textChangedEventHandler);
 
             _dropDown.KeyDown += (sender, args) =>
             {
-                if (args.Key == Key.Enter) eventEnterPressed?.Execute();
+                if (args.Key == Key.Enter)
+                {
+                    // eventEnterPressed?.Execute();
+                    _lastSentValue = _dropDown.SelectedValue as string;
+                    if (selectedItem != null) selectedItem.Data = _lastSentValue;
+                }
+            };
+
+            _dropDown.LostKeyboardFocus += (sender, args) =>
+            {
+                if (_dropDown.SelectedValue != null && _dropDown.SelectedValue.ToString() != _lastSentValue)
+                {
+                    _lastSentValue = _dropDown.SelectedValue as string;
+                    if (selectedItem != null) selectedItem.Data = _lastSentValue;
+                }
+                
             };
 
         }

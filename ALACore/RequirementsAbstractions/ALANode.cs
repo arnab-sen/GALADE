@@ -54,6 +54,8 @@ namespace RequirementsAbstractions
         private Vertical _outputPortsVert;
 
         // Ports
+        private Data<object> _refreshInputPorts;
+        private Data<object> _refreshOutputPorts;
 
         // Methods
 
@@ -71,9 +73,13 @@ namespace RequirementsAbstractions
             return boxList.FirstOrDefault(box => box.Payload is Port port && port.IsInputPort == inputPort);
         }
 
+        public List<Port> GetImplementedPorts() => Model.GetImplementedPorts();
+        public List<Port> GetAcceptedPorts() => Model.GetAcceptedPorts();
+
         public void UpdateUI()
         {
-
+            (_refreshInputPorts as IEvent).Execute();
+            (_refreshOutputPorts as IEvent).Execute();
         }
 
         /// <summary>
@@ -88,6 +94,7 @@ namespace RequirementsAbstractions
             int inputIndex = 0;
             int outputIndex = 0;
 
+            // Update current ports
             foreach (var newPort in newPorts)
             {
                 if (newPort.IsInputPort)
@@ -95,6 +102,8 @@ namespace RequirementsAbstractions
                     if (inputIndex < _inputPortBoxes.Count)
                     {
                         var box = _inputPortBoxes[inputIndex];
+                        box.Render.Visibility = Visibility.Visible;
+
                         var oldPort = box.Payload as Port;
 
                         oldPort.Type = newPort.Type;
@@ -119,6 +128,8 @@ namespace RequirementsAbstractions
                     if (outputIndex < _outputPortBoxes.Count)
                     {
                         var box = _outputPortBoxes[outputIndex];
+                        box.Render.Visibility = Visibility.Visible;
+
                         var oldPort = box.Payload as Port;
 
                         oldPort.Type = newPort.Type;
@@ -137,6 +148,28 @@ namespace RequirementsAbstractions
                     {
                         notUpdated.Add(newPort);
                     }
+                }
+            }
+
+            // Hide any extra port boxes
+            if (notUpdated.Count == 0)
+            {
+                var numInputsUpdated = newPorts.Count(p => p.IsInputPort);
+                if (numInputsUpdated > 0)
+                {
+                    for (int i = numInputsUpdated; i < _inputPortBoxes.Count; i++)
+                    {
+                        _inputPortBoxes[i].Render.Visibility = Visibility.Collapsed;
+                    } 
+                }
+
+                var numOutputsUpdated = newPorts.Count(p => !p.IsInputPort);
+                if (numOutputsUpdated > 0)
+                {
+                    for (int i = numOutputsUpdated; i < _outputPortBoxes.Count; i++)
+                    {
+                        _outputPortBoxes[i].Render.Visibility = Visibility.Collapsed;
+                    }  
                 }
             }
 
@@ -164,10 +197,10 @@ namespace RequirementsAbstractions
             TextBox nodeNameTextBox = new TextBox() { InstanceName = "nodeNameTextBox", Text = Model.Name, Width = 50 };
             UIFactory id_bb8f03294a9a48af9f9b9a61476b0da3 = new UIFactory(getUIContainer: () =>{_inputPortsVert = new Vertical();_inputPortsVert.Margin = new Thickness(0);return _inputPortsVert;}) {  };
             ConvertToEvent<object> id_f97d556777d64643a49015361cdf3eae = new ConvertToEvent<object>() {  };
-            Data<object> id_91f9a7cea4cd49e38b03618fda4ebbe9 = new Data<object>() { Lambda = Model.GetImplementedPorts };
+            Data<object> refreshInputPorts = new Data<object>() { InstanceName = "refreshInputPorts", Lambda = GetImplementedPorts };
             Cast<object, IEnumerable<Port>> id_e3601270579f43fb9438abf1368dd4fb = new Cast<object, IEnumerable<Port>>() {  };
             ForEach<Port> id_a9767fa19a9c4835a2da0b81649c58d6 = new ForEach<Port>() {  };
-            Apply<Port, object> setUpPortBox = new Apply<Port, object>() { InstanceName = "setUpPortBox", Lambda = port =>{var box = new Box();box.Payload = port;box.Width = 50;box.Height = 15;box.Background = Brushes.White;box.BorderThickness = new Thickness(2);var toolTipLabel = new System.Windows.Controls.Label() { Content = port.ToString()};box.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();var text = new Text(text: port.Name);text.HorizAlignment = HorizontalAlignment.Center;box.Render.Child = (text as IUI).GetWPFElement();if (port.IsInputPort){_inputPortsVert.WireTo(box, "children");_inputPortBoxes.Add(box);}else{_outputPortsVert.WireTo(box, "children");_outputPortBoxes.Add(box);}return box;} };
+            Apply<Port, object> setUpPortBox = new Apply<Port, object>() { InstanceName = "setUpPortBox", Lambda = port =>{var box = new Box();box.Payload = port;box.Width = 50;box.Height = 15;box.Background = Brushes.White;box.BorderThickness = new Thickness(2);var toolTipLabel = new System.Windows.Controls.Label() { Content = port.ToString()};box.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();var text = new Text(text: port.Name);text.HorizAlignment = HorizontalAlignment.Center;box.Render.Child = (text as IUI).GetWPFElement();if (port.IsInputPort){_inputPortsVert.WireTo(box, "children");_inputPortBoxes.Add(box);(_inputPortsVert as IUI).GetWPFElement(); /* Refresh UI */}else{_outputPortsVert.WireTo(box, "children");_outputPortBoxes.Add(box);(_outputPortsVert as IUI).GetWPFElement(); /* Refresh UI */}return box;} };
             UIFactory id_15438da4578a49e4b6b653471637e8b4 = new UIFactory(getUIContainer: () =>{_outputPortsVert = new Vertical();_outputPortsVert.Margin = new Thickness(0);return _outputPortsVert;}) {  };
             ApplyAction<object> id_5cefcbf4b75e46bf91bbe56966a9b9fb = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.BorderColour = Brushes.Red;} };
             DataFlowConnector<object> id_15fb68eda8ca441a858eb15cf6921395 = new DataFlowConnector<object>() {  };
@@ -209,7 +242,7 @@ namespace RequirementsAbstractions
             EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
             Apply<object, object> id_cabbed7c83a94ee4acd857d386823ef0 = new Apply<object, object>() { Lambda = input =>{var notUpdated = UpdatePorts(input as IEnumerable<Port>);return notUpdated;} };
             ConvertToEvent<object> id_3cd8a050b44f43fcb7a83ee1783c7c7a = new ConvertToEvent<object>() {  };
-            Data<object> id_0b86e7f997954d3d84935470ef68289b = new Data<object>() { Lambda = Model.GetAcceptedPorts };
+            Data<object> refreshOutputPorts = new Data<object>() { InstanceName = "refreshOutputPorts", Lambda = GetAcceptedPorts };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -229,8 +262,8 @@ namespace RequirementsAbstractions
             nodeIdRow.WireTo(nodeNameTextBox, "children");
             nodeTypeDropDownMenu.WireTo(id_236b2834f2d34c66a996b4770a534722, "selectedItem");
             id_bb8f03294a9a48af9f9b9a61476b0da3.WireTo(id_f97d556777d64643a49015361cdf3eae, "uiInstanceOutput");
-            id_f97d556777d64643a49015361cdf3eae.WireTo(id_91f9a7cea4cd49e38b03618fda4ebbe9, "eventOutput");
-            id_91f9a7cea4cd49e38b03618fda4ebbe9.WireTo(id_cabbed7c83a94ee4acd857d386823ef0, "dataOutput");
+            id_f97d556777d64643a49015361cdf3eae.WireTo(refreshInputPorts, "eventOutput");
+            refreshInputPorts.WireTo(id_cabbed7c83a94ee4acd857d386823ef0, "dataOutput");
             id_cabbed7c83a94ee4acd857d386823ef0.WireTo(id_e3601270579f43fb9438abf1368dd4fb, "output");
             id_e3601270579f43fb9438abf1368dd4fb.WireTo(id_a9767fa19a9c4835a2da0b81649c58d6, "output");
             id_a9767fa19a9c4835a2da0b81649c58d6.WireTo(setNodeToolTip, "complete");
@@ -265,13 +298,15 @@ namespace RequirementsAbstractions
             id_2a1aadba12ab4a08a7e0915eb02d57d9.WireTo(id_1b0a7b9d2cdb4bea9bfd914fe7468ca9, "sourceOutput");
             id_e5f23026d915481bb2de15f33627a7af.WireTo(id_5500b59da4314a30b69663957b642c25, "sourceOutput");
             id_2a78a29c222e4909a8cbad9cc8d347c0.WireTo(id_35212c037c7e4204b1b146f7c8a38972, "sourceOutput");
-            id_0b86e7f997954d3d84935470ef68289b.WireTo(id_cabbed7c83a94ee4acd857d386823ef0, "dataOutput");
-            id_3cd8a050b44f43fcb7a83ee1783c7c7a.WireTo(id_0b86e7f997954d3d84935470ef68289b, "eventOutput");
+            refreshOutputPorts.WireTo(id_cabbed7c83a94ee4acd857d386823ef0, "dataOutput");
+            id_3cd8a050b44f43fcb7a83ee1783c7c7a.WireTo(refreshOutputPorts, "eventOutput");
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
 
             // Instance mapping
+            _refreshInputPorts = refreshInputPorts;
+            _refreshOutputPorts = refreshOutputPorts;
         }
 
         private AbstractionModel CreateDummyAbstractionModel()
@@ -298,6 +333,14 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
