@@ -163,11 +163,13 @@ namespace RequirementsAbstractions
                     AccessLevel = "public"
                 };
 
-                var properties = parser.FilterByAccessLevel(parser.GetProperties(classNode), accessLevel: "public").Select(p => (p as PropertyDeclarationSyntax));
+                var properties = parser
+                    .FilterByAccessLevel(parser.GetProperties(classNode), accessLevel: "public")
+                    .Select(p => (p as PropertyDeclarationSyntax));
 
                 foreach (var property in properties)
                 {
-                    model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default");
+                    model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default", type: property.Type.ToString());
                 }
             }
             catch (Exception e)
@@ -187,13 +189,15 @@ namespace RequirementsAbstractions
 
                 var fields = parser
                     .FilterByAccessLevel(parser.GetFields(classNode), accessLevel: "public")
-                    .Select(p => (p as FieldDeclarationSyntax).Declaration.Variables.FirstOrDefault());
+                    .Select(p => (p as FieldDeclarationSyntax).Declaration);
 
                 foreach (var field in fields)
                 {
-                    var fieldName = field.Identifier.ToString();
-                    var fieldValue = field.Initializer?.Value.ToString() ?? "default";
-                    model.AddField(fieldName, fieldValue);
+                    var fieldName = field.Variables.First().Identifier.ToString();
+                    var fieldValue = field.Variables.First().Initializer?.Value.ToString() ?? "default";
+                    var type = field.Type.ToString();
+
+                    model.AddField(fieldName, fieldValue, type);
                 }
             }
             catch (Exception e)
@@ -253,7 +257,7 @@ namespace RequirementsAbstractions
 
                 foreach (var arg in ctorArgs)
                 {
-                    model.AddConstructorArg(arg.Identifier.ToString(), arg.Default?.Value.ToString() ?? "default");
+                    model.AddConstructorArg(arg.Identifier.ToString(), arg.Default?.Value.ToString() ?? "default", type: arg.Type.ToString());
                 }
             }
             catch (Exception e)

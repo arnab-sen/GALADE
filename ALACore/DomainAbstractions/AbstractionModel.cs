@@ -26,6 +26,7 @@ namespace DomainAbstractions
         private Dictionary<string, Port> _implementedPorts = new Dictionary<string, Port>(); // name : type
         private Dictionary<string, Port> _acceptedPorts = new Dictionary<string, Port>(); // name : type
         private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
+        private Dictionary<string, string> _types = new Dictionary<string, string>(); // typeName : type. This contains the types of fields, properties, and constructor args
         private string _documentation = "";
 
         // Ports
@@ -37,21 +38,25 @@ namespace DomainAbstractions
         public List<Port> GetImplementedPorts() => _implementedPorts.Values.ToList();
         public List<Port> GetAcceptedPorts() => _acceptedPorts.Values.ToList();
         public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
+        public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
 
-        public void AddConstructorArg(string name, string initialValue = "")
+        public void AddConstructorArg(string name, string initialValue = "", string type = "undefined")
         {
             _constructorArgs[name] = initialValue;
+            _types[name] = type;
         }
 
-        public void AddField(string name, string initialValue = "")
+        public void AddField(string name, string initialValue = "", string type = "undefined")
         {
             _fields[name] = initialValue;
+            _types[name] = type;
         }
 
-        public void AddProperty(string name, string initialValue = "")
+        public void AddProperty(string name, string initialValue = "", string type = "undefined")
         {
             _properties[name] = initialValue;
+            _types[name] = type;
         }
 
         public void AddImplementedPort(string type, string name)
@@ -146,6 +151,7 @@ namespace DomainAbstractions
         {
             Type = source.Type;
             Name = source.Name;
+            _documentation = source._documentation;
 
             _implementedPorts.Clear();
             foreach (var pair in source._implementedPorts)
@@ -183,7 +189,11 @@ namespace DomainAbstractions
                 _properties[pair.Key] = pair.Value;
             }
 
-            _documentation = source._documentation;
+            _types.Clear();
+            foreach (var pair in source._types)
+            {
+                _types[pair.Key] = pair.Value;
+            }
         }
 
         /// <summary>

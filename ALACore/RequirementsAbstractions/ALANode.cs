@@ -299,7 +299,7 @@ namespace RequirementsAbstractions
             Text id_7b00c293aa9f4427ac20b6350b84e7a9 = new Text(text: "") {  };
             Text id_e98d7e33d0464a6ebe4e46710bfeeb3e = new Text(text: "") {  };
             Button id_e8e7b720170e48a0b289f456608db55c = new Button(title: "+") { Width = 20, Margin = new Thickness(5) };
-            EventLambda id_f8baa31ee3804ae79b81455bdf0e9c61 = new EventLambda() { Lambda = () => {var dropDown = new DropDownMenu() {Items = NodeParameters,Width = 100};var textBox = new TextBox() {Width = 100};var deleteButton = new Button("-") {Width = 20,Height = 20};var horiz = new Horizontal();horiz.WireTo(dropDown, "children");horiz.WireTo(textBox, "children");horiz.WireTo(deleteButton, "children");var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;buttonUI.Click += (sender, args) => {var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));_nodeParameterRows.Remove(row);CreateParameterRows();};_nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));} };
+            EventLambda id_f8baa31ee3804ae79b81455bdf0e9c61 = new EventLambda() { Lambda = () => {var dropDown = new DropDownMenu() {Items = NodeParameters,Width = 100};var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);var textBox = new TextBox() {Width = 100};var deleteButton = new Button("-") {Width = 20,Height = 20};var horiz = new Horizontal();horiz.WireTo(dropDown, "children");horiz.WireTo(textBox, "children");horiz.WireTo(deleteButton, "children");var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;buttonUI.Click += (sender, args) => {var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));_nodeParameterRows.Remove(row);CreateParameterRows();};_nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));} };
             EventConnector id_d3053e8a06fb4a7f9bb3c23d0902c191 = new EventConnector() {  };
             EventLambda id_b728e4a4198347a6b0238676be69861e = new EventLambda() { Lambda = CreateParameterRows };
             Box id_4b5b1194dbec40a6a1e3a57a620a20a1 = new Box() { Render = new Border() { Child = _parameterRowsPanel } };
@@ -384,6 +384,12 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
 
 
 
