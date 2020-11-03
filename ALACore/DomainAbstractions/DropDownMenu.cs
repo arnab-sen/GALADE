@@ -42,13 +42,13 @@ namespace DomainAbstractions
         public double Width
         {
             get => _dropDown.Width;
-            set => _dropDown.Width = value;
+            set => _dropDown.MinWidth = value;
         }
 
         public double Height
         {
             get => _dropDown.Height;
-            set => _dropDown.Height = value;
+            set => _dropDown.MinHeight = value;
         }
 
         // Private fields
@@ -74,7 +74,7 @@ namespace DomainAbstractions
 
             _dropDown.DropDownClosed += (sender, args) =>
             {
-                if (_dropDown.SelectedValue.ToString() != _lastSentValue)
+                if (_dropDown.SelectedValue != null && _dropDown.SelectedValue.ToString() != _lastSentValue)
                 {
                     _lastSentValue = _dropDown.SelectedValue as string;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
