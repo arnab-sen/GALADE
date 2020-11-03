@@ -54,6 +54,7 @@ namespace RequirementsAbstractions
             SetImplementedPorts(classNode, model);
             SetAcceptedPorts(classNode, model);
             SetProperties(classNode, model);
+            SetFields(classNode, model);
             SetDocumentation(classNode, model);
 
             _abstractionModels[model.Type] = model;
@@ -168,6 +169,32 @@ namespace RequirementsAbstractions
             catch (Exception e)
             {
                 Logging.Log($"Failed to set properties in AbstractionModelManager.\nError: {e}");
+            }
+        }
+
+        public void SetFields(ClassDeclarationSyntax classNode, AbstractionModel model)
+        {
+            try
+            {
+                var parser = new CodeParser()
+                {
+                    AccessLevel = "public"
+                };
+
+                var fields = parser
+                    .FilterByAccessLevel(parser.GetFields(classNode), accessLevel: "public")
+                    .Select(p => (p as FieldDeclarationSyntax).Declaration.Variables.FirstOrDefault());
+
+                foreach (var field in fields)
+                {
+                    var fieldName = field.Identifier.ToString();
+                    var fieldValue = field.Initializer?.Value.ToString() ?? "default";
+                    model.AddField(fieldName, fieldValue);
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to set fields in AbstractionModelManager.\nError: {e}");
             }
         }
 
