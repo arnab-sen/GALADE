@@ -8,7 +8,8 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>Subscribes a KeyEventHandler to an IEventHandler with a user-specified lambda, and propagates the sender, args, and event (as an IEvent) as outputs
     /// if the Condition is true.</para>
-    /// <para>The Keys[] array represents the key combination should be considered.</para>
+    /// <para>The Keys[] array represents the key combination that should be considered based on the event, e.g. if the event name is "KeyDown", then Keys[] represents
+    /// the combination of keys that should be pressed.</para>
     /// </summary>
     public class KeyEvent : IEventHandler
     {
