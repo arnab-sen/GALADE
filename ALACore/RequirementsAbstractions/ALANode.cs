@@ -65,7 +65,7 @@ namespace RequirementsAbstractions
         // Global instances
         private Vertical _inputPortsVert;
         private Vertical _outputPortsVert;
-        public Vertical parameterRowVert = new Vertical() { InstanceName = "parameterRowVert" };
+        public Vertical parameterRowVert = new Vertical() { InstanceName = "parameterRowVert", Margin = new Thickness(5, 5, 5, 0) };
         public StackPanel _parameterRowsPanel = new StackPanel();
 
         // Ports
