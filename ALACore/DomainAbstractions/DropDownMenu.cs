@@ -48,7 +48,7 @@ namespace DomainAbstractions
         public double Height
         {
             get => _dropDown.Height;
-            set => _dropDown.MinHeight = value;
+            set => _dropDown.Height = value;
         }
 
         // Private fields

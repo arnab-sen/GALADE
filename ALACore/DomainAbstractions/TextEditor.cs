@@ -30,6 +30,12 @@ namespace DomainAbstractions
             set => _editor.MinHeight = value;
         }
 
+        public string Text
+        {
+            get => _editor.Text;
+            set => _editor.Text = value;
+        }
+
         // Private fields
         // private ScintillaNET.Scintilla _editor = new Scintilla();
         private ScintillaWPF _editor = new ScintillaWPF();
@@ -41,6 +47,12 @@ namespace DomainAbstractions
         {
             _editor.Lexer = Lexer.Cpp;
             SetUpEditorStyle();
+
+            _editor.HScrollBar = false;
+            _editor.VScrollBar = false;
+            
+            _editor.MinHeight = 50;
+            _editor.MinWidth = 100;
 
             return _editor;
         }

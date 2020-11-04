@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Forms;
 using WPF = System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace DomainAbstractions
 {
@@ -67,6 +68,12 @@ namespace DomainAbstractions
             set => _textBox.MinWidth = value;
         }
 
+        public string Font
+        {
+            get => _textBox.FontFamily.ToString();
+            set => _textBox.FontFamily = new FontFamily(value);
+        }
+
         // Fields
         private WPF.TextBox _textBox = new WPF.TextBox();
 
@@ -94,7 +101,7 @@ namespace DomainAbstractions
             // Track indentation
             _textBox.PreviewKeyDown += (sender, args) =>
             {
-                if (TrackIndent && args.Key == Key.Return)
+                if (TrackIndent && args.Key == Key.Return && (Keyboard.Modifiers & ModifierKeys.Shift) != 0)
                 {
                     args.Handled = true; // Handle enter press here rather than externally
 
