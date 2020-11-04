@@ -107,6 +107,7 @@
     <Compile Include="DomainAbstractions\AbstractionModel.cs" />
     <Compile Include="DomainAbstractions\DirectorySearch.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
+    <Compile Include="DomainAbstractions\FolderWatcher.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\TextEditor.cs" />
     <Compile Include="DomainAbstractions\UIFactory.cs" />
