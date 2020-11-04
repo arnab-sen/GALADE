@@ -1,0 +1,46 @@
+{
+  "Nodes": [
+    {
+      "Id": "bde87af514aa46dba6634ef5c4a700d8",
+      "Type": "BezierCurve",
+      "Name": "curvedWire",
+      "TreeParent": "",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "child",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IUI",
+          "Name": "toolTip",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IUI",
+          "Name": "contextMenu",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEventHandler",
+          "Name": "eventHandlers",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    }
+  ],
+  "NodeIds": [
+    "bde87af514aa46dba6634ef5c4a700d8"
+  ],
+  "Connections": []
+}

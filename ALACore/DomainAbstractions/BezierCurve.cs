@@ -80,6 +80,8 @@ namespace DomainAbstractions
         private BezierSegment _bezier = new BezierSegment();
 
         // Ports
+        private IUI toolTip;
+        private IUI contextMenu;
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // IUI implementation
@@ -111,6 +113,9 @@ namespace DomainAbstractions
             {
                 eventHandler.Sender = this;
             }
+
+            if (toolTip != null) _path.ToolTip = toolTip.GetWPFElement();
+            if (contextMenu != null) _path.ContextMenu = contextMenu.GetWPFElement() as System.Windows.Controls.ContextMenu;
 
             return _path;
         }

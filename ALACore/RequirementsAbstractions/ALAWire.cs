@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,14 +21,14 @@ namespace RequirementsAbstractions
         public Graph Graph { get; set; }
         public Canvas Canvas { get; set; }
         public UIElement Render { get; set; }
-        public object Source { get; set; }
-        public object Destination { get; set; }
+        public ALANode Source { get; set; }
+        public ALANode Destination { get; set; }
         public Box SourcePort { get; set; }
         public Box DestinationPort { get; set; }
 
         // Private fields
         private Box rootUI;
-        private BezierCurve _bezier;
+        private BezierCurve _bezier = new BezierCurve();
 
         // Ports
 
@@ -40,15 +40,13 @@ namespace RequirementsAbstractions
         /// </summary>
         public void Paint()
         {
-            _bezier = new BezierCurve();
-
             Refresh();
 
-            var render = (_bezier as IUI).GetWPFElement();
+            Render = (_bezier as IUI).GetWPFElement();
 
-            Canvas.Children.Add(render);
-            Canvas.SetLeft(render, 0);
-            Canvas.SetTop(render, 0);
+            Canvas.Children.Add(Render);
+            Canvas.SetLeft(Render, 0);
+            Canvas.SetTop(Render, 0);
         }
 
         public Point GetAttachmentPoint(bool inputPort = false)
@@ -113,25 +111,23 @@ namespace RequirementsAbstractions
 
         private void SetWiring()
         {
-            rootUI = new Box() { Background = Brushes.Transparent };
-
             // BEGIN AUTO-GENERATED INSTANTIATIONS
+            BezierCurve curvedWire = new BezierCurve() { InstanceName = "curvedWire" };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
             // END AUTO-GENERATED WIRING
 
-            Render = (rootUI as IUI).GetWPFElement();
-        }
-
-        public void CreateInternals()
-        {
-            SetWiring();
+            _bezier = curvedWire;
         }
 
         public ALAWire()
         {
             Id = Utilities.GetUniqueId();
+
+            SetWiring();
         }
     }
 }
+
+
