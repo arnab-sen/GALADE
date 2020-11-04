@@ -12,10 +12,12 @@ namespace DomainAbstractions
     public class ToolTip : IUI
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
+        public Func<string> GetLabel { get; set; }
+        public string Label { get; set; } = "";
 
         // Private fields
-        private System.Windows.Controls.ToolTip toolTip = new System.Windows.Controls.ToolTip();
+        private System.Windows.Controls.ToolTip _toolTip = new System.Windows.Controls.ToolTip();
 
         // Ports
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
@@ -29,14 +31,23 @@ namespace DomainAbstractions
         {
             foreach (var eventHandler in eventHandlers)
             {
-                if (eventHandler.Sender == null) eventHandler.Sender = toolTip;
+                if (eventHandler.Sender == null) eventHandler.Sender = _toolTip;
             }
         }
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            return toolTip;
+            if (GetLabel != null)
+            {
+                _toolTip.Opened += (sender, args) => _toolTip.Content = GetLabel();
+            }
+            else
+            {
+                _toolTip.Content = Label;
+            }
+
+            return _toolTip;
         }
     }
 }

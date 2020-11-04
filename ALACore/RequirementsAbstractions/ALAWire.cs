@@ -9,6 +9,7 @@ using System.Windows.Media;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
+using ToolTip = DomainAbstractions.ToolTip;
 
 namespace RequirementsAbstractions
 {
@@ -113,9 +114,19 @@ namespace RequirementsAbstractions
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             BezierCurve curvedWire = new BezierCurve() { InstanceName = "curvedWire" };
+            ToolTip id_0663c9c760394c43868900e499dc702f = new ToolTip() { GetLabel = () => {return $"{Source?.Model.Type}{" " + Source?.Model.Name} -> {Destination?.Model.Type}{" " + Destination?.Model.Name}";} };
+            MouseEvent id_5cbfa71fc2e24aaeaa254c475982d73c = new MouseEvent(eventName: "MouseEnter") { ExtractSender = input => (input as BezierCurve).Render };
+            ApplyAction<object> id_e845a90275d24798a0de80974b64f28e = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.LightSkyBlue;} };
+            MouseEvent id_045af4c412264be883982200a58d4860 = new MouseEvent(eventName: "MouseLeave") { ExtractSender = input => (input as BezierCurve).Render };
+            ApplyAction<object> id_062f58d1b3ec48d89c22331268796edc = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.Black;} };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
+            curvedWire.WireTo(id_0663c9c760394c43868900e499dc702f, "toolTip");
+            curvedWire.WireTo(id_5cbfa71fc2e24aaeaa254c475982d73c, "eventHandlers");
+            curvedWire.WireTo(id_045af4c412264be883982200a58d4860, "eventHandlers");
+            id_5cbfa71fc2e24aaeaa254c475982d73c.WireTo(id_e845a90275d24798a0de80974b64f28e, "sourceOutput");
+            id_045af4c412264be883982200a58d4860.WireTo(id_062f58d1b3ec48d89c22331268796edc, "sourceOutput");
             // END AUTO-GENERATED WIRING
 
             _bezier = curvedWire;
@@ -129,5 +140,15 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 

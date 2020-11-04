@@ -18,7 +18,9 @@
           "Name": "toolTip",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "8a4fab0333b3465890406c93a233450e"
+          ]
         },
         {
           "Type": "IUI",
@@ -32,15 +34,326 @@
           "Name": "eventHandlers",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "fb55e0b1a46f4bdf948a3117860650fe",
+            "97a5fc6631d74515b50f84f171a69c5a"
+          ]
         }
       ],
       "NodeParameters": [],
       "Visible": true
+    },
+    {
+      "Id": "0663c9c760394c43868900e499dc702f",
+      "Type": "ToolTip",
+      "Name": "",
+      "TreeParent": "bde87af514aa46dba6634ef5c4a700d8",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "child",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEventHandler",
+          "Name": "eventHandlers",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "GetLabel",
+          "Value": "() => \r\n{\r\n\treturn $\"{Source?.Model.Type}{\" \" + Source?.Model.Name} -> {Destination?.Model.Type}{\" \" + Destination?.Model.Name}\";\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "5cbfa71fc2e24aaeaa254c475982d73c",
+      "Type": "MouseEvent",
+      "Name": "",
+      "TreeParent": "bde87af514aa46dba6634ef5c4a700d8",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "2a222cb9700f47a6bc86e6386d6616c5"
+          ]
+        },
+        {
+          "Type": "IDataFlow<MouseEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "sourceOutput",
+          "IsInputPort": false,
+          "Index": 3,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"MouseEnter\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "ExtractSender",
+          "Value": "input => (input as BezierCurve).Render",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "e845a90275d24798a0de80974b64f28e",
+      "Type": "ApplyAction<object>",
+      "Name": "",
+      "TreeParent": "5cbfa71fc2e24aaeaa254c475982d73c",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar curve = input as BezierCurve;\r\n\t\r\n\tcurve.Colour = Brushes.LightSkyBlue;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "045af4c412264be883982200a58d4860",
+      "Type": "MouseEvent",
+      "Name": "",
+      "TreeParent": "bde87af514aa46dba6634ef5c4a700d8",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<MouseEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "sourceOutput",
+          "IsInputPort": false,
+          "Index": 3,
+          "ConnectionIds": [
+            "2500f17f4c0746ed8aef69adf267e1c7"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"MouseLeave\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "ExtractSender",
+          "Value": "input => (input as BezierCurve).Render",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "062f58d1b3ec48d89c22331268796edc",
+      "Type": "ApplyAction<object>",
+      "Name": "",
+      "TreeParent": "045af4c412264be883982200a58d4860",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar curve = input as BezierCurve;\r\n\t\r\n\tcurve.Colour = Brushes.Black;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
-    "bde87af514aa46dba6634ef5c4a700d8"
+    "bde87af514aa46dba6634ef5c4a700d8",
+    "0663c9c760394c43868900e499dc702f",
+    "5cbfa71fc2e24aaeaa254c475982d73c",
+    "e845a90275d24798a0de80974b64f28e",
+    "045af4c412264be883982200a58d4860",
+    "062f58d1b3ec48d89c22331268796edc"
   ],
-  "Connections": []
+  "Connections": [
+    {
+      "Id": "8a4fab0333b3465890406c93a233450e",
+      "SourceId": "bde87af514aa46dba6634ef5c4a700d8",
+      "SourcePort": {
+        "Type": "IUI",
+        "Name": "toolTip",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "8a4fab0333b3465890406c93a233450e"
+        ]
+      },
+      "DestinationId": "0663c9c760394c43868900e499dc702f",
+      "DestinationPort": {
+        "Type": "IUI",
+        "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "fb55e0b1a46f4bdf948a3117860650fe",
+      "SourceId": "bde87af514aa46dba6634ef5c4a700d8",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "fb55e0b1a46f4bdf948a3117860650fe",
+          "97a5fc6631d74515b50f84f171a69c5a"
+        ]
+      },
+      "DestinationId": "5cbfa71fc2e24aaeaa254c475982d73c",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "97a5fc6631d74515b50f84f171a69c5a",
+      "SourceId": "bde87af514aa46dba6634ef5c4a700d8",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "fb55e0b1a46f4bdf948a3117860650fe",
+          "97a5fc6631d74515b50f84f171a69c5a"
+        ]
+      },
+      "DestinationId": "045af4c412264be883982200a58d4860",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "2a222cb9700f47a6bc86e6386d6616c5",
+      "SourceId": "5cbfa71fc2e24aaeaa254c475982d73c",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "sourceOutput",
+        "IsInputPort": false,
+        "Index": 3,
+        "ConnectionIds": []
+      },
+      "DestinationId": "e845a90275d24798a0de80974b64f28e",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "2500f17f4c0746ed8aef69adf267e1c7",
+      "SourceId": "045af4c412264be883982200a58d4860",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "sourceOutput",
+        "IsInputPort": false,
+        "Index": 3,
+        "ConnectionIds": [
+          "2500f17f4c0746ed8aef69adf267e1c7"
+        ]
+      },
+      "DestinationId": "062f58d1b3ec48d89c22331268796edc",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    }
+  ]
 }
