@@ -35,6 +35,7 @@ namespace DomainAbstractions
         private IEvent stateChanged;
         private IDataFlow<Enums.DiagramMode> currentStateOutput;
         private IDataFlow<string> currentStateAsStringOutput;
+        private IDataFlow<Tuple<Enums.DiagramMode, Enums.DiagramMode>> transitionOutput;
 
         // IEvent implementation
         void IEvent.Execute()
@@ -55,6 +56,7 @@ namespace DomainAbstractions
                             stateChanged?.Execute();
                             if (currentStateOutput != null) currentStateOutput.Data = StateTransition.CurrentState;
                             if (currentStateAsStringOutput != null) currentStateAsStringOutput.Data = Enum.GetName(typeof(Enums.DiagramMode), StateTransition.CurrentState);
+                            if (transitionOutput != null) transitionOutput.Data = transition;
                         }
                     }; 
             }

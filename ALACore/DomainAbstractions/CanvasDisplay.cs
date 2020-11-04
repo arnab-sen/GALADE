@@ -151,14 +151,12 @@ namespace DomainAbstractions
             {
                 lastMousePosition = args.GetPosition(backgroundCanvas);
                 _panning = true;
-                Mouse.Capture(backgroundCanvas);
                 _canOpenCtxMenu = true;
             };
 
             backgroundCanvas.MouseRightButtonUp += (sender, args) =>
             {
                 _panning = false;
-                if (Mouse.Captured?.Equals(backgroundCanvas) ?? false) Mouse.Capture(null);
             };
 
             backgroundCanvas.MouseMove += (sender, args) =>
@@ -175,7 +173,7 @@ namespace DomainAbstractions
                     var top = System.Windows.Controls.Canvas.GetTop(foregroundCanvas);
                     System.Windows.Controls.Canvas.SetLeft(foregroundCanvas, left + relativeMouseMovementX);
                     System.Windows.Controls.Canvas.SetTop(foregroundCanvas, top + relativeMouseMovementY);
-                    Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
+                    // Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
 
                     lastMousePosition = currentMousePosition;
                     _canOpenCtxMenu = false;
