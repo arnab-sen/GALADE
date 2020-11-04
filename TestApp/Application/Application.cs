@@ -239,6 +239,11 @@ namespace TestApplication
             DropDownMenu id_1a8ed61b43fe4f9283b1f4d80ce4cf8c = new DropDownMenu() { Items = new string[100] };
             KeyEvent id_1e122d468c4c46f6a51c1ccd8342b13b = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.Enter } };
             ApplyAction<object> id_ab1fe89cf03245909771699a05d7faaf = new ApplyAction<object>() { Lambda = input =>{(input as WPFCanvas).Focus();} };
+            MenuItem id_170c8116118a43c59551456da3e5edcb = new MenuItem(header: "Debug") {  };
+            MenuItem id_ecf965328d774f2c94b70583ce4cf053 = new MenuItem(header: "TextEditor test") {  };
+            PopupWindow id_cf25298cc6294110aeb0715ddaabdb30 = new PopupWindow(title: "") { Height = 720, Width = 1280, Resize = SizeToContent.WidthAndHeight };
+            Box id_7b34c588378841c48db0a5a833650a6b = new Box() { Width = 100, Height = 100 };
+            TextEditor id_637b610231c04e51bb0d6b718d65ab97 = new TextEditor() { Width = 1280, Height = 720 };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -265,6 +270,7 @@ namespace TestApplication
             id_2d39d2452e3b4f99a1d5b7f88b75af93.WireTo(layoutDiagram, "eventHappened");
             id_4e3fab65ad804a6e912f986962f6b0ff.WireTo(createAndPaintALAWire, "output");
             id_883773815f7042bda7be8ab58869baed.WireTo(id_495406eea6e74cfdb0abb7d130c4187e, "children");
+            id_883773815f7042bda7be8ab58869baed.WireTo(id_170c8116118a43c59551456da3e5edcb, "children");
             id_495406eea6e74cfdb0abb7d130c4187e.WireTo(id_c473a6fc883f4ac6a333ea0d7ee370b6, "children");
             id_495406eea6e74cfdb0abb7d130c4187e.WireTo(id_1a8ed61b43fe4f9283b1f4d80ce4cf8c, "children");
             id_c473a6fc883f4ac6a333ea0d7ee370b6.WireTo(id_47a6b84fe07b4c7eb5aa48dcf120b0fd, "clickedEvent");
@@ -276,6 +282,10 @@ namespace TestApplication
             id_859f25e7fab44d3eb3fa218f335a479f.WireTo(id_4e3fab65ad804a6e912f986962f6b0ff, "output");
             id_37f4bd8a31634c1eb9c3d65e8aed10c1.WireTo(id_6e956301e1d545b39da87cefd4e0070d, "dataOutput");
             id_1e122d468c4c46f6a51c1ccd8342b13b.WireTo(id_ab1fe89cf03245909771699a05d7faaf, "senderOutput");
+            id_170c8116118a43c59551456da3e5edcb.WireTo(id_ecf965328d774f2c94b70583ce4cf053, "children");
+            id_ecf965328d774f2c94b70583ce4cf053.WireTo(id_cf25298cc6294110aeb0715ddaabdb30, "clickedEvent");
+            id_cf25298cc6294110aeb0715ddaabdb30.WireTo(id_7b34c588378841c48db0a5a833650a6b, "children");
+            id_7b34c588378841c48db0a5a833650a6b.WireTo(id_637b610231c04e51bb0d6b718d65ab97, "uiLayout");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -293,6 +303,20 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
