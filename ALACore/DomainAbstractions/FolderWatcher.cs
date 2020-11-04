@@ -94,32 +94,32 @@ namespace DomainAbstractions
                 }
             };
 
-            _watcher.Renamed += (sender, args) =>
-            {
-                if (IsMatch(args.FullPath))
-                {
-                    Logging.Log($"Renamed: [{args.OldName} at {args.OldFullPath}] to [{args.Name} at {args.FullPath}]");
-                    Output(args.FullPath); 
-                }
-            };
-
-            _watcher.Created += (sender, args) =>
-            {
-                if (IsMatch(args.FullPath))
-                {
-                    Logging.Log($"Created: {args.FullPath}");
-                    Output(args.FullPath); 
-                }
-            };
-
-            _watcher.Deleted += (sender, args) =>
-            {
-                if (IsMatch(args.FullPath))
-                {
-                    Logging.Log($"Deleted: {args.FullPath}");
-                    Output(args.FullPath); 
-                }
-            };
+            // _watcher.Renamed += (sender, args) =>
+            // {
+            //     if (IsMatch(args.FullPath))
+            //     {
+            //         Logging.Log($"Renamed: [{args.OldName} at {args.OldFullPath}] to [{args.Name} at {args.FullPath}]");
+            //         Output(args.FullPath); 
+            //     }
+            // };
+            //
+            // _watcher.Created += (sender, args) =>
+            // {
+            //     if (IsMatch(args.FullPath))
+            //     {
+            //         Logging.Log($"Created: {args.FullPath}");
+            //         Output(args.FullPath); 
+            //     }
+            // };
+            //
+            // _watcher.Deleted += (sender, args) =>
+            // {
+            //     if (IsMatch(args.FullPath))
+            //     {
+            //         Logging.Log($"Deleted: {args.FullPath}");
+            //         Output(args.FullPath); 
+            //     }
+            // };
         }
     }
 }

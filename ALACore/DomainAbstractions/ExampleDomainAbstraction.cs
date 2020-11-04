@@ -32,6 +32,7 @@ namespace DomainAbstractions
         private IEvent eventPort;
         private IUI uiPort1;
         private IUI uiPort2;
+        private IUI uiPort3;
 
         // IEvent implementation
         void IEvent.Execute()
