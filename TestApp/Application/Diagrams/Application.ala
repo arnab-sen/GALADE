@@ -904,6 +904,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
+            "bb48c16eb021404aa630fa5dc993ecf3",
             "e9ab8be6884043e49dc9433227974b71"
           ]
         }
@@ -1514,6 +1515,165 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "bbf0ad94024446d994602ccceb91d29c",
+      "Type": "DataFlowConnector<string>",
+      "Name": "",
+      "TreeParent": "47a6b84fe07b4c7eb5aa48dcf120b0fd",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": [
+            "d69da0a410ba4fce9cbb48b1c02881ba"
+          ]
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "fanoutList",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "640d7ea54fac415b9c4ad70f7d3ec753"
+          ]
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "384a8f771f984df19e5aefbfd05dbc20",
+      "Type": "FolderWatcher",
+      "Name": "projectFolderWatcher",
+      "TreeParent": "bbf0ad94024446d994602ccceb91d29c",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "rootPath",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "changedFile",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "5258283b3b5b4b6a8e4ac65a13dddbdf"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "RootPath",
+          "Value": "\"\"",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "Filter",
+          "Value": "\"*.cs\"",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "WatchSubdirectories",
+          "Value": "true",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "PathRegex",
+          "Value": "@\".*\\.cs$\"",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "fea3bc85154e471197761dacc55286ca",
+      "Type": "ConvertToEvent<string>",
+      "Name": "",
+      "TreeParent": "384a8f771f984df19e5aefbfd05dbc20",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "642791c60dd54c58917d63a103e47c03"
+          ]
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "5034c453f6f741e8bc846e29d471653b",
+      "Type": "Data<List<string>>",
+      "Name": "",
+      "TreeParent": "fea3bc85154e471197761dacc55286ca",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "() => \r\n{\r\n\tvar path = projectFolderWatcher.RootPath;\r\n\t\r\n\treturn default;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -1554,7 +1714,11 @@
     "ecf965328d774f2c94b70583ce4cf053",
     "cf25298cc6294110aeb0715ddaabdb30",
     "7b34c588378841c48db0a5a833650a6b",
-    "637b610231c04e51bb0d6b718d65ab97"
+    "637b610231c04e51bb0d6b718d65ab97",
+    "bbf0ad94024446d994602ccceb91d29c",
+    "384a8f771f984df19e5aefbfd05dbc20",
+    "fea3bc85154e471197761dacc55286ca",
+    "5034c453f6f741e8bc846e29d471653b"
   ],
   "Connections": [
     {
@@ -2170,7 +2334,7 @@
       "Visible": true
     },
     {
-      "Id": "e9ab8be6884043e49dc9433227974b71",
+      "Id": "bb48c16eb021404aa630fa5dc993ecf3",
       "SourceId": "47a6b84fe07b4c7eb5aa48dcf120b0fd",
       "SourcePort": {
         "Type": "IDataFlow<string>",
@@ -2178,7 +2342,32 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
+          "bb48c16eb021404aa630fa5dc993ecf3",
           "e9ab8be6884043e49dc9433227974b71"
+        ]
+      },
+      "DestinationId": "bbf0ad94024446d994602ccceb91d29c",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "dataInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "d69da0a410ba4fce9cbb48b1c02881ba"
+        ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "e9ab8be6884043e49dc9433227974b71",
+      "SourceId": "bbf0ad94024446d994602ccceb91d29c",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "640d7ea54fac415b9c4ad70f7d3ec753"
         ]
       },
       "DestinationId": "6e956301e1d545b39da87cefd4e0070d",
@@ -2311,13 +2500,15 @@
           "d69da0a410ba4fce9cbb48b1c02881ba"
         ]
       },
-      "DestinationId": "6e956301e1d545b39da87cefd4e0070d",
+      "DestinationId": "bbf0ad94024446d994602ccceb91d29c",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
-        "Name": "rootFilePath",
+        "Name": "dataInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "d69da0a410ba4fce9cbb48b1c02881ba"
+        ]
       },
       "Visible": true
     },
@@ -2446,6 +2637,72 @@
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "640d7ea54fac415b9c4ad70f7d3ec753",
+      "SourceId": "bbf0ad94024446d994602ccceb91d29c",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "640d7ea54fac415b9c4ad70f7d3ec753"
+        ]
+      },
+      "DestinationId": "384a8f771f984df19e5aefbfd05dbc20",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "rootPath",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "5258283b3b5b4b6a8e4ac65a13dddbdf",
+      "SourceId": "384a8f771f984df19e5aefbfd05dbc20",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "changedFile",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "5258283b3b5b4b6a8e4ac65a13dddbdf"
+        ]
+      },
+      "DestinationId": "fea3bc85154e471197761dacc55286ca",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "642791c60dd54c58917d63a103e47c03",
+      "SourceId": "fea3bc85154e471197761dacc55286ca",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "642791c60dd54c58917d63a103e47c03"
+        ]
+      },
+      "DestinationId": "5034c453f6f741e8bc846e29d471653b",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

@@ -17,7 +17,7 @@ namespace DomainAbstractions
     public class ExampleDomainAbstraction : UIElement, IEvent, IDataFlow<string>
     {
         // Public fields and properties
-        public string InstanceName { get; set; } = "Default";
+        public string InstanceName { get; set; }
         public List<string> TestProperty { get; set; }
 
         // Private fields
