@@ -18,7 +18,7 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; }
-        public List<string> TestProperty { get; set; }
+        public List<string> TestProperty { get; set; } = new List<string>();
 
         // Private fields
         private string _ignoreStringField = "";
@@ -51,7 +51,7 @@ namespace DomainAbstractions
 
         // Methods
 
-        public ExampleDomainAbstraction(string arg1, string arg2 = "test")
+        public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {
 
         }

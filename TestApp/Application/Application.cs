@@ -246,8 +246,7 @@ namespace TestApplication
             TextEditor id_bb60a4a340c54cb1ad40b3fd1aa4353c = new TextEditor() { Width = 1280, Height = 720 };
             DataFlowConnector<string> id_da1311a017ba4db195af6478603169f4 = new DataFlowConnector<string>() {  };
             FolderWatcher projectFolderWatcher = new FolderWatcher() { InstanceName = "projectFolderWatcher", RootPath = "", Filter = "*.cs", WatchSubdirectories = true, PathRegex = @".*\.cs$" };
-            ConvertToEvent<string> id_b3a838ba623e476d9995a587fe3b1e45 = new ConvertToEvent<string>() {  };
-            Data<List<string>> id_0b1b578047244502a1c5328334780356 = new Data<List<string>>() { Lambda = () => {var path = projectFolderWatcher.RootPath;return default;} };
+            ApplyAction<string> id_e0be0873bf454cd68a9568108e247a1a = new ApplyAction<string>() { Lambda = input =>{var newModel = abstractionModelManager.CreateAbstractionModelFromPath(input);foreach (var node in mainGraph.Nodes){var alaNode = node as ALANode;if (alaNode.Model.Type != newModel.Type) continue;abstractionModelManager.UpdateAbstractionModel(newModel, alaNode.Model);alaNode.UpdateUI();}} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -292,8 +291,7 @@ namespace TestApplication
             id_396ef27795b847378d1a487ad8d84393.WireTo(id_bb60a4a340c54cb1ad40b3fd1aa4353c, "uiLayout");
             id_da1311a017ba4db195af6478603169f4.WireTo(id_a428c0eb9cdd486f8b1483108d9a052d, "fanoutList");
             id_da1311a017ba4db195af6478603169f4.WireTo(projectFolderWatcher, "fanoutList");
-            projectFolderWatcher.WireTo(id_b3a838ba623e476d9995a587fe3b1e45, "changedFile");
-            id_b3a838ba623e476d9995a587fe3b1e45.WireTo(id_0b1b578047244502a1c5328334780356, "eventOutput");
+            projectFolderWatcher.WireTo(id_e0be0873bf454cd68a9568108e247a1a, "changedFile");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -311,5 +309,29 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

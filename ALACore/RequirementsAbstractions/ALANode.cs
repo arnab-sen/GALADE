@@ -93,9 +93,12 @@ namespace RequirementsAbstractions
 
         public void UpdateUI()
         {
-            UpdateNodeParameters();
-            (_refreshInputPorts as IEvent).Execute();
-            (_refreshOutputPorts as IEvent).Execute();
+            Render.Dispatcher.Invoke(() =>
+            {
+                UpdateNodeParameters();
+                (_refreshInputPorts as IEvent).Execute();
+                (_refreshOutputPorts as IEvent).Execute();
+            });
         }
 
         /// <summary>
@@ -294,7 +297,7 @@ namespace RequirementsAbstractions
             ApplyAction<object> id_06ad718b32684b3bb3c1192af3b38e68 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
             ApplyAction<object> id_02902f9cf2de4ed5a32c9e81db637b2d = new ApplyAction<object>() { Lambda = input =>{(input as Box).InitialiseUI();} };
             EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
-            Apply<object, object> id_98b0792875b14bf2963774e056fa09ce = new Apply<object, object>() { Lambda = input =>{var notUpdated = UpdatePorts(input as IEnumerable<Port>);return notUpdated;} };
+            Apply<object, object> id_98b0792875b14bf2963774e056fa09ce = new Apply<object, object>() { Lambda = input =>{var notUpdated = Dispatcher.CurrentDispatcher.Invoke(() => UpdatePorts(input as IEnumerable<Port>), DispatcherPriority.Loaded);return notUpdated;} };
             ConvertToEvent<object> id_d6dfec6b08ae47ef88a05f7c69f17aa9 = new ConvertToEvent<object>() {  };
             Data<object> refreshOutputPorts = new Data<object>() { InstanceName = "refreshOutputPorts", Lambda = GetAcceptedPorts };
             Horizontal addNewParameterRow = new Horizontal() { InstanceName = "addNewParameterRow", Ratios = new[] { 40, 20, 40 } };

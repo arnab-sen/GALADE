@@ -1569,7 +1569,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "4e89982c025b45e482f01e55413e6c52"
+            "dbd03dfc72e245cd894e2ed85277ff2a"
           ]
         }
       ],
@@ -1598,77 +1598,23 @@
       "Visible": true
     },
     {
-      "Id": "b3a838ba623e476d9995a587fe3b1e45",
-      "Type": "ConvertToEvent<string>",
+      "Id": "e0be0873bf454cd68a9568108e247a1a",
+      "Type": "ApplyAction<string>",
       "Name": "",
       "TreeParent": "0ebf4839f74e428d94fd03baa42fdee6",
       "Ports": [
         {
-          "Type": "IDataFlow<object>",
-          "Name": "start",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IEvent",
-          "Name": "eventOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "06096df341974d9d99b1ee140dd092f0"
-          ]
-        }
-      ],
-      "NodeParameters": [],
-      "Visible": true
-    },
-    {
-      "Id": "0b1b578047244502a1c5328334780356",
-      "Type": "Data<List<string>>",
-      "Name": "",
-      "TreeParent": "b3a838ba623e476d9995a587fe3b1e45",
-      "Ports": [
-        {
-          "Type": "IEvent",
-          "Name": "start",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlowB<string>",
-          "Name": "inputDataB",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
           "Type": "IDataFlow<string>",
-          "Name": "dataInput",
+          "Name": "input",
           "IsInputPort": true,
-          "Index": 1,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlowB<string>",
-          "Name": "dataOutputB",
-          "IsInputPort": true,
-          "Index": 2,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "dataOutput",
-          "IsInputPort": false,
-          "Index": 1,
+          "Index": 0,
           "ConnectionIds": []
         }
       ],
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar path = projectFolderWatcher.RootPath;\r\n\t\r\n\treturn default;\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar newModel = abstractionModelManager.CreateAbstractionModelFromPath(input);\r\n\t\r\n\tforeach (var node in mainGraph.Nodes)\r\n\t{\r\n\t\tvar alaNode = node as ALANode;\r\n\t\tif (alaNode.Model.Type != newModel.Type) continue;\r\n\t\t\r\n\t\tabstractionModelManager.UpdateAbstractionModel(newModel, alaNode.Model);\r\n\t\talaNode.UpdateUI();\r\n\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -1716,8 +1662,7 @@
     "bb60a4a340c54cb1ad40b3fd1aa4353c",
     "da1311a017ba4db195af6478603169f4",
     "0ebf4839f74e428d94fd03baa42fdee6",
-    "b3a838ba623e476d9995a587fe3b1e45",
-    "0b1b578047244502a1c5328334780356"
+    "e0be0873bf454cd68a9568108e247a1a"
   ],
   "Connections": [
     {
@@ -2643,7 +2588,7 @@
       "Visible": true
     },
     {
-      "Id": "4e89982c025b45e482f01e55413e6c52",
+      "Id": "dbd03dfc72e245cd894e2ed85277ff2a",
       "SourceId": "0ebf4839f74e428d94fd03baa42fdee6",
       "SourcePort": {
         "Type": "IDataFlow<string>",
@@ -2651,35 +2596,13 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "4e89982c025b45e482f01e55413e6c52"
+          "dbd03dfc72e245cd894e2ed85277ff2a"
         ]
       },
-      "DestinationId": "b3a838ba623e476d9995a587fe3b1e45",
+      "DestinationId": "e0be0873bf454cd68a9568108e247a1a",
       "DestinationPort": {
-        "Type": "IDataFlow<object>",
-        "Name": "start",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "06096df341974d9d99b1ee140dd092f0",
-      "SourceId": "b3a838ba623e476d9995a587fe3b1e45",
-      "SourcePort": {
-        "Type": "IEvent",
-        "Name": "eventOutput",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "06096df341974d9d99b1ee140dd092f0"
-        ]
-      },
-      "DestinationId": "0b1b578047244502a1c5328334780356",
-      "DestinationPort": {
-        "Type": "IEvent",
-        "Name": "start",
+        "Type": "IDataFlow<string>",
+        "Name": "input",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
