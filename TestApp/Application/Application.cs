@@ -255,6 +255,8 @@ namespace TestApplication
             IfElse id_19a82dabda6a4496876aa78d3eba5819 = new IfElse() {  };
             EventConnector id_cc600bbebaae4fd3bb1d399c688de7e3 = new EventConnector() {  };
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,Source = source,Destination = destination,SourcePort = sourcePort,DestinationPort = destinationPort,StateTransition = stateTransition};mainGraph.AddEdge(wire);wire.Paint();return wire;} };
+            KeyEvent id_05850b398be04478b0058b1724e4075e = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.Delete } };
+            EventLambda id_c0d6ac07609646dd9504269f8ec9721b = new EventLambda() { Lambda = () =>{var selectedNode = mainGraph.Get("SelectedNode") as ALANode;if (selectedNode == null) return;selectedNode.Delete(deleteAttachedWires: true);} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -268,6 +270,7 @@ namespace TestApplication
             id_40b4e2e1531540db8fa4a48fec79e359.WireTo(id_71408faa702f4147afd69b58141ff994, "eventHandlers");
             id_40b4e2e1531540db8fa4a48fec79e359.WireTo(id_4f7f3189d95e49d5b7a7efd449c06bcb, "eventHandlers");
             id_40b4e2e1531540db8fa4a48fec79e359.WireTo(id_e5c3464efb7642bb9fabd1516cc929de, "eventHandlers");
+            id_40b4e2e1531540db8fa4a48fec79e359.WireTo(id_05850b398be04478b0058b1724e4075e, "eventHandlers");
             id_40b4e2e1531540db8fa4a48fec79e359.WireTo(id_9efe85be341f43d2aa90dd68c4e3aa6d, "contextMenu");
             id_141b96cca1b641dbacef5cdd8c099d70.WireTo(id_0e416eab031c4909a6db9f50bd803cc5, "eventHappened");
             id_870e0c53e0e441c0a6195c6186c46512.WireTo(initialiseNode, "dataOutput");
@@ -310,6 +313,7 @@ namespace TestApplication
             id_19a82dabda6a4496876aa78d3eba5819.WireTo(layoutDiagram, "ifOutput");
             id_cc600bbebaae4fd3bb1d399c688de7e3.WireTo(id_bf41498cf7844e81a60e5bcd25e7934a, "fanoutList");
             id_cc600bbebaae4fd3bb1d399c688de7e3.WireTo(id_e40ec558a4b54983bc3c6fcfc4ea0f9d, "fanoutList");
+            id_05850b398be04478b0058b1724e4075e.WireTo(id_c0d6ac07609646dd9504269f8ec9721b, "eventHappened");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -327,6 +331,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 

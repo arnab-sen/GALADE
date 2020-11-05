@@ -234,7 +234,25 @@ namespace RequirementsAbstractions
             {
                 _parameterRowsPanel.Children.Add((row.Item1 as IUI).GetWPFElement());
             }
+        }
 
+        public void Delete(bool deleteAttachedWires = false)
+        {
+            if (Graph.Get("SelectedNode")?.Equals(this) ?? false) Graph.Set("SelectedNode", null);
+            Graph.DeleteNode(this);
+            if (Canvas.Children.Contains(Render)) Canvas.Children.Remove(Render);
+
+            // Convert to edgesToDelete list to avoid issue with enumeration being modified (when an edge is deleted from Graph.Edges) within the loop over edgesToDelete
+            var edgesToDelete = Graph.Edges
+                .Where(e => e is ALAWire wire 
+                            && (wire.Source == this || wire.Destination == this) 
+                            && Graph.ContainsEdge(wire))
+                .Select(e => e as ALAWire).ToList();
+
+            foreach (var edge in edgesToDelete)
+            {
+                edge?.Delete(deleteDestination: deleteAttachedWires);
+            }
         }
 
         private void SetWiring()

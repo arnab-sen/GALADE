@@ -190,6 +190,16 @@ namespace RequirementsAbstractions
             StateTransition.Update(Enums.DiagramMode.MovingConnection);
         }
 
+        public void Delete(bool deleteSource = false, bool deleteDestination = false)
+        {
+            Graph.DeleteEdge(this);
+
+            if (Canvas.Children.Contains(Render)) Canvas.Children.Remove(Render);
+
+            if (deleteSource && Source != null && Graph.ContainsNode(Source)) Source.Delete(deleteSource);
+            if (deleteDestination && Destination != null && Graph.ContainsNode(Destination)) Destination.Delete(deleteDestination);
+        }
+
         private void SetWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
