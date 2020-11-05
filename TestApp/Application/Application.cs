@@ -211,8 +211,6 @@ namespace TestApplication
             CanvasDisplay id_a660f1c7813542e993fc1f4d5a84a94a = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
             ApplyAction<System.Windows.Controls.Canvas> id_f46dc425357749bc9ad36df185041529 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
             KeyEvent id_fd1b6826eaee46398deca749b0fb7b3f = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
-            Data<object> id_f20e87b1c8f44c38bc2a5402a5acc2a9 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Model = abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault());node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);mainGraph.Roots.Add(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
-            ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);}} };
             ContextMenu id_05e8bd791663499987114591b8a91492 = new ContextMenu() {  };
             MenuItem id_122bf3b189504866835709afba68aa45 = new MenuItem(header: "Add root") {  };
             EventConnector id_a4374a473b77457980ad823a62a5cafc = new EventConnector() {  };
@@ -222,7 +220,7 @@ namespace TestApplication
             DataFlowConnector<ALANode> id_812a5e03234c4de8a43db8d1cea06951 = new DataFlowConnector<ALANode>() {  };
             ApplyAction<ALANode> id_41d38f8c034d4e8980e47f9ec110363c = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
             KeyEvent id_bdeed944351e4a7fabc736472d6c0ebc = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            Apply<AbstractionModel, object> id_5947be2cb9c94b2cbf0bd121e05f9277 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() { InstanceName = "createNewALANode", Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             MenuBar id_398d4e3b3f034387998f614919f4dac1 = new MenuBar() {  };
             MenuItem id_579c916ac2c54e12be1f88c7370e1e42 = new MenuItem(header: "File") {  };
             MenuItem id_afc1b052622c4f2a833df89963795151 = new MenuItem(header: "Open Project") {  };
@@ -258,6 +256,10 @@ namespace TestApplication
             KeyEvent id_762a939664b2476a9cd2ea3b26df5b57 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.Delete } };
             EventLambda id_9016f22c92084db68faad7fb929b833e = new EventLambda() { Lambda = () =>{var selectedNode = mainGraph.Get("SelectedNode") as ALANode;if (selectedNode == null) return;selectedNode.Delete(deleteAttachedWires: true);} };
             MenuItem id_df0e6ba4b97f40929909adb55e10d99e = new MenuItem(header: "Refresh") {  };
+            Data<AbstractionModel> id_929e3ea4564b4d3e8c9dd65422557fe6 = new Data<AbstractionModel>() { Lambda = () => abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault()) };
+            Apply<AbstractionModel, object> id_4a5a0d77f70f445cbe0a0a99cf56bfb5 = new Apply<AbstractionModel, object>() { Lambda = createNewALANode.Lambda };
+            ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);}} };
+            ApplyAction<object> id_bac53cd466894d72b2a5e5cab3e9135d = new ApplyAction<object>() { Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);}mainGraph.Roots.Add(input);} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -274,10 +276,9 @@ namespace TestApplication
             id_a660f1c7813542e993fc1f4d5a84a94a.WireTo(id_762a939664b2476a9cd2ea3b26df5b57, "eventHandlers");
             id_a660f1c7813542e993fc1f4d5a84a94a.WireTo(id_05e8bd791663499987114591b8a91492, "contextMenu");
             id_fd1b6826eaee46398deca749b0fb7b3f.WireTo(id_a4374a473b77457980ad823a62a5cafc, "eventHappened");
-            id_f20e87b1c8f44c38bc2a5402a5acc2a9.WireTo(initialiseNode, "dataOutput");
             id_05e8bd791663499987114591b8a91492.WireTo(id_122bf3b189504866835709afba68aa45, "children");
             id_05e8bd791663499987114591b8a91492.WireTo(id_df0e6ba4b97f40929909adb55e10d99e, "children");
-            id_122bf3b189504866835709afba68aa45.WireTo(id_f20e87b1c8f44c38bc2a5402a5acc2a9, "clickedEvent");
+            id_122bf3b189504866835709afba68aa45.WireTo(id_929e3ea4564b4d3e8c9dd65422557fe6, "clickedEvent");
             id_a4374a473b77457980ad823a62a5cafc.WireTo(id_88cea85867a7472eb3377371ff326c44, "fanoutList");
             id_a4374a473b77457980ad823a62a5cafc.WireTo(layoutDiagram, "complete");
             getFirstRoot.WireTo(id_812a5e03234c4de8a43db8d1cea06951, "dataOutput");
@@ -286,7 +287,7 @@ namespace TestApplication
             id_812a5e03234c4de8a43db8d1cea06951.WireTo(id_b7b186c20c3c45a6a303ec6e2ea484bd, "fanoutList");
             id_812a5e03234c4de8a43db8d1cea06951.WireTo(id_41d38f8c034d4e8980e47f9ec110363c, "fanoutList");
             id_bdeed944351e4a7fabc736472d6c0ebc.WireTo(layoutDiagram, "eventHappened");
-            id_5947be2cb9c94b2cbf0bd121e05f9277.WireTo(createAndPaintALAWire, "output");
+            createNewALANode.WireTo(createAndPaintALAWire, "output");
             id_398d4e3b3f034387998f614919f4dac1.WireTo(id_579c916ac2c54e12be1f88c7370e1e42, "children");
             id_398d4e3b3f034387998f614919f4dac1.WireTo(id_5545c5139d344f86b33f6691682b8f9b, "children");
             id_579c916ac2c54e12be1f88c7370e1e42.WireTo(id_afc1b052622c4f2a833df89963795151, "children");
@@ -297,7 +298,7 @@ namespace TestApplication
             id_e7eee8e1173e4a9aa8a2c07e3912f3d5.WireTo(id_acf85474e49f4096b5e30f5b5fe3b88f, "output");
             id_acf85474e49f4096b5e30f5b5fe3b88f.WireTo(id_12f3c7ced1e44879830c345249eb8f1c, "elementOutput");
             id_88cea85867a7472eb3377371ff326c44.WireTo(id_561b685a66dc4e0ea764f7d1e8155eb0, "dataOutput");
-            id_561b685a66dc4e0ea764f7d1e8155eb0.WireTo(id_5947be2cb9c94b2cbf0bd121e05f9277, "output");
+            id_561b685a66dc4e0ea764f7d1e8155eb0.WireTo(createNewALANode, "output");
             id_97e6242abda84736afba96663a658233.WireTo(id_b9390f64e44a4e89af5c42289211bed3, "dataOutput");
             id_fac73b3025124d8bb5d257172cc32a8f.WireTo(id_889a726ef5c048b594ca58d5ffeccba9, "senderOutput");
             id_5545c5139d344f86b33f6691682b8f9b.WireTo(id_60cebfa02d71448fa8ae77c741cb0ae2, "children");
@@ -317,6 +318,8 @@ namespace TestApplication
             id_a6a14d0cd09741f0b255742e40606882.WireTo(id_97e6242abda84736afba96663a658233, "fanoutList");
             id_a6a14d0cd09741f0b255742e40606882.WireTo(id_fda18ec284e54094b3d1dac66f04ebe3, "fanoutList");
             id_762a939664b2476a9cd2ea3b26df5b57.WireTo(id_9016f22c92084db68faad7fb929b833e, "eventHappened");
+            id_929e3ea4564b4d3e8c9dd65422557fe6.WireTo(id_4a5a0d77f70f445cbe0a0a99cf56bfb5, "dataOutput");
+            id_4a5a0d77f70f445cbe0a0a99cf56bfb5.WireTo(id_bac53cd466894d72b2a5e5cab3e9135d, "output");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -334,6 +337,20 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
