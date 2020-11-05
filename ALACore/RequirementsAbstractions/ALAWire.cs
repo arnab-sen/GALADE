@@ -205,36 +205,40 @@ namespace RequirementsAbstractions
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             BezierCurve curvedWire = new BezierCurve() { InstanceName = "curvedWire" };
             ToolTip wireToolTip = new ToolTip() { InstanceName = "wireToolTip", GetLabel = () => {return $"{Source?.Model.Type}{" " + Source?.Model.Name} -> {Destination?.Model.Type}{" " + Destination?.Model.Name}";} };
-            MouseEvent id_5cbfa71fc2e24aaeaa254c475982d73c = new MouseEvent(eventName: "MouseEnter") { ExtractSender = input => (input as BezierCurve).Render };
-            ApplyAction<object> id_e845a90275d24798a0de80974b64f28e = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.LightSkyBlue;} };
-            MouseEvent id_045af4c412264be883982200a58d4860 = new MouseEvent(eventName: "MouseLeave") { ExtractSender = input => (input as BezierCurve).Render };
-            ApplyAction<object> id_062f58d1b3ec48d89c22331268796edc = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.Black;} };
+            MouseEvent id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName: "MouseEnter") { ExtractSender = input => (input as BezierCurve).Render };
+            ApplyAction<object> id_f32929906cd24a5eb978130e10f76155 = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.LightSkyBlue;} };
+            MouseEvent id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName: "MouseLeave") { ExtractSender = input => (input as BezierCurve).Render };
+            ApplyAction<object> id_2f22cc567e744a88a1e63e7b495af5a6 = new ApplyAction<object>() { Lambda = input =>{var curve = input as BezierCurve;curve.Colour = Brushes.Black;} };
             ContextMenu wireContextMenu = new ContextMenu() { InstanceName = "wireContextMenu" };
-            MenuItem id_38637d4ea8e5484095c44e5a277ed41d = new MenuItem(header: "Move source") {  };
-            MenuItem id_e737be9060d9408480e63df4100427d6 = new MenuItem(header: "Move destination") {  };
-            MouseEvent id_79c105f12b704cdab341140439f5c83c = new MouseEvent(eventName: "MouseMove") { ExtractSender = input => (input as BezierCurve).Render };
-            EventLambda id_0ff77fc1747e44cf821392b22256af77 = new EventLambda() { Lambda = () =>{if (MovingSource){_bezier.Point0 = Mouse.GetPosition(Canvas);}else if (MovingDestination){_bezier.Point3 = Mouse.GetPosition(Canvas);}} };
-            EventLambda id_93119877199a4e209af643d5890824d3 = new EventLambda() { Lambda = () => {StartMoving(source: true);} };
-            EventLambda id_e00405baf1684774bf314edcdf30e93b = new EventLambda() { Lambda = () => {StartMoving(source: false);} };
-            MouseButtonEvent id_5560764b7baf441989e0aa477f1dcc7d = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = input => (input as BezierCurve).Render };
-            EventLambda id_819aef3d2edf43408e572bfc2ddab210 = new EventLambda() { Lambda = () => {AttachEndToMouse(detach: true);StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);} };
+            MenuItem id_5a22e8db5ff94ecf8539826f46c5b735 = new MenuItem(header: "Move source") {  };
+            MenuItem id_262a1b5c183d4b24bf3443567697cef1 = new MenuItem(header: "Move destination") {  };
+            MouseEvent id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName: "MouseMove") { ExtractSender = input => (input as BezierCurve).Render };
+            EventLambda id_d22091c77e774610943606a3674e7ee5 = new EventLambda() { Lambda = () =>{if (MovingSource){_bezier.Point0 = Mouse.GetPosition(Canvas);}else if (MovingDestination){_bezier.Point3 = Mouse.GetPosition(Canvas);}} };
+            EventLambda id_4fa94caebd1040708ad83788d3477089 = new EventLambda() { Lambda = () => {StartMoving(source: true);} };
+            EventLambda id_0f34a06bd3574531a6c9b0579dd8b56a = new EventLambda() { Lambda = () => {StartMoving(source: false);} };
+            MouseButtonEvent id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = input => (input as BezierCurve).Render };
+            EventLambda id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() { Lambda = () => {AttachEndToMouse(detach: true);StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);} };
+            MenuItem id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header: "Delete wire") {  };
+            EventLambda id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() { Lambda = () =>{Delete();} };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
             curvedWire.WireTo(wireToolTip, "toolTip");
             curvedWire.WireTo(wireContextMenu, "contextMenu");
-            curvedWire.WireTo(id_5cbfa71fc2e24aaeaa254c475982d73c, "eventHandlers");
-            curvedWire.WireTo(id_045af4c412264be883982200a58d4860, "eventHandlers");
-            curvedWire.WireTo(id_79c105f12b704cdab341140439f5c83c, "eventHandlers");
-            curvedWire.WireTo(id_5560764b7baf441989e0aa477f1dcc7d, "eventHandlers");
-            id_5cbfa71fc2e24aaeaa254c475982d73c.WireTo(id_e845a90275d24798a0de80974b64f28e, "sourceOutput");
-            id_045af4c412264be883982200a58d4860.WireTo(id_062f58d1b3ec48d89c22331268796edc, "sourceOutput");
-            wireContextMenu.WireTo(id_38637d4ea8e5484095c44e5a277ed41d, "children");
-            wireContextMenu.WireTo(id_e737be9060d9408480e63df4100427d6, "children");
-            id_38637d4ea8e5484095c44e5a277ed41d.WireTo(id_93119877199a4e209af643d5890824d3, "clickedEvent");
-            id_e737be9060d9408480e63df4100427d6.WireTo(id_e00405baf1684774bf314edcdf30e93b, "clickedEvent");
-            id_79c105f12b704cdab341140439f5c83c.WireTo(id_0ff77fc1747e44cf821392b22256af77, "eventHappened");
-            id_5560764b7baf441989e0aa477f1dcc7d.WireTo(id_819aef3d2edf43408e572bfc2ddab210, "eventHappened");
+            curvedWire.WireTo(id_bd225a8fef8e4e2c895b2e67ba4a99f6, "eventHandlers");
+            curvedWire.WireTo(id_b7877b330b854e33a1cb9ab810091c7f, "eventHandlers");
+            curvedWire.WireTo(id_375a4e94d9d34270a4a028096c72ccea, "eventHandlers");
+            curvedWire.WireTo(id_a3bafb1880ea4ae3b2825dee844c50b1, "eventHandlers");
+            id_bd225a8fef8e4e2c895b2e67ba4a99f6.WireTo(id_f32929906cd24a5eb978130e10f76155, "sourceOutput");
+            id_b7877b330b854e33a1cb9ab810091c7f.WireTo(id_2f22cc567e744a88a1e63e7b495af5a6, "sourceOutput");
+            wireContextMenu.WireTo(id_5a22e8db5ff94ecf8539826f46c5b735, "children");
+            wireContextMenu.WireTo(id_262a1b5c183d4b24bf3443567697cef1, "children");
+            wireContextMenu.WireTo(id_55239d2e49364d59a3eb3e9a5ad20def, "children");
+            id_5a22e8db5ff94ecf8539826f46c5b735.WireTo(id_4fa94caebd1040708ad83788d3477089, "clickedEvent");
+            id_262a1b5c183d4b24bf3443567697cef1.WireTo(id_0f34a06bd3574531a6c9b0579dd8b56a, "clickedEvent");
+            id_375a4e94d9d34270a4a028096c72ccea.WireTo(id_d22091c77e774610943606a3674e7ee5, "eventHappened");
+            id_a3bafb1880ea4ae3b2825dee844c50b1.WireTo(id_0959a4bad0bd41f4ba02c7725022dc05, "eventHappened");
+            id_55239d2e49364d59a3eb3e9a5ad20def.WireTo(id_a06846997c5341ad94996d7aaf6b7e50, "clickedEvent");
             // END AUTO-GENERATED WIRING
 
             _bezier = curvedWire;
@@ -248,6 +252,14 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

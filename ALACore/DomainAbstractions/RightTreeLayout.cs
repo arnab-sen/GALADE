@@ -72,34 +72,43 @@ namespace DomainAbstractions
 
         private double SetRightTreeLayout(T node, double horizontalGap, double verticalGap, double x, double y)
         {
-            visited.Add(GetID(node));
-
-            double nextX;
-            double nextY;
-
-            SetX(node, x);
-            SetY(node, y);
-
-            var children = GetChildren(node).ToList();
-
-            var height = GetHeight(node);
-
-            if (IsSaturated(node, children)) // if all of the node's children have been visited
+            try
             {
-                nextY = y + height + verticalGap;
-            }
-            else
-            {
-                nextX = x + GetWidth(node) + horizontalGap;
-                nextY = y;
+                visited.Add(GetID(node));
 
-                foreach (var child in children)
+                double nextX;
+                double nextY;
+
+                SetX(node, x);
+                SetY(node, y);
+
+                var children = GetChildren(node).ToList();
+
+                var height = GetHeight(node);
+
+                if (IsSaturated(node, children)) // if all of the node's children have been visited
                 {
-                    if (!visited.Contains(GetID(child))) nextY = SetRightTreeLayout(child, horizontalGap, verticalGap, nextX, nextY);
+                    nextY = y + height + verticalGap;
                 }
-            }
+                else
+                {
+                    nextX = x + GetWidth(node) + horizontalGap;
+                    nextY = y;
 
-            return Math.Max(nextY, y + height + verticalGap);
+                    foreach (var child in children)
+                    {
+                        if (!visited.Contains(GetID(child))) nextY = SetRightTreeLayout(child, horizontalGap, verticalGap, nextX, nextY);
+                    }
+                }
+
+                return Math.Max(nextY, y + height + verticalGap);
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to layout nodes in RightTreeLayout when visiting {node}.\nException: {e}");
+
+                return y;
+            }
         }
 
         // IDataFlow<T> implementation
