@@ -2677,7 +2677,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() =>\r\n{\r\n\tvar sourcePort = GetSelectedPort();\r\n\tif (sourcePort == null) return;\r\n\t\r\n\tvar destPort = new Box();\r\n\tdestPort.Position = Point.Add(sourcePort.Position, new Vector(100, 100));\r\n\t\r\n\tvar source = this;\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = Graph,\r\n\t\tCanvas = Canvas,\r\n\t\tSource = source,\r\n\t\tDestination = null,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destPort,\r\n\t\tStateTransition = StateTransition\r\n\t};\r\n\t\r\n\tGraph.AddEdge(wire);\r\n\t\r\n\twire.Paint();\r\n\t\r\n}",
+          "Value": "() =>\r\n{\r\n\tvar sourcePort = GetSelectedPort();\r\n\tif (sourcePort == null) return;\r\n\t\r\n\tvar source = this;\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = Graph,\r\n\t\tCanvas = Canvas,\r\n\t\tSource = source,\r\n\t\tDestination = null,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = null,\r\n\t\tStateTransition = StateTransition\r\n\t};\r\n\t\r\n\tGraph.AddEdge(wire);\r\n\t\r\n\twire.Paint();\r\n\twire.StartMoving(source: false);\r\n\t\r\n}",
           "ParameterType": "Property"
         }
       ],

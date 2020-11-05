@@ -82,36 +82,50 @@ namespace RequirementsAbstractions
 
             if (inputPort)
             {
-                var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
-                                                             (wire.DestinationPort == DestinationPort)).ToList();
+                if (DestinationPort != null)
+                {
+                    var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
+                                                                         (wire.DestinationPort == DestinationPort)).ToList();
 
-                var index = portConnections.IndexOf(this);
+                    var index = portConnections.IndexOf(this);
 
-                var pos = GetCanvasPosition(DestinationPort.Render);
+                    var pos = GetCanvasPosition(DestinationPort.Render);
 
-                point.X = pos.X;
+                    point.X = pos.X;
 
-                var vertDisplacement = index * 5 + 5;
-                point.Y = pos.Y + vertDisplacement;
+                    var vertDisplacement = index * 5 + 5;
+                    point.Y = pos.Y + vertDisplacement;
 
-                if (vertDisplacement > DestinationPort.Height) DestinationPort.Height += 10;
+                    if (vertDisplacement > DestinationPort.Height) DestinationPort.Height += 10; 
+                }
+                else
+                {
+                    point = Mouse.GetPosition(Canvas);
+                }
 
             }
             else
             {
-                var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
-                                                             (wire.SourcePort == SourcePort)).ToList();
+                if (SourcePort != null)
+                {
+                    var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
+                                                                         (wire.SourcePort == SourcePort)).ToList();
 
-                var index = portConnections.IndexOf(this);
+                    var index = portConnections.IndexOf(this);
 
-                var pos = GetCanvasPosition(SourcePort.Render);
+                    var pos = GetCanvasPosition(SourcePort.Render);
 
-                point.X = pos.X + SourcePort.Width;
+                    point.X = pos.X + SourcePort.Width;
 
-                var vertDisplacement = index * 5 + 5;
-                point.Y = pos.Y + vertDisplacement;
+                    var vertDisplacement = index * 5 + 5;
+                    point.Y = pos.Y + vertDisplacement;
 
-                if (vertDisplacement > SourcePort.Height) SourcePort.Height += 10;
+                    if (vertDisplacement > SourcePort.Height) SourcePort.Height += 10; 
+                }
+                else
+                {
+                    point = Mouse.GetPosition(Canvas);
+                }
             }
 
             return point;
@@ -169,6 +183,13 @@ namespace RequirementsAbstractions
             if (newNode != null) newNode.PositionChanged += Refresh;
         }
 
+        public void StartMoving(bool source = false)
+        {
+            AttachEndToMouse(source: source);
+            Graph.Set("SelectedWire", this);
+            StateTransition.Update(Enums.DiagramMode.MovingConnection);
+        }
+
         private void SetWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
@@ -183,8 +204,8 @@ namespace RequirementsAbstractions
             MenuItem id_e737be9060d9408480e63df4100427d6 = new MenuItem(header: "Move destination") {  };
             MouseEvent id_79c105f12b704cdab341140439f5c83c = new MouseEvent(eventName: "MouseMove") { ExtractSender = input => (input as BezierCurve).Render };
             EventLambda id_0ff77fc1747e44cf821392b22256af77 = new EventLambda() { Lambda = () =>{if (MovingSource){_bezier.Point0 = Mouse.GetPosition(Canvas);}else if (MovingDestination){_bezier.Point3 = Mouse.GetPosition(Canvas);}} };
-            EventLambda id_93119877199a4e209af643d5890824d3 = new EventLambda() { Lambda = () => {AttachEndToMouse(source: true);Graph.Set("SelectedWire", this);StateTransition.Update(Enums.DiagramMode.MovingConnection);} };
-            EventLambda id_e00405baf1684774bf314edcdf30e93b = new EventLambda() { Lambda = () => {AttachEndToMouse(source: false);Graph.Set("SelectedWire", this);StateTransition.Update(Enums.DiagramMode.MovingConnection);} };
+            EventLambda id_93119877199a4e209af643d5890824d3 = new EventLambda() { Lambda = () => {StartMoving(source: true);} };
+            EventLambda id_e00405baf1684774bf314edcdf30e93b = new EventLambda() { Lambda = () => {StartMoving(source: false);} };
             MouseButtonEvent id_5560764b7baf441989e0aa477f1dcc7d = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = input => (input as BezierCurve).Render };
             EventLambda id_819aef3d2edf43408e572bfc2ddab210 = new EventLambda() { Lambda = () => {AttachEndToMouse(detach: true);StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);} };
             // END AUTO-GENERATED INSTANTIATIONS
@@ -217,6 +238,10 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
 
 
 
