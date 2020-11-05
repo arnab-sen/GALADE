@@ -710,7 +710,9 @@
           "Name": "output",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "9a90afc5520a4ff49f634f070c74d55a"
+          ]
         }
       ],
       "NodeParameters": [
@@ -1937,7 +1939,37 @@
       ],
       "NodeParameters": [],
       "Visible": true
-    }
+    },
+    {
+      "Id": "6e7178d0651f4be4aca620fbf5537bdb",
+      "Type": "Apply<object, object>",
+      "Name": "createAndPaintALAWire",
+      "TreeParent": "3ce86dcc47f2479fa290cc5402e2e9b3",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar source = mainGraph.Get(\"SelectedNode\") as ALANode;\r\n\tvar destination = input as ALANode;\r\n\tvar sourcePort = source.GetSelectedPort(inputPort: false);\r\n\tvar destinationPort = destination.GetSelectedPort(inputPort: true);\r\n\t\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = mainGraph,\r\n\t\tCanvas = mainCanvas,\r\n\t\tSource = source,\r\n\t\tDestination = destination,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destinationPort,\r\n\t\tStateTransition = stateTransition\r\n\t};\r\n\t\r\n\tmainGraph.AddEdge(wire);\r\n\t\r\n\twire.Paint();\r\n\t\r\n\treturn wire;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
   ],
   "NodeIds": [
     "74a57bc9a1a6435dab71a9f4b88245b2",
@@ -1987,7 +2019,8 @@
     "6dd580bad2564cc788fb0886699a464c",
     "1aac235bc9ce41d9a677e7e130e0189a",
     "a9b91461b9fe44278b965ec6e1473c37",
-    "72e3594f8a5b427fbf7bea2595eb32c5"
+    "72e3594f8a5b427fbf7bea2595eb32c5",
+    "6e7178d0651f4be4aca620fbf5537bdb"
   ],
   "Connections": [
     {
@@ -2549,6 +2582,28 @@
         "ConnectionIds": [
           "9aa73ff38f194cf98c930e3dba1a23e7"
         ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "9a90afc5520a4ff49f634f070c74d55a",
+      "SourceId": "3ce86dcc47f2479fa290cc5402e2e9b3",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "9a90afc5520a4ff49f634f070c74d55a"
+        ]
+      },
+      "DestinationId": "6e7178d0651f4be4aca620fbf5537bdb",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
       },
       "Visible": true
     },

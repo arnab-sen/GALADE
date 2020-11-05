@@ -254,6 +254,7 @@ namespace TestApplication
             Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool> id_1aac235bc9ce41d9a677e7e130e0189a = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() { Lambda = input =>{return input.Item1 == Enums.DiagramMode.AwaitingPortSelection &&input.Item2 == Enums.DiagramMode.Idle;} };
             IfElse id_a9b91461b9fe44278b965ec6e1473c37 = new IfElse() {  };
             EventConnector id_72e3594f8a5b427fbf7bea2595eb32c5 = new EventConnector() {  };
+            Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -281,6 +282,7 @@ namespace TestApplication
             id_1ff8dc64db8e4d8a8755d00eb83236ee.WireTo(id_cc3ce12bedab4eac818a92878344de82, "fanoutList");
             id_20d39e5f8e3c4a218f32863da4a5c476.WireTo(id_cc3ce12bedab4eac818a92878344de82, "eventOutput");
             id_244a962265324d4785674367681ab193.WireTo(layoutDiagram, "eventHappened");
+            id_3ce86dcc47f2479fa290cc5402e2e9b3.WireTo(createAndPaintALAWire, "output");
             id_f5a0ac9d0a464b8fac35c840051145ce.WireTo(id_821028d50e0d47fa9074719bccd287d3, "children");
             id_f5a0ac9d0a464b8fac35c840051145ce.WireTo(id_880f4e3a614549cfbdceb7ff194b6a5d, "children");
             id_821028d50e0d47fa9074719bccd287d3.WireTo(id_705b37cfeda747db817c9ffec2dd6262, "children");
@@ -325,6 +327,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
