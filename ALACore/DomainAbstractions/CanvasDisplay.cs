@@ -127,6 +127,7 @@ namespace DomainAbstractions
                 var hitTestItems = GetHitTestItems(args.GetPosition(backgroundCanvas));
                 if (hitTestItems.Count == 1 && hitTestItems.Last().Equals(backgroundCanvas))
                 {
+                    StateTransition.Update(Enums.DiagramMode.Idle);
                     backgroundCanvas.Focus();
                 }
             };

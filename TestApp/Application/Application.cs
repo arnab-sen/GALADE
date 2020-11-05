@@ -249,9 +249,9 @@ namespace TestApplication
             Apply<string, object> id_47c40362c894491bb9a7d1d62f1611b1 = new Apply<string, object>() { Lambda = input =>{var newModel = abstractionModelManager.CreateAbstractionModelFromPath(input);foreach (var node in mainGraph.Nodes){var alaNode = node as ALANode;if (alaNode.Model.Type != newModel.Type) continue;abstractionModelManager.UpdateAbstractionModel(newModel, alaNode.Model);alaNode.UpdateUI();}return input;} };
             ConvertToEvent<object> id_20d39e5f8e3c4a218f32863da4a5c476 = new ConvertToEvent<object>() {  };
             MouseButtonEvent id_0a35aa1523f84e7c97f1f171098f67ae = new MouseButtonEvent(eventName: "MouseRightButtonDown") { ExtractSender = null, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            ApplyAction<object> id_a26a89f7a2754e7395d69b035a87634e = new ApplyAction<object>() { Lambda = input =>{Mouse.Capture(input as WPFCanvas);} };
+            ApplyAction<object> id_a26a89f7a2754e7395d69b035a87634e = new ApplyAction<object>() { Lambda = input =>{Mouse.Capture(input as WPFCanvas);stateTransition.Update(Enums.DiagramMode.Idle);} };
             MouseButtonEvent id_b4c90f0641ce4ca3a9e58097a02bdc76 = new MouseButtonEvent(eventName: "MouseRightButtonUp") { ExtractSender = null, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            ApplyAction<object> id_af4b89e911d0463a918ac01de4a5f301 = new ApplyAction<object>() { Lambda = input =>{if (Mouse.Captured?.Equals(input) ?? false) Mouse.Capture(null);} };
+            ApplyAction<object> id_af4b89e911d0463a918ac01de4a5f301 = new ApplyAction<object>() { Lambda = input =>{if (Mouse.Captured?.Equals(input) ?? false) Mouse.Capture(null);stateTransition.Update(Enums.DiagramMode.Idle);} };
             StateChangeListener id_6dd580bad2564cc788fb0886699a464c = new StateChangeListener() { StateTransition = stateTransition, CurrentStateShouldMatch = Enums.DiagramMode.All };
             Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool> id_1aac235bc9ce41d9a677e7e130e0189a = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() { Lambda = input =>{return input.Item1 == Enums.DiagramMode.AwaitingPortSelection &&input.Item2 == Enums.DiagramMode.Idle;} };
             IfElse id_a9b91461b9fe44278b965ec6e1473c37 = new IfElse() {  };
@@ -329,6 +329,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

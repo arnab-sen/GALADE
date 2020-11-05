@@ -1743,7 +1743,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tMouse.Capture(input as WPFCanvas);\r\n}",
+          "Value": "input =>\r\n{\r\n\tMouse.Capture(input as WPFCanvas);\r\n\tstateTransition.Update(Enums.DiagramMode.Idle);\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -1829,7 +1829,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tif (Mouse.Captured?.Equals(input) ?? false) Mouse.Capture(null);\r\n}",
+          "Value": "input =>\r\n{\r\n\tif (Mouse.Captured?.Equals(input) ?? false) Mouse.Capture(null);\r\n\tstateTransition.Update(Enums.DiagramMode.Idle);\r\n}",
           "ParameterType": "Property"
         }
       ],

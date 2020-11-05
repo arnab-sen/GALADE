@@ -18,7 +18,7 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public List<string> TestProperty { get; set; } = new List<string>();
+        public List<string> TestProperty { get; set; }
 
         // Private fields
         private string _ignoreStringField = "";
@@ -32,7 +32,7 @@ namespace DomainAbstractions
         private IEvent eventPort;
         private IUI uiPort1;
         private IUI uiPort2;
-        private IUI uiPort3;
+        
 
         // IEvent implementation
         void IEvent.Execute()
