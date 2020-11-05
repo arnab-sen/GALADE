@@ -327,7 +327,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "d212e42a988344909d04dc0e70fadc41"
+            "d212e42a988344909d04dc0e70fadc41",
+            "758a6701aed84bc19a53bac8941e4231"
           ]
         }
       ],
@@ -547,7 +548,9 @@
           "Name": "eventInput",
           "IsInputPort": true,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "327c1b80e8de469a96ca552dd5239801"
+          ]
         },
         {
           "Type": "IEvent",
@@ -2043,6 +2046,45 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "df0e6ba4b97f40929909adb55e10d99e",
+      "Type": "MenuItem",
+      "Name": "",
+      "TreeParent": "05e8bd791663499987114591b8a91492",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "child",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IUI",
+          "Name": "children",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "327c1b80e8de469a96ca552dd5239801"
+          ]
+        },
+        {
+          "Type": "IEvent",
+          "Name": "clickedEvent",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "header",
+          "Value": "\"Refresh\"",
+          "ParameterType": "Constructor"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2096,7 +2138,8 @@
     "a6a14d0cd09741f0b255742e40606882",
     "3147853e3d364f7ea9b64e580928fdb3",
     "762a939664b2476a9cd2ea3b26df5b57",
-    "9016f22c92084db68faad7fb929b833e"
+    "9016f22c92084db68faad7fb929b833e",
+    "df0e6ba4b97f40929909adb55e10d99e"
   ],
   "Connections": [
     {
@@ -2448,10 +2491,34 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "d212e42a988344909d04dc0e70fadc41"
+          "d212e42a988344909d04dc0e70fadc41",
+          "758a6701aed84bc19a53bac8941e4231"
         ]
       },
       "DestinationId": "122bf3b189504866835709afba68aa45",
+      "DestinationPort": {
+        "Type": "IUI",
+        "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "758a6701aed84bc19a53bac8941e4231",
+      "SourceId": "05e8bd791663499987114591b8a91492",
+      "SourcePort": {
+        "Type": "IUI",
+        "Name": "children",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "d212e42a988344909d04dc0e70fadc41",
+          "758a6701aed84bc19a53bac8941e4231"
+        ]
+      },
+      "DestinationId": "df0e6ba4b97f40929909adb55e10d99e",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -2523,7 +2590,9 @@
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "327c1b80e8de469a96ca552dd5239801"
+        ]
       },
       "Visible": true
     },
@@ -2546,6 +2615,28 @@
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "327c1b80e8de469a96ca552dd5239801",
+      "SourceId": "df0e6ba4b97f40929909adb55e10d99e",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "clickedEvent",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": []
+      },
+      "DestinationId": "3e87028885614a9f93146d7c866d1871",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "eventInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "327c1b80e8de469a96ca552dd5239801"
+        ]
       },
       "Visible": true
     },
@@ -2635,7 +2726,9 @@
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "327c1b80e8de469a96ca552dd5239801"
+        ]
       },
       "Visible": true
     },
@@ -3257,7 +3350,9 @@
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "327c1b80e8de469a96ca552dd5239801"
+        ]
       },
       "Visible": true
     },

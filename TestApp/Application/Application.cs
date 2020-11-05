@@ -257,6 +257,7 @@ namespace TestApplication
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,Source = source,Destination = destination,SourcePort = sourcePort,DestinationPort = destinationPort,StateTransition = stateTransition};mainGraph.AddEdge(wire);wire.Paint();return wire;} };
             KeyEvent id_762a939664b2476a9cd2ea3b26df5b57 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.Delete } };
             EventLambda id_9016f22c92084db68faad7fb929b833e = new EventLambda() { Lambda = () =>{var selectedNode = mainGraph.Get("SelectedNode") as ALANode;if (selectedNode == null) return;selectedNode.Delete(deleteAttachedWires: true);} };
+            MenuItem id_df0e6ba4b97f40929909adb55e10d99e = new MenuItem(header: "Refresh") {  };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -275,10 +276,12 @@ namespace TestApplication
             id_fd1b6826eaee46398deca749b0fb7b3f.WireTo(id_a4374a473b77457980ad823a62a5cafc, "eventHappened");
             id_f20e87b1c8f44c38bc2a5402a5acc2a9.WireTo(initialiseNode, "dataOutput");
             id_05e8bd791663499987114591b8a91492.WireTo(id_122bf3b189504866835709afba68aa45, "children");
+            id_05e8bd791663499987114591b8a91492.WireTo(id_df0e6ba4b97f40929909adb55e10d99e, "children");
             id_122bf3b189504866835709afba68aa45.WireTo(id_f20e87b1c8f44c38bc2a5402a5acc2a9, "clickedEvent");
             id_a4374a473b77457980ad823a62a5cafc.WireTo(id_88cea85867a7472eb3377371ff326c44, "fanoutList");
             id_a4374a473b77457980ad823a62a5cafc.WireTo(layoutDiagram, "complete");
             getFirstRoot.WireTo(id_812a5e03234c4de8a43db8d1cea06951, "dataOutput");
+            id_df0e6ba4b97f40929909adb55e10d99e.WireTo(layoutDiagram, "clickedEvent");
             layoutDiagram.WireTo(getFirstRoot, "fanoutList");
             id_812a5e03234c4de8a43db8d1cea06951.WireTo(id_b7b186c20c3c45a6a303ec6e2ea484bd, "fanoutList");
             id_812a5e03234c4de8a43db8d1cea06951.WireTo(id_41d38f8c034d4e8980e47f9ec110363c, "fanoutList");
@@ -331,6 +334,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
