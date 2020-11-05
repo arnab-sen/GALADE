@@ -41,7 +41,8 @@
             "47a1149f92c647fdb724baf706944288",
             "2e83352079ac49d5949a5a4d1299307a",
             "e2370c3cfb6e43d1b278faad2737959a",
-            "bc2bfc57469d41d8b9ab5501227ab3d2"
+            "bc2bfc57469d41d8b9ab5501227ab3d2",
+            "26a95baaf213419c8ece9810c372759e"
           ]
         },
         {
@@ -2595,6 +2596,92 @@
       ],
       "NodeParameters": [],
       "Visible": true
+    },
+    {
+      "Id": "654c6efa96cb4fbc9c9d72934fbe7c01",
+      "Type": "KeyEvent",
+      "Name": "",
+      "TreeParent": "69f549a4cc1d4422a23bc41f624226e5",
+      "Ports": [
+        {
+          "Type": "IEventHandler",
+          "Name": "handler",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "senderOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<KeyEventArgs>",
+          "Name": "argsOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventHappened",
+          "IsInputPort": false,
+          "Index": 2,
+          "ConnectionIds": [
+            "0da728bcb3104f02bbc3c2c4056661c3"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "eventName",
+          "Value": "\"KeyDown\"",
+          "ParameterType": "Constructor"
+        },
+        {
+          "Name": "Keys",
+          "Value": "new[] { Key.LeftCtrl, Key.Q }",
+          "ParameterType": "Property"
+        },
+        {
+          "Name": "ExtractSender",
+          "Value": "source => (source as Box).Render",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "4eb111002215437dad05d6296664b885",
+      "Type": "EventLambda",
+      "Name": "",
+      "TreeParent": "654c6efa96cb4fbc9c9d72934fbe7c01",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "() =>\r\n{\r\n\tvar sourcePort = GetSelectedPort();\r\n\tif (sourcePort == null) return;\r\n\t\r\n\tvar destPort = new Box();\r\n\tdestPort.Position = Point.Add(sourcePort.Position, new Vector(100, 100));\r\n\t\r\n\tvar source = this;\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = Graph,\r\n\t\tCanvas = Canvas,\r\n\t\tSource = source,\r\n\t\tDestination = null,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destPort,\r\n\t\tStateTransition = StateTransition\r\n\t};\r\n\t\r\n\tGraph.AddEdge(wire);\r\n\t\r\n\twire.Paint();\r\n\t\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2669,7 +2756,9 @@
     "30b3a5a022904bab99cf8561365a5b68",
     "22cc79db892e4276a0843318a1741c00",
     "be7f4f361ae5412883ffc8b178930537",
-    "9ecb3f09011d45bda1639c409fd52e88"
+    "9ecb3f09011d45bda1639c409fd52e88",
+    "654c6efa96cb4fbc9c9d72934fbe7c01",
+    "4eb111002215437dad05d6296664b885"
   ],
   "Connections": [
     {
@@ -2709,7 +2798,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "d126ce2a01f84b9f8f762edd99d49b34",
@@ -2737,7 +2827,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "9d88dea594664ac2a105f0364abdebc8",
@@ -2765,7 +2856,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "773a67799e954b5688918808f5938460",
@@ -2793,7 +2885,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "64232ca21622471fbcdc5bc89764e406",
@@ -2821,7 +2914,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "077e13e5736b485b9e63ab82071b58df",
@@ -2849,7 +2943,8 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "62a403cdad0d4163873575c438c2972b",
@@ -2877,10 +2972,40 @@
           "47a1149f92c647fdb724baf706944288",
           "2e83352079ac49d5949a5a4d1299307a",
           "e2370c3cfb6e43d1b278faad2737959a",
-          "bc2bfc57469d41d8b9ab5501227ab3d2"
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
         ]
       },
       "DestinationId": "e4a7d2e0815543de934dfbc97d67dbab",
+      "DestinationPort": {
+        "Type": "IEventHandler",
+        "Name": "handler",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "26a95baaf213419c8ece9810c372759e",
+      "SourceId": "69f549a4cc1d4422a23bc41f624226e5",
+      "SourcePort": {
+        "Type": "IEventHandler",
+        "Name": "eventHandlers",
+        "IsInputPort": false,
+        "Index": 2,
+        "ConnectionIds": [
+          "6995bab7914644abbfacb68bfd442ed6",
+          "663367f727db40f5b63ed7fe2c714ff6",
+          "51f9873338b24526819bffbd99c0ecb1",
+          "47a1149f92c647fdb724baf706944288",
+          "2e83352079ac49d5949a5a4d1299307a",
+          "e2370c3cfb6e43d1b278faad2737959a",
+          "bc2bfc57469d41d8b9ab5501227ab3d2",
+          "26a95baaf213419c8ece9810c372759e"
+        ]
+      },
+      "DestinationId": "654c6efa96cb4fbc9c9d72934fbe7c01",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -4365,6 +4490,28 @@
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "0da728bcb3104f02bbc3c2c4056661c3",
+      "SourceId": "654c6efa96cb4fbc9c9d72934fbe7c01",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventHappened",
+        "IsInputPort": false,
+        "Index": 2,
+        "ConnectionIds": [
+          "0da728bcb3104f02bbc3c2c4056661c3"
+        ]
+      },
+      "DestinationId": "4eb111002215437dad05d6296664b885",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

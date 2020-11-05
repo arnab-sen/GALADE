@@ -59,6 +59,16 @@ namespace DomainAbstractions
 
         public Border Render { get; set; } = new Border();
 
+        public Point Position
+        {
+            get => new Point(Canvas.GetLeft(Render), Canvas.GetTop(Render));
+            set
+            {
+                Canvas.SetLeft(Render, value.X);
+                Canvas.SetTop(Render, value.Y);
+            }
+        }
+
         // Private fields
 
         // Ports

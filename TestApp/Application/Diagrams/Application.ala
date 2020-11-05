@@ -61,7 +61,6 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "359c0608ee8b4d4c89b528c989a56621",
             "4329501f247b4ffc8044cc71d9ecf53a",
             "8e11bd10b76046c8849183371244b238"
           ]
@@ -279,7 +278,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = abstractionModelManager.GetAbstractionModel(\r\n\tabstractionModelManager.GetAbstractionTypes().FirstOrDefault());\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = node.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = abstractionModelManager.GetAbstractionModel(\r\n\tabstractionModelManager.GetAbstractionTypes().FirstOrDefault());\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = mainGraph.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -413,66 +412,6 @@
         }
       ],
       "NodeParameters": [],
-      "Visible": true
-    },
-    {
-      "Id": "1e32f495e688494ab656575b6e67ee92",
-      "Type": "Apply<object, object>",
-      "Name": "createAndPaintALAWire",
-      "TreeParent": "3ce86dcc47f2479fa290cc5402e2e9b3",
-      "Ports": [
-        {
-          "Type": "IDataFlow<object>",
-          "Name": "input",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<object>",
-          "Name": "output",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [
-        {
-          "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar source = mainGraph.Get(\"SelectedNode\") as ALANode;\r\n\tvar destination = input as ALANode;\r\n\tvar sourcePort = source.GetSelectedPort(inputPort: false);\r\n\tvar destinationPort = destination.GetSelectedPort(inputPort: true);\r\n\t\r\n\tvar wire = new ALAWire()\r\n\t{\r\n\t\tGraph = mainGraph,\r\n\t\tCanvas = mainCanvas,\r\n\t\tSource = source,\r\n\t\tDestination = destination,\r\n\t\tSourcePort = sourcePort,\r\n\t\tDestinationPort = destinationPort,\r\n\t\tStateTransition = stateTransition\r\n\t};\r\n\t\r\n\tmainGraph.AddEdge(wire);\r\n\t\r\n\twire.Paint();\r\n\t\r\n\treturn wire;\r\n}",
-          "ParameterType": "Property"
-        }
-      ],
-      "Visible": true
-    },
-    {
-      "Id": "8393e67268f344be83f289c707034a61",
-      "Type": "UIFactory",
-      "Name": "setUpGraph",
-      "TreeParent": "afc99c679df848e2a7d08f2af9fce601",
-      "Ports": [
-        {
-          "Type": "IUI",
-          "Name": "create",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<object>",
-          "Name": "uiInstanceOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [
-        {
-          "Name": "getUIContainer",
-          "Value": "() =>\r\n{\r\n\t/* \r\n\tThis lambda executes during the UI setup \r\n\tcall, which occurs before the app event flow.\r\n\tThe reason for putting this lambda here is that this\r\n\tensures that mainGraph is set up before being passed\r\n\tinto the scope of other delegates down the line \r\n\t(before the app event flow)\r\n\t*/\r\n\r\n\tmainGraph = new Graph();\r\n\tmainGraph.EdgeAdded += edge => \r\n\t{\r\n\t\tvar wire = edge as ALAWire;\r\n\t\t\r\n\t\tvar src = wire.Source as ALANode;\r\n\t\tsrc.Edges.Add(edge);\r\n\t\t\r\n\t\tvar dest = wire.Destination as ALANode;\r\n\t\tdest.Edges.Add(edge);\r\n\t};\r\n\t\r\n\tmainGraph.EdgeDeleted += edge => \r\n\t{\r\n\t\tvar wire = edge as ALAWire;\r\n\t\t\r\n\t\tvar src = wire.Source as ALANode;\r\n\t\tsrc.Edges.Remove(edge);\r\n\t\t\r\n\t\tvar dest = wire.Destination as ALANode;\r\n\t\tdest.Edges.Remove(edge);\r\n\t};\r\n\r\n\t/* Return a dummy invisible IUI */\r\n\treturn new Text(\"\", visible: false);\r\n}",
-          "ParameterType": "Constructor"
-        }
-      ],
       "Visible": true
     },
     {
@@ -771,15 +710,13 @@
           "Name": "output",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": [
-            "4ebfbec9762d43778c04a42d440ee8cd"
-          ]
+          "ConnectionIds": []
         }
       ],
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = input;\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = node.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "input => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = input;\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = mainGraph.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -2013,8 +1950,6 @@
     "80e3aeaf62624f5f95bcf3ef89244f3a",
     "98cdd12e4c4c42e686e5555b64449bc4",
     "9bb8b45e86c440b7abeb6719660208b2",
-    "1e32f495e688494ab656575b6e67ee92",
-    "8393e67268f344be83f289c707034a61",
     "1ffff4932f2e46f48d236155623719dc",
     "06d1e18596d948be9024c930bc6e1920",
     "917b4d54a54a49cfbfb14bca04e7d4dd",
@@ -2100,30 +2035,6 @@
       "Visible": true
     },
     {
-      "Id": "359c0608ee8b4d4c89b528c989a56621",
-      "SourceId": "afc99c679df848e2a7d08f2af9fce601",
-      "SourcePort": {
-        "Type": "IUI",
-        "Name": "children",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "359c0608ee8b4d4c89b528c989a56621",
-          "4329501f247b4ffc8044cc71d9ecf53a",
-          "8e11bd10b76046c8849183371244b238"
-        ]
-      },
-      "DestinationId": "8393e67268f344be83f289c707034a61",
-      "DestinationPort": {
-        "Type": "IUI",
-        "Name": "create",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
       "Id": "4329501f247b4ffc8044cc71d9ecf53a",
       "SourceId": "afc99c679df848e2a7d08f2af9fce601",
       "SourcePort": {
@@ -2132,7 +2043,6 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "359c0608ee8b4d4c89b528c989a56621",
           "4329501f247b4ffc8044cc71d9ecf53a",
           "8e11bd10b76046c8849183371244b238"
         ]
@@ -2156,7 +2066,6 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "359c0608ee8b4d4c89b528c989a56621",
           "4329501f247b4ffc8044cc71d9ecf53a",
           "8e11bd10b76046c8849183371244b238"
         ]
@@ -2640,28 +2549,6 @@
         "ConnectionIds": [
           "9aa73ff38f194cf98c930e3dba1a23e7"
         ]
-      },
-      "Visible": true
-    },
-    {
-      "Id": "4ebfbec9762d43778c04a42d440ee8cd",
-      "SourceId": "3ce86dcc47f2479fa290cc5402e2e9b3",
-      "SourcePort": {
-        "Type": "IDataFlow<object>",
-        "Name": "output",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "4ebfbec9762d43778c04a42d440ee8cd"
-        ]
-      },
-      "DestinationId": "1e32f495e688494ab656575b6e67ee92",
-      "DestinationPort": {
-        "Type": "IDataFlow<object>",
-        "Name": "input",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
       },
       "Visible": true
     },

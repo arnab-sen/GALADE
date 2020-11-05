@@ -211,20 +211,18 @@ namespace TestApplication
             CanvasDisplay id_a61cdf21737b4ef283c27ee76e8bd063 = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
             ApplyAction<System.Windows.Controls.Canvas> id_e4821da628124291a9dd58645981d5c7 = new ApplyAction<System.Windows.Controls.Canvas>() { Lambda = canvas => mainCanvas = canvas };
             KeyEvent id_b79695b746c04917a8f594b6f297957d = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
-            Data<object> id_0bb1dac56fa64e2cb1e9df78de431d50 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Model = abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault());node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = node.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Data<object> id_0bb1dac56fa64e2cb1e9df78de431d50 = new Data<object>() { Lambda = () => {var node = new ALANode();node.Model = abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault());node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             ApplyAction<object> initialiseNode = new ApplyAction<object>() { InstanceName = "initialiseNode", Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);mainGraph.Roots.Add(input);}} };
             ContextMenu id_80e3aeaf62624f5f95bcf3ef89244f3a = new ContextMenu() {  };
             MenuItem id_98cdd12e4c4c42e686e5555b64449bc4 = new MenuItem(header: "Add root") {  };
             EventConnector id_9bb8b45e86c440b7abeb6719660208b2 = new EventConnector() {  };
-            Apply<object, object> createAndPaintALAWire = new Apply<object, object>() { InstanceName = "createAndPaintALAWire", Lambda = input =>{var source = mainGraph.Get("SelectedNode") as ALANode;var destination = input as ALANode;var sourcePort = source.GetSelectedPort(inputPort: false);var destinationPort = destination.GetSelectedPort(inputPort: true);var wire = new ALAWire(){Graph = mainGraph,Canvas = mainCanvas,Source = source,Destination = destination,SourcePort = sourcePort,DestinationPort = destinationPort,StateTransition = stateTransition};mainGraph.AddEdge(wire);wire.Paint();return wire;} };
-            UIFactory setUpGraph = new UIFactory(getUIContainer: () =>{/* This lambda executes during the UI setup call, which occurs before the app event flow.The reason for putting this lambda here is that thisensures that mainGraph is set up before being passedinto the scope of other delegates down the line (before the app event flow)*/mainGraph = new Graph();mainGraph.EdgeAdded += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Add(edge);var dest = wire.Destination as ALANode;dest.Edges.Add(edge);};mainGraph.EdgeDeleted += edge => {var wire = edge as ALAWire;var src = wire.Source as ALANode;src.Edges.Remove(edge);var dest = wire.Destination as ALANode;dest.Edges.Remove(edge);};/* Return a dummy invisible IUI */return new Text("", visible: false);}) { InstanceName = "setUpGraph" };
             Data<ALANode> id_1ffff4932f2e46f48d236155623719dc = new Data<ALANode>() { Lambda = () => mainGraph.Roots.First() as ALANode };
             RightTreeLayout<ALANode> id_06d1e18596d948be9024c930bc6e1920 = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
             DataFlowConnector<ALANode> id_1ff8dc64db8e4d8a8755d00eb83236ee = new DataFlowConnector<ALANode>() {  };
             ApplyAction<ALANode> id_cc3ce12bedab4eac818a92878344de82 = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
             KeyEvent id_244a962265324d4785674367681ab193 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.R }, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) };
-            Apply<AbstractionModel, object> id_3ce86dcc47f2479fa290cc5402e2e9b3 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = node.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
+            Apply<AbstractionModel, object> id_3ce86dcc47f2479fa290cc5402e2e9b3 = new Apply<AbstractionModel, object>() { Lambda = input => {var node = new ALANode();node.Model = input;node.Graph = mainGraph;node.Canvas = mainCanvas;node.StateTransition = stateTransition;node.AvailableDomainAbstractions.AddRange( abstractionModelManager.GetAbstractionTypes());node.TypeChanged += newType => {abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType),node.Model);node.UpdateUI();Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);};mainGraph.AddNode(node);node.CreateInternals();mainCanvas.Children.Add(node.Render);return node;} };
             MenuBar id_f5a0ac9d0a464b8fac35c840051145ce = new MenuBar() {  };
             MenuItem id_821028d50e0d47fa9074719bccd287d3 = new MenuItem(header: "File") {  };
             MenuItem id_705b37cfeda747db817c9ffec2dd6262 = new MenuItem(header: "Open Project") {  };
@@ -261,7 +259,6 @@ namespace TestApplication
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
             mainWindow.WireTo(id_afc99c679df848e2a7d08f2af9fce601, "iuiStructure");
             mainWindow.WireTo(id_72e3594f8a5b427fbf7bea2595eb32c5, "appStart");
-            id_afc99c679df848e2a7d08f2af9fce601.WireTo(setUpGraph, "children");
             id_afc99c679df848e2a7d08f2af9fce601.WireTo(id_f5a0ac9d0a464b8fac35c840051145ce, "children");
             id_afc99c679df848e2a7d08f2af9fce601.WireTo(id_a61cdf21737b4ef283c27ee76e8bd063, "children");
             id_a61cdf21737b4ef283c27ee76e8bd063.WireTo(id_e4821da628124291a9dd58645981d5c7, "canvasOutput");
@@ -284,7 +281,6 @@ namespace TestApplication
             id_1ff8dc64db8e4d8a8755d00eb83236ee.WireTo(id_cc3ce12bedab4eac818a92878344de82, "fanoutList");
             id_20d39e5f8e3c4a218f32863da4a5c476.WireTo(id_cc3ce12bedab4eac818a92878344de82, "eventOutput");
             id_244a962265324d4785674367681ab193.WireTo(layoutDiagram, "eventHappened");
-            id_3ce86dcc47f2479fa290cc5402e2e9b3.WireTo(createAndPaintALAWire, "output");
             id_f5a0ac9d0a464b8fac35c840051145ce.WireTo(id_821028d50e0d47fa9074719bccd287d3, "children");
             id_f5a0ac9d0a464b8fac35c840051145ce.WireTo(id_880f4e3a614549cfbdceb7ff194b6a5d, "children");
             id_821028d50e0d47fa9074719bccd287d3.WireTo(id_705b37cfeda747db817c9ffec2dd6262, "children");
@@ -329,6 +325,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

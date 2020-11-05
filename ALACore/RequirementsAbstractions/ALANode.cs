@@ -30,7 +30,7 @@ namespace RequirementsAbstractions
         public List<string> AvailableDomainAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
         public Graph Graph { get; set; }
-        public List<object> Edges { get; } = new List<object>();
+        // public List<object> Edges { get; } = new List<object>();
         public Canvas Canvas { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UIElement Render { get; set; }
@@ -195,8 +195,6 @@ namespace RequirementsAbstractions
             return notUpdated;
         }
 
-        
-
         private AbstractionModel CreateDummyAbstractionModel()
         {
             var model = new AbstractionModel()
@@ -317,6 +315,8 @@ namespace RequirementsAbstractions
             Data<string> id_22cc79db892e4276a0843318a1741c00 = new Data<string>() { Lambda = Model.GetCodeFilePath };
             ApplyAction<object> id_be7f4f361ae5412883ffc8b178930537 = new ApplyAction<object>() { Lambda = input =>{if (StateTransition.CurrentStateMatches(Enums.DiagramMode.AwaitingPortSelection)){var wire = Graph.Get("SelectedWire") as ALAWire;if (wire == null) return;if (wire.Source == null){wire.Source = this;wire.SourcePort = input as Box;}else if (wire.Destination == null){wire.Destination = this;wire.DestinationPort = input as Box;}StateTransition.Update(Enums.DiagramMode.Idle);}} };
             DataFlowConnector<object> id_9ecb3f09011d45bda1639c409fd52e88 = new DataFlowConnector<object>() {  };
+            KeyEvent id_654c6efa96cb4fbc9c9d72934fbe7c01 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.Q }, ExtractSender = source => (source as Box).Render };
+            EventLambda id_4eb111002215437dad05d6296664b885 = new EventLambda() { Lambda = () =>{var sourcePort = GetSelectedPort();if (sourcePort == null) return;var destPort = new Box();destPort.Position = Point.Add(sourcePort.Position, new Vector(100, 100));var source = this;var wire = new ALAWire(){Graph = Graph,Canvas = Canvas,Source = source,Destination = null,SourcePort = sourcePort,DestinationPort = destPort,StateTransition = StateTransition};Graph.AddEdge(wire);wire.Paint();} };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -328,6 +328,7 @@ namespace RequirementsAbstractions
             rootUI.WireTo(id_077e13e5736b485b9e63ab82071b58df, "eventHandlers");
             rootUI.WireTo(id_62a403cdad0d4163873575c438c2972b, "eventHandlers");
             rootUI.WireTo(id_e4a7d2e0815543de934dfbc97d67dbab, "eventHandlers");
+            rootUI.WireTo(id_654c6efa96cb4fbc9c9d72934fbe7c01, "eventHandlers");
             rootUI.WireTo(id_bc5a04a3bb3c4fc298da5efff0c834d9, "contextMenu");
             id_75625903dc7b472cacea8a79ce6b370b.WireTo(id_6736671f4a634e49b5553fe895634e12, "children");
             id_75625903dc7b472cacea8a79ce6b370b.WireTo(nodeMiddle, "children");
@@ -392,6 +393,7 @@ namespace RequirementsAbstractions
             id_42b675b153e440a090a0da96c6f72f01.WireTo(id_d793058a88744e23bd54511b242af467, "clickedEvent");
             id_30b3a5a022904bab99cf8561365a5b68.WireTo(id_22cc79db892e4276a0843318a1741c00, "clickedEvent");
             id_9ecb3f09011d45bda1639c409fd52e88.WireTo(id_be7f4f361ae5412883ffc8b178930537, "fanoutList");
+            id_654c6efa96cb4fbc9c9d72934fbe7c01.WireTo(id_4eb111002215437dad05d6296664b885, "eventHappened");
             // END AUTO-GENERATED WIRING
 
             Render = (rootUI as IUI).GetWPFElement();
@@ -407,6 +409,18 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
