@@ -279,7 +279,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = abstractionModelManager.GetAbstractionModel(\r\n\tabstractionModelManager.GetAbstractionTypes().FirstOrDefault());\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = mainGraph.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
+          "Value": "() => \r\n{\r\n\tvar node = new ALANode();\r\n\tnode.Model = abstractionModelManager.GetAbstractionModel(\r\n\tabstractionModelManager.GetAbstractionTypes().FirstOrDefault());\r\n\tnode.Graph = mainGraph;\r\n\tnode.Canvas = mainCanvas;\r\n\tnode.StateTransition = stateTransition;\r\n\tnode.AvailableDomainAbstractions.AddRange( \r\n\t\tabstractionModelManager.GetAbstractionTypes());\r\n\t\r\n\tnode.TypeChanged += newType => \r\n\t{\r\n\t\tabstractionModelManager.UpdateAbstractionModel(\r\n\t\tabstractionModelManager.GetAbstractionModel(newType),\r\n\t\tnode.Model);\r\n\t\t\r\n\t\tnode.UpdateUI();\r\n\t\t\r\n\t\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t\t{\r\n\t\t\tvar edges = mainGraph.Edges;\r\n\t\t\tforeach (var edge in edges)\r\n\t\t\t{\r\n\t\t\t\t(edge as ALAWire).Refresh();\r\n\t\t\t}\r\n\t\t}, DispatcherPriority.ContextIdle);\r\n\t};\r\n\t\r\n\tmainGraph.AddNode(node);\r\n\tmainGraph.Roots.Add(node);\r\n\t\r\n\tnode.CreateInternals();\r\n\tmainCanvas.Children.Add(node.Render);\r\n\t\r\n\treturn node;\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -302,7 +302,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t\tmainGraph.Roots.Add(input);\r\n\t}\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -418,7 +418,7 @@
     {
       "Id": "b4a20b0242244960bc1b7b46e7f3df29",
       "Type": "Data<ALANode>",
-      "Name": "",
+      "Name": "getFirstRoot",
       "TreeParent": "3e87028885614a9f93146d7c866d1871",
       "Ports": [
         {
