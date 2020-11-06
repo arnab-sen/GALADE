@@ -33,28 +33,14 @@ namespace Application
 		public void CreateWiring() // Wiring should always be in a CreateWiring method
 		{
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
-			// var testAbstr = new Abstraction();
-			
-			var testData = new Data<string>()
-			{
-				storedData = "testString"
-			};
-			
-			var testApplyAction = new ApplyAction<string>()
-			{
-				Lambda = () => 
-				{
-					doSomething();
-					foreach (var thing in things)
-					{
-						indentedDoSomething();
-					}
-				}
-			};
+            MainWindow mainWindow = new MainWindow() { InstanceName = "mainWindow" };
+            MenuBar menuBar = new MenuBar() { InstanceName = "menuBar" };
+            MenuItem menuItem1 = new MenuItem(header: "") { InstanceName = "menuItem1" };
 			// END AUTO-GENERATED INSTANTIATIONS
 			
 			// BEGIN AUTO-GENERATED WIRING
-			testData.WireTo(testApplyAction, "dataOutput");
+            mainWindow.WireTo(menuBar, "iuiStructure");
+            menuBar.WireTo(menuItem1, "children");
 			// END AUTO-GENERATED WIRING
 		}
 
@@ -64,3 +50,11 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+

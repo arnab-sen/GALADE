@@ -91,6 +91,7 @@ namespace TestApplication
                     if (!_rootCreated)
                     {
                         Graph.Roots.Add(node);
+                        Canvas.Children.Add(node.Render);
                         _rootCreated = true;
                     }
                 }
@@ -144,10 +145,10 @@ namespace TestApplication
                     {
                         var sb = new StringBuilder();
                         sb.AppendLine($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}");
-                        sb.AppendLine($"source: {source.Type} {source.Name}");
+                        sb.AppendLine($"source: {source.Model.Type} {source.Name}");
                         sb.AppendLine($"destination: {destination.Type} {destination.Name}");
-                        sb.AppendLine($"sourcePort: {(sourcePort.Payload is Port port ? port.Name : "")} {source.Name}");
-                        sb.AppendLine($"destinationPort: None found to match sourcePort in destination.");
+                        sb.AppendLine($"sourcePort: {(sourcePort.Payload is Port port ? port.Type + " " + port.Name : "")}");
+                        sb.AppendLine($"destinationPort: None found that match sourcePort in destination.");
 
                         Logging.Log(sb.ToString());
                         continue;
@@ -156,6 +157,10 @@ namespace TestApplication
                     var wire = CreateWire(source, destination, sourcePort, matchingPort);
 
                     Graph.AddEdge(wire);
+
+                    if (!Canvas.Children.Contains(source.Render)) Canvas.Children.Add(source.Render);
+                    if (!Canvas.Children.Contains(destination.Render)) Canvas.Children.Add(destination.Render);
+
                     wire.Paint();
                 }
                 catch (Exception e)
@@ -170,6 +175,8 @@ namespace TestApplication
         {
             var inputPorts = destination.GetImplementedPorts();
             var matchingPort = inputPorts.FirstOrDefault(p => p.Type == portToMatch.Type);
+            if (matchingPort == null) matchingPort = inputPorts.FirstOrDefault(p => Regex.IsMatch(portToMatch.Type, $@"List<{p.Type}>"));
+
             if (matchingPort == null) return null;
 
             return destination.GetPortBox(matchingPort.Name);
@@ -191,7 +198,7 @@ namespace TestApplication
             return wire;
         }
 
-        public ALANode CreateNodeFromModel(AbstractionModel model)
+        public ALANode CreateNodeFromModel(AbstractionModel model, bool draw = false)
         {
             var node = new ALANode();
             node.Model = model;
@@ -221,7 +228,7 @@ namespace TestApplication
 
             Graph.AddNode(node);
             node.CreateInternals();
-            Canvas.Children.Add(node.Render);
+            if (draw) Canvas.Children.Add(node.Render);
 
             return node;
         }
