@@ -130,9 +130,15 @@ namespace TestApplication
                     var destinationName = arguments.Count > 0 ? arguments[0].ToString() : "";
                     var sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\', '"') : "";
 
-                    if (!_nodesByName.ContainsKey(sourceName) || !_nodesByName.ContainsKey(destinationName))
+                    if (!_nodesByName.ContainsKey(sourceName))
                     {
-                        Logging.Log($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}");
+                        Logging.Log($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}\nCause: source node {sourceName} not created.");
+                        continue;
+                    }
+
+                    if (!_nodesByName.ContainsKey(destinationName))
+                    {
+                        Logging.Log($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}\nCause: destination node {destinationName} not created.");
                         continue;
                     }
 
@@ -176,6 +182,7 @@ namespace TestApplication
             var inputPorts = destination.GetImplementedPorts();
             var matchingPort = inputPorts.FirstOrDefault(p => p.Type == portToMatch.Type);
             if (matchingPort == null) matchingPort = inputPorts.FirstOrDefault(p => Regex.IsMatch(portToMatch.Type, $@"List<{p.Type}>"));
+            if (matchingPort == null) matchingPort = inputPorts.FirstOrDefault(p => p.IsInputPort);
 
             if (matchingPort == null) return null;
 

@@ -225,7 +225,7 @@ namespace TestApplication
             MenuItem id_8b2b2dd939ab4567881dbd1af062ed99 = new MenuItem(header: "File") {  };
             MenuItem id_2f40a513f14c4f2e8ce51fa5da90ee15 = new MenuItem(header: "Open Project") {  };
             FolderBrowser id_cb396a05c2dc42749faafec1b9e43515 = new FolderBrowser() { Description = "" };
-            DirectorySearch id_f224783b3f1f4c7a935da47776fde447 = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions" }) { FilenameFilter = "*.cs" };
+            DirectorySearch id_f224783b3f1f4c7a935da47776fde447 = new DirectorySearch(directoriesToFind: new string[] { "DomainAbstractions", "ProgrammingParadigms", "RequirementsAbstractions" }) { FilenameFilter = "*.cs" };
             Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_f4ed33bb9872401b9084bdc1c5ed8a36 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("DomainAbstractions")){list = input["DomainAbstractions"];}return list;} };
             ForEach<string> id_58a8797b59f346acad2baf135887a328 = new ForEach<string>() {  };
             ApplyAction<string> id_a9d4c1a9c469426f87f8c206268d285d = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModelFromPath(input);} };
@@ -263,6 +263,13 @@ namespace TestApplication
             FileReader id_a50a0a63a1864532a06d6353c01d1ccd = new FileReader() {  };
             CreateDiagramFromCode id_49b16d830c454c9fa33be2a8fd2f3771 = new CreateDiagramFromCode() { Graph = mainGraph, Canvas = mainCanvas, ModelManager = abstractionModelManager, StateTransition = stateTransition };
             EventConnector id_a7dcad9d3eff4295ba0fc7c007f2b069 = new EventConnector() {  };
+            Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_34537a9c0d994dea98b587119d3788a6 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("ProgrammingParadigms")){list = input["ProgrammingParadigms"];}return list;} };
+            ForEach<string> id_a5fa7f5609b441cfa18382511b832b22 = new ForEach<string>() {  };
+            ApplyAction<string> id_8bdd324f721943acb2c1847a3a509821 = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModelFromPath(input);} };
+            Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_1b70a13dedde48d6b5faf36ebeb69aa5 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() { Lambda = input =>{var list = new List<string>();if (input.ContainsKey("RequirementsAbstractions")){list = input["RequirementsAbstractions"];}return list;} };
+            ForEach<string> id_5cf43837109646568f8650245e3d6a89 = new ForEach<string>() {  };
+            ApplyAction<string> id_0d903cbc908a42608f7c9c6f19a7c0ee = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModelFromPath(input);} };
+            DataFlowConnector<Dictionary<string, List<string>>> id_61d0c0d4f9884e3892c38b37fe1e0ba8 = new DataFlowConnector<Dictionary<string, List<string>>>() {  };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -295,7 +302,10 @@ namespace TestApplication
             id_8b2b2dd939ab4567881dbd1af062ed99.WireTo(id_a6d568dd3330419c8f15b73329dd2412, "children");
             id_2f40a513f14c4f2e8ce51fa5da90ee15.WireTo(id_cb396a05c2dc42749faafec1b9e43515, "clickedEvent");
             id_cb396a05c2dc42749faafec1b9e43515.WireTo(id_9a32610df90d4f3fb6898823f828a68e, "selectedFolderPathOutput");
-            id_f224783b3f1f4c7a935da47776fde447.WireTo(id_f4ed33bb9872401b9084bdc1c5ed8a36, "foundFiles");
+            id_f224783b3f1f4c7a935da47776fde447.WireTo(id_61d0c0d4f9884e3892c38b37fe1e0ba8, "foundFiles");
+            id_61d0c0d4f9884e3892c38b37fe1e0ba8.WireTo(id_f4ed33bb9872401b9084bdc1c5ed8a36, "fanoutList");
+            id_61d0c0d4f9884e3892c38b37fe1e0ba8.WireTo(id_34537a9c0d994dea98b587119d3788a6, "fanoutList");
+            id_61d0c0d4f9884e3892c38b37fe1e0ba8.WireTo(id_1b70a13dedde48d6b5faf36ebeb69aa5, "fanoutList");
             id_f4ed33bb9872401b9084bdc1c5ed8a36.WireTo(id_58a8797b59f346acad2baf135887a328, "output");
             id_58a8797b59f346acad2baf135887a328.WireTo(id_a9d4c1a9c469426f87f8c206268d285d, "elementOutput");
             id_4079402332d143cd92ba41c222d2486b.WireTo(id_7df1901cd99244d6b373eb8fc8cd01a7, "dataOutput");
@@ -326,6 +336,10 @@ namespace TestApplication
             id_a6d568dd3330419c8f15b73329dd2412.WireTo(id_2a25c684a6fe4f748e494f6d26f861a6, "clickedEvent");
             id_2a25c684a6fe4f748e494f6d26f861a6.WireTo(id_a50a0a63a1864532a06d6353c01d1ccd, "selectedFilePathOutput");
             id_a50a0a63a1864532a06d6353c01d1ccd.WireTo(id_49b16d830c454c9fa33be2a8fd2f3771, "fileContentOutput");
+            id_34537a9c0d994dea98b587119d3788a6.WireTo(id_a5fa7f5609b441cfa18382511b832b22, "output");
+            id_a5fa7f5609b441cfa18382511b832b22.WireTo(id_8bdd324f721943acb2c1847a3a509821, "elementOutput");
+            id_1b70a13dedde48d6b5faf36ebeb69aa5.WireTo(id_5cf43837109646568f8650245e3d6a89, "output");
+            id_5cf43837109646568f8650245e3d6a89.WireTo(id_0d903cbc908a42608f7c9c6f19a7c0ee, "elementOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -350,6 +364,26 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

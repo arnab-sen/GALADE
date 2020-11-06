@@ -789,7 +789,9 @@
           "Name": "foundDirectories",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "45523263875549f79cb2fa2499cc7349"
+          ]
         },
         {
           "Type": "IDataFlow<Dictionary<string, List<string>>>",
@@ -797,14 +799,16 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "7bc3fb8a8474481f9cfa7da5498e3ac4"
+            "7bc3fb8a8474481f9cfa7da5498e3ac4",
+            "f320747317d24be487d8023a3ef056fc",
+            "e3d9a164da504280beab0c0ecc9a5bc2"
           ]
         }
       ],
       "NodeParameters": [
         {
           "Name": "directoriesToFind",
-          "Value": "new string[] { \"DomainAbstractions\" }",
+          "Value": "new string[] { \"DomainAbstractions\", \"ProgrammingParadigms\", \"RequirementsAbstractions\" }",
           "ParameterType": "Constructor"
         },
         {
@@ -2236,6 +2240,213 @@
       ],
       "NodeParameters": [],
       "Visible": true
+    },
+    {
+      "Id": "34537a9c0d994dea98b587119d3788a6",
+      "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
+      "Name": "",
+      "TreeParent": "f224783b3f1f4c7a935da47776fde447",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "89c9d18760734c2489790aee3c8f8bbd"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar list = new List<string>();\r\n\tif (input.ContainsKey(\"ProgrammingParadigms\"))\r\n\t{\r\n\t\tlist = input[\"ProgrammingParadigms\"];\r\n\t}\r\n\t\r\n\treturn list;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "a5fa7f5609b441cfa18382511b832b22",
+      "Type": "ForEach<string>",
+      "Name": "",
+      "TreeParent": "34537a9c0d994dea98b587119d3788a6",
+      "Ports": [
+        {
+          "Type": "IDataFlow<IEnumerable<string>>",
+          "Name": "collectionInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "elementOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "94bbe6f139c549fcbd07fac5df0b2e43"
+          ]
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "8bdd324f721943acb2c1847a3a509821",
+      "Type": "ApplyAction<string>",
+      "Name": "",
+      "TreeParent": "a5fa7f5609b441cfa18382511b832b22",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModelFromPath(input);\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "1b70a13dedde48d6b5faf36ebeb69aa5",
+      "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
+      "Name": "",
+      "TreeParent": "f224783b3f1f4c7a935da47776fde447",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "4270273882d04112bb5bdf0910af8d22"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar list = new List<string>();\r\n\tif (input.ContainsKey(\"RequirementsAbstractions\"))\r\n\t{\r\n\t\tlist = input[\"RequirementsAbstractions\"];\r\n\t}\r\n\t\r\n\treturn list;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "5cf43837109646568f8650245e3d6a89",
+      "Type": "ForEach<string>",
+      "Name": "",
+      "TreeParent": "1b70a13dedde48d6b5faf36ebeb69aa5",
+      "Ports": [
+        {
+          "Type": "IDataFlow<IEnumerable<string>>",
+          "Name": "collectionInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "elementOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "0dc41e391aa24ee9ae0efecffe1bbb70"
+          ]
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "0d903cbc908a42608f7c9c6f19a7c0ee",
+      "Type": "ApplyAction<string>",
+      "Name": "",
+      "TreeParent": "5cf43837109646568f8650245e3d6a89",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModelFromPath(input);\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "61d0c0d4f9884e3892c38b37fe1e0ba8",
+      "Type": "DataFlowConnector<Dictionary<string, List<string>>>",
+      "Name": "",
+      "TreeParent": "f224783b3f1f4c7a935da47776fde447",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "fanoutList",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<object>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2294,7 +2505,14 @@
     "2a25c684a6fe4f748e494f6d26f861a6",
     "a50a0a63a1864532a06d6353c01d1ccd",
     "49b16d830c454c9fa33be2a8fd2f3771",
-    "a7dcad9d3eff4295ba0fc7c007f2b069"
+    "a7dcad9d3eff4295ba0fc7c007f2b069",
+    "34537a9c0d994dea98b587119d3788a6",
+    "a5fa7f5609b441cfa18382511b832b22",
+    "8bdd324f721943acb2c1847a3a509821",
+    "1b70a13dedde48d6b5faf36ebeb69aa5",
+    "5cf43837109646568f8650245e3d6a89",
+    "0d903cbc908a42608f7c9c6f19a7c0ee",
+    "61d0c0d4f9884e3892c38b37fe1e0ba8"
   ],
   "Connections": [
     {
@@ -2997,7 +3215,7 @@
       "Visible": true
     },
     {
-      "Id": "7bc3fb8a8474481f9cfa7da5498e3ac4",
+      "Id": "45523263875549f79cb2fa2499cc7349",
       "SourceId": "f224783b3f1f4c7a935da47776fde447",
       "SourcePort": {
         "Type": "IDataFlow<Dictionary<string, List<string>>>",
@@ -3005,10 +3223,72 @@
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "7bc3fb8a8474481f9cfa7da5498e3ac4"
+          "7bc3fb8a8474481f9cfa7da5498e3ac4",
+          "f320747317d24be487d8023a3ef056fc",
+          "e3d9a164da504280beab0c0ecc9a5bc2"
         ]
       },
+      "DestinationId": "61d0c0d4f9884e3892c38b37fe1e0ba8",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "dataInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "7bc3fb8a8474481f9cfa7da5498e3ac4",
+      "SourceId": "61d0c0d4f9884e3892c38b37fe1e0ba8",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
       "DestinationId": "f4ed33bb9872401b9084bdc1c5ed8a36",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "f320747317d24be487d8023a3ef056fc",
+      "SourceId": "61d0c0d4f9884e3892c38b37fe1e0ba8",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "DestinationId": "34537a9c0d994dea98b587119d3788a6",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "e3d9a164da504280beab0c0ecc9a5bc2",
+      "SourceId": "61d0c0d4f9884e3892c38b37fe1e0ba8",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "DestinationId": "1b70a13dedde48d6b5faf36ebeb69aa5",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -3678,6 +3958,94 @@
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "code",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "89c9d18760734c2489790aee3c8f8bbd",
+      "SourceId": "34537a9c0d994dea98b587119d3788a6",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "89c9d18760734c2489790aee3c8f8bbd"
+        ]
+      },
+      "DestinationId": "a5fa7f5609b441cfa18382511b832b22",
+      "DestinationPort": {
+        "Type": "IDataFlow<IEnumerable<string>>",
+        "Name": "collectionInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "94bbe6f139c549fcbd07fac5df0b2e43",
+      "SourceId": "a5fa7f5609b441cfa18382511b832b22",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "elementOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "94bbe6f139c549fcbd07fac5df0b2e43"
+        ]
+      },
+      "DestinationId": "8bdd324f721943acb2c1847a3a509821",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "4270273882d04112bb5bdf0910af8d22",
+      "SourceId": "1b70a13dedde48d6b5faf36ebeb69aa5",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "4270273882d04112bb5bdf0910af8d22"
+        ]
+      },
+      "DestinationId": "5cf43837109646568f8650245e3d6a89",
+      "DestinationPort": {
+        "Type": "IDataFlow<IEnumerable<string>>",
+        "Name": "collectionInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "0dc41e391aa24ee9ae0efecffe1bbb70",
+      "SourceId": "5cf43837109646568f8650245e3d6a89",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "elementOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "0dc41e391aa24ee9ae0efecffe1bbb70"
+        ]
+      },
+      "DestinationId": "0d903cbc908a42608f7c9c6f19a7c0ee",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "input",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
