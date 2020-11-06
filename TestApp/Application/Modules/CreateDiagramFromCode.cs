@@ -146,7 +146,7 @@ namespace TestApplication
                         var sb = new StringBuilder();
                         sb.AppendLine($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}");
                         sb.AppendLine($"source: {source.Model.Type} {source.Name}");
-                        sb.AppendLine($"destination: {destination.Type} {destination.Name}");
+                        sb.AppendLine($"destination: {destination.Model.Type} {destination.Name}");
                         sb.AppendLine($"sourcePort: {(sourcePort.Payload is Port port ? port.Type + " " + port.Name : "")}");
                         sb.AppendLine($"destinationPort: None found that match sourcePort in destination.");
 
