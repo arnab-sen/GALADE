@@ -26,6 +26,7 @@ namespace TestApplication
         public Canvas Canvas { get; set; }
         public AbstractionModelManager ModelManager { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
+        public string DefaultModelType { get; set; } = "Apply";
 
         // Private fields
         private string _code = "";
@@ -82,7 +83,11 @@ namespace TestApplication
                     var type = isGeneric ? (fullType as GenericNameSyntax).Identifier.ToString() : fullType.ToString();
 
                     var model = ModelManager.GetAbstractionModel(type);
-                    if (model == null) continue;
+                    if (model == null)
+                    {
+                        model = ModelManager.GetAbstractionModel(DefaultModelType);
+                        Logging.Log($"Could not find an AbstractionModel for type {type}. Using a default model of type {DefaultModelType} instead.");
+                    }
 
                     model.Name = variableName;
                     var node = CreateNodeFromModel(model);
