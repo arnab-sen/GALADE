@@ -93,12 +93,12 @@ namespace TestApplication
                     var node = CreateNodeFromModel(model);
                     _nodesByName[node.Name] = node;
 
-                    if (!_rootCreated)
-                    {
-                        Graph.Roots.Add(node);
-                        Canvas.Children.Add(node.Render);
-                        _rootCreated = true;
-                    }
+                    // if (!_rootCreated)
+                    // {
+                    //     Graph.Roots.Add(node);
+                    //     Canvas.Children.Add(node.Render);
+                    //     _rootCreated = true;
+                    // }
                 }
                 catch (Exception e)
                 {
@@ -163,6 +163,13 @@ namespace TestApplication
 
                         Logging.Log(sb.ToString());
                         continue;
+                    }
+
+                    if (!_rootCreated)
+                    {
+                        Graph.Roots.Add(source);
+                        Canvas.Children.Add(source.Render);
+                        _rootCreated = true;
                     }
 
                     var wire = CreateWire(source, destination, sourcePort, matchingPort);
