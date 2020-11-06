@@ -25,7 +25,7 @@ namespace RequirementsAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Id { get; set; }
         public string Type { get; set; } = "?";
-        public string Name { get; set; } = "";
+        public string Name => Model?.Name ?? Id;
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
         public List<string> AvailableDomainAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
@@ -90,6 +90,26 @@ namespace RequirementsAbstractions
 
         public List<Port> GetImplementedPorts() => Model.GetImplementedPorts();
         public List<Port> GetAcceptedPorts() => Model.GetAcceptedPorts();
+
+        /// <summary>
+        /// Finds the first port box that matches the input name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public Box GetPortBox(string name)
+        {
+            foreach (var inputPortBox in _inputPortBoxes)
+            {
+                if (inputPortBox.Payload is Port port && port.Name == name) return inputPortBox;
+            }
+
+            foreach (var outputPortBox in _outputPortBoxes)
+            {
+                if (outputPortBox.Payload is Port port && port.Name == name) return outputPortBox;
+            }
+
+            return null;
+        }
 
         public void UpdateUI()
         {

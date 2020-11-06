@@ -54,6 +54,12 @@ namespace DomainAbstractions
             set => backgroundCanvas.Focusable = value;
         }
 
+        public Canvas Canvas
+        {
+            get => foregroundCanvas;
+            set => foregroundCanvas = value;
+        }
+
         // Private fields
         private Canvas backgroundCanvas; // Should never move
         private Canvas foregroundCanvas; // Holds all child elements and can be moved around
@@ -97,10 +103,17 @@ namespace DomainAbstractions
                     Background = Brushes.Transparent,
                     Focusable = true
                 };
-
-                backgroundCanvas.Children.Add(foregroundCanvas);
-                // foregroundCanvas.Loaded += (sender, args) => canvasLoaded?.Execute();
             }
+            else
+            {
+                foregroundCanvas.Height = 1;
+                foregroundCanvas.Width = 1;
+                foregroundCanvas.Background = Brushes.Transparent;
+                foregroundCanvas.Focusable = true;
+            }
+
+            backgroundCanvas.Children.Add(foregroundCanvas);
+            // foregroundCanvas.Loaded += (sender, args) => canvasLoaded?.Execute();
 
             if (contextMenu != null)
             {

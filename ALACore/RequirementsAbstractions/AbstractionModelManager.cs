@@ -113,10 +113,11 @@ namespace RequirementsAbstractions
             var identifier = classNode.Identifier.ToString();
 
             var type = identifier;
-
-            if (classNode.TypeParameterList != null) type += classNode.TypeParameterList.ToString();
-
             model.Type = type;
+            model.FullType = model.Type;
+
+            // Generics
+            if (classNode.TypeParameterList != null) model.FullType += classNode.TypeParameterList.ToString();
         }
 
         public void SetAcceptedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
