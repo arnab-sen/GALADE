@@ -97,14 +97,17 @@ namespace TestApplication
                         .Declaration
                         .Variables.FirstOrDefault()
                         ?.Initializer.Value as ObjectCreationExpressionSyntax).
-                        Initializer.Expressions;
+                        Initializer?.Expressions;
 
-                    foreach (var expression in expressions)
+                    if (expressions != null)
                     {
-                        if (expression is AssignmentExpressionSyntax assignment)
+                        foreach (var expression in expressions)
                         {
-                            model.SetValue(assignment.Left.ToString(), assignment.Right.ToString(), initialise: true);
-                        }
+                            if (expression is AssignmentExpressionSyntax assignment)
+                            {
+                                model.SetValue(assignment.Left.ToString(), assignment.Right.ToString(), initialise: true);
+                            }
+                        } 
                     }
 
                     var node = CreateNodeFromModel(model);
