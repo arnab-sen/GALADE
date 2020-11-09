@@ -83,12 +83,15 @@ namespace TestApplication
                     var isGeneric = fullType is GenericNameSyntax;
                     var type = isGeneric ? (fullType as GenericNameSyntax).Identifier.ToString() : fullType.ToString();
 
-                    var model = ModelManager.GetAbstractionModel(type);
-                    if (model == null)
+                    var modelTemplate = ModelManager.GetAbstractionModel(type);
+                    if (modelTemplate == null)
                     {
-                        model = ModelManager.GetAbstractionModel(DefaultModelType);
+                        modelTemplate = ModelManager.GetAbstractionModel(DefaultModelType);
                         Logging.Log($"Could not find an AbstractionModel for type {type}. Using a default model of type {DefaultModelType} instead.");
                     }
+
+                    var model = new AbstractionModel();
+                    model.CloneFrom(modelTemplate);
 
                     model.Name = variableName;
 
