@@ -52,7 +52,7 @@ namespace DomainAbstractions
             }
             else
             {
-                input.RenderTransform = new ScaleTransform(_currentXScale, _currentXScale);
+                input.RenderTransform = new ScaleTransform(_currentXScale, _currentYScale);
             }
         }
 
