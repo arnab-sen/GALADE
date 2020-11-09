@@ -139,7 +139,13 @@ namespace RequirementsAbstractions
                 UpdateNodeParameters();
                 (_refreshInputPorts as IEvent).Execute();
                 (_refreshOutputPorts as IEvent).Execute();
-            });
+            }, DispatcherPriority.Loaded);
+            
+            Render.Dispatcher.Invoke(() =>
+            {
+                _textMaskRender = CreateTextMask(Model.Type);
+            }, DispatcherPriority.Loaded);
+
         }
 
         /// <summary>
@@ -409,14 +415,14 @@ namespace RequirementsAbstractions
                 }
                 else
                 {
-                    _textMaskRender.Visibility = Visibility.Visible;
+                    if (_textMaskRender != null) _textMaskRender.Visibility = Visibility.Visible;
                 }
 
                 // _detailedRender.Visibility = Visibility.Collapsed;
             }
             else
             {
-                _textMaskRender.Visibility = Visibility.Collapsed;
+                if (_textMaskRender != null) _textMaskRender.Visibility = Visibility.Collapsed;
                 // _detailedRender.Visibility = Visibility.Visible;
             }
 
