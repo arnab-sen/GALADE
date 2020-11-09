@@ -80,7 +80,7 @@ namespace RequirementsAbstractions
         private List<Tuple<Horizontal, DropDownMenu, TextBox, Button>> _nodeParameterRows = new List<Tuple<Horizontal, DropDownMenu, TextBox, Button>>();
         private Canvas _nodeMask = new Canvas();
         private Border _detailedRender = new Border();
-        private Border _textMaskRender;
+        private UIElement _textMaskRender;
         private Text _textMask;
 
         // Global instances
@@ -345,17 +345,39 @@ namespace RequirementsAbstractions
 	        _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
         }
 
-        private Border CreateTextMask(string text)
+        private UIElement CreateTextMask(string text)
         {
-            var maskContainer = new Border();
+            var maskContainer = new Canvas()
+            {
+                
+            };
+
+            var background = new Border()
+            {
+                Background = Brushes.White,
+                Opacity = 0.5,
+                Width = Width,
+                Height = Height
+            };
+
+            var foreground = new Border()
+            {
+                Background = Brushes.Transparent,
+                Width = Width,
+                Height = Height
+            };
 
             _textMask = new Text(text)
             {
-                FontSize = 30,
-                FontWeight = FontWeights.Bold
+                FontSize = 40,
+                FontWeight = FontWeights.Bold,
+                HorizAlignment = HorizontalAlignment.Center,
             };
 
-            maskContainer.Child = (_textMask as IUI).GetWPFElement();
+            foreground.Child = (_textMask as IUI).GetWPFElement();
+
+            maskContainer.Children.Add(background);
+            maskContainer.Children.Add(foreground);
 
             return maskContainer;
         }
@@ -379,12 +401,12 @@ namespace RequirementsAbstractions
                     _textMaskRender.Visibility = Visibility.Visible;
                 }
 
-                _detailedRender.Visibility = Visibility.Collapsed;
+                // _detailedRender.Visibility = Visibility.Collapsed;
             }
             else
             {
                 _textMaskRender.Visibility = Visibility.Collapsed;
-                _detailedRender.Visibility = Visibility.Visible;
+                // _detailedRender.Visibility = Visibility.Visible;
             }
 
         }
