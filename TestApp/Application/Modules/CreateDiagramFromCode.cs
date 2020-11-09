@@ -95,12 +95,18 @@ namespace TestApplication
 
                     model.Name = variableName;
 
-                    // Get initializer variables
-                    var expressions = (instantiation
-                        .Declaration
-                        .Variables.FirstOrDefault()
-                        ?.Initializer.Value as ObjectCreationExpressionSyntax).
-                        Initializer?.Expressions;
+                    var initialiser = instantiation.Declaration.Variables.FirstOrDefault()?.Initializer.Value as ObjectCreationExpressionSyntax;
+
+                    // Get constructor arguments
+                    var constructorArgs = initialiser.ArgumentList.Arguments;
+
+                    foreach (var constructorArg in constructorArgs)
+                    {
+                        model.SetValue(constructorArg.NameColon.ToString().Trim(':'), constructorArg.Expression.ToString(), initialise: true);
+                    }
+
+                    // Get initializer properties
+                    var expressions = initialiser.Initializer?.Expressions;
 
                     if (expressions != null)
                     {

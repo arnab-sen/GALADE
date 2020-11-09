@@ -34,7 +34,7 @@ namespace Application
 		{		
             MainWindow mainWindow = new MainWindow() { InstanceName = "mainWindow" };
             MenuBar menuBar = new MenuBar() { InstanceName = "menuBar" };
-            MenuItem menuItem1 = new MenuItem(header: "") { InstanceName = "menuItem1" };
+            MenuItem menuItem1 = new MenuItem(header: "testMenuItem") { InstanceName = "menuItem1" };
 			
             mainWindow.WireTo(menuBar, "iuiStructure");
             menuBar.WireTo(menuItem1, "children");
