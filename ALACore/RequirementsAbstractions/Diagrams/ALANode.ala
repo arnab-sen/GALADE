@@ -1953,7 +1953,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "4f3e5bb0a7f6423183f171eb6538a8be",
+            "7a53b94f7b0649f393d51913d3970b71",
             "3dda6bdc2cbe47df85b08cb305c57abe",
             "6318f12392194f19a73862deec6c8cbd"
           ]
@@ -1971,43 +1971,6 @@
           "Name": "Ratios",
           "Value": "new[] { 40, 20, 40 }",
           "ParameterType": "Property"
-        }
-      ],
-      "Visible": true
-    },
-    {
-      "Id": "a2aed71ed7fe4feb8824f4f07dddc059",
-      "Type": "Text",
-      "Name": "",
-      "TreeParent": "60c82721e6384be4ad3ef8a3c37e42ed",
-      "Ports": [
-        {
-          "Type": "IUI",
-          "Name": "child",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "textInput",
-          "IsInputPort": true,
-          "Index": 1,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<bool>",
-          "Name": "visible",
-          "IsInputPort": true,
-          "Index": 2,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [
-        {
-          "Name": "text",
-          "Value": "\"\"",
-          "ParameterType": "Constructor"
         }
       ],
       "Visible": true
@@ -2155,7 +2118,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tvar dropDown = new DropDownMenu() \r\n\t{\r\n\t\tItems = NodeParameters,\r\n\t\tWidth = 100\r\n\t};\r\n\t\t\r\n\tvar textBox = new TextBox() \r\n\t{\r\n\t\tWidth = 100,\r\n\t\tTrackIndent = true,\r\n\t\tFont = \"Consolas\"\r\n\t};\r\n\t\r\n\tvar deleteButton = new Button(\"-\") \r\n\t{\r\n\t\tWidth = 20,\r\n\t\tHeight = 20\r\n\t};\r\n\t\r\n\tvar dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;\r\n\t\r\n\tvar toolTipLabel = new System.Windows.Controls.Label() { Content = \"\" };\r\n\tdropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };\r\n\tdropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);\r\n\t\r\n\tdropDownUI.SelectionChanged += (sender, args) => textBox.Text = Model.GetValue(dropDownUI.SelectedValue?.ToString() ?? \"\");\r\n\t\r\n\tvar horiz = new Horizontal();\r\n\thoriz.WireTo(dropDown, \"children\");\r\n\thoriz.WireTo(textBox, \"children\");\r\n\thoriz.WireTo(deleteButton, \"children\");\r\n\t\r\n\tvar buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;\r\n\t\r\n\tbuttonUI.Click += (sender, args) => \r\n\t{\r\n\t\tvar row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));\r\n\t\t_nodeParameterRows.Remove(row);\r\n\t\tCreateParameterRows();\r\n\t};\r\n\t\r\n\t_nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));\r\n}",
+          "Value": "() => \r\n{\r\n\tCreateNodeParameterRow(\"\", \"\");\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -2227,7 +2190,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "CreateParameterRows",
+          "Value": "RefreshParameterRows",
           "ParameterType": "Property"
         }
       ],
@@ -2684,6 +2647,36 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "5c42dae2d28f40b6b263bb71b9ea29e8",
+      "Type": "UIFactory",
+      "Name": "",
+      "TreeParent": "60c82721e6384be4ad3ef8a3c37e42ed",
+      "Ports": [
+        {
+          "Type": "IUI",
+          "Name": "create",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "uiInstanceOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "getUIContainer",
+          "Value": "() =>\r\n{\r\n\tforeach (var initialised in Model.GetInitialisedVariables())\r\n\t{\r\n\t\tCreateNodeParameterRow(initialised, Model.GetValue(initialised));\r\n\t}\r\n\t\r\n\tRefreshParameterRows();\r\n\t\r\n\treturn new Text(\"\");\r\n}",
+          "ParameterType": "Constructor"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2742,7 +2735,6 @@
     "413e0dc5adda4ed19709a75a233fb99b",
     "beba7a7dc7b9414a83b26404da5dccf2",
     "60c82721e6384be4ad3ef8a3c37e42ed",
-    "a2aed71ed7fe4feb8824f4f07dddc059",
     "3f8816d31b7840d4bb266bd7e009359a",
     "fa8527b246ab43288956bb5fcc3cb221",
     "73724e35ab7043b090389e02d2e5cd7a",
@@ -2760,7 +2752,8 @@
     "412db3fb87e043dc83f97897382ebc6c",
     "0a61a7dc202146c09afea8a2f95f8140",
     "4b8f5486bdd840ca93fb8567b9a481fb",
-    "5c544306db9f433682d2a7bb6e2f40b5"
+    "5c544306db9f433682d2a7bb6e2f40b5",
+    "5c42dae2d28f40b6b263bb71b9ea29e8"
   ],
   "Connections": [
     {
@@ -4144,7 +4137,7 @@
       "Visible": true
     },
     {
-      "Id": "4f3e5bb0a7f6423183f171eb6538a8be",
+      "Id": "7a53b94f7b0649f393d51913d3970b71",
       "SourceId": "60c82721e6384be4ad3ef8a3c37e42ed",
       "SourcePort": {
         "Type": "IUI",
@@ -4152,15 +4145,15 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "4f3e5bb0a7f6423183f171eb6538a8be",
+          "7a53b94f7b0649f393d51913d3970b71",
           "3dda6bdc2cbe47df85b08cb305c57abe",
           "6318f12392194f19a73862deec6c8cbd"
         ]
       },
-      "DestinationId": "a2aed71ed7fe4feb8824f4f07dddc059",
+      "DestinationId": "5c42dae2d28f40b6b263bb71b9ea29e8",
       "DestinationPort": {
         "Type": "IUI",
-        "Name": "child",
+        "Name": "create",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
@@ -4176,7 +4169,7 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "4f3e5bb0a7f6423183f171eb6538a8be",
+          "7a53b94f7b0649f393d51913d3970b71",
           "3dda6bdc2cbe47df85b08cb305c57abe",
           "6318f12392194f19a73862deec6c8cbd"
         ]
@@ -4200,7 +4193,7 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "4f3e5bb0a7f6423183f171eb6538a8be",
+          "7a53b94f7b0649f393d51913d3970b71",
           "3dda6bdc2cbe47df85b08cb305c57abe",
           "6318f12392194f19a73862deec6c8cbd"
         ]

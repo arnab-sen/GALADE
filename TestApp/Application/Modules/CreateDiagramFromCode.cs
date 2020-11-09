@@ -91,6 +91,22 @@ namespace TestApplication
                     }
 
                     model.Name = variableName;
+
+                    // Get initializer variables
+                    var expressions = (instantiation
+                        .Declaration
+                        .Variables.FirstOrDefault()
+                        ?.Initializer.Value as ObjectCreationExpressionSyntax).
+                        Initializer.Expressions;
+
+                    foreach (var expression in expressions)
+                    {
+                        if (expression is AssignmentExpressionSyntax assignment)
+                        {
+                            model.SetValue(assignment.Left.ToString(), assignment.Right.ToString(), initialise: true);
+                        }
+                    }
+
                     var node = CreateNodeFromModel(model);
                     _nodesByName[node.Name] = node;
 

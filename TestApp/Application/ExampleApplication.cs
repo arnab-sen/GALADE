@@ -32,16 +32,18 @@ namespace Application
 		
 		public void CreateWiring() // Wiring should always be in a CreateWiring method
 		{
-			// BEGIN AUTO-GENERATED INSTANTIATIONS
             MainWindow mainWindow = new MainWindow() { InstanceName = "mainWindow" };
             MenuBar menuBar = new MenuBar() { InstanceName = "menuBar" };
             MenuItem menuItem1 = new MenuItem(header: "") { InstanceName = "menuItem1" };
-			// END AUTO-GENERATED INSTANTIATIONS
 			
-			// BEGIN AUTO-GENERATED WIRING
             mainWindow.WireTo(menuBar, "iuiStructure");
             menuBar.WireTo(menuItem1, "children");
-			// END AUTO-GENERATED WIRING
+			
+			var a = new Data<string>() { storedData = "test", PerishCount = 20 };
+			var b = new DataFlowConnector<string>();
+			
+			menuItem1.WireTo(a, "clickedEvent");
+			a.WireTo(b, "dataOutput");
 		}
 
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")

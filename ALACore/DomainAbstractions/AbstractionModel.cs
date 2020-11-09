@@ -31,6 +31,7 @@ namespace DomainAbstractions
         private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
         private Dictionary<string, string> _types = new Dictionary<string, string>(); // typeName : type. This contains the types of fields, properties, and constructor args
         private string _documentation = "";
+        private List<string> _initialised = new List<string>();
 
         // Ports
 
@@ -44,6 +45,7 @@ namespace DomainAbstractions
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
         public string GetCodeFilePath() => CodeFilePath;
+        public List<string> GetInitialisedVariables() => _initialised.Select(s => s).ToList(); 
 
         public void AddConstructorArg(string name, string initialValue = "", string type = "undefined")
         {
@@ -98,7 +100,7 @@ namespace DomainAbstractions
         /// </summary>
         /// <param name="name">The variable name, e.g. "Source"</param>
         /// <param name="value">The code literal, e.g. "new MyClass()"</param>
-        public void SetValue(string name, string value)
+        public void SetValue(string name, string value, bool initialise = false)
         {
             if (_constructorArgs.ContainsKey(name))
             {
@@ -114,6 +116,8 @@ namespace DomainAbstractions
             {
                 _properties[name] = value;
             }
+
+            if (initialise) _initialised.Add(name);
         }
 
         public void SetImplementedPort(string type, string name)

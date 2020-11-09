@@ -247,7 +247,7 @@ namespace RequirementsAbstractions
             CreateWiring();
         }
 
-        public void CreateParameterRows()
+        public void RefreshParameterRows()
         {
             _parameterRowsPanel.Children.Clear();
 
@@ -274,6 +274,54 @@ namespace RequirementsAbstractions
             {
                 edge?.Delete(deleteDestination: deleteAttachedWires);
             }
+        }
+
+        private void CreateNodeParameterRow(string type = "", string name = "")
+        {
+	        var dropDown = new DropDownMenu() 
+	        {
+		        Text = type,
+                Items = NodeParameters,
+		        Width = 100
+	        };
+		        
+	        var textBox = new TextBox() 
+	        {
+		        Text = name,
+                Width = 100,
+		        TrackIndent = true,
+		        Font = "Consolas"
+	        };
+	        
+	        var deleteButton = new Button("-") 
+	        {
+		        Width = 20,
+		        Height = 20
+	        };
+	        
+	        var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;
+	        
+	        var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
+	        dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
+	        dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);
+	        
+	        dropDownUI.SelectionChanged += (sender, args) => textBox.Text = Model.GetValue(dropDownUI.SelectedValue?.ToString() ?? "");
+	        
+	        var horiz = new Horizontal();
+	        horiz.WireTo(dropDown, "children");
+	        horiz.WireTo(textBox, "children");
+	        horiz.WireTo(deleteButton, "children");
+	        
+	        var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;
+	        
+	        buttonUI.Click += (sender, args) => 
+	        {
+		        var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));
+		        _nodeParameterRows.Remove(row);
+		        RefreshParameterRows();
+	        };
+	        
+	        _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
         }
 
         private void CreateWiring()
@@ -338,12 +386,11 @@ namespace RequirementsAbstractions
             ConvertToEvent<object> id_413e0dc5adda4ed19709a75a233fb99b = new ConvertToEvent<object>() {  };
             Data<object> refreshOutputPorts = new Data<object>() { InstanceName = "refreshOutputPorts", Lambda = GetAcceptedPorts };
             Horizontal addNewParameterRow = new Horizontal() { InstanceName = "addNewParameterRow", Ratios = new[] { 40, 20, 40 } };
-            Text id_a2aed71ed7fe4feb8824f4f07dddc059 = new Text(text: "") {  };
             Text id_3f8816d31b7840d4bb266bd7e009359a = new Text(text: "") {  };
             Button id_fa8527b246ab43288956bb5fcc3cb221 = new Button(title: "+") { Width = 20, Margin = new Thickness(5) };
-            EventLambda id_4e600812333548ea8f7d12472ec7e6a8 = new EventLambda() { Lambda = () => {var dropDown = new DropDownMenu() {Items = NodeParameters,Width = 100};var textBox = new TextBox() {Width = 100,TrackIndent = true,Font = "Consolas"};var deleteButton = new Button("-") {Width = 20,Height = 20};var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);dropDownUI.SelectionChanged += (sender, args) => textBox.Text = Model.GetValue(dropDownUI.SelectedValue?.ToString() ?? "");var horiz = new Horizontal();horiz.WireTo(dropDown, "children");horiz.WireTo(textBox, "children");horiz.WireTo(deleteButton, "children");var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;buttonUI.Click += (sender, args) => {var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));_nodeParameterRows.Remove(row);CreateParameterRows();};_nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));} };
+            EventLambda id_4e600812333548ea8f7d12472ec7e6a8 = new EventLambda() { Lambda = () => {CreateNodeParameterRow("", "");} };
             EventConnector id_49f1116e5d194d13b5ea93c9e942bed8 = new EventConnector() {  };
-            EventLambda id_64ff0d9e68dc4bf3834c4137b41f7926 = new EventLambda() { Lambda = CreateParameterRows };
+            EventLambda id_64ff0d9e68dc4bf3834c4137b41f7926 = new EventLambda() { Lambda = RefreshParameterRows };
             Box id_bac316b759694cd0bc2cf71e4cb3158f = new Box() { Render = new Border() { Child = _parameterRowsPanel } };
             EventConnector id_88eaf01f8fce4eccadb07006c803379f = new EventConnector() {  };
             ContextMenu id_e743e199d8ea43f6963c5e0edd05f433 = new ContextMenu() {  };
@@ -356,6 +403,7 @@ namespace RequirementsAbstractions
             DataFlowConnector<object> id_0a61a7dc202146c09afea8a2f95f8140 = new DataFlowConnector<object>() {  };
             KeyEvent id_4b8f5486bdd840ca93fb8567b9a481fb = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.Q }, ExtractSender = source => (source as Box).Render };
             EventLambda id_5c544306db9f433682d2a7bb6e2f40b5 = new EventLambda() { Lambda = () =>{var sourcePort = GetSelectedPort();if (sourcePort == null) return;var source = this;var wire = new ALAWire(){Graph = Graph,Canvas = Canvas,Source = source,Destination = null,SourcePort = sourcePort,DestinationPort = null,StateTransition = StateTransition};Graph.AddEdge(wire);wire.Paint();wire.StartMoving(source: false);} };
+            UIFactory id_5c42dae2d28f40b6b263bb71b9ea29e8 = new UIFactory(getUIContainer: () =>{foreach (var initialised in Model.GetInitialisedVariables()){CreateNodeParameterRow(initialised, Model.GetValue(initialised));}RefreshParameterRows();return new Text("");}) {  };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -417,7 +465,7 @@ namespace RequirementsAbstractions
             id_d7bdacc2521448d7a478aa97ce449744.WireTo(id_a2fcb922f3d040f99adfedacbad79934, "output");
             id_413e0dc5adda4ed19709a75a233fb99b.WireTo(refreshOutputPorts, "eventOutput");
             refreshOutputPorts.WireTo(id_d7bdacc2521448d7a478aa97ce449744, "dataOutput");
-            addNewParameterRow.WireTo(id_a2aed71ed7fe4feb8824f4f07dddc059, "children");
+            addNewParameterRow.WireTo(id_5c42dae2d28f40b6b263bb71b9ea29e8, "children");
             addNewParameterRow.WireTo(id_fa8527b246ab43288956bb5fcc3cb221, "children");
             addNewParameterRow.WireTo(id_3f8816d31b7840d4bb266bd7e009359a, "children");
             id_fa8527b246ab43288956bb5fcc3cb221.WireTo(id_49f1116e5d194d13b5ea93c9e942bed8, "eventButtonClicked");
@@ -448,6 +496,12 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
 
 
 
