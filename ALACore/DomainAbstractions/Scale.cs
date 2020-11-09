@@ -24,6 +24,8 @@ namespace DomainAbstractions
 
         // Private fields
         private UIElement _ui;
+        private double _currentXScale = 1.0;
+        private double _currentYScale = 1.0;
 
         // Ports
         
@@ -41,7 +43,17 @@ namespace DomainAbstractions
         // Methods
         private void ScaleElement(UIElement input)
         {
-            input.RenderTransform = new ScaleTransform(WidthMultiplier, HeightMultiplier);
+            _currentXScale *= WidthMultiplier;
+            _currentYScale *= HeightMultiplier;
+
+            if (input.RenderTransform is ScaleTransform currentTransform)
+            {
+                input.RenderTransform = new ScaleTransform(currentTransform.ScaleX * WidthMultiplier, currentTransform.ScaleY * HeightMultiplier);
+            }
+            else
+            {
+                input.RenderTransform = new ScaleTransform(_currentXScale, _currentXScale);
+            }
         }
 
         public Scale()

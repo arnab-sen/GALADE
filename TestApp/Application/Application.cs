@@ -270,6 +270,12 @@ namespace TestApplication
             ForEach<string> id_bebf96f79e3a4890b217250400f7b25d = new ForEach<string>() {  };
             ApplyAction<string> id_89eb0707bd0043078437d5ae7a51c5ca = new ApplyAction<string>() { Lambda = input =>{abstractionModelManager.CreateAbstractionModelFromPath(input);} };
             DataFlowConnector<Dictionary<string, List<string>>> id_3b34fce839ad47fab0c3eaccd41f3f3a = new DataFlowConnector<Dictionary<string, List<string>>>() {  };
+            MenuItem id_c5abef813e6e408b97c35c65616c1a36 = new MenuItem(header: "Zoom In") {  };
+            Data<UIElement> id_d2d4dac53ebc4f138f42e618988faf90 = new Data<UIElement>() { Lambda = () => mainCanvas };
+            Scale id_9a22436348aa43109b7d5a9360b14cc7 = new Scale() { WidthMultiplier = 1.1, HeightMultiplier = 1.1 };
+            MenuItem id_3a28676dc18b4dcbb353ed240ab8bcd3 = new MenuItem(header: "Zoom Out") {  };
+            Data<UIElement> id_2cd59d46c9c04f4da8e03ba9716196db = new Data<UIElement>() { Lambda = () => mainCanvas };
+            Scale id_7435c1418b4042d3871416c0efc43e45 = new Scale() { WidthMultiplier = 0.9, HeightMultiplier = 0.9 };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -298,6 +304,8 @@ namespace TestApplication
             createNewALANode.WireTo(createAndPaintALAWire, "output");
             id_8b8033e534a34eefab99ec59bf45342b.WireTo(id_1dbb90354cdb4791987fb1eed89bc381, "children");
             id_8b8033e534a34eefab99ec59bf45342b.WireTo(id_3904f34edcac4898bae00222c9c1ce0e, "children");
+            id_8b8033e534a34eefab99ec59bf45342b.WireTo(id_c5abef813e6e408b97c35c65616c1a36, "children");
+            id_8b8033e534a34eefab99ec59bf45342b.WireTo(id_3a28676dc18b4dcbb353ed240ab8bcd3, "children");
             id_1dbb90354cdb4791987fb1eed89bc381.WireTo(id_5acd9109147e46cb8d3d2da9fe142cdc, "children");
             id_1dbb90354cdb4791987fb1eed89bc381.WireTo(id_e5faccb80de644ba93e8b1847f5bf0c9, "children");
             id_5acd9109147e46cb8d3d2da9fe142cdc.WireTo(id_142d32d73f194ac8949a07beb1c607a7, "clickedEvent");
@@ -340,6 +348,10 @@ namespace TestApplication
             id_3b34fce839ad47fab0c3eaccd41f3f3a.WireTo(id_d7e3cf5c63c44e02b1d32645ffbbaceb, "fanoutList");
             id_3b34fce839ad47fab0c3eaccd41f3f3a.WireTo(id_187e6737501f460ab4bf98a1c55d523a, "fanoutList");
             id_3b34fce839ad47fab0c3eaccd41f3f3a.WireTo(id_b71d766a2c5f4fb89b1bf7895d60d099, "fanoutList");
+            id_c5abef813e6e408b97c35c65616c1a36.WireTo(id_d2d4dac53ebc4f138f42e618988faf90, "clickedEvent");
+            id_d2d4dac53ebc4f138f42e618988faf90.WireTo(id_9a22436348aa43109b7d5a9360b14cc7, "dataOutput");
+            id_3a28676dc18b4dcbb353ed240ab8bcd3.WireTo(id_2cd59d46c9c04f4da8e03ba9716196db, "clickedEvent");
+            id_2cd59d46c9c04f4da8e03ba9716196db.WireTo(id_7435c1418b4042d3871416c0efc43e45, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -364,6 +376,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
