@@ -76,6 +76,7 @@ namespace TestApplication
                 try
                 {
                     var variableName = instantiation.Declaration.Variables.First().Identifier.ToString();
+
                     var fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;
                     if (fullType == null) continue;
 
@@ -220,6 +221,12 @@ namespace TestApplication
         public ALANode CreateNodeFromModel(AbstractionModel model, bool draw = false)
         {
             var node = new ALANode();
+            if (model.Name.StartsWith("id_"))
+            {
+                node.Id = model.Name.Substring(3);
+                node.ShowName = false;
+            }
+
             node.Model = model;
             node.Graph = Graph;
             node.Canvas = Canvas;

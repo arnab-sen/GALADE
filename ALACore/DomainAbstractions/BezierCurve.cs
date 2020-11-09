@@ -11,6 +11,9 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BezierCurve : IUI
     {
         // Public fields and properties

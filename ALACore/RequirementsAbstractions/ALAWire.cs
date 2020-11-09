@@ -200,7 +200,7 @@ namespace RequirementsAbstractions
             if (deleteDestination && Destination != null && Graph.ContainsNode(Destination)) Destination.Delete(deleteDestination);
         }
 
-        private void SetWiring()
+        private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             BezierCurve curvedWire = new BezierCurve() { InstanceName = "curvedWire" };
@@ -248,7 +248,7 @@ namespace RequirementsAbstractions
         {
             Id = Utilities.GetUniqueId();
 
-            SetWiring();
+            CreateWiring();
         }
     }
 }
