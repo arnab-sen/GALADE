@@ -201,20 +201,20 @@ namespace DomainAbstractions
 
             foregroundCanvas.RenderTransform = new ScaleTransform(1, 1);
 
-            backgroundCanvas.MouseWheel += (sender, args) =>
-            {
-                // Check if zoom has been changed externally, in which case reset the internal zoom level
-                if (!foregroundCanvas.RenderTransform.Value.Equals(zoomMatrix))
-                {
-                    currentZoomLevel = 1;
-                }
-
-                currentZoomLevel = Math.Max(currentZoomLevel + args.Delta * 0.001, minZoomLevel); // Standard mousewheel delta is +120/-120 per tick
-                foregroundCanvas.RenderTransform = new ScaleTransform(currentZoomLevel, currentZoomLevel);
-                zoomMatrix = foregroundCanvas.RenderTransform.Value;
-
-                args.Handled = true;
-            };
+            // backgroundCanvas.MouseWheel += (sender, args) =>
+            // {
+            //     // Check if zoom has been changed externally, in which case reset the internal zoom level
+            //     if (!foregroundCanvas.RenderTransform.Value.Equals(zoomMatrix))
+            //     {
+            //         currentZoomLevel = 1;
+            //     }
+            //
+            //     currentZoomLevel = Math.Max(currentZoomLevel + args.Delta * 0.001, minZoomLevel); // Standard mousewheel delta is +120/-120 per tick
+            //     foregroundCanvas.RenderTransform = new ScaleTransform(currentZoomLevel, currentZoomLevel);
+            //     zoomMatrix = foregroundCanvas.RenderTransform.Value;
+            //
+            //     args.Handled = true;
+            // };
         }
 
         private List<object> GetHitTestItems(Point position)
