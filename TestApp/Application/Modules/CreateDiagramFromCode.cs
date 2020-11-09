@@ -98,7 +98,7 @@ namespace TestApplication
                     var initialiser = instantiation.Declaration.Variables.FirstOrDefault()?.Initializer.Value as ObjectCreationExpressionSyntax;
 
                     // Get constructor arguments
-                    var constructorArgs = initialiser.ArgumentList.Arguments;
+                    var constructorArgs = initialiser.ArgumentList.Arguments.Where(arg => arg.NameColon != null);
 
                     foreach (var constructorArg in constructorArgs)
                     {
