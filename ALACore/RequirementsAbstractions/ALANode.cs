@@ -34,6 +34,22 @@ namespace RequirementsAbstractions
         public Canvas Canvas { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UIElement Render { get; set; }
+
+        public double PositionX
+        {
+            get => Canvas.GetLeft(Render);
+            set => Canvas.SetLeft(Render, value);
+        }
+
+        public double PositionY
+        {
+            get => Canvas.GetTop(Render);
+            set => Canvas.SetTop(Render, value);
+        }
+
+        public double Width => _detailedRender.ActualWidth;
+        public double Height => _detailedRender.ActualHeight;
+
         public AbstractionModel Model { get; set; }
         public bool ShowName { get; set; } = true;
 
@@ -55,7 +71,7 @@ namespace RequirementsAbstractions
         public Func<Port, Point> GetAttachmentPoint { get; set; }
 
         // Private fields
-        private Box _rootUI;
+        private Box rootUI;
         private Box _selectedPort;
         private Point _mousePosInBox = new Point(0, 0);
         private List<Box> _inputPortBoxes = new List<Box>();
@@ -375,166 +391,166 @@ namespace RequirementsAbstractions
 
         private void CreateWiring()
         {
-            _rootUI = new Box()
+            rootUI = new Box()
             {
                 Background = Brushes.LightSkyBlue
             };
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            Horizontal id_4f66a5309d464c62a1c6fafd0dc44779 = new Horizontal() {  };
+            Horizontal id_a5e06e4b9dd2466296c8c52755aa94c7 = new Horizontal() {  };
             Vertical nodeMiddle = new Vertical() { InstanceName = "nodeMiddle", Margin = new Thickness(1, 0, 1, 0) };
             Horizontal nodeIdRow = new Horizontal() { InstanceName = "nodeIdRow" };
             DropDownMenu nodeTypeDropDownMenu = new DropDownMenu() { InstanceName = "nodeTypeDropDownMenu", Text = Model.Type, Width = 100, Items = AvailableDomainAbstractions };
             TextBox nodeNameTextBox = new TextBox() { InstanceName = "nodeNameTextBox", Text = ShowName ? Model.Name : "", Width = 50 };
-            UIFactory id_e055b7e6dc8d480f9c1f80ab88451b98 = new UIFactory(getUIContainer: () =>{_inputPortsVert = new Vertical();_inputPortsVert.Margin = new Thickness(0);return _inputPortsVert;}) {  };
-            ConvertToEvent<object> id_83e138e6890048b1aea41cf74216fa32 = new ConvertToEvent<object>() {  };
+            UIFactory id_2e29596583cb413783c3d09457d2e2a4 = new UIFactory(getUIContainer: () =>{_inputPortsVert = new Vertical();_inputPortsVert.Margin = new Thickness(0);return _inputPortsVert;}) {  };
+            ConvertToEvent<object> id_e67a609eb2e2432c99930b57a81d0512 = new ConvertToEvent<object>() {  };
             Data<object> refreshInputPorts = new Data<object>() { InstanceName = "refreshInputPorts", Lambda = GetImplementedPorts };
-            Cast<object, IEnumerable<Port>> id_a2fcb922f3d040f99adfedacbad79934 = new Cast<object, IEnumerable<Port>>() {  };
-            ForEach<Port> id_fd2919809a774e6f83e06edae869dde3 = new ForEach<Port>() {  };
+            Cast<object, IEnumerable<Port>> id_970c7a8bdcb34509a6b8402f914a3fef = new Cast<object, IEnumerable<Port>>() {  };
+            ForEach<Port> id_e41790a7bd904a7b98030afcaef81409 = new ForEach<Port>() {  };
             Apply<Port, object> setUpPortBox = new Apply<Port, object>() { InstanceName = "setUpPortBox", Lambda = port =>{var box = new Box();box.Payload = port;box.Width = 50;box.Height = 15;box.Background = Brushes.White;box.BorderThickness = new Thickness(2);var toolTipLabel = new System.Windows.Controls.Label() { Content = port.ToString()};box.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();var text = new Text(text: port.Name);text.HorizAlignment = HorizontalAlignment.Center;box.Render.Child = (text as IUI).GetWPFElement();if (port.IsInputPort){_inputPortsVert.WireTo(box, "children");_inputPortBoxes.Add(box);(_inputPortsVert as IUI).GetWPFElement(); /* Refresh UI */}else{_outputPortsVert.WireTo(box, "children");_outputPortBoxes.Add(box);(_outputPortsVert as IUI).GetWPFElement(); /* Refresh UI */}return box;} };
-            UIFactory id_c7df542fdf7f48708843d6bdd4be15ea = new UIFactory(getUIContainer: () =>{_outputPortsVert = new Vertical();_outputPortsVert.Margin = new Thickness(0);return _outputPortsVert;}) {  };
-            ApplyAction<object> id_afcd6288424c4621b589d05af20eb2d7 = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.BorderColour = Brushes.Red;} };
-            DataFlowConnector<object> id_1efbf92d2af344c6b688c9d636252b56 = new DataFlowConnector<object>() {  };
-            ApplyAction<object> id_071eb926e57c41f2a47cd155746f8e85 = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.BorderColour = Brushes.Black;} };
-            Apply<object, object> id_cec56afb114e4a459e22c9bc53b17401 = new Apply<object, object>() { Lambda = input =>{var mouseEvent = new MouseEvent("MouseEnter");mouseEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseEvent, "eventHandlers");return mouseEvent;} };
-            DynamicWiring<IDataFlow<object>> id_73a1a2b69ac647128b19a0b9231e9ce7 = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
-            Apply<object, object> id_841583aa6c3a452b99ba2bd6eaa79046 = new Apply<object, object>() { Lambda = input =>{var mouseEvent = new MouseEvent("MouseLeave");mouseEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseEvent, "eventHandlers");return mouseEvent;} };
-            DynamicWiring<IDataFlow<object>> id_b99c67f8f97e4d67be25f1f0915f2679 = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
+            UIFactory id_6972c047a04d4f6dbe2417bb58275a98 = new UIFactory(getUIContainer: () =>{_outputPortsVert = new Vertical();_outputPortsVert.Margin = new Thickness(0);return _outputPortsVert;}) {  };
+            ApplyAction<object> id_2416e3ce8b8c4f359e01b3edeac009ae = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.BorderColour = Brushes.Red;} };
+            DataFlowConnector<object> id_f3dbb781c1d34739a0029932f8b04f30 = new DataFlowConnector<object>() {  };
+            ApplyAction<object> id_41f9b51e1825435c9930ddd012650c1b = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.BorderColour = Brushes.Black;} };
+            Apply<object, object> id_08901c73c88e4f038cf5a390be13f345 = new Apply<object, object>() { Lambda = input =>{var mouseEvent = new MouseEvent("MouseEnter");mouseEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseEvent, "eventHandlers");return mouseEvent;} };
+            DynamicWiring<IDataFlow<object>> id_52ba1a36ec6e4425bc613972324bf567 = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
+            Apply<object, object> id_f26e2f3546774f8bb95199119c1962de = new Apply<object, object>() { Lambda = input =>{var mouseEvent = new MouseEvent("MouseLeave");mouseEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseEvent, "eventHandlers");return mouseEvent;} };
+            DynamicWiring<IDataFlow<object>> id_f25730cacae649eb8fb5bdb267410d3a = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
             DataFlowConnector<object> addUIEventsToPort = new DataFlowConnector<object>() { InstanceName = "addUIEventsToPort" };
-            Apply<object, object> id_4217d01954064647aaa95683bfd68756 = new Apply<object, object>() { Lambda = input =>{var mouseButtonEvent = new MouseButtonEvent("MouseDown");mouseButtonEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseButtonEvent, "eventHandlers");return mouseButtonEvent;} };
-            DynamicWiring<IDataFlow<object>> id_07c75a68cdd64db8ab0848f196c97a2f = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
-            ApplyAction<object> id_2cb584190bbe42be9a189755802ebc97 = new ApplyAction<object>() { Lambda = input =>{_selectedPort = input as Box;_selectedPort.Render.Focus();} };
-            Apply<object, object> id_74701bb44c8541c8b8c828bcb25c9c1c = new Apply<object, object>() { Lambda = input =>{var routedEvent = new RoutedEventSubscriber("GotFocus");routedEvent.ExtractSender = source => (source as Box).Render;input.WireTo(routedEvent, "eventHandlers");return routedEvent;} };
-            DynamicWiring<IDataFlow<object>> id_1dfb3f0fd12646b9b1fbf95abd0869ed = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
-            ApplyAction<object> id_65b4eebadd9449529f13e2531ccc07bd = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.Background = Brushes.SandyBrown;} };
-            Apply<object, object> id_7f052ccc12db48bd83a5f4b392b7ca84 = new Apply<object, object>() { Lambda = input =>{var routedEvent = new RoutedEventSubscriber("LostFocus");routedEvent.ExtractSender = source => (source as Box).Render;input.WireTo(routedEvent, "eventHandlers");return routedEvent;} };
-            DynamicWiring<IDataFlow<object>> id_774961256a9943cdb169fd34b5a0535a = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
-            ApplyAction<object> id_90592f988d854331a253c06dc598b1fa = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.Background = Brushes.White;} };
-            MouseEvent id_c6b41e09d4a9460ea502017c5100d2e4 = new MouseEvent(eventName: "MouseEnter") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<object> id_6c83716ad86d45dea95ff9098f338dad = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
-            MouseEvent id_87301b4c9909434d85ea45714da12967 = new MouseEvent(eventName: "MouseLeave") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<object> id_d69b233995474426b9ab1c025ae77be3 = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) (input as Box).Background = Brushes.LightSkyBlue;} };
-            RoutedEventSubscriber id_2bcd551e8e594de0a7df510a479c7f38 = new RoutedEventSubscriber(eventName: "GotFocus") { ExtractSender = source => (source as Box).Render };
-            RoutedEventSubscriber id_092d0fffc43c423b93c0db48b72cd059 = new RoutedEventSubscriber(eventName: "LostFocus") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<object> id_e0ae17cda7524a2ea6858b3f7bfa6020 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.LightSkyBlue;} };
-            ApplyAction<object> id_78d05efd1d9c406c8855bda74972cd5f = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) ui.Focus();} };
-            ApplyAction<object> id_6885aee183d44ed0bbc8ca3199d55898 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
-            DataFlowConnector<object> id_65a655e33e2e479a88ae615abba3c5e1 = new DataFlowConnector<object>() {  };
-            ApplyAction<object> id_73ed03aefc584cdf8b41f5ed23ec1cfd = new ApplyAction<object>() { Lambda = input =>{StateTransition.Update(Enums.DiagramMode.IdleSelected);} };
-            MouseEvent id_4bbab4363ad34037ad2b1ddd39c69ff2 = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift) };
-            ApplyAction<object> id_b53d4e09d21e471dbcbd6dd6f14f4e3a = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));Canvas.SetLeft(render, mousePos.X - _mousePosInBox.X);Canvas.SetTop(render, mousePos.Y - _mousePosInBox.Y);PositionChanged?.Invoke();} };
-            ApplyAction<object> id_b4d792842e354fbeba1c09c4d3b3d617 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
-            ApplyAction<object> id_a6edb39cb71e4085bb5e231c750e1bf4 = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
-            MouseButtonEvent id_1ce4663bf4ad408a9001b8a8374386b2 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<string> id_f2fc431eb19042e4bb84e11fab23f7f2 = new ApplyAction<string>() { Lambda = input =>{TypeChanged?.Invoke(input);} };
-            MouseButtonEvent id_5916fef7c3e74af096f3f3f94c61f1ad = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
-            ApplyAction<object> id_04be7b92b1994ee3a4159a9896c94be3 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
-            ApplyAction<object> id_85297990877e41d6ad34a2ba08aebd70 = new ApplyAction<object>() { Lambda = input =>{(input as Box).InitialiseUI();} };
-            EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };_rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };_rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
-            Apply<object, object> id_d7bdacc2521448d7a478aa97ce449744 = new Apply<object, object>() { Lambda = input =>{var notUpdated = UpdatePorts(input as IEnumerable<Port>);return notUpdated;} };
-            ConvertToEvent<object> id_413e0dc5adda4ed19709a75a233fb99b = new ConvertToEvent<object>() {  };
+            Apply<object, object> id_bde0d5b29f364d918ff5d1bc5acf77af = new Apply<object, object>() { Lambda = input =>{var mouseButtonEvent = new MouseButtonEvent("MouseDown");mouseButtonEvent.ExtractSender = source => (source as Box).Render;input.WireTo(mouseButtonEvent, "eventHandlers");return mouseButtonEvent;} };
+            DynamicWiring<IDataFlow<object>> id_7624c8c7cf764b35b15b50cac8f59955 = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
+            ApplyAction<object> id_34cc04308ad145549df173dcdcae3648 = new ApplyAction<object>() { Lambda = input =>{_selectedPort = input as Box;_selectedPort.Render.Focus();} };
+            Apply<object, object> id_bef63d80635a4b46be21fb072a5840d8 = new Apply<object, object>() { Lambda = input =>{var routedEvent = new RoutedEventSubscriber("GotFocus");routedEvent.ExtractSender = source => (source as Box).Render;input.WireTo(routedEvent, "eventHandlers");return routedEvent;} };
+            DynamicWiring<IDataFlow<object>> id_eb6bd0f0196b4ed789faec7700c18a86 = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
+            ApplyAction<object> id_5cdebf5177014b15bf0f160b88e701ed = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.Background = Brushes.SandyBrown;} };
+            Apply<object, object> id_956be038fd614053aa1233c8412e736c = new Apply<object, object>() { Lambda = input =>{var routedEvent = new RoutedEventSubscriber("LostFocus");routedEvent.ExtractSender = source => (source as Box).Render;input.WireTo(routedEvent, "eventHandlers");return routedEvent;} };
+            DynamicWiring<IDataFlow<object>> id_5992c124d1b341a99cb9eb7ec56bab2c = new DynamicWiring<IDataFlow<object>>() { SourcePort = "sourceOutput" };
+            ApplyAction<object> id_10683130fc9a495aa215265c4e3d0b97 = new ApplyAction<object>() { Lambda = input =>{var box = input as Box;box.Background = Brushes.White;} };
+            MouseEvent id_ae85f6a47c714fc48abc335cd2b46eb9 = new MouseEvent(eventName: "MouseEnter") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<object> id_caa68fc34d3145a9a88820625fe01240 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
+            MouseEvent id_108c3cf4c6ba4bb6bc05390abdddb79b = new MouseEvent(eventName: "MouseLeave") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<object> id_f661b21514a843fc943e33bab2664389 = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) (input as Box).Background = Brushes.LightSkyBlue;} };
+            RoutedEventSubscriber id_029a8c38eaae4e86acb184daa8e1d852 = new RoutedEventSubscriber(eventName: "GotFocus") { ExtractSender = source => (source as Box).Render };
+            RoutedEventSubscriber id_e7be38702bbd497b9f1c5279dfd6d343 = new RoutedEventSubscriber(eventName: "LostFocus") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<object> id_74ea462ae1114a9fb55f34b46b94392d = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.LightSkyBlue;} };
+            ApplyAction<object> id_5e83b59f404f409583588ded0e085b40 = new ApplyAction<object>() { Lambda = input =>{var ui = (input as Box).Render;if (!ui.IsKeyboardFocusWithin) ui.Focus();} };
+            ApplyAction<object> id_d73cd920bad74fccae203508181a3612 = new ApplyAction<object>() { Lambda = input =>{(input as Box).Background = Brushes.Aquamarine;} };
+            DataFlowConnector<object> id_b36b7fdbe13841669615741b9c16ce9b = new DataFlowConnector<object>() {  };
+            ApplyAction<object> id_69dd6066e5cc494f87d7be966185324f = new ApplyAction<object>() { Lambda = input =>{StateTransition.Update(Enums.DiagramMode.IdleSelected);} };
+            MouseEvent id_fd83c28d8ccb47bd9f77ba80318929ae = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift) };
+            ApplyAction<object> id_d4b8eed7a1b44946870ce21294b34b20 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));PositionX = mousePos.X - _mousePosInBox.X;PositionY = mousePos.Y - _mousePosInBox.Y;PositionChanged?.Invoke();} };
+            ApplyAction<object> id_73374037c62b49ed821905c4b166c01d = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
+            ApplyAction<object> id_e5271567f709419c9cc12337a2668693 = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
+            MouseButtonEvent id_acf5b98cdf814e73bfd3f1967c633308 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<string> id_8dcd392a34f641c989709f4be1ba1958 = new ApplyAction<string>() { Lambda = input =>{TypeChanged?.Invoke(input);} };
+            MouseButtonEvent id_6d2af0cd86b8451a97506cd61e2099f3 = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
+            ApplyAction<object> id_cdd3e075b8724ecd9ec3a4d6a275480c = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
+            ApplyAction<object> id_682faf4db2df490aa5496b1d4ca562fd = new ApplyAction<object>() { Lambda = input =>{(input as Box).InitialiseUI();} };
+            EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
+            Apply<object, object> id_7ba97fdf7a6a46ecb0a39a1fa9cfe560 = new Apply<object, object>() { Lambda = input =>{var notUpdated = UpdatePorts(input as IEnumerable<Port>);return notUpdated;} };
+            ConvertToEvent<object> id_28cfe12e225542428265f746ca7156b6 = new ConvertToEvent<object>() {  };
             Data<object> refreshOutputPorts = new Data<object>() { InstanceName = "refreshOutputPorts", Lambda = GetAcceptedPorts };
             Horizontal addNewParameterRow = new Horizontal() { InstanceName = "addNewParameterRow", Ratios = new[] { 40, 20, 40 } };
-            Text id_3f8816d31b7840d4bb266bd7e009359a = new Text(text: "") {  };
-            Button id_fa8527b246ab43288956bb5fcc3cb221 = new Button(title: "+") { Width = 20, Margin = new Thickness(5) };
-            EventLambda id_4e600812333548ea8f7d12472ec7e6a8 = new EventLambda() { Lambda = () => {CreateNodeParameterRow("", "");} };
-            EventConnector id_49f1116e5d194d13b5ea93c9e942bed8 = new EventConnector() {  };
-            EventLambda id_64ff0d9e68dc4bf3834c4137b41f7926 = new EventLambda() { Lambda = RefreshParameterRows };
-            Box id_bac316b759694cd0bc2cf71e4cb3158f = new Box() { Render = new Border() { Child = _parameterRowsPanel } };
-            EventConnector id_88eaf01f8fce4eccadb07006c803379f = new EventConnector() {  };
-            ContextMenu id_e743e199d8ea43f6963c5e0edd05f433 = new ContextMenu() {  };
-            MenuItem id_550ac788b43946acbd5300225edb8b9d = new MenuItem(header: "Open source code...") {  };
-            EventLambda id_504dc9df623f479eb04005e8a1feacb6 = new EventLambda() { Lambda = () =>{Process.Start(Model.GetCodeFilePath());} };
-            MenuItem id_441a07d91a3d4078becf7b4e4de4d527 = new MenuItem(header: "Through your default external editor") {  };
-            MenuItem id_d20e5d8ddbef4470a1beab41cf2e331a = new MenuItem(header: "Through the GALADE text editor") {  };
-            Data<string> id_ac66465d328e4d1993b87879d468e48e = new Data<string>() { Lambda = Model.GetCodeFilePath };
-            ApplyAction<object> id_412db3fb87e043dc83f97897382ebc6c = new ApplyAction<object>() { Lambda = input =>{if (StateTransition.CurrentStateMatches(Enums.DiagramMode.AwaitingPortSelection)){var wire = Graph.Get("SelectedWire") as ALAWire;if (wire == null) return;if (wire.Source == null){wire.Source = this;wire.SourcePort = input as Box;}else if (wire.Destination == null){wire.Destination = this;wire.DestinationPort = input as Box;}StateTransition.Update(Enums.DiagramMode.Idle);}} };
-            DataFlowConnector<object> id_0a61a7dc202146c09afea8a2f95f8140 = new DataFlowConnector<object>() {  };
-            KeyEvent id_4b8f5486bdd840ca93fb8567b9a481fb = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.Q }, ExtractSender = source => (source as Box).Render };
-            EventLambda id_5c544306db9f433682d2a7bb6e2f40b5 = new EventLambda() { Lambda = () =>{var sourcePort = GetSelectedPort();if (sourcePort == null) return;var source = this;var wire = new ALAWire(){Graph = Graph,Canvas = Canvas,Source = source,Destination = null,SourcePort = sourcePort,DestinationPort = null,StateTransition = StateTransition};Graph.AddEdge(wire);wire.Paint();wire.StartMoving(source: false);} };
-            UIFactory id_5c42dae2d28f40b6b263bb71b9ea29e8 = new UIFactory(getUIContainer: () =>{foreach (var initialised in Model.GetInitialisedVariables()){CreateNodeParameterRow(initialised, Model.GetValue(initialised));}RefreshParameterRows();return new Text("");}) {  };
+            Text id_e4080a86062a46339bfb7bcffcf46e0a = new Text(text: "") {  };
+            Button id_76635d7291ee4adeacccf570d667d41f = new Button(title: "+") { Width = 20, Margin = new Thickness(5) };
+            EventLambda id_1b8f34457ed34c91b2a6e036d6449748 = new EventLambda() { Lambda = () => {CreateNodeParameterRow("", "");} };
+            EventConnector id_514bd27531974b49ab1d2c3b69119eca = new EventConnector() {  };
+            EventLambda id_904892a5b72042838191acf66e9537fc = new EventLambda() { Lambda = RefreshParameterRows };
+            Box id_3c43deb17270472e93de17357bf2b394 = new Box() { Render = new Border() { Child = _parameterRowsPanel } };
+            EventConnector id_3c6a66f87ad84fed90915ab5d0bce21c = new EventConnector() {  };
+            ContextMenu id_e819c773581c4490b1449b9e4e3f52dc = new ContextMenu() {  };
+            MenuItem id_2222ef15316047b58bb5d3d3707ef492 = new MenuItem(header: "Open source code...") {  };
+            EventLambda id_4803091f12dd46959aac3edacb8545c5 = new EventLambda() { Lambda = () =>{Process.Start(Model.GetCodeFilePath());} };
+            MenuItem id_041b027553f748e8b24d4ecae0813865 = new MenuItem(header: "Through your default external editor") {  };
+            MenuItem id_a065bea77d724332b6346cd5e361456c = new MenuItem(header: "Through the GALADE text editor") {  };
+            Data<string> id_a33a2f182eff45c6b3d9a1ed9de1f3b8 = new Data<string>() { Lambda = Model.GetCodeFilePath };
+            ApplyAction<object> id_63f4dd6f49c74cd681ad11acd5e34017 = new ApplyAction<object>() { Lambda = input =>{if (StateTransition.CurrentStateMatches(Enums.DiagramMode.AwaitingPortSelection)){var wire = Graph.Get("SelectedWire") as ALAWire;if (wire == null) return;if (wire.Source == null){wire.Source = this;wire.SourcePort = input as Box;}else if (wire.Destination == null){wire.Destination = this;wire.DestinationPort = input as Box;}StateTransition.Update(Enums.DiagramMode.Idle);}} };
+            DataFlowConnector<object> id_be434728a47043839978d8c92852e93c = new DataFlowConnector<object>() {  };
+            KeyEvent id_460664cc6a364d8b9f33f311e80d1d75 = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.Q }, ExtractSender = source => (source as Box).Render };
+            EventLambda id_a38df30ea73444d8a37b3b4f2c552d38 = new EventLambda() { Lambda = () =>{var sourcePort = GetSelectedPort();if (sourcePort == null) return;var source = this;var wire = new ALAWire(){Graph = Graph,Canvas = Canvas,Source = source,Destination = null,SourcePort = sourcePort,DestinationPort = null,StateTransition = StateTransition};Graph.AddEdge(wire);wire.Paint();wire.StartMoving(source: false);} };
+            UIFactory id_e9315dd648f34268a882c632d7ddea68 = new UIFactory(getUIContainer: () =>{foreach (var initialised in Model.GetInitialisedVariables()){CreateNodeParameterRow(initialised, Model.GetValue(initialised));}RefreshParameterRows();return new Text("");}) {  };
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
-            _rootUI.WireTo(id_4f66a5309d464c62a1c6fafd0dc44779, "uiLayout");
-            _rootUI.WireTo(id_c6b41e09d4a9460ea502017c5100d2e4, "eventHandlers");
-            _rootUI.WireTo(id_87301b4c9909434d85ea45714da12967, "eventHandlers");
-            _rootUI.WireTo(id_2bcd551e8e594de0a7df510a479c7f38, "eventHandlers");
-            _rootUI.WireTo(id_092d0fffc43c423b93c0db48b72cd059, "eventHandlers");
-            _rootUI.WireTo(id_4bbab4363ad34037ad2b1ddd39c69ff2, "eventHandlers");
-            _rootUI.WireTo(id_1ce4663bf4ad408a9001b8a8374386b2, "eventHandlers");
-            _rootUI.WireTo(id_5916fef7c3e74af096f3f3f94c61f1ad, "eventHandlers");
-            _rootUI.WireTo(id_4b8f5486bdd840ca93fb8567b9a481fb, "eventHandlers");
-            _rootUI.WireTo(id_e743e199d8ea43f6963c5e0edd05f433, "contextMenu");
-            id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(id_e055b7e6dc8d480f9c1f80ab88451b98, "children");
-            id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(nodeMiddle, "children");
-            id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(id_c7df542fdf7f48708843d6bdd4be15ea, "children");
+            rootUI.WireTo(id_a5e06e4b9dd2466296c8c52755aa94c7, "uiLayout");
+            rootUI.WireTo(id_ae85f6a47c714fc48abc335cd2b46eb9, "eventHandlers");
+            rootUI.WireTo(id_108c3cf4c6ba4bb6bc05390abdddb79b, "eventHandlers");
+            rootUI.WireTo(id_029a8c38eaae4e86acb184daa8e1d852, "eventHandlers");
+            rootUI.WireTo(id_e7be38702bbd497b9f1c5279dfd6d343, "eventHandlers");
+            rootUI.WireTo(id_fd83c28d8ccb47bd9f77ba80318929ae, "eventHandlers");
+            rootUI.WireTo(id_acf5b98cdf814e73bfd3f1967c633308, "eventHandlers");
+            rootUI.WireTo(id_6d2af0cd86b8451a97506cd61e2099f3, "eventHandlers");
+            rootUI.WireTo(id_460664cc6a364d8b9f33f311e80d1d75, "eventHandlers");
+            rootUI.WireTo(id_e819c773581c4490b1449b9e4e3f52dc, "contextMenu");
+            id_a5e06e4b9dd2466296c8c52755aa94c7.WireTo(id_2e29596583cb413783c3d09457d2e2a4, "children");
+            id_a5e06e4b9dd2466296c8c52755aa94c7.WireTo(nodeMiddle, "children");
+            id_a5e06e4b9dd2466296c8c52755aa94c7.WireTo(id_6972c047a04d4f6dbe2417bb58275a98, "children");
             nodeMiddle.WireTo(nodeIdRow, "children");
             nodeMiddle.WireTo(parameterRowVert, "children");
             nodeMiddle.WireTo(addNewParameterRow, "children");
             nodeIdRow.WireTo(nodeTypeDropDownMenu, "children");
             nodeIdRow.WireTo(nodeNameTextBox, "children");
-            nodeTypeDropDownMenu.WireTo(id_f2fc431eb19042e4bb84e11fab23f7f2, "selectedItem");
-            id_e055b7e6dc8d480f9c1f80ab88451b98.WireTo(id_83e138e6890048b1aea41cf74216fa32, "uiInstanceOutput");
-            id_83e138e6890048b1aea41cf74216fa32.WireTo(refreshInputPorts, "eventOutput");
-            refreshInputPorts.WireTo(id_d7bdacc2521448d7a478aa97ce449744, "dataOutput");
-            id_a2fcb922f3d040f99adfedacbad79934.WireTo(id_fd2919809a774e6f83e06edae869dde3, "output");
-            id_fd2919809a774e6f83e06edae869dde3.WireTo(setUpPortBox, "elementOutput");
-            id_fd2919809a774e6f83e06edae869dde3.WireTo(id_88eaf01f8fce4eccadb07006c803379f, "complete");
-            setUpPortBox.WireTo(id_1efbf92d2af344c6b688c9d636252b56, "output");
-            id_c7df542fdf7f48708843d6bdd4be15ea.WireTo(id_413e0dc5adda4ed19709a75a233fb99b, "uiInstanceOutput");
-            id_1efbf92d2af344c6b688c9d636252b56.WireTo(addUIEventsToPort, "fanoutList");
-            id_1efbf92d2af344c6b688c9d636252b56.WireTo(id_85297990877e41d6ad34a2ba08aebd70, "fanoutList");
-            id_cec56afb114e4a459e22c9bc53b17401.WireTo(id_73a1a2b69ac647128b19a0b9231e9ce7, "output");
-            id_73a1a2b69ac647128b19a0b9231e9ce7.WireTo(id_0a61a7dc202146c09afea8a2f95f8140, "wire");
-            id_841583aa6c3a452b99ba2bd6eaa79046.WireTo(id_b99c67f8f97e4d67be25f1f0915f2679, "output");
-            id_b99c67f8f97e4d67be25f1f0915f2679.WireTo(id_071eb926e57c41f2a47cd155746f8e85, "wire");
-            addUIEventsToPort.WireTo(id_cec56afb114e4a459e22c9bc53b17401, "fanoutList");
-            addUIEventsToPort.WireTo(id_841583aa6c3a452b99ba2bd6eaa79046, "fanoutList");
-            addUIEventsToPort.WireTo(id_4217d01954064647aaa95683bfd68756, "fanoutList");
-            addUIEventsToPort.WireTo(id_74701bb44c8541c8b8c828bcb25c9c1c, "fanoutList");
-            addUIEventsToPort.WireTo(id_7f052ccc12db48bd83a5f4b392b7ca84, "fanoutList");
-            id_4217d01954064647aaa95683bfd68756.WireTo(id_07c75a68cdd64db8ab0848f196c97a2f, "output");
-            id_07c75a68cdd64db8ab0848f196c97a2f.WireTo(id_2cb584190bbe42be9a189755802ebc97, "wire");
-            id_74701bb44c8541c8b8c828bcb25c9c1c.WireTo(id_1dfb3f0fd12646b9b1fbf95abd0869ed, "output");
-            id_1dfb3f0fd12646b9b1fbf95abd0869ed.WireTo(id_65b4eebadd9449529f13e2531ccc07bd, "wire");
-            id_7f052ccc12db48bd83a5f4b392b7ca84.WireTo(id_774961256a9943cdb169fd34b5a0535a, "output");
-            id_774961256a9943cdb169fd34b5a0535a.WireTo(id_90592f988d854331a253c06dc598b1fa, "wire");
-            id_c6b41e09d4a9460ea502017c5100d2e4.WireTo(id_6c83716ad86d45dea95ff9098f338dad, "sourceOutput");
-            id_87301b4c9909434d85ea45714da12967.WireTo(id_d69b233995474426b9ab1c025ae77be3, "sourceOutput");
-            id_2bcd551e8e594de0a7df510a479c7f38.WireTo(id_6885aee183d44ed0bbc8ca3199d55898, "sourceOutput");
-            id_092d0fffc43c423b93c0db48b72cd059.WireTo(id_e0ae17cda7524a2ea6858b3f7bfa6020, "sourceOutput");
-            id_65a655e33e2e479a88ae615abba3c5e1.WireTo(id_78d05efd1d9c406c8855bda74972cd5f, "fanoutList");
-            id_65a655e33e2e479a88ae615abba3c5e1.WireTo(id_73ed03aefc584cdf8b41f5ed23ec1cfd, "fanoutList");
-            id_65a655e33e2e479a88ae615abba3c5e1.WireTo(id_b4d792842e354fbeba1c09c4d3b3d617, "fanoutList");
-            id_65a655e33e2e479a88ae615abba3c5e1.WireTo(id_a6edb39cb71e4085bb5e231c750e1bf4, "fanoutList");
-            id_4bbab4363ad34037ad2b1ddd39c69ff2.WireTo(id_b53d4e09d21e471dbcbd6dd6f14f4e3a, "sourceOutput");
-            id_1ce4663bf4ad408a9001b8a8374386b2.WireTo(id_65a655e33e2e479a88ae615abba3c5e1, "sourceOutput");
-            id_5916fef7c3e74af096f3f3f94c61f1ad.WireTo(id_04be7b92b1994ee3a4159a9896c94be3, "sourceOutput");
-            id_d7bdacc2521448d7a478aa97ce449744.WireTo(id_a2fcb922f3d040f99adfedacbad79934, "output");
-            id_413e0dc5adda4ed19709a75a233fb99b.WireTo(refreshOutputPorts, "eventOutput");
-            refreshOutputPorts.WireTo(id_d7bdacc2521448d7a478aa97ce449744, "dataOutput");
-            addNewParameterRow.WireTo(id_5c42dae2d28f40b6b263bb71b9ea29e8, "children");
-            addNewParameterRow.WireTo(id_fa8527b246ab43288956bb5fcc3cb221, "children");
-            addNewParameterRow.WireTo(id_3f8816d31b7840d4bb266bd7e009359a, "children");
-            id_fa8527b246ab43288956bb5fcc3cb221.WireTo(id_49f1116e5d194d13b5ea93c9e942bed8, "eventButtonClicked");
-            parameterRowVert.WireTo(id_bac316b759694cd0bc2cf71e4cb3158f, "children");
-            id_49f1116e5d194d13b5ea93c9e942bed8.WireTo(id_4e600812333548ea8f7d12472ec7e6a8, "fanoutList");
-            id_49f1116e5d194d13b5ea93c9e942bed8.WireTo(id_64ff0d9e68dc4bf3834c4137b41f7926, "complete");
-            id_88eaf01f8fce4eccadb07006c803379f.WireTo(setNodeToolTip, "fanoutList");
-            id_e743e199d8ea43f6963c5e0edd05f433.WireTo(id_550ac788b43946acbd5300225edb8b9d, "children");
-            id_550ac788b43946acbd5300225edb8b9d.WireTo(id_441a07d91a3d4078becf7b4e4de4d527, "children");
-            id_550ac788b43946acbd5300225edb8b9d.WireTo(id_d20e5d8ddbef4470a1beab41cf2e331a, "children");
-            id_441a07d91a3d4078becf7b4e4de4d527.WireTo(id_504dc9df623f479eb04005e8a1feacb6, "clickedEvent");
-            id_d20e5d8ddbef4470a1beab41cf2e331a.WireTo(id_ac66465d328e4d1993b87879d468e48e, "clickedEvent");
-            id_0a61a7dc202146c09afea8a2f95f8140.WireTo(id_afcd6288424c4621b589d05af20eb2d7, "fanoutList");
-            id_0a61a7dc202146c09afea8a2f95f8140.WireTo(id_412db3fb87e043dc83f97897382ebc6c, "fanoutList");
-            id_4b8f5486bdd840ca93fb8567b9a481fb.WireTo(id_5c544306db9f433682d2a7bb6e2f40b5, "eventHappened");
+            nodeTypeDropDownMenu.WireTo(id_8dcd392a34f641c989709f4be1ba1958, "selectedItem");
+            id_2e29596583cb413783c3d09457d2e2a4.WireTo(id_e67a609eb2e2432c99930b57a81d0512, "uiInstanceOutput");
+            id_e67a609eb2e2432c99930b57a81d0512.WireTo(refreshInputPorts, "eventOutput");
+            refreshInputPorts.WireTo(id_7ba97fdf7a6a46ecb0a39a1fa9cfe560, "dataOutput");
+            id_970c7a8bdcb34509a6b8402f914a3fef.WireTo(id_e41790a7bd904a7b98030afcaef81409, "output");
+            id_e41790a7bd904a7b98030afcaef81409.WireTo(setUpPortBox, "elementOutput");
+            id_e41790a7bd904a7b98030afcaef81409.WireTo(id_3c6a66f87ad84fed90915ab5d0bce21c, "complete");
+            setUpPortBox.WireTo(id_f3dbb781c1d34739a0029932f8b04f30, "output");
+            id_6972c047a04d4f6dbe2417bb58275a98.WireTo(id_28cfe12e225542428265f746ca7156b6, "uiInstanceOutput");
+            id_f3dbb781c1d34739a0029932f8b04f30.WireTo(addUIEventsToPort, "fanoutList");
+            id_f3dbb781c1d34739a0029932f8b04f30.WireTo(id_682faf4db2df490aa5496b1d4ca562fd, "fanoutList");
+            id_08901c73c88e4f038cf5a390be13f345.WireTo(id_52ba1a36ec6e4425bc613972324bf567, "output");
+            id_52ba1a36ec6e4425bc613972324bf567.WireTo(id_be434728a47043839978d8c92852e93c, "wire");
+            id_f26e2f3546774f8bb95199119c1962de.WireTo(id_f25730cacae649eb8fb5bdb267410d3a, "output");
+            id_f25730cacae649eb8fb5bdb267410d3a.WireTo(id_41f9b51e1825435c9930ddd012650c1b, "wire");
+            addUIEventsToPort.WireTo(id_08901c73c88e4f038cf5a390be13f345, "fanoutList");
+            addUIEventsToPort.WireTo(id_f26e2f3546774f8bb95199119c1962de, "fanoutList");
+            addUIEventsToPort.WireTo(id_bde0d5b29f364d918ff5d1bc5acf77af, "fanoutList");
+            addUIEventsToPort.WireTo(id_bef63d80635a4b46be21fb072a5840d8, "fanoutList");
+            addUIEventsToPort.WireTo(id_956be038fd614053aa1233c8412e736c, "fanoutList");
+            id_bde0d5b29f364d918ff5d1bc5acf77af.WireTo(id_7624c8c7cf764b35b15b50cac8f59955, "output");
+            id_7624c8c7cf764b35b15b50cac8f59955.WireTo(id_34cc04308ad145549df173dcdcae3648, "wire");
+            id_bef63d80635a4b46be21fb072a5840d8.WireTo(id_eb6bd0f0196b4ed789faec7700c18a86, "output");
+            id_eb6bd0f0196b4ed789faec7700c18a86.WireTo(id_5cdebf5177014b15bf0f160b88e701ed, "wire");
+            id_956be038fd614053aa1233c8412e736c.WireTo(id_5992c124d1b341a99cb9eb7ec56bab2c, "output");
+            id_5992c124d1b341a99cb9eb7ec56bab2c.WireTo(id_10683130fc9a495aa215265c4e3d0b97, "wire");
+            id_ae85f6a47c714fc48abc335cd2b46eb9.WireTo(id_caa68fc34d3145a9a88820625fe01240, "sourceOutput");
+            id_108c3cf4c6ba4bb6bc05390abdddb79b.WireTo(id_f661b21514a843fc943e33bab2664389, "sourceOutput");
+            id_029a8c38eaae4e86acb184daa8e1d852.WireTo(id_d73cd920bad74fccae203508181a3612, "sourceOutput");
+            id_e7be38702bbd497b9f1c5279dfd6d343.WireTo(id_74ea462ae1114a9fb55f34b46b94392d, "sourceOutput");
+            id_b36b7fdbe13841669615741b9c16ce9b.WireTo(id_5e83b59f404f409583588ded0e085b40, "fanoutList");
+            id_b36b7fdbe13841669615741b9c16ce9b.WireTo(id_69dd6066e5cc494f87d7be966185324f, "fanoutList");
+            id_b36b7fdbe13841669615741b9c16ce9b.WireTo(id_73374037c62b49ed821905c4b166c01d, "fanoutList");
+            id_b36b7fdbe13841669615741b9c16ce9b.WireTo(id_e5271567f709419c9cc12337a2668693, "fanoutList");
+            id_fd83c28d8ccb47bd9f77ba80318929ae.WireTo(id_d4b8eed7a1b44946870ce21294b34b20, "sourceOutput");
+            id_acf5b98cdf814e73bfd3f1967c633308.WireTo(id_b36b7fdbe13841669615741b9c16ce9b, "sourceOutput");
+            id_6d2af0cd86b8451a97506cd61e2099f3.WireTo(id_cdd3e075b8724ecd9ec3a4d6a275480c, "sourceOutput");
+            id_7ba97fdf7a6a46ecb0a39a1fa9cfe560.WireTo(id_970c7a8bdcb34509a6b8402f914a3fef, "output");
+            id_28cfe12e225542428265f746ca7156b6.WireTo(refreshOutputPorts, "eventOutput");
+            refreshOutputPorts.WireTo(id_7ba97fdf7a6a46ecb0a39a1fa9cfe560, "dataOutput");
+            addNewParameterRow.WireTo(id_e9315dd648f34268a882c632d7ddea68, "children");
+            addNewParameterRow.WireTo(id_76635d7291ee4adeacccf570d667d41f, "children");
+            addNewParameterRow.WireTo(id_e4080a86062a46339bfb7bcffcf46e0a, "children");
+            id_76635d7291ee4adeacccf570d667d41f.WireTo(id_514bd27531974b49ab1d2c3b69119eca, "eventButtonClicked");
+            parameterRowVert.WireTo(id_3c43deb17270472e93de17357bf2b394, "children");
+            id_514bd27531974b49ab1d2c3b69119eca.WireTo(id_1b8f34457ed34c91b2a6e036d6449748, "fanoutList");
+            id_514bd27531974b49ab1d2c3b69119eca.WireTo(id_904892a5b72042838191acf66e9537fc, "complete");
+            id_3c6a66f87ad84fed90915ab5d0bce21c.WireTo(setNodeToolTip, "fanoutList");
+            id_e819c773581c4490b1449b9e4e3f52dc.WireTo(id_2222ef15316047b58bb5d3d3707ef492, "children");
+            id_2222ef15316047b58bb5d3d3707ef492.WireTo(id_041b027553f748e8b24d4ecae0813865, "children");
+            id_2222ef15316047b58bb5d3d3707ef492.WireTo(id_a065bea77d724332b6346cd5e361456c, "children");
+            id_041b027553f748e8b24d4ecae0813865.WireTo(id_4803091f12dd46959aac3edacb8545c5, "clickedEvent");
+            id_a065bea77d724332b6346cd5e361456c.WireTo(id_a33a2f182eff45c6b3d9a1ed9de1f3b8, "clickedEvent");
+            id_be434728a47043839978d8c92852e93c.WireTo(id_2416e3ce8b8c4f359e01b3edeac009ae, "fanoutList");
+            id_be434728a47043839978d8c92852e93c.WireTo(id_63f4dd6f49c74cd681ad11acd5e34017, "fanoutList");
+            id_460664cc6a364d8b9f33f311e80d1d75.WireTo(id_a38df30ea73444d8a37b3b4f2c552d38, "eventHappened");
             // END AUTO-GENERATED WIRING
 
             Render = _nodeMask;
             _nodeMask.Children.Clear();
-            _detailedRender.Child = (_rootUI as IUI).GetWPFElement();
+            _detailedRender.Child = (rootUI as IUI).GetWPFElement();
             _nodeMask.Children.Add(_detailedRender);
 
             // Instance mapping
@@ -548,6 +564,10 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
 
 
 

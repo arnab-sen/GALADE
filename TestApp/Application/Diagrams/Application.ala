@@ -401,22 +401,22 @@
         },
         {
           "Name": "GetWidth",
-          "Value": "n => (n.Render as FrameworkElement).ActualWidth",
+          "Value": "n => n.Width",
           "ParameterType": "Property"
         },
         {
           "Name": "GetHeight",
-          "Value": "n => (n.Render as FrameworkElement).ActualHeight",
+          "Value": "n => n.Height",
           "ParameterType": "Property"
         },
         {
           "Name": "SetX",
-          "Value": "(n, x) => WPFCanvas.SetLeft(n.Render, x)",
+          "Value": "(n, x) => n.PositionX = x",
           "ParameterType": "Property"
         },
         {
           "Name": "SetY",
-          "Value": "(n, y) => WPFCanvas.SetTop(n.Render, y)",
+          "Value": "(n, y) => n.PositionY = y",
           "ParameterType": "Property"
         },
         {
@@ -2056,7 +2056,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar render = (input as ALANode).Render;\r\n\t\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\tWPFCanvas.SetLeft(render, mousePos.X);\r\n\tWPFCanvas.SetTop(render, mousePos.Y);\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t}\r\n\t\r\n\tmainGraph.Roots.Add(input);\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar alaNode = input as ALANode;\r\n\tvar mousePos = Mouse.GetPosition(mainCanvas);\r\n\talaNode.PositionX = mousePos.X;\r\n\talaNode.PositionY = mousePos.Y;\r\n\t\r\n\tmainGraph.Set(\"LatestNode\", input);\r\n\t\r\n\tif (mainGraph.Get(\"SelectedNode\") == null)\r\n\t{\r\n\t\tmainGraph.Set(\"SelectedNode\", input);\r\n\t}\r\n\t\r\n\tmainGraph.Roots.Add(input);\r\n}",
           "ParameterType": "Property"
         }
       ],

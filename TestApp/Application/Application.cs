@@ -215,7 +215,7 @@ namespace TestApplication
             MenuItem id_2d32b91d2ab1435cafe28988425376d0 = new MenuItem(header: "Add root") {  };
             EventConnector id_05664e895ab748888e1938ef6bfe89d0 = new EventConnector() {  };
             Data<ALANode> getFirstRoot = new Data<ALANode>() { InstanceName = "getFirstRoot", Lambda = () => mainGraph.Roots.FirstOrDefault() as ALANode };
-            RightTreeLayout<ALANode> id_5ebc05846871488d94e745d60e073ae1 = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => (n.Render as FrameworkElement).ActualWidth, GetHeight = n => (n.Render as FrameworkElement).ActualHeight, SetX = (n, x) => WPFCanvas.SetLeft(n.Render, x), SetY = (n, y) => WPFCanvas.SetTop(n.Render, y), GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
+            RightTreeLayout<ALANode> id_5ebc05846871488d94e745d60e073ae1 = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => n.Width, GetHeight = n => n.Height, SetX = (n, x) => n.PositionX = x, SetY = (n, y) => n.PositionY = y, GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
             DataFlowConnector<ALANode> id_d4e13fc2e593411581d05445df76680a = new DataFlowConnector<ALANode>() {  };
             ApplyAction<ALANode> id_8789d0f39d654e0491be09c47d3a5b2f = new ApplyAction<ALANode>() { Lambda = node =>{Dispatcher.CurrentDispatcher.Invoke(() => {var edges = mainGraph.Edges;foreach (var edge in edges){(edge as ALAWire).Refresh();}}, DispatcherPriority.ContextIdle);} };
@@ -257,7 +257,7 @@ namespace TestApplication
             MenuItem id_8bc3a324e4b24bed80feabe0b29198c2 = new MenuItem(header: "Refresh") {  };
             Data<AbstractionModel> id_f476bd25f79b40da97dfb5b618dc9d0d = new Data<AbstractionModel>() { Lambda = () => abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault()) };
             Apply<AbstractionModel, object> id_04c749d47d3f4eb08b73083ecfa660a3 = new Apply<AbstractionModel, object>() { Lambda = createNewALANode.Lambda };
-            ApplyAction<object> id_d0d668c705b44105a1113700a96595a5 = new ApplyAction<object>() { Lambda = input =>{var render = (input as ALANode).Render;var mousePos = Mouse.GetPosition(mainCanvas);WPFCanvas.SetLeft(render, mousePos.X);WPFCanvas.SetTop(render, mousePos.Y);mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);}mainGraph.Roots.Add(input);} };
+            ApplyAction<object> id_d0d668c705b44105a1113700a96595a5 = new ApplyAction<object>() { Lambda = input =>{var alaNode = input as ALANode;var mousePos = Mouse.GetPosition(mainCanvas);alaNode.PositionX = mousePos.X;alaNode.PositionY = mousePos.Y;mainGraph.Set("LatestNode", input);if (mainGraph.Get("SelectedNode") == null){mainGraph.Set("SelectedNode", input);}mainGraph.Roots.Add(input);} };
             MenuItem id_44178dd9dd254a2198b965b1475d84ee = new MenuItem(header: "Open Code File") {  };
             FileBrowser id_cb07eedc04654713a1ce963e26ba8cf9 = new FileBrowser() { Mode = "Open" };
             FileReader id_028d6d1f0576435fb31e49ca42dd3575 = new FileReader() {  };
@@ -383,6 +383,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
