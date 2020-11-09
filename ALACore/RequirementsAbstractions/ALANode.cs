@@ -55,13 +55,17 @@ namespace RequirementsAbstractions
         public Func<Port, Point> GetAttachmentPoint { get; set; }
 
         // Private fields
-        private Box rootUI;
+        private Box _rootUI;
         private Box _selectedPort;
         private Point _mousePosInBox = new Point(0, 0);
         private List<Box> _inputPortBoxes = new List<Box>();
         private List<Box> _outputPortBoxes = new List<Box>();
         private List<string> _nodeParameters = new List<string>();
         private List<Tuple<Horizontal, DropDownMenu, TextBox, Button>> _nodeParameterRows = new List<Tuple<Horizontal, DropDownMenu, TextBox, Button>>();
+        private Canvas _nodeMask = new Canvas();
+        private Border _detailedRender = new Border();
+        private Border _textMaskRender;
+        private Text _textMask;
 
         // Global instances
         private Vertical _inputPortsVert;
@@ -245,6 +249,7 @@ namespace RequirementsAbstractions
             UpdateNodeParameters();
 
             CreateWiring();
+
         }
 
         public void RefreshParameterRows()
@@ -324,9 +329,53 @@ namespace RequirementsAbstractions
 	        _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
         }
 
+        private Border CreateTextMask(string text)
+        {
+            var maskContainer = new Border();
+
+            _textMask = new Text(text)
+            {
+                FontSize = 30,
+                FontWeight = FontWeights.Bold
+            };
+
+            maskContainer.Child = (_textMask as IUI).GetWPFElement();
+
+            return maskContainer;
+        }
+
+        /// <summary>
+        /// Replaces the node's UI with an enlarged text label containing the AbstractionModel's type. Useful for when the node is too small to read.
+        /// </summary>
+        /// <param name="show"></param>
+        public void ShowTypeTextMask(bool show = true)
+        {
+            if (show)
+            {
+                if (_textMaskRender == null) _textMaskRender = CreateTextMask(Model.Type);
+
+                if (!_nodeMask.Children.Contains(_textMaskRender))
+                {
+                    _nodeMask.Children.Add(_textMaskRender);
+                }
+                else
+                {
+                    _textMaskRender.Visibility = Visibility.Visible;
+                }
+
+                _detailedRender.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                _textMaskRender.Visibility = Visibility.Collapsed;
+                _detailedRender.Visibility = Visibility.Visible;
+            }
+
+        }
+
         private void CreateWiring()
         {
-            rootUI = new Box()
+            _rootUI = new Box()
             {
                 Background = Brushes.LightSkyBlue
             };
@@ -381,7 +430,7 @@ namespace RequirementsAbstractions
             MouseButtonEvent id_5916fef7c3e74af096f3f3f94c61f1ad = new MouseButtonEvent(eventName: "MouseLeftButtonUp") { ExtractSender = source => (source as Box).Render };
             ApplyAction<object> id_04be7b92b1994ee3a4159a9896c94be3 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;if (Mouse.Captured?.Equals(render) ?? false) Mouse.Capture(null);} };
             ApplyAction<object> id_85297990877e41d6ad34a2ba08aebd70 = new ApplyAction<object>() { Lambda = input =>{(input as Box).InitialiseUI();} };
-            EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
+            EventLambda setNodeToolTip = new EventLambda() { InstanceName = "setNodeToolTip", Lambda = () => {var toolTipLabel = new System.Windows.Controls.Label() { Content = Model.GetDocumentation() };_rootUI.Render.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };_rootUI.Render.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetDocumentation();} };
             Apply<object, object> id_d7bdacc2521448d7a478aa97ce449744 = new Apply<object, object>() { Lambda = input =>{var notUpdated = UpdatePorts(input as IEnumerable<Port>);return notUpdated;} };
             ConvertToEvent<object> id_413e0dc5adda4ed19709a75a233fb99b = new ConvertToEvent<object>() {  };
             Data<object> refreshOutputPorts = new Data<object>() { InstanceName = "refreshOutputPorts", Lambda = GetAcceptedPorts };
@@ -407,16 +456,16 @@ namespace RequirementsAbstractions
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
-            rootUI.WireTo(id_4f66a5309d464c62a1c6fafd0dc44779, "uiLayout");
-            rootUI.WireTo(id_c6b41e09d4a9460ea502017c5100d2e4, "eventHandlers");
-            rootUI.WireTo(id_87301b4c9909434d85ea45714da12967, "eventHandlers");
-            rootUI.WireTo(id_2bcd551e8e594de0a7df510a479c7f38, "eventHandlers");
-            rootUI.WireTo(id_092d0fffc43c423b93c0db48b72cd059, "eventHandlers");
-            rootUI.WireTo(id_4bbab4363ad34037ad2b1ddd39c69ff2, "eventHandlers");
-            rootUI.WireTo(id_1ce4663bf4ad408a9001b8a8374386b2, "eventHandlers");
-            rootUI.WireTo(id_5916fef7c3e74af096f3f3f94c61f1ad, "eventHandlers");
-            rootUI.WireTo(id_4b8f5486bdd840ca93fb8567b9a481fb, "eventHandlers");
-            rootUI.WireTo(id_e743e199d8ea43f6963c5e0edd05f433, "contextMenu");
+            _rootUI.WireTo(id_4f66a5309d464c62a1c6fafd0dc44779, "uiLayout");
+            _rootUI.WireTo(id_c6b41e09d4a9460ea502017c5100d2e4, "eventHandlers");
+            _rootUI.WireTo(id_87301b4c9909434d85ea45714da12967, "eventHandlers");
+            _rootUI.WireTo(id_2bcd551e8e594de0a7df510a479c7f38, "eventHandlers");
+            _rootUI.WireTo(id_092d0fffc43c423b93c0db48b72cd059, "eventHandlers");
+            _rootUI.WireTo(id_4bbab4363ad34037ad2b1ddd39c69ff2, "eventHandlers");
+            _rootUI.WireTo(id_1ce4663bf4ad408a9001b8a8374386b2, "eventHandlers");
+            _rootUI.WireTo(id_5916fef7c3e74af096f3f3f94c61f1ad, "eventHandlers");
+            _rootUI.WireTo(id_4b8f5486bdd840ca93fb8567b9a481fb, "eventHandlers");
+            _rootUI.WireTo(id_e743e199d8ea43f6963c5e0edd05f433, "contextMenu");
             id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(id_e055b7e6dc8d480f9c1f80ab88451b98, "children");
             id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(nodeMiddle, "children");
             id_4f66a5309d464c62a1c6fafd0dc44779.WireTo(id_c7df542fdf7f48708843d6bdd4be15ea, "children");
@@ -483,7 +532,10 @@ namespace RequirementsAbstractions
             id_4b8f5486bdd840ca93fb8567b9a481fb.WireTo(id_5c544306db9f433682d2a7bb6e2f40b5, "eventHappened");
             // END AUTO-GENERATED WIRING
 
-            Render = (rootUI as IUI).GetWPFElement();
+            Render = _nodeMask;
+            _nodeMask.Children.Clear();
+            _detailedRender.Child = (_rootUI as IUI).GetWPFElement();
+            _nodeMask.Children.Add(_detailedRender);
 
             // Instance mapping
             _refreshInputPorts = refreshInputPorts;
