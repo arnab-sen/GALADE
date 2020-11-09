@@ -360,9 +360,15 @@ namespace RequirementsAbstractions
                 Height = Height
             };
 
-            var foreground = new Border()
+            // var foreground = new Border()
+            // {
+            //     Background = Brushes.Transparent,
+            //     Width = Width,
+            //     Height = Height
+            // };
+
+            var foreground = new Viewbox()
             {
-                Background = Brushes.Transparent,
                 Width = Width,
                 Height = Height
             };
@@ -374,10 +380,15 @@ namespace RequirementsAbstractions
                 HorizAlignment = HorizontalAlignment.Center,
             };
 
-            foreground.Child = (_textMask as IUI).GetWPFElement();
-
+            var textUI = (_textMask as IUI).GetWPFElement();
+            textUI.ClipToBounds = false;
+            foreground.Child = textUI;
+            
             maskContainer.Children.Add(background);
             maskContainer.Children.Add(foreground);
+
+            maskContainer.MouseEnter += (sender, args) => ShowTypeTextMask(false);
+            
 
             return maskContainer;
         }
@@ -460,7 +471,7 @@ namespace RequirementsAbstractions
             DataFlowConnector<object> id_b36b7fdbe13841669615741b9c16ce9b = new DataFlowConnector<object>() {  };
             ApplyAction<object> id_69dd6066e5cc494f87d7be966185324f = new ApplyAction<object>() { Lambda = input =>{StateTransition.Update(Enums.DiagramMode.IdleSelected);} };
             MouseEvent id_fd83c28d8ccb47bd9f77ba80318929ae = new MouseEvent(eventName: "MouseMove") { ExtractSender = source => (source as Box).Render, Condition = args => Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift) };
-            ApplyAction<object> id_d4b8eed7a1b44946870ce21294b34b20 = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));PositionX = mousePos.X - _mousePosInBox.X;PositionY = mousePos.Y - _mousePosInBox.Y;PositionChanged?.Invoke();} };
+            ApplyAction<object> id_d4b8eed7a1b44946870ce21294b34b20 = new ApplyAction<object>() { Lambda = input =>{var mousePos = Mouse.GetPosition(Canvas);var oldPosition = new Point(PositionX, PositionY);PositionX = mousePos.X - _mousePosInBox.X;PositionY = mousePos.Y - _mousePosInBox.Y;PositionChanged?.Invoke();} };
             ApplyAction<object> id_73374037c62b49ed821905c4b166c01d = new ApplyAction<object>() { Lambda = input =>{var render = (input as Box).Render;_mousePosInBox = Mouse.GetPosition(render);Mouse.Capture(render);} };
             ApplyAction<object> id_e5271567f709419c9cc12337a2668693 = new ApplyAction<object>() { Lambda = input =>{Graph.Set("SelectedNode", this);} };
             MouseButtonEvent id_acf5b98cdf814e73bfd3f1967c633308 = new MouseButtonEvent(eventName: "MouseLeftButtonDown") { ExtractSender = source => (source as Box).Render };
@@ -586,6 +597,10 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
 
 
 

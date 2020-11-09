@@ -1556,7 +1556,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tvar render = (input as Box).Render;\r\n\tvar mousePos = Mouse.GetPosition(Canvas);\r\n\t\r\n\tvar oldPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));\r\n\t\r\n\tPositionX = mousePos.X - _mousePosInBox.X;\r\n\tPositionY = mousePos.Y - _mousePosInBox.Y;\r\n\t\r\n\tPositionChanged?.Invoke();\r\n}",
+          "Value": "input =>\r\n{\r\n\tvar mousePos = Mouse.GetPosition(Canvas);\r\n\t\r\n\tvar oldPosition = new Point(PositionX, PositionY);\r\n\t\r\n\tPositionX = mousePos.X - _mousePosInBox.X;\r\n\tPositionY = mousePos.Y - _mousePosInBox.Y;\r\n\t\r\n\tPositionChanged?.Invoke();\r\n}",
           "ParameterType": "Property"
         }
       ],
