@@ -144,7 +144,7 @@ namespace RequirementsAbstractions
             // _bezier.Point3 = GetCanvasPosition(DestinationPort.Render); 
             _bezier.Point3 = GetAttachmentPoint(inputPort: true); 
 
-            var midX = (_bezier.Point0.X + _bezier.Point0.X) / 2;
+            var midX = (_bezier.Point0.X + _bezier.Point3.X) / 2;
 
             _bezier.Point1 = new Point(midX, _bezier.Point0.Y);
             _bezier.Point2 = new Point(midX, _bezier.Point3.Y);
