@@ -318,7 +318,8 @@ namespace RequirementsAbstractions
 		        Text = name,
                 Width = 100,
 		        TrackIndent = true,
-		        Font = "Consolas"
+		        Font = "Consolas",
+                TabString = "    "
 	        };
 	        
 	        var deleteButton = new Button("-") 

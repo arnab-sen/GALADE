@@ -49,6 +49,7 @@ namespace DomainAbstractions
         }
 
         public bool TrackIndent { get; set; } = false;
+        public string TabString { get; set; } = "\t";
 
         public bool AcceptsTab
         {
@@ -112,11 +113,38 @@ namespace DomainAbstractions
                     var latestLine = preText.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Last();
                     var startingWhiteSpace = Regex.Match(latestLine, @"^([\s]+)").Value;
 
-                    var indentLevel = startingWhiteSpace.Count(c => c == '\t');
-                    latestLine = Environment.NewLine + new string('\t', indentLevel);
+                    // Find the number of consecutive instances of TabString from the start of startingWhiteSpace
+                    int indentLevel = 0;
+                    string remaining = startingWhiteSpace;
+
+                    while (remaining != "")
+                    {
+                        if (remaining.StartsWith(TabString))
+                        {
+                            indentLevel++;
+                            remaining = remaining.Remove(0, TabString.Length);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    latestLine = Environment.NewLine + string.Concat(Enumerable.Repeat(TabString, indentLevel));
 
                     Text = preText + latestLine + postText;
                     _textBox.Dispatcher.Invoke(() => _textBox.CaretIndex = preText.Length + latestLine.Length);
+                }
+                else if (args.Key == Key.Tab)
+                {
+                    var text = Text;
+                    var preText = text.Substring(0, _textBox.CaretIndex);
+                    var postText = text.Length > _textBox.CaretIndex ? text.Substring(_textBox.CaretIndex) : "";
+
+                    Text = preText + TabString + postText;
+                    _textBox.Dispatcher.Invoke(() => _textBox.CaretIndex = preText.Length + TabString.Length);
+
+                    args.Handled = true;
                 }
             };
 
@@ -128,6 +156,7 @@ namespace DomainAbstractions
             {
                 if (args.Key == Key.Enter) eventEnterPressed?.Execute();
             };
+
         }
 
         // Methods
