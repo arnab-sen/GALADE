@@ -46,6 +46,16 @@ namespace Application
                 Lambda = () =>
                 {
                     DoSomething();
+					DoSomething();DoSomething(); DoSomething();
+					DoSomething();
+					var a = new Data<string>() {
+						storedData = "test",
+						PerishCount = 10,
+						Lambda = () => {
+							DoSomething();
+						}
+					};
+					DoSomething();
                 }
             };
 
