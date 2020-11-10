@@ -276,7 +276,7 @@ namespace TestApplication
             Scale id_2fb8ec56cfc44bafa9acdfdb3ddd919b = new Scale() { WidthMultiplier = 0.9, HeightMultiplier = 0.9 };
             DataFlowConnector<UIElement> id_78101b6d5cc649b5b2dc49e91b2b41dc = new DataFlowConnector<UIElement>() {  };
             DataFlowConnector<UIElement> id_40ad71e26dd54620b2b02d29ae684de9 = new DataFlowConnector<UIElement>() {  };
-            ApplyAction<UIElement> id_519fb89612054c51ba4dd46c65a0b21c = new ApplyAction<UIElement>() { Lambda = input => {if (!(input.RenderTransform is ScaleTransform)) return;var transform = input.RenderTransform as ScaleTransform;var minScale = 0.8;/*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;var nodes = mainGraph.Nodes;foreach (var node in nodes){if (node is ALANode alaNode) alaNode.ShowTypeTextMask(nodeIsTooSmall);}} };
+            ApplyAction<UIElement> id_519fb89612054c51ba4dd46c65a0b21c = new ApplyAction<UIElement>() { Lambda = input => {if (!(input.RenderTransform is ScaleTransform)) return;var transform = input.RenderTransform as ScaleTransform;var minScale = 0.6;/*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;var nodes = mainGraph.Nodes;foreach (var node in nodes){if (node is ALANode alaNode) alaNode.ShowTypeTextMask(nodeIsTooSmall);}} };
             MouseWheelEvent id_401ce57e89204b74b954974e634d6da0 = new MouseWheelEvent(eventName: "MouseWheel") {  };
             Apply<MouseWheelEventArgs, bool> id_a56f02395479430c855562b834dc226f = new Apply<MouseWheelEventArgs, bool>() { Lambda = args =>{return args.Delta > 0;} };
             IfElse id_34c122f7ceb74fbb8e969fa7913de1a4 = new IfElse() {  };
@@ -385,6 +385,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

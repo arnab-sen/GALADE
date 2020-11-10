@@ -394,6 +394,20 @@
           "IsInputPort": true,
           "Index": 0,
           "ConnectionIds": []
+        },
+        {
+          "Type": "Port",
+          "Name": "p_0",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "Port",
+          "Name": "p_1",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
         }
       ],
       "NodeParameters": [
@@ -2698,7 +2712,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "input => \r\n{\r\n\tif (!(input.RenderTransform is ScaleTransform)) return;\r\n\t\r\n\tvar transform = input.RenderTransform as ScaleTransform;\r\n\tvar minScale = 0.8;\r\n\t\r\n\t/*Logging.Log($\"Scale: {transform.ScaleX}, {transform.ScaleX}\");*/\r\n\t\r\n\tbool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;\r\n\t\r\n\tvar nodes = mainGraph.Nodes;\r\n\tforeach (var node in nodes)\r\n\t{\r\n\t\tif (node is ALANode alaNode) alaNode.ShowTypeTextMask(nodeIsTooSmall);\r\n\t}\r\n}",
+          "Value": "input => \r\n{\r\n\tif (!(input.RenderTransform is ScaleTransform)) return;\r\n\t\r\n\tvar transform = input.RenderTransform as ScaleTransform;\r\n\tvar minScale = 0.6;\r\n\t\r\n\t/*Logging.Log($\"Scale: {transform.ScaleX}, {transform.ScaleX}\");*/\r\n\t\r\n\tbool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;\r\n\t\r\n\tvar nodes = mainGraph.Nodes;\r\n\tforeach (var node in nodes)\r\n\t{\r\n\t\tif (node is ALANode alaNode) alaNode.ShowTypeTextMask(nodeIsTooSmall);\r\n\t}\r\n}",
           "ParameterType": "Property"
         }
       ],
