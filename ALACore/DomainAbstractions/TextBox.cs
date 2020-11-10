@@ -104,8 +104,6 @@ namespace DomainAbstractions
             {
                 if (TrackIndent && args.Key == Key.Return && (Keyboard.Modifiers & ModifierKeys.Shift) != 0)
                 {
-                    args.Handled = true; // Handle enter press here rather than externally
-
                     var text = Text;
                     var preText = text.Substring(0, _textBox.CaretIndex);
                     var postText = text.Length > _textBox.CaretIndex ? text.Substring(_textBox.CaretIndex) : "";
@@ -134,6 +132,8 @@ namespace DomainAbstractions
 
                     Text = preText + latestLine + postText;
                     _textBox.Dispatcher.Invoke(() => _textBox.CaretIndex = preText.Length + latestLine.Length);
+
+                    args.Handled = true; // Handle enter press here rather than externally
                 }
                 else if (args.Key == Key.Tab)
                 {
