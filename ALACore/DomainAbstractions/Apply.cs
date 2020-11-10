@@ -26,7 +26,7 @@ namespace DomainAbstractions
 
         // Ports
         private IDataFlowB<Func<T1, T2>> lambdaInput;
-        private IDataFlow<T2> myOutput;
+        private IDataFlow<T2> output;
 
         /// <summary>
         /// <para>Applies a lambda on an input of type T1 and returns an output of type T2.</para>
