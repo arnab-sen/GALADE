@@ -309,7 +309,8 @@ namespace RequirementsAbstractions
 	        {
 		        Text = type,
                 Items = NodeParameters,
-		        Width = 100
+		        Width = 100,
+                Height = 25
 	        };
 		        
 	        var textBox = new TextBox() 

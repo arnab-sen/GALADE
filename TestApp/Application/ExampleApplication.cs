@@ -53,7 +53,7 @@ namespace Application
 						PerishCount = 10,
 						Lambda = () => {
 							DoSomething();
-						}
+						}, Lambda2 = () => {DoSomething();}
 					};
 					DoSomething();
                 }

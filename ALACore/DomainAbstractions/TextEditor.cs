@@ -50,7 +50,7 @@ namespace DomainAbstractions
 
             _editor.HScrollBar = false;
             _editor.VScrollBar = false;
-            
+
             _editor.MinHeight = 50;
             _editor.MinWidth = 100;
 
