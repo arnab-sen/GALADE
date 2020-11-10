@@ -209,7 +209,7 @@ namespace TestApplication
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
             MainWindow mainWindow = new MainWindow(title: "GALADE") { InstanceName = "mainWindow" };
             Vertical id_48e5732cfb8447039e7a938eb491b546 = new Vertical() {  };
-            CanvasDisplay id_ff8ec569cd894208a7db159a411700eb = new CanvasDisplay() { Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition, Canvas = mainCanvas };
+            CanvasDisplay id_ff8ec569cd894208a7db159a411700eb = new CanvasDisplay() { Width = 1920, Height = 1080, Background = Brushes.White, StateTransition = stateTransition, Canvas = mainCanvas };
             KeyEvent id_7ed18ec5ac584aac9bc847be98f90b1c = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.A }, Condition = args => mainGraph.Get("SelectedNode") != null&& stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected) };
             ContextMenu id_44369e82a62d452abbc223f2a7ec0631 = new ContextMenu() {  };
             MenuItem id_cd618ec6a64642d48214baf23434554d = new MenuItem(header: "Add root") {  };
@@ -385,6 +385,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

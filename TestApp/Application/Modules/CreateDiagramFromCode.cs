@@ -114,7 +114,7 @@ namespace TestApplication
                         {
                             if (expression is AssignmentExpressionSyntax assignment)
                             {
-                                model.SetValue(assignment.Left.ToString(), assignment.Right.ToString(), initialise: true);
+                                model.SetValue(assignment.Left.ToString(), assignment.Right.NormalizeWhitespace().ToString(), initialise: true);
                             }
                         } 
                     }

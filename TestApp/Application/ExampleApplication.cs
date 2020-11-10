@@ -39,7 +39,16 @@ namespace Application
             mainWindow.WireTo(menuBar, "iuiStructure");
             menuBar.WireTo(menuItem1, "children");
 			
-			var a = new Data<string>() { storedData = "test", PerishCount = 20, Lambda = () => DoSomething() };
+			var a = new Data<string>()
+            {
+                storedData = "test", 
+                PerishCount = 20, 
+                Lambda = () =>
+                {
+                    DoSomething();
+                }
+            };
+
 			var b = new DataFlowConnector<string>();
 			
 			menuItem1.WireTo(a, "clickedEvent");
