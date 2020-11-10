@@ -148,6 +148,21 @@ namespace RequirementsAbstractions
 
             _bezier.Point1 = new Point(midX, _bezier.Point0.Y);
             _bezier.Point2 = new Point(midX, _bezier.Point3.Y);
+
+            Validate();
+        }
+
+        public void Validate()
+        {
+            if (SourcePort.Payload is Port port &&
+                (port.Type.StartsWith("IUI") || port.Type.StartsWith("IEventHandler")))
+            {
+                _bezier.Colour = Brushes.Green;
+            }
+            else
+            {
+                _bezier.Colour = Brushes.Black;
+            }
         }
 
         public void AttachEndToMouse(bool source = true, bool detach = false)
