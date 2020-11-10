@@ -374,7 +374,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\tDispatcher.CurrentDispatcher.Invoke(() => \r\n\t{\r\n\t\treturn mainGraph.Roots.FirstOrDefault() as ALANode;\r\n\t}, DispatcherPriority.ContextIdle);\r\n}",
+          "Value": "() => mainGraph.Roots.FirstOrDefault() as ALANode",
           "ParameterType": "Property"
         }
       ],
@@ -483,6 +483,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
+            "978d7133419d4d53bbaa9428ce0b64bc",
             "1312e5e97b2d47e38703086344f3d4eb"
           ]
         },
@@ -2893,6 +2894,36 @@
       ],
       "NodeParameters": [],
       "Visible": true
+    },
+    {
+      "Id": "da9da8de8ba749f9be7f7a4856d00bb3",
+      "Type": "DispatcherEvent",
+      "Name": "",
+      "TreeParent": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "delayedEvent",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Priority",
+          "Value": "DispatcherPriority.ApplicationIdle",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -2970,7 +3001,8 @@
     "681985f0f46849fdb582544f39d9b31f",
     "ef8e7eeb74e0437bbcad7fd147cd92d2",
     "1bf76c59a9cb4960a4d40e6cb14d170b",
-    "ffad88c305444e8ebc8780fc39dbef66"
+    "ffad88c305444e8ebc8780fc39dbef66",
+    "da9da8de8ba749f9be7f7a4856d00bb3"
   ],
   "Connections": [
     {
@@ -3464,7 +3496,7 @@
       "Visible": true
     },
     {
-      "Id": "1312e5e97b2d47e38703086344f3d4eb",
+      "Id": "978d7133419d4d53bbaa9428ce0b64bc",
       "SourceId": "78b76d091efd45479ef01a7ce8ca4a2c",
       "SourcePort": {
         "Type": "IEvent",
@@ -3472,8 +3504,29 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
+          "978d7133419d4d53bbaa9428ce0b64bc",
           "1312e5e97b2d47e38703086344f3d4eb"
         ]
+      },
+      "DestinationId": "da9da8de8ba749f9be7f7a4856d00bb3",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "1312e5e97b2d47e38703086344f3d4eb",
+      "SourceId": "da9da8de8ba749f9be7f7a4856d00bb3",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "delayedEvent",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
       },
       "DestinationId": "60e965c051c5416cbfbb6a12e4831ad8",
       "DestinationPort": {

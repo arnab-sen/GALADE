@@ -214,7 +214,7 @@ namespace TestApplication
             ContextMenu id_de5f959c05754afcbed3aa3185cfa7ee = new ContextMenu() {  };
             MenuItem id_e07d2d0fb7014af78f8e524147997d35 = new MenuItem(header: "Add root") {  };
             EventConnector id_d428060e562e48b3bae6cacc417dabb3 = new EventConnector() {  };
-            Data<ALANode> getFirstRoot = new Data<ALANode>() { InstanceName = "getFirstRoot", Lambda = () => {Dispatcher.CurrentDispatcher.Invoke(() => {return mainGraph.Roots.FirstOrDefault() as ALANode;}, DispatcherPriority.ContextIdle);} };
+            Data<ALANode> getFirstRoot = new Data<ALANode>() { InstanceName = "getFirstRoot", Lambda = () => mainGraph.Roots.FirstOrDefault() as ALANode };
             RightTreeLayout<ALANode> id_13a9cf4d34894dd8b00a76c1033d0bbf = new RightTreeLayout<ALANode>() { GetID = n => n.Id, GetWidth = n => n.Width, GetHeight = n => n.Height, SetX = (n, x) => n.PositionX = x, SetY = (n, y) => n.PositionY = y, GetChildren = n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             EventConnector layoutDiagram = new EventConnector() { InstanceName = "layoutDiagram" };
             DataFlowConnector<ALANode> id_dfad0e10d103413ca62341600eb53b84 = new DataFlowConnector<ALANode>() {  };
@@ -282,6 +282,7 @@ namespace TestApplication
             IfElse id_ef8e7eeb74e0437bbcad7fd147cd92d2 = new IfElse() {  };
             DataFlowConnector<string> id_1bf76c59a9cb4960a4d40e6cb14d170b = new DataFlowConnector<string>() {  };
             ConvertToEvent<string> id_ffad88c305444e8ebc8780fc39dbef66 = new ConvertToEvent<string>() {  };
+            DispatcherEvent id_da9da8de8ba749f9be7f7a4856d00bb3 = new DispatcherEvent() { Priority = DispatcherPriority.ApplicationIdle };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -305,7 +306,8 @@ namespace TestApplication
             id_d428060e562e48b3bae6cacc417dabb3.WireTo(layoutDiagram, "complete");
             getFirstRoot.WireTo(id_dfad0e10d103413ca62341600eb53b84, "dataOutput");
             id_ffad88c305444e8ebc8780fc39dbef66.WireTo(layoutDiagram, "eventOutput");
-            layoutDiagram.WireTo(getFirstRoot, "fanoutList");
+            layoutDiagram.WireTo(id_da9da8de8ba749f9be7f7a4856d00bb3, "fanoutList");
+            id_da9da8de8ba749f9be7f7a4856d00bb3.WireTo(getFirstRoot, "delayedEvent");
             id_dfad0e10d103413ca62341600eb53b84.WireTo(id_13a9cf4d34894dd8b00a76c1033d0bbf, "fanoutList");
             id_dfad0e10d103413ca62341600eb53b84.WireTo(id_3f6a1b7cd38e4abcb8e6020205bb3149, "fanoutList");
             id_91540e8151384b00859c7cd7ac0db336.WireTo(layoutDiagram, "eventHappened");
@@ -390,6 +392,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
