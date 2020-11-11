@@ -166,7 +166,8 @@ namespace DomainAbstractions
         public void CloneFrom(AbstractionModel source)
         {
             Type = source.Type;
-            Name = source.Name;
+            FullType = source.FullType;
+
             _documentation = source._documentation;
             SourceCode = source.SourceCode;
             CodeFilePath = source.GetCodeFilePath();
