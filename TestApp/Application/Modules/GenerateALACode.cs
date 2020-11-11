@@ -33,11 +33,14 @@ namespace Application
         {
             var instantiations = new List<string>();
 
-            var nodes = Graph.Nodes.OfType<ALANode>().ToList();
+            var nodes = Graph.Nodes;
 
             foreach (var node in nodes)
             {
-                instantiations.Add(node.ToInstantiation());
+                var alaNode = node as ALANode;
+                if (alaNode == null) continue;
+
+                instantiations.Add(alaNode.ToInstantiation());
             }
 
             return instantiations;
@@ -46,6 +49,24 @@ namespace Application
         public List<string> GenerateWireTos()
         {
             var wireTos = new List<string>();
+
+            var edges = Graph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null);
+
+            foreach (var edge in edges)
+            {
+                var wire = edge as ALAWire;
+                if (wire == null) continue;
+
+                var portName = (wire.SourcePort.Payload as Port)?.Name ?? "";
+                if (string.IsNullOrWhiteSpace(portName))
+                {
+                    wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name});");
+                }
+                else
+                {
+                    wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name}, \"{(wire.SourcePort.Payload as Port)?.Name}\");");
+                }
+            }
 
             return wireTos;
         }

@@ -29,7 +29,7 @@ namespace RequirementsAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Id { get; set; }
         public string Type { get; set; } = "?";
-        public string Name => Model?.Name ?? Id;
+        public string Name => !string.IsNullOrWhiteSpace(Model?.Name) ? Model.Name : "id_" + Id;
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
         public List<string> AvailableDomainAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
