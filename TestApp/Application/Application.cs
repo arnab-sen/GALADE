@@ -283,6 +283,10 @@ namespace TestApplication
             DataFlowConnector<string> id_1bf76c59a9cb4960a4d40e6cb14d170b = new DataFlowConnector<string>() {  };
             ConvertToEvent<string> id_ffad88c305444e8ebc8780fc39dbef66 = new ConvertToEvent<string>() {  };
             DispatcherEvent id_da9da8de8ba749f9be7f7a4856d00bb3 = new DispatcherEvent() { Priority = DispatcherPriority.ApplicationIdle };
+            MenuItem id_d4d6624cfb814a1484e26a4ffab47c7e = new MenuItem(header: "Generate Code") {  };
+            GenerateALACode id_4d02e25bf1fe4c93b3bf9d598ae1160f = new GenerateALACode() { Graph = mainGraph };
+            DataFlowConnector<List<string>> generatedInstantiations = new DataFlowConnector<List<string>>() { InstanceName = "generatedInstantiations" };
+            DataFlowConnector<List<string>> generatedWireTos = new DataFlowConnector<List<string>>() { InstanceName = "generatedWireTos" };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -326,6 +330,7 @@ namespace TestApplication
             id_54bf34594d0c485384eb3f349fd5e182.WireTo(id_ad36a59dd1394606a949607e4943d4ad, "dataOutput");
             id_36f646b635c34537abc0345c9ead9807.WireTo(id_2ee0c75f6cd04fd8bd1a8f50396b54a8, "senderOutput");
             id_114addd3cd73472099d3b79f85c796fe.WireTo(id_c8c8d57ff6a94373a4bac1f7206d9bff, "children");
+            id_114addd3cd73472099d3b79f85c796fe.WireTo(id_d4d6624cfb814a1484e26a4ffab47c7e, "children");
             id_c8c8d57ff6a94373a4bac1f7206d9bff.WireTo(id_5a248626b00d48d6af02e424703b1436, "clickedEvent");
             id_5a248626b00d48d6af02e424703b1436.WireTo(id_8474f7bc283d460eb3a00dccc8a534f6, "children");
             id_8474f7bc283d460eb3a00dccc8a534f6.WireTo(id_db234cdb4bbb4de38a88dc88eb4c5c9d, "uiLayout");
@@ -368,6 +373,9 @@ namespace TestApplication
             id_ef8e7eeb74e0437bbcad7fd147cd92d2.WireTo(id_ae274fb8c8754469bd390fad7467f3ad, "ifOutput");
             id_ef8e7eeb74e0437bbcad7fd147cd92d2.WireTo(id_776ca16650954eef91e75ebe2ebe9e4e, "elseOutput");
             id_1bf76c59a9cb4960a4d40e6cb14d170b.WireTo(id_ffad88c305444e8ebc8780fc39dbef66, "fanoutList");
+            id_d4d6624cfb814a1484e26a4ffab47c7e.WireTo(id_4d02e25bf1fe4c93b3bf9d598ae1160f, "clickedEvent");
+            id_4d02e25bf1fe4c93b3bf9d598ae1160f.WireTo(generatedInstantiations, "instantiations");
+            id_4d02e25bf1fe4c93b3bf9d598ae1160f.WireTo(generatedWireTos, "wireTos");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -392,6 +400,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

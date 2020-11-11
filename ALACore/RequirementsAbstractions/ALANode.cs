@@ -14,6 +14,10 @@ using DomainAbstractions;
 using Button = DomainAbstractions.Button;
 using TextBox = DomainAbstractions.TextBox;
 using System.Windows.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
 
@@ -428,6 +432,74 @@ namespace RequirementsAbstractions
                 // _detailedRender.Visibility = Visibility.Visible;
             }
 
+        }
+
+        public string ToInstantiation()
+        {
+            // Note: must declare "using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;" in this file's usings
+            // to use SyntaxFactory methods without repeatedly referencing SyntaxFactory
+
+            // The SyntaxNode structure is generated from https://roslynquoter.azurewebsites.net/
+
+            var instantiation = "";
+            var fullStr = "";
+
+            var constructorArgs = Model.GetConstructorArgs();
+
+
+            var syntaxNode =
+                LocalDeclarationStatement(
+                    VariableDeclaration(
+                            IdentifierName("var"))
+                        .WithVariables(
+                            SingletonSeparatedList<VariableDeclaratorSyntax>(
+                                VariableDeclarator(
+                                        Identifier(Model.Name == "" ? "id_" + Id : Model.Name))
+                                    .WithInitializer(
+                                        EqualsValueClause(
+                                            ObjectCreationExpression(
+                                                    IdentifierName(Model.FullType))
+                                                .WithArgumentList(
+                                                    ArgumentList(
+                                                        GetConstructorArgumentSyntaxList(constructorArgs)))
+                                                .WithInitializer(
+                                                    InitializerExpression(
+                                                        SyntaxKind.ObjectInitializerExpression)))))));
+
+            fullStr = syntaxNode.ToFullString();
+
+            instantiation = syntaxNode.NormalizeWhitespace().ToString();
+
+            return instantiation;
+        }
+
+        private SeparatedSyntaxList<ArgumentSyntax> GetConstructorArgumentSyntaxList(
+            List<KeyValuePair<string, string>> args)
+        {
+            var list = new List<SyntaxNodeOrToken>();
+
+            foreach (var arg in args)
+            {
+                var argName = arg.Key;
+                var argValue = arg.Value;
+
+                var argNode = 
+                    Argument(
+                            IdentifierName(argValue))
+                        .WithNameColon(
+                            NameColon(
+                                IdentifierName(argName)));
+
+                if (list.Count > 0)
+                {
+                    list.Add(Token(SyntaxKind.CommaToken));
+                }
+
+                list.Add(argNode);
+
+            }
+
+            return SeparatedList<ArgumentSyntax>(list);
         }
 
         private void CreateWiring()

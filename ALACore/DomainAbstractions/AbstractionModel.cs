@@ -16,8 +16,16 @@ namespace DomainAbstractions
     {
         // Public field and properties
         public string InstanceName { get; set; } = "Default";
-        public string Type { get; set; } = "Object"; // The object type without generics
-        public string FullType { get; set; } = "Object"; // The object type, including any generics; this should always at least start with the contents of Type
+        
+        /// <summary>
+        /// The object type without generics.
+        /// </summary>
+        public string Type { get; set; } = "Object";
+
+        /// <summary>
+        /// The object type, including any generics; this should always at least start with the contents of Type.
+        /// </summary>
+        public string FullType { get; set; } = "Object";
         public string Name { get; set; } = "";
         public string SourceCode { get; set; }
         public string CodeFilePath { get; set; }
