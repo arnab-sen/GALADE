@@ -154,15 +154,15 @@ namespace RequirementsAbstractions
 
         public void Validate()
         {
-            if (SourcePort.Payload is Port port &&
-                (port.Type.StartsWith("IUI") || port.Type.StartsWith("IEventHandler")))
-            {
-                _bezier.Colour = Brushes.Green;
-            }
-            else
-            {
-                _bezier.Colour = Brushes.Black;
-            }
+            // if (SourcePort.Payload is Port port &&
+            //     (port.Type.StartsWith("IUI") || port.Type.StartsWith("IEventHandler")))
+            // {
+            //     _bezier.Colour = Brushes.Green;
+            // }
+            // else
+            // {
+            //     _bezier.Colour = Brushes.Black;
+            // }
         }
 
         public void AttachEndToMouse(bool source = true, bool detach = false)
