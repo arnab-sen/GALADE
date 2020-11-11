@@ -116,6 +116,7 @@ namespace TestApplication
                 obj["LatestDiagramFilePath"] = "";
                 obj["LatestCodeFilePath"] = "";
                 obj["ProjectFolderPath"] = "";
+                obj["ApplicationCodeFilePath"] = "";
 
                 File.WriteAllText(SETTINGS_FILEPATH, obj.ToString());
             }
