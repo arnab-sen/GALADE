@@ -1,4 +1,4 @@
-# GALADE - The Graphical Abstraction Layered Architecture Development Environment
+# GALADE: The Graphical Abstraction Layered Architecture Development Environment
 
 This is a diagramming tool and code generator that handles the creation, development, and maintenance of ALA-based applications.
 
