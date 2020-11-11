@@ -39,7 +39,7 @@ namespace DomainAbstractions
         private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
         private Dictionary<string, string> _types = new Dictionary<string, string>(); // typeName : type. This contains the types of fields, properties, and constructor args
         private string _documentation = "";
-        private List<string> _initialised = new List<string>();
+        private HashSet<string> _initialised = new HashSet<string>();
 
         // Ports
 
@@ -53,7 +53,7 @@ namespace DomainAbstractions
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
         public string GetCodeFilePath() => CodeFilePath;
-        public List<string> GetInitialisedVariables() => _initialised.Select(s => s).ToList(); 
+        public HashSet<string> GetInitialisedVariables() => _initialised.Select(s => s).ToHashSet(); 
 
         public void AddConstructorArg(string name, string initialValue = "", string type = "undefined")
         {
