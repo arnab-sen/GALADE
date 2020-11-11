@@ -8,7 +8,7 @@ using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
 
-namespace Application
+namespace RequirementsAbstractions
 {
     /// <summary>
     /// <para>Represents the subgraph for editing an existing JSON settings file. All string inputs should be fed in before sending the new value input object.</para>

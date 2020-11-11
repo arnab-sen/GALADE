@@ -449,8 +449,6 @@ namespace RequirementsAbstractions
 
             // The SyntaxNode structure is generated from https://roslynquoter.azurewebsites.net/
 
-            var instantiation = "";
-            var fullStr = "";
 
             var initialised = Model.GetInitialisedVariables();
             var constructorArgs = Model.GetConstructorArgs()
@@ -481,9 +479,7 @@ namespace RequirementsAbstractions
                                                         SyntaxKind.ObjectInitializerExpression,
                                                         GetPropertySyntaxList(properties))))))));
 
-            fullStr = syntaxNode.ToFullString();
-
-            instantiation = syntaxNode.NormalizeWhitespace().ToString();
+            var instantiation = syntaxNode.NormalizeWhitespace().ToString();
 
             return instantiation;
         }

@@ -7,6 +7,7 @@ using System.Windows.Shapes;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
+using RequirementsAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
 using System.Windows.Input;

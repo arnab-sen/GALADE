@@ -47,8 +47,23 @@ namespace DomainAbstractions
         {
             if (desiredDirectories.Count == 0 || desiredDirectories.Contains(rootDirectory.Name))
             {
-                _foundDirectories[rootDirectory.Name] = rootDirectory.GetDirectories().Select(s => s.FullName).ToList();
-                _foundFiles[rootDirectory.Name] = rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList();
+                if (!_foundDirectories.ContainsKey(rootDirectory.Name))
+                {
+                    _foundDirectories[rootDirectory.Name] = rootDirectory.GetDirectories().Select(s => s.FullName).ToList();
+                }
+                else
+                {
+                    _foundDirectories[rootDirectory.Name].AddRange(rootDirectory.GetDirectories().Select(s => s.FullName).ToList());
+                }
+
+                if (!_foundFiles.ContainsKey(rootDirectory.Name))
+                {
+                    _foundFiles[rootDirectory.Name] = rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList();
+                }
+                else
+                {
+                    _foundFiles[rootDirectory.Name].AddRange(rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList());
+                }
             }
 
             var directories = rootDirectory.GetDirectories();

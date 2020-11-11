@@ -8,7 +8,7 @@ using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
 
-namespace Application
+namespace RequirementsAbstractions
 {
     /// <summary>
     /// <para>Retrieves settings from a JSON-formatted file and outputs the JSON at the setting given.</para>

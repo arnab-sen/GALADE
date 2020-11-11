@@ -1,7 +1,7 @@
 {
   "Nodes": [
     {
-      "Id": "7741f5ca86fe4c3fbcea65675feb36d6",
+      "Id": "7d55860545614f45bd93870d612dbe23",
       "Type": "MainWindow",
       "Name": "mainWindow",
       "TreeParent": "",
@@ -19,7 +19,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "d7842d2a570a4a749ec6e71e3906f529"
+            "0cd093d7c8744176acbb09fe2be73f6a"
           ]
         },
         {
@@ -28,7 +28,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "686d941a273a4fdaa1135ede4b6a598d"
+            "3c12ce6bf8ec4afba7957556c3c41549"
           ]
         },
         {
@@ -49,10 +49,10 @@
       "Visible": true
     },
     {
-      "Id": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "Id": "1bac690327e048c5956c3f6a1deb9a9d",
       "Type": "Vertical",
       "Name": "",
-      "TreeParent": "7741f5ca86fe4c3fbcea65675feb36d6",
+      "TreeParent": "7d55860545614f45bd93870d612dbe23",
       "Ports": [
         {
           "Type": "IUI",
@@ -67,8 +67,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "8bff4fc34a9c4943b117db502d065428",
-            "7a63ea7fe7c84b98815feee75f75709c"
+            "9d1107d567e14cb4a0827829dc4ed6e7",
+            "039e1e47575044d89059e45f4fac7e72"
           ]
         },
         {
@@ -90,10 +90,10 @@
       "Visible": true
     },
     {
-      "Id": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "6d2fd70706e84b329a800c1ef3be39e4",
       "Type": "CanvasDisplay",
       "Name": "",
-      "TreeParent": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "TreeParent": "1bac690327e048c5956c3f6a1deb9a9d",
       "Ports": [
         {
           "Type": "IUI",
@@ -115,13 +115,13 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "fcb14cde7fab47458efa67cccea29e84",
-            "97de3aedaf2f40d3b02fc12fa74b5586",
-            "a4e6ed1c298949658b2546126bc54e82",
-            "32e97eb5855e423ebf39799875731918",
-            "de085c67d3f34ff49d00783ccd6853c4",
-            "f7b8ad5593d04d388d35a04333b3ce78",
-            "a2c4a1a2856d448ba4883233dcef36f0"
+            "52c9990f5b0d49f8a95ff39828b8dfc5",
+            "ab0817092dff43be81c45af1ca04f906",
+            "38e080f8db4f49148079e6a29c06260f",
+            "6b3a4908967a4818b6cc9a6ca3767791",
+            "3b5eecd8e6bc4c74834e0af17f702c98",
+            "9c8d5dedd1524c96b0706aebb51bc5f8",
+            "669f40ad11d4425c800b30be404be5aa"
           ]
         },
         {
@@ -130,7 +130,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "b55bdd63ddf444d1bfd586c315ee7772"
+            "22daadfea2004e269faa0ccebe8c4350"
           ]
         }
       ],
@@ -164,10 +164,10 @@
       "Visible": true
     },
     {
-      "Id": "0f2d6129132e456abc43e57dd30d3e74",
+      "Id": "4668ef2c02254d8783a1f5a1e6d2a7d4",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -196,7 +196,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "7276abb79c9542899bc77ddce68ca3ef"
+            "d6382cb88c254d4cb4d86244a00dd6b7"
           ]
         }
       ],
@@ -220,10 +220,10 @@
       "Visible": true
     },
     {
-      "Id": "de5f959c05754afcbed3aa3185cfa7ee",
+      "Id": "a480e806c7de437880e399b703805838",
       "Type": "ContextMenu",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IUI",
@@ -238,8 +238,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "67fe68a1148947e2bc0a1ad7314c47bf",
-            "5be0625f900442d1a66e503dc816e9e6"
+            "7f53a24c6db1429ea1d8f5bafd01be36",
+            "f5da45a0264d4d1fa01b6b20a1e5b811"
           ]
         }
       ],
@@ -247,10 +247,10 @@
       "Visible": true
     },
     {
-      "Id": "e07d2d0fb7014af78f8e524147997d35",
+      "Id": "018d857185044ace97a9870f72c8d363",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "de5f959c05754afcbed3aa3185cfa7ee",
+      "TreeParent": "a480e806c7de437880e399b703805838",
       "Ports": [
         {
           "Type": "IUI",
@@ -272,7 +272,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "417eb564c17648f38be8b056bb8b8363"
+            "faac7939a19144deaafb9556007f7876"
           ]
         }
       ],
@@ -286,10 +286,10 @@
       "Visible": true
     },
     {
-      "Id": "d428060e562e48b3bae6cacc417dabb3",
+      "Id": "9f92c6af8bfc4931a05b9736da93a3b8",
       "Type": "EventConnector",
       "Name": "",
-      "TreeParent": "0f2d6129132e456abc43e57dd30d3e74",
+      "TreeParent": "4668ef2c02254d8783a1f5a1e6d2a7d4",
       "Ports": [
         {
           "Type": "IEvent",
@@ -304,7 +304,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "4c7d6f35f29a4405ab18d1b901a2472a"
+            "4228cc25f8ff41f2bb7ad3e7fe738a1e"
           ]
         },
         {
@@ -320,7 +320,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "d7ec91422027408b8a47ac356757341b"
+            "ffcbb1e7af3a4c738f84edf5235f73d7"
           ]
         }
       ],
@@ -328,10 +328,10 @@
       "Visible": true
     },
     {
-      "Id": "60e965c051c5416cbfbb6a12e4831ad8",
+      "Id": "f64bccf7ce7a40f4a8cb306f9b6568ca",
       "Type": "Data<ALANode>",
       "Name": "getFirstRoot",
-      "TreeParent": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "TreeParent": "f10a082c130d4c35b897bd30108f4b8d",
       "Ports": [
         {
           "Type": "IEvent",
@@ -367,7 +367,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "b3b6a6d5eebc486c89214585b4741e47"
+            "61f04611649f407db5c975516a1b7b08"
           ]
         }
       ],
@@ -381,10 +381,10 @@
       "Visible": true
     },
     {
-      "Id": "13a9cf4d34894dd8b00a76c1033d0bbf",
+      "Id": "8f88e251a93847e8b7de87025ebab0c9",
       "Type": "RightTreeLayout<ALANode>",
       "Name": "",
-      "TreeParent": "dfad0e10d103413ca62341600eb53b84",
+      "TreeParent": "36aff5167d8945a78f2c4c378a7efc06",
       "Ports": [
         {
           "Type": "IDataFlow<ALANode>",
@@ -463,19 +463,17 @@
       "Visible": true
     },
     {
-      "Id": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "Id": "cf6c29b426e3426f99ebb0982ab1b81f",
       "Type": "EventConnector",
       "Name": "layoutDiagram",
-      "TreeParent": "d428060e562e48b3bae6cacc417dabb3",
+      "TreeParent": "9f92c6af8bfc4931a05b9736da93a3b8",
       "Ports": [
         {
           "Type": "IEvent",
           "Name": "eventInput",
           "IsInputPort": true,
           "Index": 0,
-          "ConnectionIds": [
-            "2520194d3edb40c5b179a2ffd462e772"
-          ]
+          "ConnectionIds": []
         },
         {
           "Type": "IEvent",
@@ -483,8 +481,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "978d7133419d4d53bbaa9428ce0b64bc",
-            "1312e5e97b2d47e38703086344f3d4eb"
+            "206291866f3141a597350d0092cc78e1"
           ]
         },
         {
@@ -506,10 +503,10 @@
       "Visible": true
     },
     {
-      "Id": "dfad0e10d103413ca62341600eb53b84",
+      "Id": "36aff5167d8945a78f2c4c378a7efc06",
       "Type": "DataFlowConnector<ALANode>",
       "Name": "",
-      "TreeParent": "60e965c051c5416cbfbb6a12e4831ad8",
+      "TreeParent": "f64bccf7ce7a40f4a8cb306f9b6568ca",
       "Ports": [
         {
           "Type": "IDataFlow<ALANode>",
@@ -524,8 +521,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "ee404d3c1fcc4ab892b882e41e2a080a",
-            "cef04f1e7784485bb6859624e36af311"
+            "34458811086246ccb8fdb141600c5ac3",
+            "c620010e887746dab399bae683dfd773"
           ]
         },
         {
@@ -540,10 +537,10 @@
       "Visible": true
     },
     {
-      "Id": "3f6a1b7cd38e4abcb8e6020205bb3149",
+      "Id": "0a56668b6e05478fa80e8840e4b6f4ca",
       "Type": "ApplyAction<ALANode>",
       "Name": "",
-      "TreeParent": "dfad0e10d103413ca62341600eb53b84",
+      "TreeParent": "36aff5167d8945a78f2c4c378a7efc06",
       "Ports": [
         {
           "Type": "IDataFlow<ALANode>",
@@ -563,10 +560,10 @@
       "Visible": true
     },
     {
-      "Id": "91540e8151384b00859c7cd7ac0db336",
+      "Id": "9da5c762f60d463eb4f272dc5a14dc76",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -595,7 +592,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "66424eaff208418a8116b9d858efda16"
+            "46a2475b22454b11bb92973539801780"
           ]
         }
       ],
@@ -619,10 +616,10 @@
       "Visible": true
     },
     {
-      "Id": "2f4d32ff62b845f7b96aa53576270a2a",
+      "Id": "6eed843738584e9493f479d572985281",
       "Type": "Apply<AbstractionModel, object>",
       "Name": "createNewALANode",
-      "TreeParent": "85f5a744cd0d408b8ba10fa7653f27bd",
+      "TreeParent": "8280102e24a9441cbff65050ae981c40",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -637,7 +634,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "95b918549b2c4d008196cdd2175ebcfc"
+            "79025a8a007c46da8e421485979c9e00"
           ]
         }
       ],
@@ -651,10 +648,10 @@
       "Visible": true
     },
     {
-      "Id": "8a303e6870e045f3bfbe81afe713410f",
+      "Id": "53e62c67141a440a9a3bf41ae2fc30ba",
       "Type": "MenuBar",
       "Name": "",
-      "TreeParent": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "TreeParent": "1bac690327e048c5956c3f6a1deb9a9d",
       "Ports": [
         {
           "Type": "IUI",
@@ -669,8 +666,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "cd0fa0fdd63946b8890eb97dc3533643",
-            "c07a062c6174462eabfab61a21885854"
+            "6c65ff321c9844919316ef547945c0e8",
+            "ffb236322c3b4623a08f2815766cfe7b"
           ]
         }
       ],
@@ -678,10 +675,10 @@
       "Visible": true
     },
     {
-      "Id": "72a644b6154e4dbc94903372d2dd52c8",
+      "Id": "730165afcb4a4b4dba9cf27ad47e251b",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "8a303e6870e045f3bfbe81afe713410f",
+      "TreeParent": "53e62c67141a440a9a3bf41ae2fc30ba",
       "Ports": [
         {
           "Type": "IUI",
@@ -696,8 +693,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "6a57700d49654efd91a96e7789df12e4",
-            "9b4425376b954cea89360ad89aece0e6"
+            "39a1489fc5f44654b16f56305f3940fd",
+            "24f884d0d5ed4c4d9dda46f755bebb23"
           ]
         },
         {
@@ -718,10 +715,10 @@
       "Visible": true
     },
     {
-      "Id": "d006c330b62c4aefb8ee80e29c3d90a7",
+      "Id": "0102d05328854a58baca74be81bba822",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "72a644b6154e4dbc94903372d2dd52c8",
+      "TreeParent": "730165afcb4a4b4dba9cf27ad47e251b",
       "Ports": [
         {
           "Type": "IUI",
@@ -743,7 +740,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "7454635cdaec4031b94d8b7c6bad526b"
+            "89cd4938ed43480c86c03b5184eedb78"
           ]
         }
       ],
@@ -757,10 +754,10 @@
       "Visible": true
     },
     {
-      "Id": "5b358134e6c240e8861382d073b6daa9",
+      "Id": "fc287e91629f46caa818e8713d88f3c9",
       "Type": "FolderBrowser",
       "Name": "",
-      "TreeParent": "d006c330b62c4aefb8ee80e29c3d90a7",
+      "TreeParent": "0102d05328854a58baca74be81bba822",
       "Ports": [
         {
           "Type": "IEvent",
@@ -775,7 +772,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "3dbce28305e14564ba66081aa18adde9"
+            "608b04446bf94c18b628f77f598345c6"
           ]
         }
       ],
@@ -789,10 +786,10 @@
       "Visible": true
     },
     {
-      "Id": "1223b6c4a9fb4a078880318febcdaceb",
+      "Id": "63f40bc272be49c191391abafe60a412",
       "Type": "DirectorySearch",
       "Name": "",
-      "TreeParent": "ad36a59dd1394606a949607e4943d4ad",
+      "TreeParent": "6ca14376eac748a59d7408ad15b23c9d",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -814,14 +811,14 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "05301b22bd2e4d1b86b33d72f3222656"
+            "3118ccb372dd4a90bb6dfdeb73150ce9"
           ]
         }
       ],
       "NodeParameters": [
         {
           "Name": "directoriesToFind",
-          "Value": "new string[] { \"DomainAbstractions\", \"ProgrammingParadigms\", \"RequirementsAbstractions\" }",
+          "Value": "new string[] { \"DomainAbstractions\", \"ProgrammingParadigms\", \"RequirementsAbstractions\", \"Modules\" }",
           "ParameterType": "Constructor"
         },
         {
@@ -833,10 +830,10 @@
       "Visible": true
     },
     {
-      "Id": "52bdc5261a8344d4b061df873795daa4",
+      "Id": "23a8ab2a82684336868c81fb753c5f87",
       "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
       "Name": "",
-      "TreeParent": "9a7d724b16de4bfd86837021ab25aed1",
+      "TreeParent": "5cb778da617c47c8b823587747365efa",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -851,7 +848,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "079aecd945fc46deaeeb1619127eb819"
+            "294ca6b278e1449996bdab8b21fd59f9"
           ]
         }
       ],
@@ -865,17 +862,21 @@
       "Visible": true
     },
     {
-      "Id": "28f4b656ee7640d1b74aa495c685c98a",
+      "Id": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
       "Type": "ForEach<string>",
       "Name": "",
-      "TreeParent": "52bdc5261a8344d4b061df873795daa4",
+      "TreeParent": "23a8ab2a82684336868c81fb753c5f87",
       "Ports": [
         {
           "Type": "IDataFlow<IEnumerable<string>>",
           "Name": "collectionInput",
           "IsInputPort": true,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "d8a05d04d7cf4b068e8664d470bc8143",
+            "563d8343463640d1bd184e5c03d27b1c",
+            "2fea07f99c544b5c9e0e9d1736e893cf"
+          ]
         },
         {
           "Type": "IDataFlow<string>",
@@ -883,7 +884,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "f2c63c9a54174e0cb3c976829cb34909"
+            "73236e1898fd44bab44736d4219ccebf"
           ]
         },
         {
@@ -898,10 +899,10 @@
       "Visible": true
     },
     {
-      "Id": "4ef72270c04442c990d7c38c30df9083",
+      "Id": "0f821bd2a21748d897d21e29f8d530d7",
       "Type": "ApplyAction<string>",
       "Name": "",
-      "TreeParent": "28f4b656ee7640d1b74aa495c685c98a",
+      "TreeParent": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -921,10 +922,10 @@
       "Visible": true
     },
     {
-      "Id": "216d5307f4424a08bf9a8640a6b7a367",
+      "Id": "c21df1ba3b9949aa8f4cdce874431152",
       "Type": "Data<string>",
       "Name": "",
-      "TreeParent": "d428060e562e48b3bae6cacc417dabb3",
+      "TreeParent": "9f92c6af8bfc4931a05b9736da93a3b8",
       "Ports": [
         {
           "Type": "IEvent",
@@ -960,7 +961,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "8734388f0013432fa537c6592c7a3444"
+            "d77e263fc4d545cabfc53e1961a4c766"
           ]
         }
       ],
@@ -974,10 +975,10 @@
       "Visible": true
     },
     {
-      "Id": "85f5a744cd0d408b8ba10fa7653f27bd",
+      "Id": "8280102e24a9441cbff65050ae981c40",
       "Type": "Apply<string, AbstractionModel>",
       "Name": "",
-      "TreeParent": "216d5307f4424a08bf9a8640a6b7a367",
+      "TreeParent": "c21df1ba3b9949aa8f4cdce874431152",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -992,7 +993,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "62b6a42e10804267a518d5f10f4027a0"
+            "7f5aabbc7e33456e9d43c8a7dca41ac5"
           ]
         }
       ],
@@ -1006,10 +1007,10 @@
       "Visible": true
     },
     {
-      "Id": "54bf34594d0c485384eb3f349fd5e182",
-      "Type": "Data<string>",
+      "Id": "18bd9d022fd543379c34c2397eda78c9",
+      "Type": "GetSetting",
       "Name": "",
-      "TreeParent": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "TreeParent": "24a4f7de276d4d25a6d83f03287b91c4",
       "Ports": [
         {
           "Type": "IEvent",
@@ -1020,49 +1021,37 @@
         },
         {
           "Type": "IDataFlowB<string>",
-          "Name": "inputDataB",
+          "Name": "filePathInput",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "ddbf983f9db9451d82dfc8920124ad49"
+          ]
         },
         {
           "Type": "IDataFlow<string>",
-          "Name": "dataInput",
-          "IsInputPort": true,
-          "Index": 1,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlowB<string>",
-          "Name": "dataOutputB",
-          "IsInputPort": true,
-          "Index": 2,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "dataOutput",
+          "Name": "settingJsonOutput",
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "f936157df49a4aebb16fd23964dc481c"
+            "1e9c4d567c3f4ea1adb06fab242d9b41"
           ]
         }
       ],
       "NodeParameters": [
         {
-          "Name": "storedData",
-          "Value": "@\"D:\\Coding\\C#\\Projects\\GALADE\\ALACore\"",
-          "ParameterType": "Property"
+          "Name": "name",
+          "Value": "\"ProjectFolderPath\"",
+          "ParameterType": "Constructor"
         }
       ],
       "Visible": true
     },
     {
-      "Id": "36f646b635c34537abc0345c9ead9807",
+      "Id": "93d99e75ac104f76a1321b13f03fba20",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -1077,7 +1066,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "741f470c78034119b87bf15028192d78"
+            "59e63edf5a4f4df39b46cc660b7fb19b"
           ]
         },
         {
@@ -1110,10 +1099,10 @@
       "Visible": true
     },
     {
-      "Id": "2ee0c75f6cd04fd8bd1a8f50396b54a8",
+      "Id": "7415e096d292451fba81ee1e426aaa12",
       "Type": "ApplyAction<object>",
       "Name": "",
-      "TreeParent": "36f646b635c34537abc0345c9ead9807",
+      "TreeParent": "93d99e75ac104f76a1321b13f03fba20",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1133,10 +1122,10 @@
       "Visible": true
     },
     {
-      "Id": "114addd3cd73472099d3b79f85c796fe",
+      "Id": "917cdedb4d4b48688c4a146aee3900d0",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "8a303e6870e045f3bfbe81afe713410f",
+      "TreeParent": "53e62c67141a440a9a3bf41ae2fc30ba",
       "Ports": [
         {
           "Type": "IUI",
@@ -1151,8 +1140,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "67cfca7b1f4848448c35bf49bad9234a",
-            "f492f47b6f9141bc948511ae228ad71b"
+            "2020330ad93f4557a0d67c5e517c4a2f",
+            "23744c47edf94faba42d7b23dc26103e"
           ]
         },
         {
@@ -1173,10 +1162,10 @@
       "Visible": true
     },
     {
-      "Id": "c8c8d57ff6a94373a4bac1f7206d9bff",
+      "Id": "5c8f6a1dd623468ba0884e01614997cd",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "114addd3cd73472099d3b79f85c796fe",
+      "TreeParent": "917cdedb4d4b48688c4a146aee3900d0",
       "Ports": [
         {
           "Type": "IUI",
@@ -1198,7 +1187,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "bb0bbe814521481496a645952352fe07"
+            "0cfbde7aec574931957f0bc68afd74ba"
           ]
         }
       ],
@@ -1212,10 +1201,10 @@
       "Visible": true
     },
     {
-      "Id": "5a248626b00d48d6af02e424703b1436",
+      "Id": "3229eda2842046acb26b044b86f85d7c",
       "Type": "PopupWindow",
       "Name": "",
-      "TreeParent": "c8c8d57ff6a94373a4bac1f7206d9bff",
+      "TreeParent": "5c8f6a1dd623468ba0884e01614997cd",
       "Ports": [
         {
           "Type": "IEvent",
@@ -1230,7 +1219,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "7a2a0447b9e74d26b933423cc10af3a8"
+            "c58dc6f27f0e4e378d66a9f9df4e81f9"
           ]
         },
         {
@@ -1266,10 +1255,10 @@
       "Visible": true
     },
     {
-      "Id": "8474f7bc283d460eb3a00dccc8a534f6",
+      "Id": "206ea38c01e14db8b863e29da514ed7c",
       "Type": "Box",
       "Name": "",
-      "TreeParent": "5a248626b00d48d6af02e424703b1436",
+      "TreeParent": "3229eda2842046acb26b044b86f85d7c",
       "Ports": [
         {
           "Type": "IUI",
@@ -1291,7 +1280,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "80d945c4a36147aba23c5f555ad77b09"
+            "7e6cda5e398a4316b2b63f311573f8ea"
           ]
         },
         {
@@ -1317,10 +1306,10 @@
       "Visible": true
     },
     {
-      "Id": "db234cdb4bbb4de38a88dc88eb4c5c9d",
+      "Id": "b7ab115f4fca42c2b2c4b017bcbadb7c",
       "Type": "TextEditor",
       "Name": "",
-      "TreeParent": "8474f7bc283d460eb3a00dccc8a534f6",
+      "TreeParent": "206ea38c01e14db8b863e29da514ed7c",
       "Ports": [
         {
           "Type": "IUI",
@@ -1345,10 +1334,10 @@
       "Visible": true
     },
     {
-      "Id": "ad36a59dd1394606a949607e4943d4ad",
+      "Id": "6ca14376eac748a59d7408ad15b23c9d",
       "Type": "DataFlowConnector<string>",
       "Name": "",
-      "TreeParent": "5b358134e6c240e8861382d073b6daa9",
+      "TreeParent": "fc287e91629f46caa818e8713d88f3c9",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -1363,8 +1352,9 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "33036001b1d44da79e07edbc90b4793c",
-            "d17b975fc0b64573a8895d2b683ebcb8"
+            "49f32842f9e74179900c70eb5f79eaf3",
+            "7ad40b2cb8764d1bbb004c25434adb40",
+            "47bcfa1dbd194d3ab0bb827af1212215"
           ]
         },
         {
@@ -1379,10 +1369,10 @@
       "Visible": true
     },
     {
-      "Id": "7d716221509147359d76e3cfe5a2f5d7",
+      "Id": "7d9832eddf5a4c58bb3ced1a516e0143",
       "Type": "FolderWatcher",
       "Name": "projectFolderWatcher",
-      "TreeParent": "ad36a59dd1394606a949607e4943d4ad",
+      "TreeParent": "6ca14376eac748a59d7408ad15b23c9d",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -1397,7 +1387,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "6c61ceef65cd4d21ab474f475ef44207"
+            "6285c3f15cd2480a90c2baa5dc1a8921"
           ]
         }
       ],
@@ -1426,10 +1416,10 @@
       "Visible": true
     },
     {
-      "Id": "cf6ee2e2add04654a1a3a885aacec011",
+      "Id": "59b68df7393a42c3952f7cac9e66b1b8",
       "Type": "Apply<string, object>",
       "Name": "",
-      "TreeParent": "7d716221509147359d76e3cfe5a2f5d7",
+      "TreeParent": "7d9832eddf5a4c58bb3ced1a516e0143",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1444,7 +1434,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "149212a8d70d4d4ea991501909e55c31"
+            "e15b422e33df4acaa1d0046c8bdf4fc7"
           ]
         }
       ],
@@ -1458,10 +1448,10 @@
       "Visible": true
     },
     {
-      "Id": "2576a7a2171a48c5b44198efcc488012",
+      "Id": "7e3a40151eb344e7ae5800a49f35952f",
       "Type": "ConvertToEvent<object>",
       "Name": "",
-      "TreeParent": "cf6ee2e2add04654a1a3a885aacec011",
+      "TreeParent": "59b68df7393a42c3952f7cac9e66b1b8",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1476,7 +1466,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "99362a30e4aa4966a6fe632eb3e8f82e"
+            "591e7c6afd0c453399147e53f63191ab"
           ]
         }
       ],
@@ -1484,10 +1474,10 @@
       "Visible": true
     },
     {
-      "Id": "494151e402ea4a5eb4dba8abe2440e4a",
+      "Id": "0ae00b97dab24d739d56320d55762818",
       "Type": "MouseButtonEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -1509,7 +1499,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "107ec5c2512949be94cfd838e1b2a96c"
+            "ba96997c6ba243f39be7eb0ae2c2bbae"
           ]
         },
         {
@@ -1547,10 +1537,10 @@
       "Visible": true
     },
     {
-      "Id": "799e0914bfa74332bc18486b8e6e9334",
+      "Id": "de35f670b6614158a46e8121b3423551",
       "Type": "ApplyAction<object>",
       "Name": "",
-      "TreeParent": "494151e402ea4a5eb4dba8abe2440e4a",
+      "TreeParent": "0ae00b97dab24d739d56320d55762818",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1570,10 +1560,10 @@
       "Visible": true
     },
     {
-      "Id": "42d03798020349a2a41089b5cac3e89d",
+      "Id": "06a051d6356b4ab5b25652e52005292a",
       "Type": "MouseButtonEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -1595,7 +1585,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "ed40a9be9f9f466199cd473bff1cf0e5"
+            "9375a4610827437e9c59f5a5e27651c7"
           ]
         },
         {
@@ -1633,10 +1623,10 @@
       "Visible": true
     },
     {
-      "Id": "4349830b8b124c6ebd440a5a0352bfda",
+      "Id": "b941859c8b7e43c6b089b7b9a743b185",
       "Type": "ApplyAction<object>",
       "Name": "",
-      "TreeParent": "42d03798020349a2a41089b5cac3e89d",
+      "TreeParent": "06a051d6356b4ab5b25652e52005292a",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1656,10 +1646,10 @@
       "Visible": true
     },
     {
-      "Id": "745aa054b25b4843a32d0725334698f4",
+      "Id": "073ac138bed14be6a3257d5aa25c1102",
       "Type": "StateChangeListener",
       "Name": "",
-      "TreeParent": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "TreeParent": "24a4f7de276d4d25a6d83f03287b91c4",
       "Ports": [
         {
           "Type": "IEvent",
@@ -1695,7 +1685,7 @@
           "IsInputPort": false,
           "Index": 3,
           "ConnectionIds": [
-            "e00e4b2385ad4477ad94d9a99c722b0b"
+            "00f45094492842e5b28341c9eee46bc4"
           ]
         }
       ],
@@ -1714,10 +1704,10 @@
       "Visible": true
     },
     {
-      "Id": "8a611d15af834af3a0a2623cd4d0dbec",
+      "Id": "26707a2bae6e42018a73fbf3448adfb4",
       "Type": "Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>",
       "Name": "",
-      "TreeParent": "745aa054b25b4843a32d0725334698f4",
+      "TreeParent": "073ac138bed14be6a3257d5aa25c1102",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1732,7 +1722,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "f245c8524a4047eb973a9fb19b05b101"
+            "e55763960855419ab5c16c2c208b84fe"
           ]
         }
       ],
@@ -1746,10 +1736,10 @@
       "Visible": true
     },
     {
-      "Id": "46a7fdc3f4ce4e759958a47827fe8f84",
+      "Id": "77cc4b4bf206457aa0707cd62b0a8b3d",
       "Type": "IfElse",
       "Name": "",
-      "TreeParent": "8a611d15af834af3a0a2623cd4d0dbec",
+      "TreeParent": "26707a2bae6e42018a73fbf3448adfb4",
       "Ports": [
         {
           "Type": "IDataFlow<bool>",
@@ -1764,7 +1754,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "02a8f37426424117b203390d6a17bbb5"
+            "8fe45ab0764640f99f388248974347d9"
           ]
         },
         {
@@ -1779,10 +1769,10 @@
       "Visible": true
     },
     {
-      "Id": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "Id": "24a4f7de276d4d25a6d83f03287b91c4",
       "Type": "EventConnector",
       "Name": "",
-      "TreeParent": "7741f5ca86fe4c3fbcea65675feb36d6",
+      "TreeParent": "7d55860545614f45bd93870d612dbe23",
       "Ports": [
         {
           "Type": "IEvent",
@@ -1797,8 +1787,9 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "5a5c4d7fe8274e43872c1c72be2c741a",
-            "15ffddfc04504a8d834851a7203c36df"
+            "08ac3c94c18a4fd8a26a0401ef2adf42",
+            "4bb430de59f3410ab91df698c5fbeb0c",
+            "b116051771e447a6ae6452b32a8bf206"
           ]
         },
         {
@@ -1814,7 +1805,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "5d942d3bbb9f42078570871396bcea98"
+            "ae824fbcc61c424ea270ab618dfca255"
           ]
         }
       ],
@@ -1822,10 +1813,10 @@
       "Visible": true
     },
     {
-      "Id": "0371beb4a71641788daca7fd0d892c96",
+      "Id": "778788325ed04ebdb126dfab2fca8daf",
       "Type": "Apply<object, object>",
       "Name": "createAndPaintALAWire",
-      "TreeParent": "2f4d32ff62b845f7b96aa53576270a2a",
+      "TreeParent": "6eed843738584e9493f479d572985281",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -1852,10 +1843,10 @@
       "Visible": true
     },
     {
-      "Id": "821befd29b254bbe9eb5d992d5a6e261",
+      "Id": "6f6567556a3d4498922811e883718de7",
       "Type": "KeyEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -1884,7 +1875,7 @@
           "IsInputPort": false,
           "Index": 2,
           "ConnectionIds": [
-            "2c3dcf5e792442d5be2a6332380df6b0"
+            "b3e07cb097c64a99801b3b93cbd8ebc4"
           ]
         }
       ],
@@ -1903,10 +1894,10 @@
       "Visible": true
     },
     {
-      "Id": "fabe6c8c7ff040758ecdd96a27df2399",
+      "Id": "f511275835d041dc81ff1d1e7ba2c934",
       "Type": "EventLambda",
       "Name": "",
-      "TreeParent": "821befd29b254bbe9eb5d992d5a6e261",
+      "TreeParent": "6f6567556a3d4498922811e883718de7",
       "Ports": [
         {
           "Type": "IEvent",
@@ -1933,10 +1924,10 @@
       "Visible": true
     },
     {
-      "Id": "d810a11d5c884963b1a2e9246aae8427",
+      "Id": "393a0bdbfa9445b2a6aa9b72f328549d",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "de5f959c05754afcbed3aa3185cfa7ee",
+      "TreeParent": "a480e806c7de437880e399b703805838",
       "Ports": [
         {
           "Type": "IUI",
@@ -1958,7 +1949,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "9916905448db4b5db937cf65302ce726"
+            "1dfa709706da4b3ca5cde689b187b86b"
           ]
         }
       ],
@@ -1972,10 +1963,10 @@
       "Visible": true
     },
     {
-      "Id": "650dcd46c0184db1b9f248e6f93d62ad",
+      "Id": "e9b33cf79bc64ee499c613f69d793554",
       "Type": "Data<AbstractionModel>",
       "Name": "",
-      "TreeParent": "e07d2d0fb7014af78f8e524147997d35",
+      "TreeParent": "018d857185044ace97a9870f72c8d363",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2011,7 +2002,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "2bef5f89ae214dfa8fffd84338c491bf"
+            "58333f52a1a54a4896b870cbb8bfc3d7"
           ]
         }
       ],
@@ -2025,10 +2016,10 @@
       "Visible": true
     },
     {
-      "Id": "c1837a68ef004a42916551a89058e204",
+      "Id": "2c6f2b5ec3af41c890d06f991bcfe787",
       "Type": "Apply<AbstractionModel, object>",
       "Name": "",
-      "TreeParent": "650dcd46c0184db1b9f248e6f93d62ad",
+      "TreeParent": "e9b33cf79bc64ee499c613f69d793554",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2043,7 +2034,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "0e0b8ff83b224165a39768d69bac269f"
+            "90f167e5b3c54487a1c3f208da1f0f27"
           ]
         }
       ],
@@ -2057,10 +2048,10 @@
       "Visible": true
     },
     {
-      "Id": "5ca3d72138804db4bcb1b009662ec4c5",
+      "Id": "fe9b707ec6d34b39bae8c47ad358a13b",
       "Type": "ApplyAction<object>",
       "Name": "",
-      "TreeParent": "c1837a68ef004a42916551a89058e204",
+      "TreeParent": "2c6f2b5ec3af41c890d06f991bcfe787",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2080,10 +2071,10 @@
       "Visible": true
     },
     {
-      "Id": "e64b7ef98e00461eaf464122f79658a8",
+      "Id": "12b6da8a39364c0ba13669f3184e2881",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "72a644b6154e4dbc94903372d2dd52c8",
+      "TreeParent": "730165afcb4a4b4dba9cf27ad47e251b",
       "Ports": [
         {
           "Type": "IUI",
@@ -2105,7 +2096,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "bcf06ba798c8410c9850f8d109dd9f6e"
+            "25b5401b431546e8a22e76353db19044"
           ]
         }
       ],
@@ -2119,10 +2110,10 @@
       "Visible": true
     },
     {
-      "Id": "3ebc8dbcae7943a3a3ea9f11b09d8b58",
+      "Id": "ee0a515e899b435487d3253fea73553a",
       "Type": "FileBrowser",
       "Name": "",
-      "TreeParent": "e64b7ef98e00461eaf464122f79658a8",
+      "TreeParent": "12b6da8a39364c0ba13669f3184e2881",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2137,7 +2128,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "5634a2e381eb41c282f2e3de34d11e4c"
+            "46dc0fe2c18f4881bfb8145acf8904a7",
+            "b4cb971187544332ab50d808eaddc2c9"
           ]
         }
       ],
@@ -2151,10 +2143,10 @@
       "Visible": true
     },
     {
-      "Id": "f73e477ba258460fb79ec1a709d95999",
+      "Id": "4282da786aaa49f6bc4626ea8f406550",
       "Type": "FileReader",
       "Name": "",
-      "TreeParent": "3ebc8dbcae7943a3a3ea9f11b09d8b58",
+      "TreeParent": "ee0a515e899b435487d3253fea73553a",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -2169,8 +2161,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "5067a1f80c844760a75c18ba7e908311",
-            "8a39c680626a47719e34c22cb79f4415"
+            "ffded166ffce4937b4d3484a2bc2068d"
           ]
         }
       ],
@@ -2178,10 +2169,10 @@
       "Visible": true
     },
     {
-      "Id": "bde216fd6b864182857ac3f91c6473ad",
+      "Id": "26334af38aff4f90ba86d4fc6c1917e2",
       "Type": "CreateDiagramFromCode",
       "Name": "",
-      "TreeParent": "f73e477ba258460fb79ec1a709d95999",
+      "TreeParent": "e7164e6a1e2b4e7ca0ee0a5098410afa",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -2216,10 +2207,10 @@
       "Visible": true
     },
     {
-      "Id": "522fbc174d774db89c8d90eeab24358a",
+      "Id": "107b41f3ebb643cab8759eaeace75128",
       "Type": "EventConnector",
       "Name": "",
-      "TreeParent": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "TreeParent": "24a4f7de276d4d25a6d83f03287b91c4",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2254,10 +2245,10 @@
       "Visible": true
     },
     {
-      "Id": "bde1265620d742a49ab4056d84661f12",
+      "Id": "470e37a1122647e59d26d761462815be",
       "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
       "Name": "",
-      "TreeParent": "9a7d724b16de4bfd86837021ab25aed1",
+      "TreeParent": "5cb778da617c47c8b823587747365efa",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2272,7 +2263,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "aa609af0db3a47658e67ea9281b41e94"
+            "d8a05d04d7cf4b068e8664d470bc8143"
           ]
         }
       ],
@@ -2286,66 +2277,10 @@
       "Visible": true
     },
     {
-      "Id": "d040cfaff591463b9b912c5d608c99d3",
-      "Type": "ForEach<string>",
-      "Name": "",
-      "TreeParent": "bde1265620d742a49ab4056d84661f12",
-      "Ports": [
-        {
-          "Type": "IDataFlow<IEnumerable<string>>",
-          "Name": "collectionInput",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "elementOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "4f2c2d33e5d64458b536843f050a9e42"
-          ]
-        },
-        {
-          "Type": "IEvent",
-          "Name": "complete",
-          "IsInputPort": false,
-          "Index": 1,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [],
-      "Visible": true
-    },
-    {
-      "Id": "fd3ae12d55d4404aa6bb34664d50e352",
-      "Type": "ApplyAction<string>",
-      "Name": "",
-      "TreeParent": "d040cfaff591463b9b912c5d608c99d3",
-      "Ports": [
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "input",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [
-        {
-          "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModelFromPath(input);\r\n}",
-          "ParameterType": "Property"
-        }
-      ],
-      "Visible": true
-    },
-    {
-      "Id": "016ee1833bf84da989ef2518169fd3a8",
+      "Id": "ccd3b8cd7a014b278f23dcc12a2365ff",
       "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
       "Name": "",
-      "TreeParent": "9a7d724b16de4bfd86837021ab25aed1",
+      "TreeParent": "5cb778da617c47c8b823587747365efa",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2360,7 +2295,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "03b76b40e81048cab8a12f9f372530e9"
+            "563d8343463640d1bd184e5c03d27b1c"
           ]
         }
       ],
@@ -2374,66 +2309,10 @@
       "Visible": true
     },
     {
-      "Id": "4ba321618cbd46ef9e1371ecc2b73a23",
-      "Type": "ForEach<string>",
-      "Name": "",
-      "TreeParent": "016ee1833bf84da989ef2518169fd3a8",
-      "Ports": [
-        {
-          "Type": "IDataFlow<IEnumerable<string>>",
-          "Name": "collectionInput",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        },
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "elementOutput",
-          "IsInputPort": false,
-          "Index": 0,
-          "ConnectionIds": [
-            "d30690d8358d4750b025c5a2f44de3bb"
-          ]
-        },
-        {
-          "Type": "IEvent",
-          "Name": "complete",
-          "IsInputPort": false,
-          "Index": 1,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [],
-      "Visible": true
-    },
-    {
-      "Id": "e9cc0ab4112c44a78dd70d1cceaf2a67",
-      "Type": "ApplyAction<string>",
-      "Name": "",
-      "TreeParent": "4ba321618cbd46ef9e1371ecc2b73a23",
-      "Ports": [
-        {
-          "Type": "IDataFlow<string>",
-          "Name": "input",
-          "IsInputPort": true,
-          "Index": 0,
-          "ConnectionIds": []
-        }
-      ],
-      "NodeParameters": [
-        {
-          "Name": "Lambda",
-          "Value": "input =>\r\n{\r\n\tabstractionModelManager.CreateAbstractionModelFromPath(input);\r\n}",
-          "ParameterType": "Property"
-        }
-      ],
-      "Visible": true
-    },
-    {
-      "Id": "9a7d724b16de4bfd86837021ab25aed1",
+      "Id": "5cb778da617c47c8b823587747365efa",
       "Type": "DataFlowConnector<Dictionary<string, List<string>>>",
       "Name": "",
-      "TreeParent": "1223b6c4a9fb4a078880318febcdaceb",
+      "TreeParent": "63f40bc272be49c191391abafe60a412",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2448,9 +2327,10 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "81e3c58f0de048499df6af5f48211003",
-            "45bf451c979b46ea99d429b392f11207",
-            "b03da2f9e89a4b9d9fe61d531678ad35"
+            "dfd60f0513bb49ff916fd14d722736b7",
+            "02e2e5980b0f4f8ab16e951e4bcb9728",
+            "85a392e41d2b4aeb8d47620bdd58809c",
+            "ab67164302144c8b8535a655b83762ed"
           ]
         },
         {
@@ -2465,10 +2345,10 @@
       "Visible": true
     },
     {
-      "Id": "ae274fb8c8754469bd390fad7467f3ad",
+      "Id": "0178b984a11848dbb7dfb4f9f4ec0ee4",
       "Type": "Data<UIElement>",
       "Name": "",
-      "TreeParent": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "TreeParent": "dc92199646074c119461ad2e3231526c",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2504,7 +2384,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "956db1b3d7394ee29477a0412bf0b733"
+            "4d66fe69d467496dbcc9d09cc69ad6b9"
           ]
         }
       ],
@@ -2518,10 +2398,10 @@
       "Visible": true
     },
     {
-      "Id": "947a99633a854b6ea03ad8ee9d48aef9",
+      "Id": "befdcba1b58f4deb985c5ffa88b0b7a0",
       "Type": "Scale",
       "Name": "",
-      "TreeParent": "2ca711558c924435b95fe6a1276b4d55",
+      "TreeParent": "c7dbb329107d48daab53486e3407657d",
       "Ports": [
         {
           "Type": "IDataFlow<UIElement>",
@@ -2546,10 +2426,10 @@
       "Visible": true
     },
     {
-      "Id": "776ca16650954eef91e75ebe2ebe9e4e",
+      "Id": "30ba35edf0a044879f4ddc8b051a90a5",
       "Type": "Data<UIElement>",
       "Name": "",
-      "TreeParent": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "TreeParent": "dc92199646074c119461ad2e3231526c",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2585,7 +2465,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "ec0fab9eec0a4413920e7ce01c07cc0b"
+            "2f43c1ee3d9842edb77c0860804214f9"
           ]
         }
       ],
@@ -2599,10 +2479,10 @@
       "Visible": true
     },
     {
-      "Id": "b905260ac5a44c5caeb6fd68f1e1db88",
+      "Id": "182d30e7e2194c15977c8af69728b897",
       "Type": "Scale",
       "Name": "",
-      "TreeParent": "7316b641a8304948993f4e5cbc542ef6",
+      "TreeParent": "54f7d906df0e496a86f8b36c53dc0c38",
       "Ports": [
         {
           "Type": "IDataFlow<UIElement>",
@@ -2627,10 +2507,10 @@
       "Visible": true
     },
     {
-      "Id": "2ca711558c924435b95fe6a1276b4d55",
+      "Id": "c7dbb329107d48daab53486e3407657d",
       "Type": "DataFlowConnector<UIElement>",
       "Name": "",
-      "TreeParent": "ae274fb8c8754469bd390fad7467f3ad",
+      "TreeParent": "0178b984a11848dbb7dfb4f9f4ec0ee4",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2645,8 +2525,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "295629031c524c4ca0b76b1f0601fcc0",
-            "55670f7f847c4a96a91454d157ae2a40"
+            "480ef016575145b3a8ad7a408b663ace",
+            "d8ab9a3235e44d6194a10c4280a86159"
           ]
         },
         {
@@ -2661,10 +2541,10 @@
       "Visible": true
     },
     {
-      "Id": "7316b641a8304948993f4e5cbc542ef6",
+      "Id": "54f7d906df0e496a86f8b36c53dc0c38",
       "Type": "DataFlowConnector<UIElement>",
       "Name": "",
-      "TreeParent": "776ca16650954eef91e75ebe2ebe9e4e",
+      "TreeParent": "30ba35edf0a044879f4ddc8b051a90a5",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2679,8 +2559,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "f78e7be18bbf4550895bbfb14f324e47",
-            "33cb61363c854f4aaccb488593c9e561"
+            "96a42eb907814dbdad850026c69a7232",
+            "1752272ed8ce4631a28df981926a8216"
           ]
         },
         {
@@ -2695,10 +2575,10 @@
       "Visible": true
     },
     {
-      "Id": "82b2298c450741848a279c0d5de88a8e",
+      "Id": "9bc20ab2fd534226937bb88728040474",
       "Type": "ApplyAction<UIElement>",
       "Name": "",
-      "TreeParent": "2ca711558c924435b95fe6a1276b4d55",
+      "TreeParent": "c7dbb329107d48daab53486e3407657d",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2718,10 +2598,10 @@
       "Visible": true
     },
     {
-      "Id": "9e249cf001ab46d4b11e6dd4d0b2f136",
+      "Id": "b16bc00a7ee14900bfec6fdbffe15fb2",
       "Type": "MouseWheelEvent",
       "Name": "",
-      "TreeParent": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "TreeParent": "6d2fd70706e84b329a800c1ef3be39e4",
       "Ports": [
         {
           "Type": "IEventHandler",
@@ -2743,7 +2623,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "3a121ed5b18c4051bf211f1c764fef33"
+            "2cee7fbb21f94746b48b942f9be2302c"
           ]
         },
         {
@@ -2771,10 +2651,10 @@
       "Visible": true
     },
     {
-      "Id": "681985f0f46849fdb582544f39d9b31f",
+      "Id": "8ebf849257ec46668df231141c2b4d48",
       "Type": "Apply<MouseWheelEventArgs, bool>",
       "Name": "",
-      "TreeParent": "9e249cf001ab46d4b11e6dd4d0b2f136",
+      "TreeParent": "b16bc00a7ee14900bfec6fdbffe15fb2",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2789,7 +2669,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "7b670fd49a9c4084aca26ae49e1dd2a3"
+            "293b304f64e4462d8ff51d7b0ec77f52"
           ]
         }
       ],
@@ -2803,10 +2683,10 @@
       "Visible": true
     },
     {
-      "Id": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "Id": "dc92199646074c119461ad2e3231526c",
       "Type": "IfElse",
       "Name": "",
-      "TreeParent": "681985f0f46849fdb582544f39d9b31f",
+      "TreeParent": "8ebf849257ec46668df231141c2b4d48",
       "Ports": [
         {
           "Type": "IDataFlow<bool>",
@@ -2821,7 +2701,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "fab34005fc0a4afeb65be0c14eb115b9"
+            "c5fdb1edc970404aa9c9c039bbebb58a"
           ]
         },
         {
@@ -2830,7 +2710,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "403283057ce64c65918b5b9adbeab536"
+            "cfdeada2f8ac4048beadd794eddf65b6"
           ]
         }
       ],
@@ -2838,10 +2718,10 @@
       "Visible": true
     },
     {
-      "Id": "1bf76c59a9cb4960a4d40e6cb14d170b",
+      "Id": "e7164e6a1e2b4e7ca0ee0a5098410afa",
       "Type": "DataFlowConnector<string>",
       "Name": "",
-      "TreeParent": "f73e477ba258460fb79ec1a709d95999",
+      "TreeParent": "4282da786aaa49f6bc4626ea8f406550",
       "Ports": [
         {
           "Type": "IDataFlow<string>",
@@ -2856,7 +2736,10 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "a4c7106485114260956b66ec7a608190"
+            "baa9b6c31f834bc183e4a86290268cd8",
+            "3337c4cdb698435a82c7ef9d0dc34ef5",
+            "6a6934f9ab19485e92621243092d409b",
+            "947425f5fba04284895d0241c3af00a9"
           ]
         },
         {
@@ -2871,10 +2754,10 @@
       "Visible": true
     },
     {
-      "Id": "ffad88c305444e8ebc8780fc39dbef66",
+      "Id": "93fb7699b5eb4717972cf992ecfa80df",
       "Type": "ConvertToEvent<string>",
       "Name": "",
-      "TreeParent": "1bf76c59a9cb4960a4d40e6cb14d170b",
+      "TreeParent": "e7164e6a1e2b4e7ca0ee0a5098410afa",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -2889,7 +2772,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "2520194d3edb40c5b179a2ffd462e772"
+            "5f8681dc5d004dc192378973e0c332b6"
           ]
         }
       ],
@@ -2897,10 +2780,10 @@
       "Visible": true
     },
     {
-      "Id": "da9da8de8ba749f9be7f7a4856d00bb3",
+      "Id": "f10a082c130d4c35b897bd30108f4b8d",
       "Type": "DispatcherEvent",
       "Name": "",
-      "TreeParent": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "TreeParent": "cf6c29b426e3426f99ebb0982ab1b81f",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2914,7 +2797,9 @@
           "Name": "delayedEvent",
           "IsInputPort": false,
           "Index": 0,
-          "ConnectionIds": []
+          "ConnectionIds": [
+            "b4c8f67f97644f44bdddcafe5c4d57b7"
+          ]
         }
       ],
       "NodeParameters": [
@@ -2927,10 +2812,10 @@
       "Visible": true
     },
     {
-      "Id": "d4d6624cfb814a1484e26a4ffab47c7e",
+      "Id": "8698cc76f97c43d2aa45d98aef64d5d6",
       "Type": "MenuItem",
       "Name": "",
-      "TreeParent": "114addd3cd73472099d3b79f85c796fe",
+      "TreeParent": "917cdedb4d4b48688c4a146aee3900d0",
       "Ports": [
         {
           "Type": "IUI",
@@ -2952,7 +2837,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "919adfe4665f4ac1b5eaabe8e037c1ac"
+            "78784b78614d4f978c1d486e98964fe3"
           ]
         }
       ],
@@ -2966,10 +2851,10 @@
       "Visible": true
     },
     {
-      "Id": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "Id": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "Type": "GenerateALACode",
       "Name": "",
-      "TreeParent": "d4d6624cfb814a1484e26a4ffab47c7e",
+      "TreeParent": "8698cc76f97c43d2aa45d98aef64d5d6",
       "Ports": [
         {
           "Type": "IEvent",
@@ -2984,7 +2869,7 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "0739abbb440c48288d7ef2cdd4a6f2d4"
+            "9021f5e13d94413c96fc2b0dda0dbe4a"
           ]
         },
         {
@@ -2993,7 +2878,7 @@
           "IsInputPort": false,
           "Index": 1,
           "ConnectionIds": [
-            "2fb9b049ab074b8a8cd5e4f0892124a8"
+            "489c454b0ca34f90893d5f5ec020896e"
           ]
         }
       ],
@@ -3007,10 +2892,10 @@
       "Visible": true
     },
     {
-      "Id": "eade753f4c674e8b995f925ee14da887",
+      "Id": "c5f68baa4a6c47579afa1e77473d4226",
       "Type": "DataFlowConnector<List<string>>",
       "Name": "generatedInstantiations",
-      "TreeParent": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "TreeParent": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -3038,10 +2923,10 @@
       "Visible": true
     },
     {
-      "Id": "dd5b40f02d5949ff985679b500ca9e1e",
+      "Id": "505ec8db2eb64bb581473914a51684f0",
       "Type": "DataFlowConnector<List<string>>",
       "Name": "generatedWireTos",
-      "TreeParent": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "TreeParent": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "Ports": [
         {
           "Type": "IDataFlow<object>",
@@ -3067,104 +2952,457 @@
       ],
       "NodeParameters": [],
       "Visible": true
+    },
+    {
+      "Id": "f7a9e4b38afd4d6199d9c5e22fdb17cf",
+      "Type": "GetSetting",
+      "Name": "",
+      "TreeParent": "24a4f7de276d4d25a6d83f03287b91c4",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "filePathInput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "727eb17bbff24f3391dcb77a3de8fff6"
+          ]
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "settingJsonOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "name",
+          "Value": "\"ApplicationCodeFilePath\"",
+          "ParameterType": "Constructor"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "ec9634f4f667478880e127a2ae6f3fce",
+      "Type": "Data<string>",
+      "Name": "",
+      "TreeParent": "f7a9e4b38afd4d6199d9c5e22fdb17cf",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": [
+            "727eb17bbff24f3391dcb77a3de8fff6"
+          ]
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "storedData",
+          "Value": "SETTINGS_FILEPATH",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "ada202987ff348c8af7f446f5fc705ac",
+      "Type": "EditSetting",
+      "Name": "",
+      "TreeParent": "e7164e6a1e2b4e7ca0ee0a5098410afa",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "valueInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "filePathInput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "15f93658168d4744a96853d1284a4f0d"
+          ]
+        },
+        {
+          "Type": "IEvent",
+          "Name": "complete",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "JSONPath",
+          "Value": "\"$..ProjectFolderPath\"",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "1bf9e0f91d6c4f63bbca1ba11c561cb0",
+      "Type": "Data<string>",
+      "Name": "",
+      "TreeParent": "ada202987ff348c8af7f446f5fc705ac",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "storedData",
+          "Value": "SETTINGS_FILEPATH",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "dd5807d3ffa5416b97b1b1545c162d75",
+      "Type": "Cast<string, object>",
+      "Name": "",
+      "TreeParent": "e7164e6a1e2b4e7ca0ee0a5098410afa",
+      "Ports": [
+        {
+          "Type": "IDataFlow<T1>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<T2>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "ab400da881684a97a43abcb43e52a155",
+      "Type": "DataFlowConnector<string>",
+      "Name": "",
+      "TreeParent": "ee0a515e899b435487d3253fea73553a",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "fanoutList",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "947425f5fba04284895d0241c3af00a9"
+          ]
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "9bfc3fa948124a77b0775db221383c07",
+      "Type": "Cast<string, object>",
+      "Name": "",
+      "TreeParent": "6ca14376eac748a59d7408ad15b23c9d",
+      "Ports": [
+        {
+          "Type": "IDataFlow<T1>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<T2>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "cab0ac773e05407d82a535abe5c6443b"
+          ]
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "8f0c7e7581054d37ab51b7a37368294e",
+      "Type": "Data<string>",
+      "Name": "",
+      "TreeParent": "18bd9d022fd543379c34c2397eda78c9",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "storedData",
+          "Value": "SETTINGS_FILEPATH",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
+    },
+    {
+      "Id": "bd279b9fbe8f4a23973e0c4f0d36c6d2",
+      "Type": "Apply<Dictionary<string, List<string>>, IEnumerable<string>>",
+      "Name": "",
+      "TreeParent": "5cb778da617c47c8b823587747365efa",
+      "Ports": [
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "input",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<object>",
+          "Name": "output",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "2fea07f99c544b5c9e0e9d1736e893cf"
+          ]
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "input =>\r\n{\r\n\tvar list = new List<string>();\r\n\tif (input.ContainsKey(\"Modules\"))\r\n\t{\r\n\t\tlist = input[\"Modules\"];\r\n\t}\r\n\t\r\n\treturn list;\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
-    "7741f5ca86fe4c3fbcea65675feb36d6",
-    "06f1d0d57ef94ca0a1b84eeb78bffcb8",
-    "3dd9c6b85d5f4720ad0b954852eb8bd5",
-    "0f2d6129132e456abc43e57dd30d3e74",
-    "de5f959c05754afcbed3aa3185cfa7ee",
-    "e07d2d0fb7014af78f8e524147997d35",
-    "d428060e562e48b3bae6cacc417dabb3",
-    "60e965c051c5416cbfbb6a12e4831ad8",
-    "13a9cf4d34894dd8b00a76c1033d0bbf",
-    "78b76d091efd45479ef01a7ce8ca4a2c",
-    "dfad0e10d103413ca62341600eb53b84",
-    "3f6a1b7cd38e4abcb8e6020205bb3149",
-    "91540e8151384b00859c7cd7ac0db336",
-    "2f4d32ff62b845f7b96aa53576270a2a",
-    "8a303e6870e045f3bfbe81afe713410f",
-    "72a644b6154e4dbc94903372d2dd52c8",
-    "d006c330b62c4aefb8ee80e29c3d90a7",
-    "5b358134e6c240e8861382d073b6daa9",
-    "1223b6c4a9fb4a078880318febcdaceb",
-    "52bdc5261a8344d4b061df873795daa4",
-    "28f4b656ee7640d1b74aa495c685c98a",
-    "4ef72270c04442c990d7c38c30df9083",
-    "216d5307f4424a08bf9a8640a6b7a367",
-    "85f5a744cd0d408b8ba10fa7653f27bd",
-    "54bf34594d0c485384eb3f349fd5e182",
-    "36f646b635c34537abc0345c9ead9807",
-    "2ee0c75f6cd04fd8bd1a8f50396b54a8",
-    "114addd3cd73472099d3b79f85c796fe",
-    "c8c8d57ff6a94373a4bac1f7206d9bff",
-    "5a248626b00d48d6af02e424703b1436",
-    "8474f7bc283d460eb3a00dccc8a534f6",
-    "db234cdb4bbb4de38a88dc88eb4c5c9d",
-    "ad36a59dd1394606a949607e4943d4ad",
-    "7d716221509147359d76e3cfe5a2f5d7",
-    "cf6ee2e2add04654a1a3a885aacec011",
-    "2576a7a2171a48c5b44198efcc488012",
-    "494151e402ea4a5eb4dba8abe2440e4a",
-    "799e0914bfa74332bc18486b8e6e9334",
-    "42d03798020349a2a41089b5cac3e89d",
-    "4349830b8b124c6ebd440a5a0352bfda",
-    "745aa054b25b4843a32d0725334698f4",
-    "8a611d15af834af3a0a2623cd4d0dbec",
-    "46a7fdc3f4ce4e759958a47827fe8f84",
-    "e1c72d1563cd43c59927cdb480bf2ccd",
-    "0371beb4a71641788daca7fd0d892c96",
-    "821befd29b254bbe9eb5d992d5a6e261",
-    "fabe6c8c7ff040758ecdd96a27df2399",
-    "d810a11d5c884963b1a2e9246aae8427",
-    "650dcd46c0184db1b9f248e6f93d62ad",
-    "c1837a68ef004a42916551a89058e204",
-    "5ca3d72138804db4bcb1b009662ec4c5",
-    "e64b7ef98e00461eaf464122f79658a8",
-    "3ebc8dbcae7943a3a3ea9f11b09d8b58",
-    "f73e477ba258460fb79ec1a709d95999",
-    "bde216fd6b864182857ac3f91c6473ad",
-    "522fbc174d774db89c8d90eeab24358a",
-    "bde1265620d742a49ab4056d84661f12",
-    "d040cfaff591463b9b912c5d608c99d3",
-    "fd3ae12d55d4404aa6bb34664d50e352",
-    "016ee1833bf84da989ef2518169fd3a8",
-    "4ba321618cbd46ef9e1371ecc2b73a23",
-    "e9cc0ab4112c44a78dd70d1cceaf2a67",
-    "9a7d724b16de4bfd86837021ab25aed1",
-    "ae274fb8c8754469bd390fad7467f3ad",
-    "947a99633a854b6ea03ad8ee9d48aef9",
-    "776ca16650954eef91e75ebe2ebe9e4e",
-    "b905260ac5a44c5caeb6fd68f1e1db88",
-    "2ca711558c924435b95fe6a1276b4d55",
-    "7316b641a8304948993f4e5cbc542ef6",
-    "82b2298c450741848a279c0d5de88a8e",
-    "9e249cf001ab46d4b11e6dd4d0b2f136",
-    "681985f0f46849fdb582544f39d9b31f",
-    "ef8e7eeb74e0437bbcad7fd147cd92d2",
-    "1bf76c59a9cb4960a4d40e6cb14d170b",
-    "ffad88c305444e8ebc8780fc39dbef66",
-    "da9da8de8ba749f9be7f7a4856d00bb3",
-    "d4d6624cfb814a1484e26a4ffab47c7e",
-    "4d02e25bf1fe4c93b3bf9d598ae1160f",
-    "eade753f4c674e8b995f925ee14da887",
-    "dd5b40f02d5949ff985679b500ca9e1e"
+    "7d55860545614f45bd93870d612dbe23",
+    "1bac690327e048c5956c3f6a1deb9a9d",
+    "6d2fd70706e84b329a800c1ef3be39e4",
+    "4668ef2c02254d8783a1f5a1e6d2a7d4",
+    "a480e806c7de437880e399b703805838",
+    "018d857185044ace97a9870f72c8d363",
+    "9f92c6af8bfc4931a05b9736da93a3b8",
+    "f64bccf7ce7a40f4a8cb306f9b6568ca",
+    "8f88e251a93847e8b7de87025ebab0c9",
+    "cf6c29b426e3426f99ebb0982ab1b81f",
+    "36aff5167d8945a78f2c4c378a7efc06",
+    "0a56668b6e05478fa80e8840e4b6f4ca",
+    "9da5c762f60d463eb4f272dc5a14dc76",
+    "6eed843738584e9493f479d572985281",
+    "53e62c67141a440a9a3bf41ae2fc30ba",
+    "730165afcb4a4b4dba9cf27ad47e251b",
+    "0102d05328854a58baca74be81bba822",
+    "fc287e91629f46caa818e8713d88f3c9",
+    "63f40bc272be49c191391abafe60a412",
+    "23a8ab2a82684336868c81fb753c5f87",
+    "744c65cc8c8e4f99b9d9fa448b6ac1a0",
+    "0f821bd2a21748d897d21e29f8d530d7",
+    "c21df1ba3b9949aa8f4cdce874431152",
+    "8280102e24a9441cbff65050ae981c40",
+    "18bd9d022fd543379c34c2397eda78c9",
+    "93d99e75ac104f76a1321b13f03fba20",
+    "7415e096d292451fba81ee1e426aaa12",
+    "917cdedb4d4b48688c4a146aee3900d0",
+    "5c8f6a1dd623468ba0884e01614997cd",
+    "3229eda2842046acb26b044b86f85d7c",
+    "206ea38c01e14db8b863e29da514ed7c",
+    "b7ab115f4fca42c2b2c4b017bcbadb7c",
+    "6ca14376eac748a59d7408ad15b23c9d",
+    "7d9832eddf5a4c58bb3ced1a516e0143",
+    "59b68df7393a42c3952f7cac9e66b1b8",
+    "7e3a40151eb344e7ae5800a49f35952f",
+    "0ae00b97dab24d739d56320d55762818",
+    "de35f670b6614158a46e8121b3423551",
+    "06a051d6356b4ab5b25652e52005292a",
+    "b941859c8b7e43c6b089b7b9a743b185",
+    "073ac138bed14be6a3257d5aa25c1102",
+    "26707a2bae6e42018a73fbf3448adfb4",
+    "77cc4b4bf206457aa0707cd62b0a8b3d",
+    "24a4f7de276d4d25a6d83f03287b91c4",
+    "778788325ed04ebdb126dfab2fca8daf",
+    "6f6567556a3d4498922811e883718de7",
+    "f511275835d041dc81ff1d1e7ba2c934",
+    "393a0bdbfa9445b2a6aa9b72f328549d",
+    "e9b33cf79bc64ee499c613f69d793554",
+    "2c6f2b5ec3af41c890d06f991bcfe787",
+    "fe9b707ec6d34b39bae8c47ad358a13b",
+    "12b6da8a39364c0ba13669f3184e2881",
+    "ee0a515e899b435487d3253fea73553a",
+    "4282da786aaa49f6bc4626ea8f406550",
+    "26334af38aff4f90ba86d4fc6c1917e2",
+    "107b41f3ebb643cab8759eaeace75128",
+    "470e37a1122647e59d26d761462815be",
+    "ccd3b8cd7a014b278f23dcc12a2365ff",
+    "5cb778da617c47c8b823587747365efa",
+    "0178b984a11848dbb7dfb4f9f4ec0ee4",
+    "befdcba1b58f4deb985c5ffa88b0b7a0",
+    "30ba35edf0a044879f4ddc8b051a90a5",
+    "182d30e7e2194c15977c8af69728b897",
+    "c7dbb329107d48daab53486e3407657d",
+    "54f7d906df0e496a86f8b36c53dc0c38",
+    "9bc20ab2fd534226937bb88728040474",
+    "b16bc00a7ee14900bfec6fdbffe15fb2",
+    "8ebf849257ec46668df231141c2b4d48",
+    "dc92199646074c119461ad2e3231526c",
+    "e7164e6a1e2b4e7ca0ee0a5098410afa",
+    "93fb7699b5eb4717972cf992ecfa80df",
+    "f10a082c130d4c35b897bd30108f4b8d",
+    "8698cc76f97c43d2aa45d98aef64d5d6",
+    "ac0ab1f71d514e8681bd6c5a9c351f79",
+    "c5f68baa4a6c47579afa1e77473d4226",
+    "505ec8db2eb64bb581473914a51684f0",
+    "f7a9e4b38afd4d6199d9c5e22fdb17cf",
+    "ec9634f4f667478880e127a2ae6f3fce",
+    "ada202987ff348c8af7f446f5fc705ac",
+    "1bf9e0f91d6c4f63bbca1ba11c561cb0",
+    "dd5807d3ffa5416b97b1b1545c162d75",
+    "ab400da881684a97a43abcb43e52a155",
+    "9bfc3fa948124a77b0775db221383c07",
+    "8f0c7e7581054d37ab51b7a37368294e",
+    "bd279b9fbe8f4a23973e0c4f0d36c6d2"
   ],
   "Connections": [
     {
-      "Id": "d7842d2a570a4a749ec6e71e3906f529",
-      "SourceId": "7741f5ca86fe4c3fbcea65675feb36d6",
+      "Id": "0cd093d7c8744176acbb09fe2be73f6a",
+      "SourceId": "7d55860545614f45bd93870d612dbe23",
       "SourcePort": {
         "Type": "IUI",
         "Name": "iuiStructure",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "d7842d2a570a4a749ec6e71e3906f529"
+          "0cd093d7c8744176acbb09fe2be73f6a"
         ]
       },
-      "DestinationId": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "DestinationId": "1bac690327e048c5956c3f6a1deb9a9d",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3175,18 +3413,18 @@
       "Visible": true
     },
     {
-      "Id": "686d941a273a4fdaa1135ede4b6a598d",
-      "SourceId": "7741f5ca86fe4c3fbcea65675feb36d6",
+      "Id": "3c12ce6bf8ec4afba7957556c3c41549",
+      "SourceId": "7d55860545614f45bd93870d612dbe23",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "appStart",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "686d941a273a4fdaa1135ede4b6a598d"
+          "3c12ce6bf8ec4afba7957556c3c41549"
         ]
       },
-      "DestinationId": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "DestinationId": "24a4f7de276d4d25a6d83f03287b91c4",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
@@ -3197,19 +3435,19 @@
       "Visible": true
     },
     {
-      "Id": "8bff4fc34a9c4943b117db502d065428",
-      "SourceId": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "Id": "9d1107d567e14cb4a0827829dc4ed6e7",
+      "SourceId": "1bac690327e048c5956c3f6a1deb9a9d",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "8bff4fc34a9c4943b117db502d065428",
-          "7a63ea7fe7c84b98815feee75f75709c"
+          "9d1107d567e14cb4a0827829dc4ed6e7",
+          "039e1e47575044d89059e45f4fac7e72"
         ]
       },
-      "DestinationId": "8a303e6870e045f3bfbe81afe713410f",
+      "DestinationId": "53e62c67141a440a9a3bf41ae2fc30ba",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3220,19 +3458,19 @@
       "Visible": true
     },
     {
-      "Id": "7a63ea7fe7c84b98815feee75f75709c",
-      "SourceId": "06f1d0d57ef94ca0a1b84eeb78bffcb8",
+      "Id": "039e1e47575044d89059e45f4fac7e72",
+      "SourceId": "1bac690327e048c5956c3f6a1deb9a9d",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "8bff4fc34a9c4943b117db502d065428",
-          "7a63ea7fe7c84b98815feee75f75709c"
+          "9d1107d567e14cb4a0827829dc4ed6e7",
+          "039e1e47575044d89059e45f4fac7e72"
         ]
       },
-      "DestinationId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "DestinationId": "6d2fd70706e84b329a800c1ef3be39e4",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3243,24 +3481,24 @@
       "Visible": true
     },
     {
-      "Id": "fcb14cde7fab47458efa67cccea29e84",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "52c9990f5b0d49f8a95ff39828b8dfc5",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "0f2d6129132e456abc43e57dd30d3e74",
+      "DestinationId": "4668ef2c02254d8783a1f5a1e6d2a7d4",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3271,24 +3509,24 @@
       "Visible": true
     },
     {
-      "Id": "97de3aedaf2f40d3b02fc12fa74b5586",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "ab0817092dff43be81c45af1ca04f906",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "91540e8151384b00859c7cd7ac0db336",
+      "DestinationId": "9da5c762f60d463eb4f272dc5a14dc76",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3299,24 +3537,24 @@
       "Visible": true
     },
     {
-      "Id": "a4e6ed1c298949658b2546126bc54e82",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "38e080f8db4f49148079e6a29c06260f",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "36f646b635c34537abc0345c9ead9807",
+      "DestinationId": "93d99e75ac104f76a1321b13f03fba20",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3327,24 +3565,24 @@
       "Visible": true
     },
     {
-      "Id": "32e97eb5855e423ebf39799875731918",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "6b3a4908967a4818b6cc9a6ca3767791",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "494151e402ea4a5eb4dba8abe2440e4a",
+      "DestinationId": "0ae00b97dab24d739d56320d55762818",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3355,24 +3593,24 @@
       "Visible": true
     },
     {
-      "Id": "de085c67d3f34ff49d00783ccd6853c4",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "3b5eecd8e6bc4c74834e0af17f702c98",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "42d03798020349a2a41089b5cac3e89d",
+      "DestinationId": "06a051d6356b4ab5b25652e52005292a",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3383,24 +3621,24 @@
       "Visible": true
     },
     {
-      "Id": "f7b8ad5593d04d388d35a04333b3ce78",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "9c8d5dedd1524c96b0706aebb51bc5f8",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "821befd29b254bbe9eb5d992d5a6e261",
+      "DestinationId": "6f6567556a3d4498922811e883718de7",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3411,24 +3649,24 @@
       "Visible": true
     },
     {
-      "Id": "a2c4a1a2856d448ba4883233dcef36f0",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "669f40ad11d4425c800b30be404be5aa",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IEventHandler",
         "Name": "eventHandlers",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "fcb14cde7fab47458efa67cccea29e84",
-          "97de3aedaf2f40d3b02fc12fa74b5586",
-          "a4e6ed1c298949658b2546126bc54e82",
-          "32e97eb5855e423ebf39799875731918",
-          "de085c67d3f34ff49d00783ccd6853c4",
-          "f7b8ad5593d04d388d35a04333b3ce78",
-          "a2c4a1a2856d448ba4883233dcef36f0"
+          "52c9990f5b0d49f8a95ff39828b8dfc5",
+          "ab0817092dff43be81c45af1ca04f906",
+          "38e080f8db4f49148079e6a29c06260f",
+          "6b3a4908967a4818b6cc9a6ca3767791",
+          "3b5eecd8e6bc4c74834e0af17f702c98",
+          "9c8d5dedd1524c96b0706aebb51bc5f8",
+          "669f40ad11d4425c800b30be404be5aa"
         ]
       },
-      "DestinationId": "9e249cf001ab46d4b11e6dd4d0b2f136",
+      "DestinationId": "b16bc00a7ee14900bfec6fdbffe15fb2",
       "DestinationPort": {
         "Type": "IEventHandler",
         "Name": "handler",
@@ -3439,18 +3677,18 @@
       "Visible": true
     },
     {
-      "Id": "b55bdd63ddf444d1bfd586c315ee7772",
-      "SourceId": "3dd9c6b85d5f4720ad0b954852eb8bd5",
+      "Id": "22daadfea2004e269faa0ccebe8c4350",
+      "SourceId": "6d2fd70706e84b329a800c1ef3be39e4",
       "SourcePort": {
         "Type": "IUI",
         "Name": "contextMenu",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "b55bdd63ddf444d1bfd586c315ee7772"
+          "22daadfea2004e269faa0ccebe8c4350"
         ]
       },
-      "DestinationId": "de5f959c05754afcbed3aa3185cfa7ee",
+      "DestinationId": "a480e806c7de437880e399b703805838",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3461,18 +3699,18 @@
       "Visible": true
     },
     {
-      "Id": "7276abb79c9542899bc77ddce68ca3ef",
-      "SourceId": "0f2d6129132e456abc43e57dd30d3e74",
+      "Id": "d6382cb88c254d4cb4d86244a00dd6b7",
+      "SourceId": "4668ef2c02254d8783a1f5a1e6d2a7d4",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "eventHappened",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "7276abb79c9542899bc77ddce68ca3ef"
+          "d6382cb88c254d4cb4d86244a00dd6b7"
         ]
       },
-      "DestinationId": "d428060e562e48b3bae6cacc417dabb3",
+      "DestinationId": "9f92c6af8bfc4931a05b9736da93a3b8",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
@@ -3483,19 +3721,19 @@
       "Visible": true
     },
     {
-      "Id": "67fe68a1148947e2bc0a1ad7314c47bf",
-      "SourceId": "de5f959c05754afcbed3aa3185cfa7ee",
+      "Id": "7f53a24c6db1429ea1d8f5bafd01be36",
+      "SourceId": "a480e806c7de437880e399b703805838",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "67fe68a1148947e2bc0a1ad7314c47bf",
-          "5be0625f900442d1a66e503dc816e9e6"
+          "7f53a24c6db1429ea1d8f5bafd01be36",
+          "f5da45a0264d4d1fa01b6b20a1e5b811"
         ]
       },
-      "DestinationId": "e07d2d0fb7014af78f8e524147997d35",
+      "DestinationId": "018d857185044ace97a9870f72c8d363",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3506,19 +3744,19 @@
       "Visible": true
     },
     {
-      "Id": "5be0625f900442d1a66e503dc816e9e6",
-      "SourceId": "de5f959c05754afcbed3aa3185cfa7ee",
+      "Id": "f5da45a0264d4d1fa01b6b20a1e5b811",
+      "SourceId": "a480e806c7de437880e399b703805838",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "67fe68a1148947e2bc0a1ad7314c47bf",
-          "5be0625f900442d1a66e503dc816e9e6"
+          "7f53a24c6db1429ea1d8f5bafd01be36",
+          "f5da45a0264d4d1fa01b6b20a1e5b811"
         ]
       },
-      "DestinationId": "d810a11d5c884963b1a2e9246aae8427",
+      "DestinationId": "393a0bdbfa9445b2a6aa9b72f328549d",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3529,18 +3767,18 @@
       "Visible": true
     },
     {
-      "Id": "417eb564c17648f38be8b056bb8b8363",
-      "SourceId": "e07d2d0fb7014af78f8e524147997d35",
+      "Id": "faac7939a19144deaafb9556007f7876",
+      "SourceId": "018d857185044ace97a9870f72c8d363",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "417eb564c17648f38be8b056bb8b8363"
+          "faac7939a19144deaafb9556007f7876"
         ]
       },
-      "DestinationId": "650dcd46c0184db1b9f248e6f93d62ad",
+      "DestinationId": "e9b33cf79bc64ee499c613f69d793554",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -3551,18 +3789,18 @@
       "Visible": true
     },
     {
-      "Id": "4c7d6f35f29a4405ab18d1b901a2472a",
-      "SourceId": "d428060e562e48b3bae6cacc417dabb3",
+      "Id": "4228cc25f8ff41f2bb7ad3e7fe738a1e",
+      "SourceId": "9f92c6af8bfc4931a05b9736da93a3b8",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "4c7d6f35f29a4405ab18d1b901a2472a"
+          "4228cc25f8ff41f2bb7ad3e7fe738a1e"
         ]
       },
-      "DestinationId": "216d5307f4424a08bf9a8640a6b7a367",
+      "DestinationId": "c21df1ba3b9949aa8f4cdce874431152",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -3573,42 +3811,40 @@
       "Visible": true
     },
     {
-      "Id": "d7ec91422027408b8a47ac356757341b",
-      "SourceId": "d428060e562e48b3bae6cacc417dabb3",
+      "Id": "ffcbb1e7af3a4c738f84edf5235f73d7",
+      "SourceId": "9f92c6af8bfc4931a05b9736da93a3b8",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "complete",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "d7ec91422027408b8a47ac356757341b"
+          "ffcbb1e7af3a4c738f84edf5235f73d7"
         ]
       },
-      "DestinationId": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "DestinationId": "cf6c29b426e3426f99ebb0982ab1b81f",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
+        "ConnectionIds": []
       },
       "Visible": true
     },
     {
-      "Id": "b3b6a6d5eebc486c89214585b4741e47",
-      "SourceId": "60e965c051c5416cbfbb6a12e4831ad8",
+      "Id": "61f04611649f407db5c975516a1b7b08",
+      "SourceId": "f64bccf7ce7a40f4a8cb306f9b6568ca",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "b3b6a6d5eebc486c89214585b4741e47"
+          "61f04611649f407db5c975516a1b7b08"
         ]
       },
-      "DestinationId": "dfad0e10d103413ca62341600eb53b84",
+      "DestinationId": "36aff5167d8945a78f2c4c378a7efc06",
       "DestinationPort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "dataInput",
@@ -3619,43 +3855,18 @@
       "Visible": true
     },
     {
-      "Id": "2520194d3edb40c5b179a2ffd462e772",
-      "SourceId": "ffad88c305444e8ebc8780fc39dbef66",
-      "SourcePort": {
-        "Type": "IEvent",
-        "Name": "eventOutput",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
-      },
-      "DestinationId": "78b76d091efd45479ef01a7ce8ca4a2c",
-      "DestinationPort": {
-        "Type": "IEvent",
-        "Name": "eventInput",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
-      },
-      "Visible": true
-    },
-    {
-      "Id": "978d7133419d4d53bbaa9428ce0b64bc",
-      "SourceId": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "Id": "206291866f3141a597350d0092cc78e1",
+      "SourceId": "cf6c29b426e3426f99ebb0982ab1b81f",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "978d7133419d4d53bbaa9428ce0b64bc",
-          "1312e5e97b2d47e38703086344f3d4eb"
+          "206291866f3141a597350d0092cc78e1"
         ]
       },
-      "DestinationId": "da9da8de8ba749f9be7f7a4856d00bb3",
+      "DestinationId": "f10a082c130d4c35b897bd30108f4b8d",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "input",
@@ -3666,39 +3877,19 @@
       "Visible": true
     },
     {
-      "Id": "1312e5e97b2d47e38703086344f3d4eb",
-      "SourceId": "da9da8de8ba749f9be7f7a4856d00bb3",
-      "SourcePort": {
-        "Type": "IEvent",
-        "Name": "delayedEvent",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "DestinationId": "60e965c051c5416cbfbb6a12e4831ad8",
-      "DestinationPort": {
-        "Type": "IEvent",
-        "Name": "start",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "ee404d3c1fcc4ab892b882e41e2a080a",
-      "SourceId": "dfad0e10d103413ca62341600eb53b84",
+      "Id": "34458811086246ccb8fdb141600c5ac3",
+      "SourceId": "36aff5167d8945a78f2c4c378a7efc06",
       "SourcePort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "ee404d3c1fcc4ab892b882e41e2a080a",
-          "cef04f1e7784485bb6859624e36af311"
+          "34458811086246ccb8fdb141600c5ac3",
+          "c620010e887746dab399bae683dfd773"
         ]
       },
-      "DestinationId": "13a9cf4d34894dd8b00a76c1033d0bbf",
+      "DestinationId": "8f88e251a93847e8b7de87025ebab0c9",
       "DestinationPort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "rootNodeInput",
@@ -3709,19 +3900,19 @@
       "Visible": true
     },
     {
-      "Id": "cef04f1e7784485bb6859624e36af311",
-      "SourceId": "dfad0e10d103413ca62341600eb53b84",
+      "Id": "c620010e887746dab399bae683dfd773",
+      "SourceId": "36aff5167d8945a78f2c4c378a7efc06",
       "SourcePort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "ee404d3c1fcc4ab892b882e41e2a080a",
-          "cef04f1e7784485bb6859624e36af311"
+          "34458811086246ccb8fdb141600c5ac3",
+          "c620010e887746dab399bae683dfd773"
         ]
       },
-      "DestinationId": "3f6a1b7cd38e4abcb8e6020205bb3149",
+      "DestinationId": "0a56668b6e05478fa80e8840e4b6f4ca",
       "DestinationPort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "input",
@@ -3732,42 +3923,40 @@
       "Visible": true
     },
     {
-      "Id": "66424eaff208418a8116b9d858efda16",
-      "SourceId": "91540e8151384b00859c7cd7ac0db336",
+      "Id": "46a2475b22454b11bb92973539801780",
+      "SourceId": "9da5c762f60d463eb4f272dc5a14dc76",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "eventHappened",
         "IsInputPort": false,
         "Index": 2,
         "ConnectionIds": [
-          "66424eaff208418a8116b9d858efda16"
+          "46a2475b22454b11bb92973539801780"
         ]
       },
-      "DestinationId": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "DestinationId": "cf6c29b426e3426f99ebb0982ab1b81f",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
+        "ConnectionIds": []
       },
       "Visible": true
     },
     {
-      "Id": "95b918549b2c4d008196cdd2175ebcfc",
-      "SourceId": "2f4d32ff62b845f7b96aa53576270a2a",
+      "Id": "79025a8a007c46da8e421485979c9e00",
+      "SourceId": "6eed843738584e9493f479d572985281",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "95b918549b2c4d008196cdd2175ebcfc"
+          "79025a8a007c46da8e421485979c9e00"
         ]
       },
-      "DestinationId": "0371beb4a71641788daca7fd0d892c96",
+      "DestinationId": "778788325ed04ebdb126dfab2fca8daf",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -3778,19 +3967,19 @@
       "Visible": true
     },
     {
-      "Id": "cd0fa0fdd63946b8890eb97dc3533643",
-      "SourceId": "8a303e6870e045f3bfbe81afe713410f",
+      "Id": "6c65ff321c9844919316ef547945c0e8",
+      "SourceId": "53e62c67141a440a9a3bf41ae2fc30ba",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "cd0fa0fdd63946b8890eb97dc3533643",
-          "c07a062c6174462eabfab61a21885854"
+          "6c65ff321c9844919316ef547945c0e8",
+          "ffb236322c3b4623a08f2815766cfe7b"
         ]
       },
-      "DestinationId": "72a644b6154e4dbc94903372d2dd52c8",
+      "DestinationId": "730165afcb4a4b4dba9cf27ad47e251b",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3801,19 +3990,19 @@
       "Visible": true
     },
     {
-      "Id": "c07a062c6174462eabfab61a21885854",
-      "SourceId": "8a303e6870e045f3bfbe81afe713410f",
+      "Id": "ffb236322c3b4623a08f2815766cfe7b",
+      "SourceId": "53e62c67141a440a9a3bf41ae2fc30ba",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "cd0fa0fdd63946b8890eb97dc3533643",
-          "c07a062c6174462eabfab61a21885854"
+          "6c65ff321c9844919316ef547945c0e8",
+          "ffb236322c3b4623a08f2815766cfe7b"
         ]
       },
-      "DestinationId": "114addd3cd73472099d3b79f85c796fe",
+      "DestinationId": "917cdedb4d4b48688c4a146aee3900d0",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3824,19 +4013,19 @@
       "Visible": true
     },
     {
-      "Id": "6a57700d49654efd91a96e7789df12e4",
-      "SourceId": "72a644b6154e4dbc94903372d2dd52c8",
+      "Id": "39a1489fc5f44654b16f56305f3940fd",
+      "SourceId": "730165afcb4a4b4dba9cf27ad47e251b",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "6a57700d49654efd91a96e7789df12e4",
-          "9b4425376b954cea89360ad89aece0e6"
+          "39a1489fc5f44654b16f56305f3940fd",
+          "24f884d0d5ed4c4d9dda46f755bebb23"
         ]
       },
-      "DestinationId": "d006c330b62c4aefb8ee80e29c3d90a7",
+      "DestinationId": "0102d05328854a58baca74be81bba822",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3847,19 +4036,19 @@
       "Visible": true
     },
     {
-      "Id": "9b4425376b954cea89360ad89aece0e6",
-      "SourceId": "72a644b6154e4dbc94903372d2dd52c8",
+      "Id": "24f884d0d5ed4c4d9dda46f755bebb23",
+      "SourceId": "730165afcb4a4b4dba9cf27ad47e251b",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "6a57700d49654efd91a96e7789df12e4",
-          "9b4425376b954cea89360ad89aece0e6"
+          "39a1489fc5f44654b16f56305f3940fd",
+          "24f884d0d5ed4c4d9dda46f755bebb23"
         ]
       },
-      "DestinationId": "e64b7ef98e00461eaf464122f79658a8",
+      "DestinationId": "12b6da8a39364c0ba13669f3184e2881",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -3870,18 +4059,18 @@
       "Visible": true
     },
     {
-      "Id": "7454635cdaec4031b94d8b7c6bad526b",
-      "SourceId": "d006c330b62c4aefb8ee80e29c3d90a7",
+      "Id": "89cd4938ed43480c86c03b5184eedb78",
+      "SourceId": "0102d05328854a58baca74be81bba822",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "7454635cdaec4031b94d8b7c6bad526b"
+          "89cd4938ed43480c86c03b5184eedb78"
         ]
       },
-      "DestinationId": "5b358134e6c240e8861382d073b6daa9",
+      "DestinationId": "fc287e91629f46caa818e8713d88f3c9",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "openBrowser",
@@ -3892,18 +4081,18 @@
       "Visible": true
     },
     {
-      "Id": "3dbce28305e14564ba66081aa18adde9",
-      "SourceId": "5b358134e6c240e8861382d073b6daa9",
+      "Id": "608b04446bf94c18b628f77f598345c6",
+      "SourceId": "fc287e91629f46caa818e8713d88f3c9",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "selectedFolderPathOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "3dbce28305e14564ba66081aa18adde9"
+          "608b04446bf94c18b628f77f598345c6"
         ]
       },
-      "DestinationId": "ad36a59dd1394606a949607e4943d4ad",
+      "DestinationId": "6ca14376eac748a59d7408ad15b23c9d",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "dataInput",
@@ -3914,18 +4103,18 @@
       "Visible": true
     },
     {
-      "Id": "05301b22bd2e4d1b86b33d72f3222656",
-      "SourceId": "1223b6c4a9fb4a078880318febcdaceb",
+      "Id": "3118ccb372dd4a90bb6dfdeb73150ce9",
+      "SourceId": "63f40bc272be49c191391abafe60a412",
       "SourcePort": {
         "Type": "IDataFlow<Dictionary<string, List<string>>>",
         "Name": "foundFiles",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "05301b22bd2e4d1b86b33d72f3222656"
+          "3118ccb372dd4a90bb6dfdeb73150ce9"
         ]
       },
-      "DestinationId": "9a7d724b16de4bfd86837021ab25aed1",
+      "DestinationId": "5cb778da617c47c8b823587747365efa",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "dataInput",
@@ -3936,40 +4125,122 @@
       "Visible": true
     },
     {
-      "Id": "079aecd945fc46deaeeb1619127eb819",
-      "SourceId": "52bdc5261a8344d4b061df873795daa4",
+      "Id": "294ca6b278e1449996bdab8b21fd59f9",
+      "SourceId": "23a8ab2a82684336868c81fb753c5f87",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "079aecd945fc46deaeeb1619127eb819"
+          "294ca6b278e1449996bdab8b21fd59f9"
         ]
       },
-      "DestinationId": "28f4b656ee7640d1b74aa495c685c98a",
+      "DestinationId": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
       "DestinationPort": {
         "Type": "IDataFlow<IEnumerable<string>>",
         "Name": "collectionInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
+        "ConnectionIds": [
+          "d8a05d04d7cf4b068e8664d470bc8143",
+          "563d8343463640d1bd184e5c03d27b1c",
+          "2fea07f99c544b5c9e0e9d1736e893cf"
+        ]
       },
       "Visible": true
     },
     {
-      "Id": "f2c63c9a54174e0cb3c976829cb34909",
-      "SourceId": "28f4b656ee7640d1b74aa495c685c98a",
+      "Id": "d8a05d04d7cf4b068e8664d470bc8143",
+      "SourceId": "470e37a1122647e59d26d761462815be",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "d8a05d04d7cf4b068e8664d470bc8143"
+        ]
+      },
+      "DestinationId": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
+      "DestinationPort": {
+        "Type": "IDataFlow<IEnumerable<string>>",
+        "Name": "collectionInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "d8a05d04d7cf4b068e8664d470bc8143",
+          "563d8343463640d1bd184e5c03d27b1c",
+          "2fea07f99c544b5c9e0e9d1736e893cf"
+        ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "563d8343463640d1bd184e5c03d27b1c",
+      "SourceId": "ccd3b8cd7a014b278f23dcc12a2365ff",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "563d8343463640d1bd184e5c03d27b1c"
+        ]
+      },
+      "DestinationId": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
+      "DestinationPort": {
+        "Type": "IDataFlow<IEnumerable<string>>",
+        "Name": "collectionInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "d8a05d04d7cf4b068e8664d470bc8143",
+          "563d8343463640d1bd184e5c03d27b1c",
+          "2fea07f99c544b5c9e0e9d1736e893cf"
+        ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "2fea07f99c544b5c9e0e9d1736e893cf",
+      "SourceId": "bd279b9fbe8f4a23973e0c4f0d36c6d2",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "2fea07f99c544b5c9e0e9d1736e893cf"
+        ]
+      },
+      "DestinationId": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
+      "DestinationPort": {
+        "Type": "IDataFlow<IEnumerable<string>>",
+        "Name": "collectionInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": [
+          "d8a05d04d7cf4b068e8664d470bc8143",
+          "563d8343463640d1bd184e5c03d27b1c",
+          "2fea07f99c544b5c9e0e9d1736e893cf"
+        ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "73236e1898fd44bab44736d4219ccebf",
+      "SourceId": "744c65cc8c8e4f99b9d9fa448b6ac1a0",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "elementOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "f2c63c9a54174e0cb3c976829cb34909"
+          "73236e1898fd44bab44736d4219ccebf"
         ]
       },
-      "DestinationId": "4ef72270c04442c990d7c38c30df9083",
+      "DestinationId": "0f821bd2a21748d897d21e29f8d530d7",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "input",
@@ -3980,18 +4251,18 @@
       "Visible": true
     },
     {
-      "Id": "8734388f0013432fa537c6592c7a3444",
-      "SourceId": "216d5307f4424a08bf9a8640a6b7a367",
+      "Id": "d77e263fc4d545cabfc53e1961a4c766",
+      "SourceId": "c21df1ba3b9949aa8f4cdce874431152",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "8734388f0013432fa537c6592c7a3444"
+          "d77e263fc4d545cabfc53e1961a4c766"
         ]
       },
-      "DestinationId": "85f5a744cd0d408b8ba10fa7653f27bd",
+      "DestinationId": "8280102e24a9441cbff65050ae981c40",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4002,18 +4273,18 @@
       "Visible": true
     },
     {
-      "Id": "62b6a42e10804267a518d5f10f4027a0",
-      "SourceId": "85f5a744cd0d408b8ba10fa7653f27bd",
+      "Id": "7f5aabbc7e33456e9d43c8a7dca41ac5",
+      "SourceId": "8280102e24a9441cbff65050ae981c40",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "62b6a42e10804267a518d5f10f4027a0"
+          "7f5aabbc7e33456e9d43c8a7dca41ac5"
         ]
       },
-      "DestinationId": "2f4d32ff62b845f7b96aa53576270a2a",
+      "DestinationId": "6eed843738584e9493f479d572985281",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4024,18 +4295,40 @@
       "Visible": true
     },
     {
-      "Id": "f936157df49a4aebb16fd23964dc481c",
-      "SourceId": "54bf34594d0c485384eb3f349fd5e182",
+      "Id": "ddbf983f9db9451d82dfc8920124ad49",
+      "SourceId": "18bd9d022fd543379c34c2397eda78c9",
+      "SourcePort": {
+        "Type": "IDataFlowB<string>",
+        "Name": "filePathInput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "ddbf983f9db9451d82dfc8920124ad49"
+        ]
+      },
+      "DestinationId": "8f0c7e7581054d37ab51b7a37368294e",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "1e9c4d567c3f4ea1adb06fab242d9b41",
+      "SourceId": "18bd9d022fd543379c34c2397eda78c9",
       "SourcePort": {
         "Type": "IDataFlow<string>",
-        "Name": "dataOutput",
+        "Name": "settingJsonOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "f936157df49a4aebb16fd23964dc481c"
+          "1e9c4d567c3f4ea1adb06fab242d9b41"
         ]
       },
-      "DestinationId": "ad36a59dd1394606a949607e4943d4ad",
+      "DestinationId": "6ca14376eac748a59d7408ad15b23c9d",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "dataInput",
@@ -4046,18 +4339,18 @@
       "Visible": true
     },
     {
-      "Id": "741f470c78034119b87bf15028192d78",
-      "SourceId": "36f646b635c34537abc0345c9ead9807",
+      "Id": "59e63edf5a4f4df39b46cc660b7fb19b",
+      "SourceId": "93d99e75ac104f76a1321b13f03fba20",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "senderOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "741f470c78034119b87bf15028192d78"
+          "59e63edf5a4f4df39b46cc660b7fb19b"
         ]
       },
-      "DestinationId": "2ee0c75f6cd04fd8bd1a8f50396b54a8",
+      "DestinationId": "7415e096d292451fba81ee1e426aaa12",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4068,19 +4361,19 @@
       "Visible": true
     },
     {
-      "Id": "67cfca7b1f4848448c35bf49bad9234a",
-      "SourceId": "114addd3cd73472099d3b79f85c796fe",
+      "Id": "2020330ad93f4557a0d67c5e517c4a2f",
+      "SourceId": "917cdedb4d4b48688c4a146aee3900d0",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "67cfca7b1f4848448c35bf49bad9234a",
-          "f492f47b6f9141bc948511ae228ad71b"
+          "2020330ad93f4557a0d67c5e517c4a2f",
+          "23744c47edf94faba42d7b23dc26103e"
         ]
       },
-      "DestinationId": "c8c8d57ff6a94373a4bac1f7206d9bff",
+      "DestinationId": "5c8f6a1dd623468ba0884e01614997cd",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -4091,19 +4384,19 @@
       "Visible": true
     },
     {
-      "Id": "f492f47b6f9141bc948511ae228ad71b",
-      "SourceId": "114addd3cd73472099d3b79f85c796fe",
+      "Id": "23744c47edf94faba42d7b23dc26103e",
+      "SourceId": "917cdedb4d4b48688c4a146aee3900d0",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "67cfca7b1f4848448c35bf49bad9234a",
-          "f492f47b6f9141bc948511ae228ad71b"
+          "2020330ad93f4557a0d67c5e517c4a2f",
+          "23744c47edf94faba42d7b23dc26103e"
         ]
       },
-      "DestinationId": "d4d6624cfb814a1484e26a4ffab47c7e",
+      "DestinationId": "8698cc76f97c43d2aa45d98aef64d5d6",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -4114,18 +4407,18 @@
       "Visible": true
     },
     {
-      "Id": "bb0bbe814521481496a645952352fe07",
-      "SourceId": "c8c8d57ff6a94373a4bac1f7206d9bff",
+      "Id": "0cfbde7aec574931957f0bc68afd74ba",
+      "SourceId": "5c8f6a1dd623468ba0884e01614997cd",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "bb0bbe814521481496a645952352fe07"
+          "0cfbde7aec574931957f0bc68afd74ba"
         ]
       },
-      "DestinationId": "5a248626b00d48d6af02e424703b1436",
+      "DestinationId": "3229eda2842046acb26b044b86f85d7c",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "open",
@@ -4136,18 +4429,18 @@
       "Visible": true
     },
     {
-      "Id": "7a2a0447b9e74d26b933423cc10af3a8",
-      "SourceId": "5a248626b00d48d6af02e424703b1436",
+      "Id": "c58dc6f27f0e4e378d66a9f9df4e81f9",
+      "SourceId": "3229eda2842046acb26b044b86f85d7c",
       "SourcePort": {
         "Type": "IUI",
         "Name": "children",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "7a2a0447b9e74d26b933423cc10af3a8"
+          "c58dc6f27f0e4e378d66a9f9df4e81f9"
         ]
       },
-      "DestinationId": "8474f7bc283d460eb3a00dccc8a534f6",
+      "DestinationId": "206ea38c01e14db8b863e29da514ed7c",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -4158,18 +4451,18 @@
       "Visible": true
     },
     {
-      "Id": "80d945c4a36147aba23c5f555ad77b09",
-      "SourceId": "8474f7bc283d460eb3a00dccc8a534f6",
+      "Id": "7e6cda5e398a4316b2b63f311573f8ea",
+      "SourceId": "206ea38c01e14db8b863e29da514ed7c",
       "SourcePort": {
         "Type": "IUI",
         "Name": "uiLayout",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "80d945c4a36147aba23c5f555ad77b09"
+          "7e6cda5e398a4316b2b63f311573f8ea"
         ]
       },
-      "DestinationId": "db234cdb4bbb4de38a88dc88eb4c5c9d",
+      "DestinationId": "b7ab115f4fca42c2b2c4b017bcbadb7c",
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
@@ -4180,19 +4473,20 @@
       "Visible": true
     },
     {
-      "Id": "33036001b1d44da79e07edbc90b4793c",
-      "SourceId": "ad36a59dd1394606a949607e4943d4ad",
+      "Id": "49f32842f9e74179900c70eb5f79eaf3",
+      "SourceId": "6ca14376eac748a59d7408ad15b23c9d",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "33036001b1d44da79e07edbc90b4793c",
-          "d17b975fc0b64573a8895d2b683ebcb8"
+          "49f32842f9e74179900c70eb5f79eaf3",
+          "7ad40b2cb8764d1bbb004c25434adb40",
+          "47bcfa1dbd194d3ab0bb827af1212215"
         ]
       },
-      "DestinationId": "1223b6c4a9fb4a078880318febcdaceb",
+      "DestinationId": "63f40bc272be49c191391abafe60a412",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "rootFilePath",
@@ -4203,19 +4497,20 @@
       "Visible": true
     },
     {
-      "Id": "d17b975fc0b64573a8895d2b683ebcb8",
-      "SourceId": "ad36a59dd1394606a949607e4943d4ad",
+      "Id": "7ad40b2cb8764d1bbb004c25434adb40",
+      "SourceId": "6ca14376eac748a59d7408ad15b23c9d",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "33036001b1d44da79e07edbc90b4793c",
-          "d17b975fc0b64573a8895d2b683ebcb8"
+          "49f32842f9e74179900c70eb5f79eaf3",
+          "7ad40b2cb8764d1bbb004c25434adb40",
+          "47bcfa1dbd194d3ab0bb827af1212215"
         ]
       },
-      "DestinationId": "7d716221509147359d76e3cfe5a2f5d7",
+      "DestinationId": "7d9832eddf5a4c58bb3ced1a516e0143",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "rootPath",
@@ -4226,18 +4521,42 @@
       "Visible": true
     },
     {
-      "Id": "6c61ceef65cd4d21ab474f475ef44207",
-      "SourceId": "7d716221509147359d76e3cfe5a2f5d7",
+      "Id": "47bcfa1dbd194d3ab0bb827af1212215",
+      "SourceId": "6ca14376eac748a59d7408ad15b23c9d",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "49f32842f9e74179900c70eb5f79eaf3",
+          "7ad40b2cb8764d1bbb004c25434adb40",
+          "47bcfa1dbd194d3ab0bb827af1212215"
+        ]
+      },
+      "DestinationId": "9bfc3fa948124a77b0775db221383c07",
+      "DestinationPort": {
+        "Type": "IDataFlow<T1>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "6285c3f15cd2480a90c2baa5dc1a8921",
+      "SourceId": "7d9832eddf5a4c58bb3ced1a516e0143",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "changedFile",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "6c61ceef65cd4d21ab474f475ef44207"
+          "6285c3f15cd2480a90c2baa5dc1a8921"
         ]
       },
-      "DestinationId": "cf6ee2e2add04654a1a3a885aacec011",
+      "DestinationId": "59b68df7393a42c3952f7cac9e66b1b8",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4248,18 +4567,18 @@
       "Visible": true
     },
     {
-      "Id": "149212a8d70d4d4ea991501909e55c31",
-      "SourceId": "cf6ee2e2add04654a1a3a885aacec011",
+      "Id": "e15b422e33df4acaa1d0046c8bdf4fc7",
+      "SourceId": "59b68df7393a42c3952f7cac9e66b1b8",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "149212a8d70d4d4ea991501909e55c31"
+          "e15b422e33df4acaa1d0046c8bdf4fc7"
         ]
       },
-      "DestinationId": "2576a7a2171a48c5b44198efcc488012",
+      "DestinationId": "7e3a40151eb344e7ae5800a49f35952f",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "start",
@@ -4270,18 +4589,18 @@
       "Visible": true
     },
     {
-      "Id": "99362a30e4aa4966a6fe632eb3e8f82e",
-      "SourceId": "2576a7a2171a48c5b44198efcc488012",
+      "Id": "591e7c6afd0c453399147e53f63191ab",
+      "SourceId": "7e3a40151eb344e7ae5800a49f35952f",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "eventOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "99362a30e4aa4966a6fe632eb3e8f82e"
+          "591e7c6afd0c453399147e53f63191ab"
         ]
       },
-      "DestinationId": "3f6a1b7cd38e4abcb8e6020205bb3149",
+      "DestinationId": "0a56668b6e05478fa80e8840e4b6f4ca",
       "DestinationPort": {
         "Type": "IDataFlow<ALANode>",
         "Name": "input",
@@ -4292,18 +4611,18 @@
       "Visible": true
     },
     {
-      "Id": "107ec5c2512949be94cfd838e1b2a96c",
-      "SourceId": "494151e402ea4a5eb4dba8abe2440e4a",
+      "Id": "ba96997c6ba243f39be7eb0ae2c2bbae",
+      "SourceId": "0ae00b97dab24d739d56320d55762818",
       "SourcePort": {
         "Type": "IDataFlow<MouseEventArgs>",
         "Name": "argsOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "107ec5c2512949be94cfd838e1b2a96c"
+          "ba96997c6ba243f39be7eb0ae2c2bbae"
         ]
       },
-      "DestinationId": "799e0914bfa74332bc18486b8e6e9334",
+      "DestinationId": "de35f670b6614158a46e8121b3423551",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4314,18 +4633,18 @@
       "Visible": true
     },
     {
-      "Id": "ed40a9be9f9f466199cd473bff1cf0e5",
-      "SourceId": "42d03798020349a2a41089b5cac3e89d",
+      "Id": "9375a4610827437e9c59f5a5e27651c7",
+      "SourceId": "06a051d6356b4ab5b25652e52005292a",
       "SourcePort": {
         "Type": "IDataFlow<MouseEventArgs>",
         "Name": "argsOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "ed40a9be9f9f466199cd473bff1cf0e5"
+          "9375a4610827437e9c59f5a5e27651c7"
         ]
       },
-      "DestinationId": "4349830b8b124c6ebd440a5a0352bfda",
+      "DestinationId": "b941859c8b7e43c6b089b7b9a743b185",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4336,18 +4655,18 @@
       "Visible": true
     },
     {
-      "Id": "e00e4b2385ad4477ad94d9a99c722b0b",
-      "SourceId": "745aa054b25b4843a32d0725334698f4",
+      "Id": "00f45094492842e5b28341c9eee46bc4",
+      "SourceId": "073ac138bed14be6a3257d5aa25c1102",
       "SourcePort": {
         "Type": "IDataFlow<Tuple<Enums.DiagramMode, Enums.DiagramMode>>",
         "Name": "transitionOutput",
         "IsInputPort": false,
         "Index": 3,
         "ConnectionIds": [
-          "e00e4b2385ad4477ad94d9a99c722b0b"
+          "00f45094492842e5b28341c9eee46bc4"
         ]
       },
-      "DestinationId": "8a611d15af834af3a0a2623cd4d0dbec",
+      "DestinationId": "26707a2bae6e42018a73fbf3448adfb4",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4358,18 +4677,18 @@
       "Visible": true
     },
     {
-      "Id": "f245c8524a4047eb973a9fb19b05b101",
-      "SourceId": "8a611d15af834af3a0a2623cd4d0dbec",
+      "Id": "e55763960855419ab5c16c2c208b84fe",
+      "SourceId": "26707a2bae6e42018a73fbf3448adfb4",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "f245c8524a4047eb973a9fb19b05b101"
+          "e55763960855419ab5c16c2c208b84fe"
         ]
       },
-      "DestinationId": "46a7fdc3f4ce4e759958a47827fe8f84",
+      "DestinationId": "77cc4b4bf206457aa0707cd62b0a8b3d",
       "DestinationPort": {
         "Type": "IDataFlow<bool>",
         "Name": "condition",
@@ -4380,43 +4699,42 @@
       "Visible": true
     },
     {
-      "Id": "02a8f37426424117b203390d6a17bbb5",
-      "SourceId": "46a7fdc3f4ce4e759958a47827fe8f84",
+      "Id": "8fe45ab0764640f99f388248974347d9",
+      "SourceId": "77cc4b4bf206457aa0707cd62b0a8b3d",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "ifOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "02a8f37426424117b203390d6a17bbb5"
+          "8fe45ab0764640f99f388248974347d9"
         ]
       },
-      "DestinationId": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "DestinationId": "cf6c29b426e3426f99ebb0982ab1b81f",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
+        "ConnectionIds": []
       },
       "Visible": true
     },
     {
-      "Id": "5a5c4d7fe8274e43872c1c72be2c741a",
-      "SourceId": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "Id": "08ac3c94c18a4fd8a26a0401ef2adf42",
+      "SourceId": "24a4f7de276d4d25a6d83f03287b91c4",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "5a5c4d7fe8274e43872c1c72be2c741a",
-          "15ffddfc04504a8d834851a7203c36df"
+          "08ac3c94c18a4fd8a26a0401ef2adf42",
+          "4bb430de59f3410ab91df698c5fbeb0c",
+          "b116051771e447a6ae6452b32a8bf206"
         ]
       },
-      "DestinationId": "54bf34594d0c485384eb3f349fd5e182",
+      "DestinationId": "18bd9d022fd543379c34c2397eda78c9",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -4427,19 +4745,20 @@
       "Visible": true
     },
     {
-      "Id": "15ffddfc04504a8d834851a7203c36df",
-      "SourceId": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "Id": "4bb430de59f3410ab91df698c5fbeb0c",
+      "SourceId": "24a4f7de276d4d25a6d83f03287b91c4",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "5a5c4d7fe8274e43872c1c72be2c741a",
-          "15ffddfc04504a8d834851a7203c36df"
+          "08ac3c94c18a4fd8a26a0401ef2adf42",
+          "4bb430de59f3410ab91df698c5fbeb0c",
+          "b116051771e447a6ae6452b32a8bf206"
         ]
       },
-      "DestinationId": "745aa054b25b4843a32d0725334698f4",
+      "DestinationId": "073ac138bed14be6a3257d5aa25c1102",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "getState",
@@ -4450,40 +4769,20 @@
       "Visible": true
     },
     {
-      "Id": "5d942d3bbb9f42078570871396bcea98",
-      "SourceId": "e1c72d1563cd43c59927cdb480bf2ccd",
+      "Id": "b116051771e447a6ae6452b32a8bf206",
+      "SourceId": "24a4f7de276d4d25a6d83f03287b91c4",
       "SourcePort": {
         "Type": "IEvent",
-        "Name": "complete",
+        "Name": "fanoutList",
         "IsInputPort": false,
-        "Index": 1,
-        "ConnectionIds": [
-          "5d942d3bbb9f42078570871396bcea98"
-        ]
-      },
-      "DestinationId": "522fbc174d774db89c8d90eeab24358a",
-      "DestinationPort": {
-        "Type": "IEvent",
-        "Name": "eventInput",
-        "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "2c3dcf5e792442d5be2a6332380df6b0",
-      "SourceId": "821befd29b254bbe9eb5d992d5a6e261",
-      "SourcePort": {
-        "Type": "IEvent",
-        "Name": "eventHappened",
-        "IsInputPort": false,
-        "Index": 2,
         "ConnectionIds": [
-          "2c3dcf5e792442d5be2a6332380df6b0"
+          "08ac3c94c18a4fd8a26a0401ef2adf42",
+          "4bb430de59f3410ab91df698c5fbeb0c",
+          "b116051771e447a6ae6452b32a8bf206"
         ]
       },
-      "DestinationId": "fabe6c8c7ff040758ecdd96a27df2399",
+      "DestinationId": "f7a9e4b38afd4d6199d9c5e22fdb17cf",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -4494,42 +4793,84 @@
       "Visible": true
     },
     {
-      "Id": "9916905448db4b5db937cf65302ce726",
-      "SourceId": "d810a11d5c884963b1a2e9246aae8427",
+      "Id": "ae824fbcc61c424ea270ab618dfca255",
+      "SourceId": "24a4f7de276d4d25a6d83f03287b91c4",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "complete",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": [
+          "ae824fbcc61c424ea270ab618dfca255"
+        ]
+      },
+      "DestinationId": "107b41f3ebb643cab8759eaeace75128",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "eventInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "b3e07cb097c64a99801b3b93cbd8ebc4",
+      "SourceId": "6f6567556a3d4498922811e883718de7",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventHappened",
+        "IsInputPort": false,
+        "Index": 2,
+        "ConnectionIds": [
+          "b3e07cb097c64a99801b3b93cbd8ebc4"
+        ]
+      },
+      "DestinationId": "f511275835d041dc81ff1d1e7ba2c934",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "1dfa709706da4b3ca5cde689b187b86b",
+      "SourceId": "393a0bdbfa9445b2a6aa9b72f328549d",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "9916905448db4b5db937cf65302ce726"
+          "1dfa709706da4b3ca5cde689b187b86b"
         ]
       },
-      "DestinationId": "78b76d091efd45479ef01a7ce8ca4a2c",
+      "DestinationId": "cf6c29b426e3426f99ebb0982ab1b81f",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "eventInput",
         "IsInputPort": true,
         "Index": 0,
-        "ConnectionIds": [
-          "2520194d3edb40c5b179a2ffd462e772"
-        ]
+        "ConnectionIds": []
       },
       "Visible": true
     },
     {
-      "Id": "2bef5f89ae214dfa8fffd84338c491bf",
-      "SourceId": "650dcd46c0184db1b9f248e6f93d62ad",
+      "Id": "58333f52a1a54a4896b870cbb8bfc3d7",
+      "SourceId": "e9b33cf79bc64ee499c613f69d793554",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "2bef5f89ae214dfa8fffd84338c491bf"
+          "58333f52a1a54a4896b870cbb8bfc3d7"
         ]
       },
-      "DestinationId": "c1837a68ef004a42916551a89058e204",
+      "DestinationId": "2c6f2b5ec3af41c890d06f991bcfe787",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4540,18 +4881,18 @@
       "Visible": true
     },
     {
-      "Id": "0e0b8ff83b224165a39768d69bac269f",
-      "SourceId": "c1837a68ef004a42916551a89058e204",
+      "Id": "90f167e5b3c54487a1c3f208da1f0f27",
+      "SourceId": "2c6f2b5ec3af41c890d06f991bcfe787",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "0e0b8ff83b224165a39768d69bac269f"
+          "90f167e5b3c54487a1c3f208da1f0f27"
         ]
       },
-      "DestinationId": "5ca3d72138804db4bcb1b009662ec4c5",
+      "DestinationId": "fe9b707ec6d34b39bae8c47ad358a13b",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4562,18 +4903,18 @@
       "Visible": true
     },
     {
-      "Id": "bcf06ba798c8410c9850f8d109dd9f6e",
-      "SourceId": "e64b7ef98e00461eaf464122f79658a8",
+      "Id": "25b5401b431546e8a22e76353db19044",
+      "SourceId": "12b6da8a39364c0ba13669f3184e2881",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "bcf06ba798c8410c9850f8d109dd9f6e"
+          "25b5401b431546e8a22e76353db19044"
         ]
       },
-      "DestinationId": "3ebc8dbcae7943a3a3ea9f11b09d8b58",
+      "DestinationId": "ee0a515e899b435487d3253fea73553a",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "openBrowser",
@@ -4584,18 +4925,41 @@
       "Visible": true
     },
     {
-      "Id": "5634a2e381eb41c282f2e3de34d11e4c",
-      "SourceId": "3ebc8dbcae7943a3a3ea9f11b09d8b58",
+      "Id": "46dc0fe2c18f4881bfb8145acf8904a7",
+      "SourceId": "ee0a515e899b435487d3253fea73553a",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "selectedFilePathOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "5634a2e381eb41c282f2e3de34d11e4c"
+          "46dc0fe2c18f4881bfb8145acf8904a7",
+          "b4cb971187544332ab50d808eaddc2c9"
         ]
       },
-      "DestinationId": "f73e477ba258460fb79ec1a709d95999",
+      "DestinationId": "ab400da881684a97a43abcb43e52a155",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "dataInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "b4cb971187544332ab50d808eaddc2c9",
+      "SourceId": "ab400da881684a97a43abcb43e52a155",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "947425f5fba04284895d0241c3af00a9"
+        ]
+      },
+      "DestinationId": "4282da786aaa49f6bc4626ea8f406550",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "filePathInput",
@@ -4606,19 +4970,18 @@
       "Visible": true
     },
     {
-      "Id": "5067a1f80c844760a75c18ba7e908311",
-      "SourceId": "f73e477ba258460fb79ec1a709d95999",
+      "Id": "ffded166ffce4937b4d3484a2bc2068d",
+      "SourceId": "4282da786aaa49f6bc4626ea8f406550",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "fileContentOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "5067a1f80c844760a75c18ba7e908311",
-          "8a39c680626a47719e34c22cb79f4415"
+          "ffded166ffce4937b4d3484a2bc2068d"
         ]
       },
-      "DestinationId": "1bf76c59a9cb4960a4d40e6cb14d170b",
+      "DestinationId": "e7164e6a1e2b4e7ca0ee0a5098410afa",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "dataInput",
@@ -4629,130 +4992,21 @@
       "Visible": true
     },
     {
-      "Id": "8a39c680626a47719e34c22cb79f4415",
-      "SourceId": "1bf76c59a9cb4960a4d40e6cb14d170b",
-      "SourcePort": {
-        "Type": "IDataFlow<string>",
-        "Name": "fanoutList",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "a4c7106485114260956b66ec7a608190"
-        ]
-      },
-      "DestinationId": "bde216fd6b864182857ac3f91c6473ad",
-      "DestinationPort": {
-        "Type": "IDataFlow<string>",
-        "Name": "code",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "aa609af0db3a47658e67ea9281b41e94",
-      "SourceId": "bde1265620d742a49ab4056d84661f12",
-      "SourcePort": {
-        "Type": "IDataFlow<object>",
-        "Name": "output",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "aa609af0db3a47658e67ea9281b41e94"
-        ]
-      },
-      "DestinationId": "d040cfaff591463b9b912c5d608c99d3",
-      "DestinationPort": {
-        "Type": "IDataFlow<IEnumerable<string>>",
-        "Name": "collectionInput",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "4f2c2d33e5d64458b536843f050a9e42",
-      "SourceId": "d040cfaff591463b9b912c5d608c99d3",
-      "SourcePort": {
-        "Type": "IDataFlow<string>",
-        "Name": "elementOutput",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "4f2c2d33e5d64458b536843f050a9e42"
-        ]
-      },
-      "DestinationId": "fd3ae12d55d4404aa6bb34664d50e352",
-      "DestinationPort": {
-        "Type": "IDataFlow<string>",
-        "Name": "input",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "03b76b40e81048cab8a12f9f372530e9",
-      "SourceId": "016ee1833bf84da989ef2518169fd3a8",
-      "SourcePort": {
-        "Type": "IDataFlow<object>",
-        "Name": "output",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "03b76b40e81048cab8a12f9f372530e9"
-        ]
-      },
-      "DestinationId": "4ba321618cbd46ef9e1371ecc2b73a23",
-      "DestinationPort": {
-        "Type": "IDataFlow<IEnumerable<string>>",
-        "Name": "collectionInput",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "d30690d8358d4750b025c5a2f44de3bb",
-      "SourceId": "4ba321618cbd46ef9e1371ecc2b73a23",
-      "SourcePort": {
-        "Type": "IDataFlow<string>",
-        "Name": "elementOutput",
-        "IsInputPort": false,
-        "Index": 0,
-        "ConnectionIds": [
-          "d30690d8358d4750b025c5a2f44de3bb"
-        ]
-      },
-      "DestinationId": "e9cc0ab4112c44a78dd70d1cceaf2a67",
-      "DestinationPort": {
-        "Type": "IDataFlow<string>",
-        "Name": "input",
-        "IsInputPort": true,
-        "Index": 0,
-        "ConnectionIds": []
-      },
-      "Visible": true
-    },
-    {
-      "Id": "81e3c58f0de048499df6af5f48211003",
-      "SourceId": "9a7d724b16de4bfd86837021ab25aed1",
+      "Id": "dfd60f0513bb49ff916fd14d722736b7",
+      "SourceId": "5cb778da617c47c8b823587747365efa",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "81e3c58f0de048499df6af5f48211003",
-          "45bf451c979b46ea99d429b392f11207",
-          "b03da2f9e89a4b9d9fe61d531678ad35"
+          "dfd60f0513bb49ff916fd14d722736b7",
+          "02e2e5980b0f4f8ab16e951e4bcb9728",
+          "85a392e41d2b4aeb8d47620bdd58809c",
+          "ab67164302144c8b8535a655b83762ed"
         ]
       },
-      "DestinationId": "52bdc5261a8344d4b061df873795daa4",
+      "DestinationId": "23a8ab2a82684336868c81fb753c5f87",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4763,20 +5017,21 @@
       "Visible": true
     },
     {
-      "Id": "45bf451c979b46ea99d429b392f11207",
-      "SourceId": "9a7d724b16de4bfd86837021ab25aed1",
+      "Id": "02e2e5980b0f4f8ab16e951e4bcb9728",
+      "SourceId": "5cb778da617c47c8b823587747365efa",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "81e3c58f0de048499df6af5f48211003",
-          "45bf451c979b46ea99d429b392f11207",
-          "b03da2f9e89a4b9d9fe61d531678ad35"
+          "dfd60f0513bb49ff916fd14d722736b7",
+          "02e2e5980b0f4f8ab16e951e4bcb9728",
+          "85a392e41d2b4aeb8d47620bdd58809c",
+          "ab67164302144c8b8535a655b83762ed"
         ]
       },
-      "DestinationId": "bde1265620d742a49ab4056d84661f12",
+      "DestinationId": "470e37a1122647e59d26d761462815be",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4787,20 +5042,21 @@
       "Visible": true
     },
     {
-      "Id": "b03da2f9e89a4b9d9fe61d531678ad35",
-      "SourceId": "9a7d724b16de4bfd86837021ab25aed1",
+      "Id": "85a392e41d2b4aeb8d47620bdd58809c",
+      "SourceId": "5cb778da617c47c8b823587747365efa",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "81e3c58f0de048499df6af5f48211003",
-          "45bf451c979b46ea99d429b392f11207",
-          "b03da2f9e89a4b9d9fe61d531678ad35"
+          "dfd60f0513bb49ff916fd14d722736b7",
+          "02e2e5980b0f4f8ab16e951e4bcb9728",
+          "85a392e41d2b4aeb8d47620bdd58809c",
+          "ab67164302144c8b8535a655b83762ed"
         ]
       },
-      "DestinationId": "016ee1833bf84da989ef2518169fd3a8",
+      "DestinationId": "ccd3b8cd7a014b278f23dcc12a2365ff",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4811,18 +5067,43 @@
       "Visible": true
     },
     {
-      "Id": "956db1b3d7394ee29477a0412bf0b733",
-      "SourceId": "ae274fb8c8754469bd390fad7467f3ad",
+      "Id": "ab67164302144c8b8535a655b83762ed",
+      "SourceId": "5cb778da617c47c8b823587747365efa",
+      "SourcePort": {
+        "Type": "IDataFlow<object>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "dfd60f0513bb49ff916fd14d722736b7",
+          "02e2e5980b0f4f8ab16e951e4bcb9728",
+          "85a392e41d2b4aeb8d47620bdd58809c",
+          "ab67164302144c8b8535a655b83762ed"
+        ]
+      },
+      "DestinationId": "bd279b9fbe8f4a23973e0c4f0d36c6d2",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "4d66fe69d467496dbcc9d09cc69ad6b9",
+      "SourceId": "0178b984a11848dbb7dfb4f9f4ec0ee4",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "956db1b3d7394ee29477a0412bf0b733"
+          "4d66fe69d467496dbcc9d09cc69ad6b9"
         ]
       },
-      "DestinationId": "2ca711558c924435b95fe6a1276b4d55",
+      "DestinationId": "c7dbb329107d48daab53486e3407657d",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "dataInput",
@@ -4833,18 +5114,18 @@
       "Visible": true
     },
     {
-      "Id": "ec0fab9eec0a4413920e7ce01c07cc0b",
-      "SourceId": "776ca16650954eef91e75ebe2ebe9e4e",
+      "Id": "2f43c1ee3d9842edb77c0860804214f9",
+      "SourceId": "30ba35edf0a044879f4ddc8b051a90a5",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "dataOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "ec0fab9eec0a4413920e7ce01c07cc0b"
+          "2f43c1ee3d9842edb77c0860804214f9"
         ]
       },
-      "DestinationId": "7316b641a8304948993f4e5cbc542ef6",
+      "DestinationId": "54f7d906df0e496a86f8b36c53dc0c38",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "dataInput",
@@ -4855,19 +5136,19 @@
       "Visible": true
     },
     {
-      "Id": "295629031c524c4ca0b76b1f0601fcc0",
-      "SourceId": "2ca711558c924435b95fe6a1276b4d55",
+      "Id": "480ef016575145b3a8ad7a408b663ace",
+      "SourceId": "c7dbb329107d48daab53486e3407657d",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "295629031c524c4ca0b76b1f0601fcc0",
-          "55670f7f847c4a96a91454d157ae2a40"
+          "480ef016575145b3a8ad7a408b663ace",
+          "d8ab9a3235e44d6194a10c4280a86159"
         ]
       },
-      "DestinationId": "947a99633a854b6ea03ad8ee9d48aef9",
+      "DestinationId": "befdcba1b58f4deb985c5ffa88b0b7a0",
       "DestinationPort": {
         "Type": "IDataFlow<UIElement>",
         "Name": "input",
@@ -4878,19 +5159,19 @@
       "Visible": true
     },
     {
-      "Id": "55670f7f847c4a96a91454d157ae2a40",
-      "SourceId": "2ca711558c924435b95fe6a1276b4d55",
+      "Id": "d8ab9a3235e44d6194a10c4280a86159",
+      "SourceId": "c7dbb329107d48daab53486e3407657d",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "295629031c524c4ca0b76b1f0601fcc0",
-          "55670f7f847c4a96a91454d157ae2a40"
+          "480ef016575145b3a8ad7a408b663ace",
+          "d8ab9a3235e44d6194a10c4280a86159"
         ]
       },
-      "DestinationId": "82b2298c450741848a279c0d5de88a8e",
+      "DestinationId": "9bc20ab2fd534226937bb88728040474",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4901,19 +5182,19 @@
       "Visible": true
     },
     {
-      "Id": "f78e7be18bbf4550895bbfb14f324e47",
-      "SourceId": "7316b641a8304948993f4e5cbc542ef6",
+      "Id": "96a42eb907814dbdad850026c69a7232",
+      "SourceId": "54f7d906df0e496a86f8b36c53dc0c38",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "f78e7be18bbf4550895bbfb14f324e47",
-          "33cb61363c854f4aaccb488593c9e561"
+          "96a42eb907814dbdad850026c69a7232",
+          "1752272ed8ce4631a28df981926a8216"
         ]
       },
-      "DestinationId": "b905260ac5a44c5caeb6fd68f1e1db88",
+      "DestinationId": "182d30e7e2194c15977c8af69728b897",
       "DestinationPort": {
         "Type": "IDataFlow<UIElement>",
         "Name": "input",
@@ -4924,19 +5205,19 @@
       "Visible": true
     },
     {
-      "Id": "33cb61363c854f4aaccb488593c9e561",
-      "SourceId": "7316b641a8304948993f4e5cbc542ef6",
+      "Id": "1752272ed8ce4631a28df981926a8216",
+      "SourceId": "54f7d906df0e496a86f8b36c53dc0c38",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "f78e7be18bbf4550895bbfb14f324e47",
-          "33cb61363c854f4aaccb488593c9e561"
+          "96a42eb907814dbdad850026c69a7232",
+          "1752272ed8ce4631a28df981926a8216"
         ]
       },
-      "DestinationId": "82b2298c450741848a279c0d5de88a8e",
+      "DestinationId": "9bc20ab2fd534226937bb88728040474",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4947,18 +5228,18 @@
       "Visible": true
     },
     {
-      "Id": "3a121ed5b18c4051bf211f1c764fef33",
-      "SourceId": "9e249cf001ab46d4b11e6dd4d0b2f136",
+      "Id": "2cee7fbb21f94746b48b942f9be2302c",
+      "SourceId": "b16bc00a7ee14900bfec6fdbffe15fb2",
       "SourcePort": {
         "Type": "IDataFlow<MouseEventArgs>",
         "Name": "argsOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "3a121ed5b18c4051bf211f1c764fef33"
+          "2cee7fbb21f94746b48b942f9be2302c"
         ]
       },
-      "DestinationId": "681985f0f46849fdb582544f39d9b31f",
+      "DestinationId": "8ebf849257ec46668df231141c2b4d48",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "input",
@@ -4969,18 +5250,18 @@
       "Visible": true
     },
     {
-      "Id": "7b670fd49a9c4084aca26ae49e1dd2a3",
-      "SourceId": "681985f0f46849fdb582544f39d9b31f",
+      "Id": "293b304f64e4462d8ff51d7b0ec77f52",
+      "SourceId": "8ebf849257ec46668df231141c2b4d48",
       "SourcePort": {
         "Type": "IDataFlow<object>",
         "Name": "output",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "7b670fd49a9c4084aca26ae49e1dd2a3"
+          "293b304f64e4462d8ff51d7b0ec77f52"
         ]
       },
-      "DestinationId": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "DestinationId": "dc92199646074c119461ad2e3231526c",
       "DestinationPort": {
         "Type": "IDataFlow<bool>",
         "Name": "condition",
@@ -4991,18 +5272,18 @@
       "Visible": true
     },
     {
-      "Id": "fab34005fc0a4afeb65be0c14eb115b9",
-      "SourceId": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "Id": "c5fdb1edc970404aa9c9c039bbebb58a",
+      "SourceId": "dc92199646074c119461ad2e3231526c",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "ifOutput",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "fab34005fc0a4afeb65be0c14eb115b9"
+          "c5fdb1edc970404aa9c9c039bbebb58a"
         ]
       },
-      "DestinationId": "ae274fb8c8754469bd390fad7467f3ad",
+      "DestinationId": "0178b984a11848dbb7dfb4f9f4ec0ee4",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -5013,18 +5294,18 @@
       "Visible": true
     },
     {
-      "Id": "403283057ce64c65918b5b9adbeab536",
-      "SourceId": "ef8e7eeb74e0437bbcad7fd147cd92d2",
+      "Id": "cfdeada2f8ac4048beadd794eddf65b6",
+      "SourceId": "dc92199646074c119461ad2e3231526c",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "elseOutput",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "403283057ce64c65918b5b9adbeab536"
+          "cfdeada2f8ac4048beadd794eddf65b6"
         ]
       },
-      "DestinationId": "776ca16650954eef91e75ebe2ebe9e4e",
+      "DestinationId": "30ba35edf0a044879f4ddc8b051a90a5",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -5035,18 +5316,46 @@
       "Visible": true
     },
     {
-      "Id": "a4c7106485114260956b66ec7a608190",
-      "SourceId": "1bf76c59a9cb4960a4d40e6cb14d170b",
+      "Id": "baa9b6c31f834bc183e4a86290268cd8",
+      "SourceId": "e7164e6a1e2b4e7ca0ee0a5098410afa",
       "SourcePort": {
         "Type": "IDataFlow<string>",
         "Name": "fanoutList",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "a4c7106485114260956b66ec7a608190"
+          "baa9b6c31f834bc183e4a86290268cd8",
+          "3337c4cdb698435a82c7ef9d0dc34ef5",
+          "6a6934f9ab19485e92621243092d409b",
+          "947425f5fba04284895d0241c3af00a9"
         ]
       },
-      "DestinationId": "ffad88c305444e8ebc8780fc39dbef66",
+      "DestinationId": "26334af38aff4f90ba86d4fc6c1917e2",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "code",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "3337c4cdb698435a82c7ef9d0dc34ef5",
+      "SourceId": "e7164e6a1e2b4e7ca0ee0a5098410afa",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "baa9b6c31f834bc183e4a86290268cd8",
+          "3337c4cdb698435a82c7ef9d0dc34ef5",
+          "6a6934f9ab19485e92621243092d409b",
+          "947425f5fba04284895d0241c3af00a9"
+        ]
+      },
+      "DestinationId": "93fb7699b5eb4717972cf992ecfa80df",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "start",
@@ -5057,18 +5366,104 @@
       "Visible": true
     },
     {
-      "Id": "919adfe4665f4ac1b5eaabe8e037c1ac",
-      "SourceId": "d4d6624cfb814a1484e26a4ffab47c7e",
+      "Id": "6a6934f9ab19485e92621243092d409b",
+      "SourceId": "dd5807d3ffa5416b97b1b1545c162d75",
+      "SourcePort": {
+        "Type": "IDataFlow<T2>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "DestinationId": "ada202987ff348c8af7f446f5fc705ac",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "valueInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "947425f5fba04284895d0241c3af00a9",
+      "SourceId": "ab400da881684a97a43abcb43e52a155",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "947425f5fba04284895d0241c3af00a9"
+        ]
+      },
+      "DestinationId": "dd5807d3ffa5416b97b1b1545c162d75",
+      "DestinationPort": {
+        "Type": "IDataFlow<T1>",
+        "Name": "input",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "5f8681dc5d004dc192378973e0c332b6",
+      "SourceId": "93fb7699b5eb4717972cf992ecfa80df",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "5f8681dc5d004dc192378973e0c332b6"
+        ]
+      },
+      "DestinationId": "cf6c29b426e3426f99ebb0982ab1b81f",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "eventInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "b4c8f67f97644f44bdddcafe5c4d57b7",
+      "SourceId": "f10a082c130d4c35b897bd30108f4b8d",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "delayedEvent",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "b4c8f67f97644f44bdddcafe5c4d57b7"
+        ]
+      },
+      "DestinationId": "f64bccf7ce7a40f4a8cb306f9b6568ca",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "78784b78614d4f978c1d486e98964fe3",
+      "SourceId": "8698cc76f97c43d2aa45d98aef64d5d6",
       "SourcePort": {
         "Type": "IEvent",
         "Name": "clickedEvent",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "919adfe4665f4ac1b5eaabe8e037c1ac"
+          "78784b78614d4f978c1d486e98964fe3"
         ]
       },
-      "DestinationId": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "DestinationId": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "DestinationPort": {
         "Type": "IEvent",
         "Name": "start",
@@ -5079,18 +5474,18 @@
       "Visible": true
     },
     {
-      "Id": "0739abbb440c48288d7ef2cdd4a6f2d4",
-      "SourceId": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "Id": "9021f5e13d94413c96fc2b0dda0dbe4a",
+      "SourceId": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "SourcePort": {
         "Type": "IDataFlow<List<string>>",
         "Name": "instantiations",
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "0739abbb440c48288d7ef2cdd4a6f2d4"
+          "9021f5e13d94413c96fc2b0dda0dbe4a"
         ]
       },
-      "DestinationId": "eade753f4c674e8b995f925ee14da887",
+      "DestinationId": "c5f68baa4a6c47579afa1e77473d4226",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "dataInput",
@@ -5101,21 +5496,89 @@
       "Visible": true
     },
     {
-      "Id": "2fb9b049ab074b8a8cd5e4f0892124a8",
-      "SourceId": "4d02e25bf1fe4c93b3bf9d598ae1160f",
+      "Id": "489c454b0ca34f90893d5f5ec020896e",
+      "SourceId": "ac0ab1f71d514e8681bd6c5a9c351f79",
       "SourcePort": {
         "Type": "IDataFlow<List<string>>",
         "Name": "wireTos",
         "IsInputPort": false,
         "Index": 1,
         "ConnectionIds": [
-          "2fb9b049ab074b8a8cd5e4f0892124a8"
+          "489c454b0ca34f90893d5f5ec020896e"
         ]
       },
-      "DestinationId": "dd5b40f02d5949ff985679b500ca9e1e",
+      "DestinationId": "505ec8db2eb64bb581473914a51684f0",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "dataInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "727eb17bbff24f3391dcb77a3de8fff6",
+      "SourceId": "f7a9e4b38afd4d6199d9c5e22fdb17cf",
+      "SourcePort": {
+        "Type": "IDataFlowB<string>",
+        "Name": "filePathInput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "727eb17bbff24f3391dcb77a3de8fff6"
+        ]
+      },
+      "DestinationId": "ec9634f4f667478880e127a2ae6f3fce",
+      "DestinationPort": {
+        "Type": "IDataFlowB<string>",
+        "Name": "dataOutputB",
+        "IsInputPort": true,
+        "Index": 2,
+        "ConnectionIds": [
+          "727eb17bbff24f3391dcb77a3de8fff6"
+        ]
+      },
+      "Visible": true
+    },
+    {
+      "Id": "15f93658168d4744a96853d1284a4f0d",
+      "SourceId": "ada202987ff348c8af7f446f5fc705ac",
+      "SourcePort": {
+        "Type": "IDataFlowB<string>",
+        "Name": "filePathInput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "15f93658168d4744a96853d1284a4f0d"
+        ]
+      },
+      "DestinationId": "1bf9e0f91d6c4f63bbca1ba11c561cb0",
+      "DestinationPort": {
+        "Type": "IDataFlowB<string>",
+        "Name": "dataOutputB",
+        "IsInputPort": true,
+        "Index": 2,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "cab0ac773e05407d82a535abe5c6443b",
+      "SourceId": "9bfc3fa948124a77b0775db221383c07",
+      "SourcePort": {
+        "Type": "IDataFlow<T2>",
+        "Name": "output",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "cab0ac773e05407d82a535abe5c6443b"
+        ]
+      },
+      "DestinationId": "ada202987ff348c8af7f446f5fc705ac",
+      "DestinationPort": {
+        "Type": "IDataFlow<object>",
+        "Name": "valueInput",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
