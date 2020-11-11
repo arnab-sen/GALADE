@@ -330,7 +330,7 @@ namespace RequirementsAbstractions
             {
                 Lambda = s =>
                 {
-                    Model.SetValue(dropDown.Text, s);
+                    Model.SetValue(dropDown.Text, s, initialise: true);
                 }
             }, "textOutput");
 	        
@@ -452,8 +452,14 @@ namespace RequirementsAbstractions
             var instantiation = "";
             var fullStr = "";
 
-            var constructorArgs = Model.GetConstructorArgs();
+            var initialised = Model.GetInitialisedVariables();
+            var constructorArgs = Model.GetConstructorArgs()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList();
 
+            var properties = Model.GetProperties()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList();
 
             var syntaxNode =
                 LocalDeclarationStatement(
@@ -472,7 +478,8 @@ namespace RequirementsAbstractions
                                                         GetConstructorArgumentSyntaxList(constructorArgs)))
                                                 .WithInitializer(
                                                     InitializerExpression(
-                                                        SyntaxKind.ObjectInitializerExpression)))))));
+                                                        SyntaxKind.ObjectInitializerExpression,
+                                                        GetPropertySyntaxList(properties))))))));
 
             fullStr = syntaxNode.ToFullString();
 
@@ -481,8 +488,7 @@ namespace RequirementsAbstractions
             return instantiation;
         }
 
-        private SeparatedSyntaxList<ArgumentSyntax> GetConstructorArgumentSyntaxList(
-            List<KeyValuePair<string, string>> args)
+        private SeparatedSyntaxList<ArgumentSyntax> GetConstructorArgumentSyntaxList(List<KeyValuePair<string, string>> args)
         {
             var list = new List<SyntaxNodeOrToken>();
 
@@ -504,10 +510,35 @@ namespace RequirementsAbstractions
                 }
 
                 list.Add(argNode);
-
             }
 
             return SeparatedList<ArgumentSyntax>(list);
+        }
+
+        private SeparatedSyntaxList<ExpressionSyntax> GetPropertySyntaxList(List<KeyValuePair<string, string>> properties)
+        {
+            var list = new List<SyntaxNodeOrToken>();
+
+            foreach (var prop in properties)
+            {
+                var propName = prop.Key;
+                var propValue = prop.Value;
+
+                var propNode =
+                    AssignmentExpression(
+                        SyntaxKind.SimpleAssignmentExpression,
+                        IdentifierName(propName),
+                        IdentifierName(propValue));
+
+                if (list.Count > 0)
+                {
+                    list.Add(Token(SyntaxKind.CommaToken));
+                }
+
+                list.Add(propNode);
+            }
+
+            return SeparatedList<ExpressionSyntax>(list);
         }
 
         private void CreateWiring()

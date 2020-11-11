@@ -108,7 +108,7 @@ namespace DomainAbstractions
         /// </summary>
         /// <param name="name">The variable name, e.g. "Source"</param>
         /// <param name="value">The code literal, e.g. "new MyClass()"</param>
-        public void SetValue(string name, string value, bool initialise = false)
+        public void SetValue(string name, string value, bool initialise = true)
         {
             if (_constructorArgs.ContainsKey(name))
             {
