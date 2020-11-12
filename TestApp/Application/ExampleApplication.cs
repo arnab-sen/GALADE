@@ -32,7 +32,17 @@ namespace Application
 		
 		public void CreateWiring() // Wiring should always be in a CreateWiring method
 		{		
-            
+            // BEGIN AUTO-GENERATED INSTANTIATIONS
+            var id_bb9476c0448b4417bb857b437ab4687e = new Apply<T1, T2>() {};
+            var id_6327733ea04148289bf5631ba122a37e = new Apply<T1, T2>() {};
+			var a = new Data<string>();
+			var b = new Data<string>();
+            // END AUTO-GENERATED INSTANTIATIONS
+			
+			// BEGIN AUTO-GENERATED WIRING
+            id_bb9476c0448b4417bb857b437ab4687e.WireTo(id_6327733ea04148289bf5631ba122a37e, "lambdaInput");
+			a.WireTo(b);
+			// END AUTO-GENERATED WIRING
 		}
 		
 		public void DoSomething()
@@ -46,6 +56,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
