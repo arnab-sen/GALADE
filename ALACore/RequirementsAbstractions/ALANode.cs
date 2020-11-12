@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -442,7 +443,64 @@ namespace RequirementsAbstractions
 
         }
 
-        public string ToInstantiation()
+        public string ToInstantiation(bool singleLine = true)
+        {
+            var instantiation = "";
+
+            if (singleLine)
+            {
+                instantiation = ToFlatInstantiation();
+            }
+            else
+            {
+                instantiation = ToFormattedInstantiation();
+            }
+
+            return instantiation;
+        }
+
+        private string ToFlatInstantiation()
+        {
+            var instantiation = "";
+
+            var initialised = Model.GetInitialisedVariables();
+            var constructorArgs = Model.GetConstructorArgs()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList();
+
+            var propertiesAndFields = Model.GetProperties()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList();
+
+            propertiesAndFields.AddRange(Model.GetFields()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList());
+
+            var sb = new StringBuilder();
+
+            sb.Append("var ");
+            sb.Append(Name);
+            sb.Append(" = new ");
+            sb.Append(Model.FullType);
+            sb.Append("(");
+            sb.Append(Flatten(GetConstructorArgumentSyntaxList(constructorArgs).ToString()));
+            sb.Append(") {");
+            sb.Append(Flatten(GetPropertySyntaxList(propertiesAndFields).ToString()));
+            sb.Append("};");
+
+            instantiation = sb.ToString();
+
+            return instantiation;
+        }
+
+        private string Flatten(string input)
+        {
+            var flattenedString = Regex.Replace(input, @"(?<=([^\\]))[\t\n\r]", "");
+
+            return flattenedString;
+        }
+
+        private string ToFormattedInstantiation()
         {
             // Note: must declare "using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;" in this file's usings
             // to use SyntaxFactory methods without repeatedly referencing SyntaxFactory
@@ -455,9 +513,14 @@ namespace RequirementsAbstractions
                 .Where(kvp => initialised.Contains(kvp.Key))
                 .ToList();
 
-            var properties = Model.GetProperties()
+            var propertiesAndFields = Model.GetProperties()
                 .Where(kvp => initialised.Contains(kvp.Key))
                 .ToList();
+
+            propertiesAndFields.AddRange(Model.GetFields()
+                .Where(kvp => initialised.Contains(kvp.Key))
+                .ToList());
+
 
             var syntaxNode =
                 LocalDeclarationStatement(
@@ -477,7 +540,7 @@ namespace RequirementsAbstractions
                                                 .WithInitializer(
                                                     InitializerExpression(
                                                         SyntaxKind.ObjectInitializerExpression,
-                                                        GetPropertySyntaxList(properties))))))));
+                                                        GetPropertySyntaxList(propertiesAndFields))))))));
 
             var instantiation = syntaxNode.NormalizeWhitespace().ToString();
 

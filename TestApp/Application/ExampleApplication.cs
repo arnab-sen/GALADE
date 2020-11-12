@@ -32,37 +32,7 @@ namespace Application
 		
 		public void CreateWiring() // Wiring should always be in a CreateWiring method
 		{		
-            MainWindow mainWindow = new MainWindow() { InstanceName = "mainWindow" };
-            MenuBar menuBar = new MenuBar() { InstanceName = "menuBar" };
-            MenuItem menuItem1 = new MenuItem(header: "testMenuItem") { InstanceName = "menuItem1" };
-			
-            mainWindow.WireTo(menuBar, "iuiStructure");
-            menuBar.WireTo(menuItem1, "children");
-			
-			var a = new Data<string>()
-            {
-                storedData = "test", 
-                PerishCount = 20, 
-                Lambda = () =>
-                {
-                    DoSomething();
-					DoSomething();DoSomething(); DoSomething();
-					DoSomething();
-					var a = new Data<string>() {
-						storedData = "test",
-						PerishCount = 10,
-						Lambda = () => {
-							DoSomething();
-						}, Lambda2 = () => {DoSomething();}
-					};
-					DoSomething();
-                }
-            };
-
-			var b = new DataFlowConnector<string>();
-			
-			menuItem1.WireTo(a, "clickedEvent");
-			a.WireTo(b, "dataOutput");
+            
 		}
 		
 		public void DoSomething()
@@ -76,7 +46,6 @@ namespace Application
         }
     }
 }
-
 
 
 

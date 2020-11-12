@@ -17,21 +17,33 @@ namespace Application
         public Graph Graph { get; set; }
 
         // Private fields
+        private List<string> _instantiations;
+        private List<string> _wireTos;
+        private List<string> _allCode;
 
         // Ports
         private IDataFlow<List<string>> instantiations;
         private IDataFlow<List<string>> wireTos;
+        private IDataFlow<List<string>> allCode;
 
         void IEvent.Execute()
         {
-            if (instantiations != null) instantiations.Data = GenerateInstantiations();
-            if (wireTos != null) wireTos.Data = GenerateWireTos();
+            _instantiations = GenerateInstantiations();
+            _wireTos = GenerateWireTos();
+
+            _allCode = new List<string>();
+            _allCode.AddRange(_instantiations);
+            _allCode.AddRange(_wireTos);
+
+            if (instantiations != null) instantiations.Data = _instantiations;
+            if (wireTos != null) wireTos.Data = _wireTos;
+            if (allCode != null) allCode.Data = _allCode;
         }
 
         // Methods
         public List<string> GenerateInstantiations()
         {
-            var instantiations = new List<string>();
+            _instantiations = new List<string>();
 
             var nodes = Graph.Nodes;
 
@@ -40,15 +52,15 @@ namespace Application
                 var alaNode = node as ALANode;
                 if (alaNode == null) continue;
 
-                instantiations.Add(alaNode.ToInstantiation());
+                _instantiations.Add(alaNode.ToInstantiation());
             }
 
-            return instantiations;
+            return _instantiations;
         }
 
         public List<string> GenerateWireTos()
         {
-            var wireTos = new List<string>();
+            _wireTos = new List<string>();
 
             var edges = Graph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null);
 
@@ -60,15 +72,15 @@ namespace Application
                 var portName = (wire.SourcePort.Payload as Port)?.Name ?? "";
                 if (string.IsNullOrWhiteSpace(portName))
                 {
-                    wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name});");
+                    _wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name});");
                 }
                 else
                 {
-                    wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name}, \"{(wire.SourcePort.Payload as Port)?.Name}\");");
+                    _wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name}, \"{(wire.SourcePort.Payload as Port)?.Name}\");");
                 }
             }
 
-            return wireTos;
+            return _wireTos;
         }
 
 

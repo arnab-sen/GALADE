@@ -137,14 +137,14 @@ namespace Application
                 }
             }
 
-            foreach (var connection in Graph.GetConnections())
-            {
-                var cxnRect = GetBoundingRect(connection as PortGraphConnection);
-                if (rect.IntersectsWith(cxnRect))
-                {
-                    Graph.SelectConnection(connection.Id, multiSelect: true);
-                }
-            }
+            // foreach (var connection in Graph.GetConnections())
+            // {
+            //     var cxnRect = GetBoundingRect(connection as PortGraphConnection);
+            //     if (rect.IntersectsWith(cxnRect))
+            //     {
+            //         Graph.SelectConnection(connection.Id, multiSelect: true);
+            //     }
+            // }
         }
 
         private void UnhighlightAllNodes()

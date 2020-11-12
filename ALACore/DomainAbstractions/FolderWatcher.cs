@@ -56,8 +56,11 @@ namespace DomainAbstractions
             get => _watcher.Path;
             set
             {
-                _watcher.Path = value;
-                StartWatching();
+                if (Directory.Exists(value) || File.Exists(value))
+                {
+                    _watcher.Path = value;
+                    StartWatching();
+                }
             }
         }
 
