@@ -346,13 +346,14 @@ namespace DomainAbstractions
 
             _generics[index] = newType;
 
-            var sb = new StringBuilder();
-
-            // Update instance type
             RefreshFullTypeWithGenerics();
-            
 
-            // Update all ports
+            RefreshGenericsInPorts();
+        }
+
+        public void RefreshGenericsInPorts()
+        {
+            var sb = new StringBuilder();
             foreach (var port in _portsById.Values)
             {
                 sb.Clear();

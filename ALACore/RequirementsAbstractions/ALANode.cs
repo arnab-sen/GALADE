@@ -158,6 +158,7 @@ namespace RequirementsAbstractions
                 (_refreshInputPorts as IEvent).Execute();
                 (_refreshOutputPorts as IEvent).Execute();
                 (_nodeIdRow as IUI).GetWPFElement();
+                Model.RefreshGenericsInPorts();
             }, DispatcherPriority.Loaded);
             
             Render.Dispatcher.Invoke(() =>
@@ -297,6 +298,7 @@ namespace RequirementsAbstractions
             };
 
             Model.RefreshFullTypeWithGenerics();
+            Model.RefreshGenericsInPorts();
 
             CreateWiring();
 
