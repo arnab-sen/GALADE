@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -34,12 +35,15 @@ namespace DomainAbstractions
         private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
         private Dictionary<string, string> _fields = new Dictionary<string, string>(); // name : value
         private Dictionary<string, string> _properties = new Dictionary<string, string>(); // name : value
-        private Dictionary<string, Port> _implementedPorts = new Dictionary<string, Port>(); // name : type
+        private Dictionary<string, Port> _implementedPorts = new Dictionary<string, Port>(); // name : type (e.g. IDataFlow<string>)
         private Dictionary<string, Port> _acceptedPorts = new Dictionary<string, Port>(); // name : type
-        private Dictionary<string, string> _generics = new Dictionary<string, string>(); // name : type
         private Dictionary<string, string> _types = new Dictionary<string, string>(); // typeName : type. This contains the types of fields, properties, and constructor args
         private string _documentation = "";
         private HashSet<string> _initialised = new HashSet<string>();
+        private List<string> _generics = new List<string>();
+        private Dictionary<string, List<int>> _portGenericIndices = new Dictionary<string, List<int>>(); // name : list of used abstraction's generic indices
+        private Dictionary<string, string> _portBaseTypes = new Dictionary<string, string>(); // name : original port type (e.g. IDataFlow<T>)
+        private Dictionary<string, Port> _portsById = new Dictionary<string, Port>(); // Port.Id : Port
 
         // Ports
 
@@ -47,13 +51,32 @@ namespace DomainAbstractions
         public List<KeyValuePair<string, string>> GetConstructorArgs() => _constructorArgs.ToList();
         public List<KeyValuePair<string, string>> GetFields() => _fields.ToList();
         public List<KeyValuePair<string, string>> GetProperties() => _properties.ToList();
+
+        public Port GetPort(string portName)
+        {
+            if (_implementedPorts.ContainsKey(portName))
+            {
+                return _implementedPorts[portName];
+            }
+            else if (_acceptedPorts.ContainsKey(portName))
+            {
+                return _acceptedPorts[portName];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public List<Port> GetImplementedPorts() => _implementedPorts.Values.ToList();
         public List<Port> GetAcceptedPorts() => _acceptedPorts.Values.ToList();
-        public List<KeyValuePair<string, string>> GetGenerics() => _generics.ToList();
+        public List<string> GetGenerics() => _generics.ToList();
+        public List<int> GetGenericPortIndices(string portName) => _portGenericIndices.ContainsKey(portName) ? _portGenericIndices[portName].ToList() : new List<int>();
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
         public string GetCodeFilePath() => CodeFilePath;
-        public HashSet<string> GetInitialisedVariables() => _initialised.Select(s => s).ToHashSet(); 
+        public HashSet<string> GetInitialisedVariables() => _initialised.Select(s => s).ToHashSet();
+        public string GetPortBaseType(string portName) => _portBaseTypes.ContainsKey(portName) ? _portBaseTypes[portName] : "undefined";
 
         public void AddConstructorArg(string name, string initialValue = "", string type = "undefined")
         {
@@ -75,33 +98,50 @@ namespace DomainAbstractions
 
         public void AddImplementedPort(string type, string name)
         {
-            _implementedPorts[name] = new Port()
+            var port = new Port()
             {
                 Type = type,
                 Name = name,
                 IsInputPort = true
             };
+
+            _portsById[port.Id] = port;
+
+            _implementedPorts[name] = port;
+
+            _portBaseTypes[port.Id] = type;
         }
 
         public void AddAcceptedPort(string type, string name)
         {
-            _acceptedPorts[name] = new Port()
+            var port = new Port()
             {
                 Type = type,
                 Name = name,
                 IsInputPort = false
-            };;
-        }
+            };
 
-        public void AddGeneric(string generic, string initialValue = "")
-        {
-            _generics[generic] = initialValue;
+            _portsById[port.Id] = port;
+
+            _acceptedPorts[name] = port;
+
+            _portBaseTypes[port.Id] = type;
         }
 
         public void AddDocumentation(string documentation)
         {
             _documentation = documentation;
         }
+
+        public void AddGeneric(string generic) => _generics.Add(generic);
+
+        public void SetGenerics(IEnumerable<string> newGenerics)
+        {
+            _generics.Clear();
+            _generics.AddRange(newGenerics);
+        }
+
+        public void AddPortGenericIndices(string portName, List<int> indices) => _portGenericIndices[portName] = indices;
 
         /// <summary>
         /// Finds and sets a value in the instance. This will fail if no field, property, or arg has the given name.
@@ -154,15 +194,6 @@ namespace DomainAbstractions
             }
         }
 
-        public void SetGeneric(string identifier, string type)
-        {
-            if (_generics.ContainsKey(identifier))
-            {
-                _generics[identifier] = type;
-                UpdateGeneric(identifier, type);
-            }
-        }
-
         public void CloneFrom(AbstractionModel source)
         {
             Type = source.Type;
@@ -172,16 +203,20 @@ namespace DomainAbstractions
             SourceCode = source.SourceCode;
             CodeFilePath = source.GetCodeFilePath();
 
-            _implementedPorts.Clear();
+            _portsById.Clear();
+
             foreach (var pair in source._implementedPorts)
             {
-                _implementedPorts[pair.Key] = pair.Value;
+                var port = pair.Value;
+                AddImplementedPort(port.Type, port.Name);
+                AddPortGenericIndices(port.Name, source.GetGenericPortIndices(port.Name));
             }
 
-            _acceptedPorts.Clear();
             foreach (var pair in source._acceptedPorts)
             {
-                _acceptedPorts[pair.Key] = pair.Value;
+                var port = pair.Value;
+                AddAcceptedPort(port.Type, port.Name);
+                AddPortGenericIndices(port.Name, source.GetGenericPortIndices(port.Name));
             }
 
             _fields.Clear();
@@ -215,6 +250,8 @@ namespace DomainAbstractions
             }
 
             _initialised.Clear();
+
+            SetGenerics(source.GetGenerics());
         }
 
         /// <summary>
@@ -240,11 +277,6 @@ namespace DomainAbstractions
                 return _properties[name];
             }
 
-            if (_generics.ContainsKey(name))
-            {
-                return _generics[name];
-            }
-
             return "";
         }
 
@@ -268,12 +300,6 @@ namespace DomainAbstractions
                 return _properties[name];
             }
 
-            if (_generics.ContainsKey(name))
-            {
-                foundAt = _generics;
-                return _generics[name];
-            }
-
             foundAt = null;
             return "";
         }
@@ -295,95 +321,44 @@ namespace DomainAbstractions
                 _properties.Remove(key);
             }
 
-            if (_generics.ContainsKey(key))
-            {
-                _generics.Remove(key);
-            }
         }
 
-        public void UpdateGeneric(string name, string newType)
+        public void UpdateGeneric(int index, string newType)
         {
-            var startRegex = $@"(?<=(<\s*)){name}";
-            var midRegex = $@"(?<=(,\s*)){name}(?=\s*,)";
-            var endRegex = $@"(?<=(,\s*)){name}(?=\s*>)";
+            if (_generics.Count <= index) return;
 
-            Func<string, bool> genericMatch = s =>
+            _generics[index] = newType;
+
+            var sb = new StringBuilder();
+
+            // Update instance type
+            sb.Clear();
+
+            sb.Append(Type);
+            sb.Append("<" + _generics.First());
+            sb.Append(string.Concat(_generics.Skip(1).Select(s => $", {s}")));
+            sb.Append(">");
+
+            FullType = sb.ToString();
+            
+
+            // Update all ports
+            foreach (var port in _portsById.Values)
             {
-                return Regex.IsMatch(s, startRegex) |
-                       Regex.IsMatch(s, midRegex) |
-                       Regex.IsMatch(s, endRegex);
-            };
+                sb.Clear();
 
-            // Apply to non-port variables
-            var withGeneric = GetNameMatches(genericMatch);
+                var indexList = _portGenericIndices.ContainsKey(port.Name) ? _portGenericIndices[port.Name] : null;
+                if (indexList == null || indexList.Count == 0) continue; // Only update ports with generics
 
-            foreach (var match in withGeneric)
-            {
-                Dictionary<string, string> dict;
-                var value = GetValueAndDict(match, out dict);
-                if (dict == null) continue;
+                var fullType = port.Type;
+                var typeWithoutGenerics = fullType.Split('<').First();
+                
+                sb.Append(typeWithoutGenerics);
+                sb.Append("<" + _generics[indexList.First()]);
+                sb.Append(string.Concat(indexList.Skip(1).Select(i => $", {_generics[i]}")));
+                sb.Append(">");
 
-
-                string regex = "";
-                if (Regex.IsMatch(match, startRegex))
-                {
-                    regex = startRegex;
-                }
-                else if (Regex.IsMatch(match, midRegex))
-                {
-                    regex = midRegex;
-                }
-                else if (Regex.IsMatch(match, endRegex))
-                {
-                    regex = endRegex;
-                }
-
-                if (!string.IsNullOrEmpty(regex))
-                {
-                    RemoveValue(match);
-                    dict[Regex.Replace(match, regex, newType)] = value;
-                }
-            }
-
-            // Apply to port variables
-            var portsWithGeneric = new List<string>();
-
-            foreach (var port in GetImplementedPorts())
-            {
-                if (genericMatch(port.Type)) portsWithGeneric.Add(port.Name);
-            }
-
-            foreach (var port in GetAcceptedPorts())
-            {
-                if (genericMatch(port.Type)) portsWithGeneric.Add(port.Name);
-            }
-
-            foreach (var portName in portsWithGeneric)
-            {
-                string regex = "";
-                if (Regex.IsMatch(portName, startRegex))
-                {
-                    regex = startRegex;
-                }
-                else if (Regex.IsMatch(portName, midRegex))
-                {
-                    regex = midRegex;
-                }
-                else if (Regex.IsMatch(portName, endRegex))
-                {
-                    regex = endRegex;
-                }
-
-                if (_implementedPorts.ContainsKey(portName))
-                {
-                    var type = Regex.Replace(_implementedPorts[portName].Type, regex, newType);
-                    SetImplementedPort(type, portName);
-                }
-                else
-                {
-                    var type = Regex.Replace(_acceptedPorts[portName].Type, regex, newType);
-                    SetAcceptedPort(type, portName);
-                }
+                port.Type = sb.ToString();
             }
         }
 
@@ -391,7 +366,7 @@ namespace DomainAbstractions
         {
             var mappings = new List<Dictionary<string, string>>()
             {
-                _constructorArgs, _fields, _properties, _generics
+                _constructorArgs, _fields, _properties
             };
 
             var result = new List<string>();

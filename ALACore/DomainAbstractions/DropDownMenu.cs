@@ -79,9 +79,9 @@ namespace DomainAbstractions
 
             _dropDown.DropDownClosed += (sender, args) =>
             {
-                if (_dropDown.SelectedValue != null && _dropDown.SelectedValue.ToString() != _lastSentValue)
+                if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
                 {
-                    _lastSentValue = _dropDown.SelectedValue as string;
+                    _lastSentValue = _dropDown.Text;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
                 }
                 
@@ -101,7 +101,7 @@ namespace DomainAbstractions
                 if (args.Key == Key.Enter)
                 {
                     // eventEnterPressed?.Execute();
-                    _lastSentValue = _dropDown.SelectedValue as string;
+                    _lastSentValue = _dropDown.Text;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
                     Keyboard.ClearFocus();
                 }
@@ -109,9 +109,9 @@ namespace DomainAbstractions
 
             _dropDown.LostKeyboardFocus += (sender, args) =>
             {
-                if (_dropDown.SelectedValue != null && _dropDown.SelectedValue.ToString() != _lastSentValue)
+                if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
                 {
-                    _lastSentValue = _dropDown.SelectedValue as string;
+                    _lastSentValue = _dropDown.Text;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
                 }
                 

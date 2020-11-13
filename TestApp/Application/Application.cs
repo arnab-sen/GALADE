@@ -303,6 +303,8 @@ namespace TestApplication
             InsertFileCodeLines id_069b428be7294a67be3efb898aae6232 = new InsertFileCodeLines() { StartLandmark = "// BEGIN AUTO-GENERATED INSTANTIATIONS", EndLandmark = "// END AUTO-GENERATED INSTANTIATIONS", Indent = "            " };
             InsertFileCodeLines id_0d6abbea0ad64c4bb689bd7ea169d8c4 = new InsertFileCodeLines() { StartLandmark = "// BEGIN AUTO-GENERATED WIRING", EndLandmark = "// END AUTO-GENERATED WIRING", Indent = "            " };
             EventConnector id_29a95f9b55f64df086af7bfc24b165a3 = new EventConnector() {  };
+            MenuItem id_4d01de40a3cf470a8f6a79d34eecd227 = new MenuItem(header: "Generics test") {  };
+            EventLambda id_c6eb0cfba7ce4a118f70cb255e36168d = new EventLambda() { Lambda = () =>{var node = mainGraph.Nodes.First() as ALANode;node.Model.UpdateGeneric(0, "testType");} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -346,6 +348,7 @@ namespace TestApplication
             id_36bc6ed720864c7da326e5a2778d9bd5.WireTo(id_1b8e251463014a43a8d1006290941440, "senderOutput");
             id_0a045762f07b43e09ba09d10ded9c5a1.WireTo(id_46402a90d31b413d99414a0266a25a08, "children");
             id_0a045762f07b43e09ba09d10ded9c5a1.WireTo(id_841b4cd516b64304a046afcb7a2417eb, "children");
+            id_0a045762f07b43e09ba09d10ded9c5a1.WireTo(id_4d01de40a3cf470a8f6a79d34eecd227, "children");
             id_46402a90d31b413d99414a0266a25a08.WireTo(id_09c8659d61ba49d589cd011d3ee011bd, "clickedEvent");
             id_09c8659d61ba49d589cd011d3ee011bd.WireTo(id_04155bb492d24717879b41689160f164, "children");
             id_04155bb492d24717879b41689160f164.WireTo(id_6a5384dab5e94be9b4169f8268772052, "uiLayout");
@@ -415,6 +418,7 @@ namespace TestApplication
             id_bb380057584d4e3dbc2569a5232eb5a4.WireTo(id_786167b281e04de49ba5ad483e1ff246, "filePathInput");
             id_786167b281e04de49ba5ad483e1ff246.WireTo(id_58617bcea7554d0787a726d9b07c214b, "fanoutList");
             id_069b428be7294a67be3efb898aae6232.WireTo(id_0d6abbea0ad64c4bb689bd7ea169d8c4, "newFileContentsOutput");
+            id_4d01de40a3cf470a8f6a79d34eecd227.WireTo(id_c6eb0cfba7ce4a118f70cb255e36168d, "clickedEvent");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             // BEGIN MANUAL INSTANTIATIONS
@@ -439,6 +443,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

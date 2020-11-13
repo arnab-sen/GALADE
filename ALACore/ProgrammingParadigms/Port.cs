@@ -10,7 +10,7 @@ namespace ProgrammingParadigms
 {
     public class Port
     {
-        public string Id { get; set; } = "";
+        public string Id { get; set; }
         public string Type { get; set; }
         public string Name { get; set; } = "default";
         public string FullName
@@ -60,7 +60,7 @@ namespace ProgrammingParadigms
             }
         }
 
-        public Port(string memento = "")
+        public Port(string memento = "", Port source = null)
         {
             if (!string.IsNullOrEmpty(memento))
             {
@@ -72,6 +72,13 @@ namespace ProgrammingParadigms
                 {
 
                 }
+            }
+
+            if (source != null)
+            {
+                Type = source.Type;
+                Name = source.Name;
+                IsInputPort = source.IsInputPort;
             }
 
             Id = Utilities.GetUniqueId();

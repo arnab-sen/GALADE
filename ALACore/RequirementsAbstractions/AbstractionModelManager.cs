@@ -92,7 +92,7 @@ namespace RequirementsAbstractions
         public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;
         public List<string> GetAbstractionTypes() => _abstractionModels.Keys.ToList();
 
-        private bool StartMatch(string candidate, IEnumerable<string> set, string prefix = "", string suffix = "")
+        private bool MatchStartOfString(string candidate, IEnumerable<string> set, string prefix = "", string suffix = "")
         {
             bool matches = false;
 
@@ -117,57 +117,119 @@ namespace RequirementsAbstractions
             model.FullType = model.Type;
 
             // Generics
-            if (classNode.TypeParameterList != null) model.FullType += classNode.TypeParameterList.ToString();
-        }
-
-        public void SetAcceptedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
-        {
-            try
+            if (classNode.TypeParameterList != null)
             {
-                var parser = new CodeParser()
-                {
-                    AccessLevel = "private"
-                };
+                model.FullType += classNode.TypeParameterList.ToString();
 
-                var privateFields = parser.GetFields(classNode);
-                var portSyntaxes = privateFields.Where(n =>
-                    n is FieldDeclarationSyntax field && 
-                        (StartMatch(field.Declaration.Type.ToString(), _programmingParadigms) ||
-                        StartMatch(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<")))
-                    .Select(s => s as FieldDeclarationSyntax);
-
-                var portList = portSyntaxes.Select(s => new Port() { Type = s.Declaration.Type.ToString(), Name = s.Declaration.Variables.First().Identifier.ToString(), IsInputPort = false }).ToList();
-
-                foreach (var port in portList)
-                {
-                    model.AddAcceptedPort(port.Type, port.Name);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.Log($"Failed to set accepted ports in AbstractionModelManager.\nError: {e}");
+                var generics = classNode.TypeParameterList.Parameters;
+                model.SetGenerics(generics.Select(s => s.ToString()));
             }
         }
 
         public void SetImplementedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
         {
+            SetPorts(classNode, model, isInputPort: true);
+        }
+
+        public void SetAcceptedPorts(ClassDeclarationSyntax classNode, AbstractionModel model)
+        {
+            SetPorts(classNode, model, isInputPort: false);
+        }
+
+        private void SetPorts(ClassDeclarationSyntax classNode, AbstractionModel model, bool isInputPort = false)
+        {
             try
             {
-                var parser = new CodeParser();
-
-                var implementedList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
-
-                var portList = implementedList.Where(n => StartMatch(n.ToString(), _programmingParadigms))
-                    .Select(s => new Port() { Type = s.Type.ToString(), Name = "?" + s.Type.ToString().Replace("<", "_").Replace(">", "_"), IsInputPort = true }).ToList();
-
-                foreach (var port in portList)
+                if (isInputPort)
                 {
-                    model.AddImplementedPort(port.Type, port.Name);
+                    var parser = new CodeParser();
+
+                    var portNodeList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
+
+                    var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), _programmingParadigms));
+
+                    var modelGenerics = model.GetGenerics();
+                    foreach (var portSyntaxNode in portSyntaxNodes)
+                    {
+                        var port = new Port()
+                        {
+                            Type = portSyntaxNode.Type.ToString(), 
+                            Name = "?" + portSyntaxNode.Type.ToString(), 
+                            IsInputPort = isInputPort
+                        };
+
+                        model.AddImplementedPort(port.Type, port.Name);
+
+                        var indexList = new List<int>();
+
+                        if (portSyntaxNode.Type is GenericNameSyntax gen)
+                        {
+                            var portGenerics = gen
+                                .DescendantNodesAndSelf().OfType<GenericNameSyntax>()
+                                .SelectMany(n => n.TypeArgumentList.Arguments.Select(a => a.ToString()))
+                                .ToHashSet();
+
+                            foreach (var portGeneric in portGenerics)
+                            {
+                                var index = modelGenerics.IndexOf(portGeneric);
+                                if (index != -1) indexList.Add(index);
+                            }
+                        }
+
+                        model.AddPortGenericIndices(port.Name, indexList);
+                    }
                 }
+                else
+                {
+                    var parser = new CodeParser()
+                    {
+                        AccessLevel = "private"
+                    };
+
+                    var privateFields = parser.GetFields(classNode);
+                    var portSyntaxNodes = privateFields.Where(n =>
+                            n is FieldDeclarationSyntax field && 
+                            (MatchStartOfString(field.Declaration.Type.ToString(), _programmingParadigms) ||
+                             MatchStartOfString(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<")))
+                        .Select(s => s as FieldDeclarationSyntax);
+
+
+                    var modelGenerics = model.GetGenerics();
+                    foreach (var portSyntaxNode in portSyntaxNodes)
+                    {
+                        var port = new Port()
+                        {
+                            Type = portSyntaxNode.Declaration.Type.ToString(),
+                            Name = portSyntaxNode.Declaration.Variables.First().Identifier.ToString(),
+                            IsInputPort = false
+                        };
+
+                        model.AddAcceptedPort(port.Type, port.Name);
+
+                        var indexList = new List<int>();
+
+                        if (portSyntaxNode.Declaration.Type is GenericNameSyntax gen)
+                        {
+                            var portGenerics = gen
+                                .DescendantNodesAndSelf().OfType<GenericNameSyntax>()
+                                .SelectMany(n => n.TypeArgumentList.Arguments.Select(a => a.ToString()))
+                                .ToHashSet();
+
+                            foreach (var portGeneric in portGenerics)
+                            {
+                                var index = modelGenerics.IndexOf(portGeneric);
+                                if (index != -1) indexList.Add(index);
+                            }
+                        }
+
+                        model.AddPortGenericIndices(port.Name, indexList);
+                    }
+                }
+                
             }
             catch (Exception e)
             {
-                Logging.Log($"Failed to set implemented ports in AbstractionModelManager.\nError: {e}");
+                Logging.Log($"Failed to set {(isInputPort ? "implemented" : "accepted")} ports in AbstractionModelManager.\nError: {e}");
             }
         }
 
