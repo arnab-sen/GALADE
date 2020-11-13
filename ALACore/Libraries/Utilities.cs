@@ -176,5 +176,17 @@ namespace Libraries
                 return notFoundMessage;
             }
         }
+
+        public static Brush BrushFromHex(string hex)
+        {
+            var hexString = hex;
+
+            if (!hex.StartsWith("#")) hexString = "#" + hexString;
+
+            var converter = new BrushConverter();
+            var brush = converter.ConvertFromString(hexString) as SolidColorBrush;
+
+            return brush;
+        }
     }
 }
