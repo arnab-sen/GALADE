@@ -296,6 +296,8 @@ namespace RequirementsAbstractions
                 "object"
             };
 
+            Model.RefreshFullTypeWithGenerics();
+
             CreateWiring();
 
         }

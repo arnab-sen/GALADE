@@ -323,12 +323,8 @@ namespace DomainAbstractions
 
         }
 
-        public void UpdateGeneric(int index, string newType)
+        public void RefreshFullTypeWithGenerics()
         {
-            if (_generics.Count <= index) return;
-
-            _generics[index] = newType;
-
             var sb = new StringBuilder();
 
             // Update instance type
@@ -340,6 +336,18 @@ namespace DomainAbstractions
             sb.Append(">");
 
             FullType = sb.ToString();
+        }
+
+        public void UpdateGeneric(int index, string newType)
+        {
+            if (_generics.Count <= index) return;
+
+            _generics[index] = newType;
+
+            var sb = new StringBuilder();
+
+            // Update instance type
+            RefreshFullTypeWithGenerics();
             
 
             // Update all ports

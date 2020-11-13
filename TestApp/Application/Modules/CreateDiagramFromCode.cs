@@ -81,19 +81,32 @@ namespace TestApplication
                     if (fullType == null) continue;
 
                     var isGeneric = fullType is GenericNameSyntax;
-                    var type = isGeneric ? (fullType as GenericNameSyntax).Identifier.ToString() : fullType.ToString();
 
-                    var modelTemplate = ModelManager.GetAbstractionModel(type);
+                    var typeWithoutGenerics = "";
+                    var generics = new List<string>();
+
+                    if (isGeneric)
+                    {
+                        typeWithoutGenerics = (fullType as GenericNameSyntax).Identifier.ToString();
+                        generics = (fullType as GenericNameSyntax).TypeArgumentList.Arguments.Select(t => t.ToString()).ToList();
+                    }
+                    else
+                    {
+                        typeWithoutGenerics = fullType.ToString();
+                    }
+
+                    var modelTemplate = ModelManager.GetAbstractionModel(typeWithoutGenerics);
                     if (modelTemplate == null)
                     {
                         modelTemplate = ModelManager.GetAbstractionModel(DefaultModelType);
-                        Logging.Log($"Could not find an AbstractionModel for type {type}. Using a default model of type {DefaultModelType} instead.");
+                        Logging.Log($"Could not find an AbstractionModel for type {typeWithoutGenerics}. Using a default model of type {DefaultModelType} instead.");
                     }
 
                     var model = new AbstractionModel();
                     model.CloneFrom(modelTemplate);
 
                     model.Name = variableName;
+                    model.SetGenerics(generics);
 
                     var initialiser = instantiation.Declaration.Variables.FirstOrDefault()?.Initializer.Value as ObjectCreationExpressionSyntax;
 
