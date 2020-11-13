@@ -86,7 +86,7 @@ namespace RequirementsAbstractions
         public Func<Port, Point> GetAttachmentPoint { get; set; }
 
         // Private fields
-        private Box rootUI;
+        private Box _rootUI;
         private Box _selectedPort;
         private Point _mousePosInBox = new Point(0, 0);
         private List<Box> _inputPortBoxes = new List<Box>();
@@ -431,7 +431,7 @@ namespace RequirementsAbstractions
             maskContainer.Children.Add(background);
             maskContainer.Children.Add(foreground);
 
-            maskContainer.MouseEnter += (sender, args) => ShowTypeTextMask(false);
+            maskContainer.MouseLeftButtonDown += (sender, args) => ShowTypeTextMask(false);
             
 
             return maskContainer;
@@ -668,12 +668,8 @@ namespace RequirementsAbstractions
 
         private void CreateWiring()
         {
-            rootUI = new Box()
-            {
-                Background = Brushes.LightSkyBlue
-            };
-
             // BEGIN AUTO-GENERATED INSTANTIATIONS
+            Box rootUI = new Box() { Background = Brushes.LightSkyBlue };
             Horizontal id_903b7736a4ce4cb99b0084afbb5096b6 = new Horizontal() {  };
             Vertical nodeMiddle = new Vertical() { InstanceName = "nodeMiddle", Margin = new Thickness(1, 0, 1, 0) };
             Horizontal nodeIdRow = new Horizontal() { InstanceName = "nodeIdRow" };
@@ -835,6 +831,7 @@ namespace RequirementsAbstractions
             _nodeMask.Children.Add(_detailedRender);
 
             // Instance mapping
+            _rootUI = rootUI;
             _refreshInputPorts = refreshInputPorts;
             _refreshOutputPorts = refreshOutputPorts;
             _nodeIdRow = nodeIdRow;

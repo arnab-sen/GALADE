@@ -33,7 +33,7 @@ namespace Application
 		public void CreateWiring() // Wiring should always be in a CreateWiring method
 		{		
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var id_bb9476c0448b4417bb857b437ab4687e = new Apply<string, string>() {};
+            var id_bb9476c0448b4417bb857b437ab4687e = new Apply<string, string>() {Lambda=() =>{    DoSomething();}};
             var id_6327733ea04148289bf5631ba122a37e = new Apply<string, object>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 			
@@ -53,6 +53,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 

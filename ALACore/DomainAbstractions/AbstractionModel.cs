@@ -325,6 +325,8 @@ namespace DomainAbstractions
 
         public void RefreshFullTypeWithGenerics()
         {
+            if (!_generics.Any()) return;
+
             var sb = new StringBuilder();
 
             // Update instance type
