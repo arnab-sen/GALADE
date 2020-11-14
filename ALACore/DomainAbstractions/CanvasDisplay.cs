@@ -84,8 +84,8 @@ namespace DomainAbstractions
         {
             backgroundCanvas = new System.Windows.Controls.Canvas()
             {
-                MinHeight = 500,
-                MinWidth = 500,
+                // MinHeight = 500,
+                // MinWidth = 500,
                 Background = Brushes.White,
                 ClipToBounds = true,
                 Focusable = true

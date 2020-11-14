@@ -15,6 +15,10 @@ namespace Libraries
         public delegate void LogDelegate(object output);
         public static event LogDelegate LogOutput;
 
+        public delegate void MessageDelegate(string message);
+
+        public static event MessageDelegate MessageOutput;
+
         public static void Log(object output)
         {
             LogOutput?.Invoke(output);
@@ -50,6 +54,11 @@ namespace Libraries
             {
                 Debug.WriteLine(e.Message);
             }
+        }
+
+        public static void Message(string message)
+        {
+            MessageOutput?.Invoke(message);
         }
     }
 }
