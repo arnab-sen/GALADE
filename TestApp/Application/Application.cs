@@ -322,7 +322,7 @@ namespace TestApplication
             EventLambda id_698c68c998c1487784a0096658c4eea6 = new EventLambda() { Lambda = () =>{Logging.Message("Completed code generation!");} };
             ExtractALACode extractALACode = new ExtractALACode() { InstanceName = "extractALACode" };
             ConvertToEvent<string> id_122cab5811fa469abdfd1b4e36e28f68 = new ConvertToEvent<string>() {  };
-            Data<string> id_b79514b23eea4e848baf5ad05f0e934e = new Data<string>() { Lambda = () => {/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly.TODO: Update CreateDiagramFromCode to use landmarks by default. */var sb = new StringBuilder();sb.AppendLine("class DummyClass {");sb.AppendLine("void CreateWiring() {");sb.AppendLine(extractALACode.Instantiations);sb.AppendLine(extractALACode.Wiring);sb.AppendLine("}");sb.AppendLine("}");return sb.ToString();} };
+            Data<string> id_b79514b23eea4e848baf5ad05f0e934e = new Data<string>() { Lambda = () => {/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to use landmarks by default. */var sb = new StringBuilder();sb.AppendLine("class DummyClass {");sb.AppendLine("void CreateWiring() {");sb.AppendLine(extractALACode.Instantiations);sb.AppendLine(extractALACode.Wiring);sb.AppendLine("}");sb.AppendLine("}");return sb.ToString();} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -469,6 +469,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
