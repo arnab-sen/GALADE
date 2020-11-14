@@ -19,7 +19,7 @@ namespace DomainAbstractions
     public class ForEach<T> : IDataFlow<IEnumerable<T>>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         
         // Private fields
         private IEnumerable<T> collection;
