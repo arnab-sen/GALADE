@@ -204,9 +204,10 @@ namespace TestApplication
 
             var globalMessages = new List<string>();
 
-            Logging.MessageOutput += s =>
+            Logging.MessageOutput += message =>
             {
-                globalMessages.Add(s);
+                globalMessages.Add(message);
+                Logging.Log(message);
             };
 
             #endregion
@@ -315,7 +316,7 @@ namespace TestApplication
             MenuItem id_07a6a66f53834d3784f221b41cda487b = new MenuItem(header: "Generics test") {  };
             EventLambda id_e133c85acdac40c1afbbd4b0ee21eb2a = new EventLambda() { Lambda = () =>{var node = mainGraph.Nodes.First() as ALANode;node.Model.UpdateGeneric(0, "testType");} };
             Horizontal statusBarHorizontal = new Horizontal() { InstanceName = "statusBarHorizontal" };
-            Text globalMessageTextDisplay = new Text(text: "Global message text") { InstanceName = "globalMessageTextDisplay", Height = 20 };
+            Text globalMessageTextDisplay = new Text(text: "") { InstanceName = "globalMessageTextDisplay", Height = 20 };
             EventLambda id_a6e8f322f210437299111bc385f9ba4a = new EventLambda() { Lambda = () =>{Logging.MessageOutput += message => (globalMessageTextDisplay as IDataFlow<string>).Data = message;} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
@@ -458,6 +459,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

@@ -3886,7 +3886,7 @@
       "NodeParameters": [
         {
           "Name": "text",
-          "Value": "\"Global message text\"",
+          "Value": "\"\"",
           "ParameterType": "Constructor"
         },
         {
