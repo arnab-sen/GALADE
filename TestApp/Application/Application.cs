@@ -315,9 +315,11 @@ namespace TestApplication
             EventConnector id_24748e5db5c74497a756acd21c83976b = new EventConnector() {  };
             MenuItem id_07a6a66f53834d3784f221b41cda487b = new MenuItem(header: "Generics test") {  };
             EventLambda id_e133c85acdac40c1afbbd4b0ee21eb2a = new EventLambda() { Lambda = () =>{var node = mainGraph.Nodes.First() as ALANode;node.Model.UpdateGeneric(0, "testType");} };
-            Horizontal statusBarHorizontal = new Horizontal() { InstanceName = "statusBarHorizontal" };
+            Horizontal statusBarHorizontal = new Horizontal() { InstanceName = "statusBarHorizontal", Margin = new Thickness(5) };
             Text globalMessageTextDisplay = new Text(text: "") { InstanceName = "globalMessageTextDisplay", Height = 20 };
             EventLambda id_a6e8f322f210437299111bc385f9ba4a = new EventLambda() { Lambda = () =>{Logging.MessageOutput += message => (globalMessageTextDisplay as IDataFlow<string>).Data = message;} };
+            EventLambda id_305af633e78d4341bd6ecc1672fa7fca = new EventLambda() { Lambda = () =>{Logging.Message("Beginning code generation...");} };
+            EventLambda id_698c68c998c1487784a0096658c4eea6 = new EventLambda() { Lambda = () =>{Logging.Message("Completed code generation!");} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -424,6 +426,7 @@ namespace TestApplication
             id_7d0c0ed4d28d49ef9c3e73e78dee6a2e.WireTo(id_cc2179d6fd3c40ea9df3096821dd35f5, "fileContentOutput");
             id_cc2179d6fd3c40ea9df3096821dd35f5.WireTo(id_120a171e9efd40c6a79fdff7dc26f797, "fanoutList");
             generateCode.WireTo(id_e2c33a51ebaa48ccb7093b8d37cb6df1, "fanoutList");
+            generateCode.WireTo(id_305af633e78d4341bd6ecc1672fa7fca, "fanoutList");
             generateCode.WireTo(id_adf7c73611c64ab893bea592df4d7bb2, "fanoutList");
             generateCode.WireTo(id_24748e5db5c74497a756acd21c83976b, "complete");
             id_82f4a2f0b6e74e58ac34aa0c84ad1820.WireTo(id_3e1f6938cd654c7bb272ad108ab5875b, "filePathInput");
@@ -433,6 +436,7 @@ namespace TestApplication
             id_ac061441d04c4d50bf4feee0774455b1.WireTo(id_7cddbf2f5cb843978be7bc94422952ac, "newFileContentsOutput");
             id_24748e5db5c74497a756acd21c83976b.WireTo(id_120a171e9efd40c6a79fdff7dc26f797, "fanoutList");
             id_24748e5db5c74497a756acd21c83976b.WireTo(id_ac061441d04c4d50bf4feee0774455b1, "fanoutList");
+            id_24748e5db5c74497a756acd21c83976b.WireTo(id_698c68c998c1487784a0096658c4eea6, "complete");
             id_07a6a66f53834d3784f221b41cda487b.WireTo(id_e133c85acdac40c1afbbd4b0ee21eb2a, "clickedEvent");
             statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
             // END AUTO-GENERATED WIRING FOR Application.xmind
@@ -459,6 +463,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

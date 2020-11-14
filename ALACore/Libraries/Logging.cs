@@ -56,6 +56,11 @@ namespace Libraries
             }
         }
 
+        /// <summary>
+        /// Output a message to the user. This differs from Log in that debug info should not be included here.
+        /// Instead, only output messages that you expect the user to read.
+        /// </summary>
+        /// <param name="message"></param>
         public static void Message(string message)
         {
             MessageOutput?.Invoke(message);

@@ -139,6 +139,7 @@
     <Compile Include="DomainAbstractions\Data.cs" />
     <Compile Include="DomainAbstractions\AbstractionModel.cs" />
     <Compile Include="DomainAbstractions\DirectorySearch.cs" />
+    <Compile Include="DomainAbstractions\DispatcherData.cs" />
     <Compile Include="DomainAbstractions\DispatcherEvent.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\FolderWatcher.cs" />
