@@ -406,7 +406,7 @@ namespace TestApplication
             ForEach<LocalDeclarationStatementSyntax> id_9159f6dcfacb46dcaf5f87754cd5a711 = new ForEach<LocalDeclarationStatementSyntax>() {  };
             DispatcherData<LocalDeclarationStatementSyntax> id_981732d1fe5d4504baae744ad84c7100 = new DispatcherData<LocalDeclarationStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
             DataFlowConnector<LocalDeclarationStatementSyntax> id_067e853a88c74951870f18d01583d89a = new DataFlowConnector<LocalDeclarationStatementSyntax>() {  };
-            ApplyAction<LocalDeclarationStatementSyntax> id_6271904b1b804398bfb1b17ddfd4bf24 = new ApplyAction<LocalDeclarationStatementSyntax>() { Lambda = instantiation =>{_instCount++;var variableName = instantiation.Declaration.Variables.First().Identifier.ToString();var fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;Logging.Message($"Creating node {fullType} {variableName} ({_instCount}/{_instTotal})");} };
+            ApplyAction<LocalDeclarationStatementSyntax> id_6271904b1b804398bfb1b17ddfd4bf24 = new ApplyAction<LocalDeclarationStatementSyntax>() { Lambda = instantiation =>{_instCount++;var variableName = instantiation.Declaration.Variables.First().Identifier.ToString();var fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;Logging.Message($"Creating node {fullType} {variableName} ({_instCount}/{_instTotal})...");} };
             DispatcherData<LocalDeclarationStatementSyntax> id_8770ef754e7349e283faf7107f8a0c39 = new DispatcherData<LocalDeclarationStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
             ApplyAction<LocalDeclarationStatementSyntax> id_30a039d35ac54acfa38a6b8c45500551 = new ApplyAction<LocalDeclarationStatementSyntax>() { Lambda = CreateNode };
             EventLambda id_74e03753836846afaaa2e5eda3d32c27 = new EventLambda() { Lambda = () =>{_instCount = 0;Logging.Message($"{_nodesByName.Keys.Count}/{_instTotal} nodes created.");} };
@@ -415,7 +415,7 @@ namespace TestApplication
             ForEach<ExpressionStatementSyntax> id_3b5e272eaa4b4495ba21975f6aee0031 = new ForEach<ExpressionStatementSyntax>() {  };
             DataFlowConnector<ExpressionStatementSyntax> id_37888d1f75934d6887a08bc55c731927 = new DataFlowConnector<ExpressionStatementSyntax>() {  };
             DispatcherData<ExpressionStatementSyntax> id_d8670ae645a24d64864da0a32df4a732 = new DispatcherData<ExpressionStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
-            ApplyAction<ExpressionStatementSyntax> id_4e417613657b4dc18c7d0525092a330a = new ApplyAction<ExpressionStatementSyntax>() { Lambda = wireTo =>{_wireToCount++;var arguments = (wireTo.Expression as InvocationExpressionSyntax).ArgumentList.Arguments;var sourceName = (((wireTo.Expression as InvocationExpressionSyntax)                        ?.Expression as MemberAccessExpressionSyntax)                        ?.Expression as IdentifierNameSyntax)                        ?.Identifier.ToString()                        ?? "";var destinationName = arguments.Count > 0 ? arguments[0].ToString() : "";var sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\', '"') : "";Logging.Message($"Creating wire for {sourceName}.WireTo({destinationName}, \"{sourcePortName}\") ({_wireToCount}/{_wireToTotal})");} };
+            ApplyAction<ExpressionStatementSyntax> id_4e417613657b4dc18c7d0525092a330a = new ApplyAction<ExpressionStatementSyntax>() { Lambda = wireTo =>{_wireToCount++;var arguments = (wireTo.Expression as InvocationExpressionSyntax).ArgumentList.Arguments;var sourceName = (((wireTo.Expression as InvocationExpressionSyntax)                        ?.Expression as MemberAccessExpressionSyntax)                        ?.Expression as IdentifierNameSyntax)                        ?.Identifier.ToString()                        ?? "";var destinationName = arguments.Count > 0 ? arguments[0].ToString() : "";var sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\', '"') : "";Logging.Message($"Creating wire for {sourceName}.WireTo({destinationName}, \"{sourcePortName}\") ({_wireToCount}/{_wireToTotal})...");} };
             DispatcherData<ExpressionStatementSyntax> id_21ee494761ea4d23a7678d39d05e8ff6 = new DispatcherData<ExpressionStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
             ApplyAction<ExpressionStatementSyntax> id_239aab721a604ee79c32c6be900efc37 = new ApplyAction<ExpressionStatementSyntax>() { Lambda = CreateWire };
             EventLambda id_5d0dcadbf08243a692d90ea011545f09 = new EventLambda() { Lambda = () =>{_wireToCount = 0;Logging.Message($"{_wiresById.Keys.Count}/{_wireToTotal} wires created.");} };
@@ -459,6 +459,8 @@ namespace TestApplication
 
     }
 }
+
+
 
 
 

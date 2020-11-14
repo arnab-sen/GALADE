@@ -152,7 +152,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "instantiation =>\r\n{\r\n\t_instCount++;\r\n\tvar variableName = instantiation.Declaration.Variables.First().Identifier.ToString();\r\n\tvar fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;\r\n\tLogging.Message($\"Creating node {fullType} {variableName} ({_instCount}/{_instTotal})\");\r\n}",
+          "Value": "instantiation =>\r\n{\r\n\t_instCount++;\r\n\tvar variableName = instantiation.Declaration.Variables.First().Identifier.ToString();\r\n\tvar fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;\r\n\tLogging.Message($\"Creating node {fullType} {variableName} ({_instCount}/{_instTotal})...\");\r\n}",
           "ParameterType": "Property"
         }
       ],
@@ -425,7 +425,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "wireTo =>\r\n{\r\n\t_wireToCount++;\r\n\t\r\n\tvar arguments = (wireTo.Expression as InvocationExpressionSyntax).ArgumentList.Arguments;\r\n\t\r\n\tvar sourceName = (((wireTo.Expression as InvocationExpressionSyntax)\r\n                        ?.Expression as MemberAccessExpressionSyntax)\r\n                        ?.Expression as IdentifierNameSyntax)\r\n                        ?.Identifier.ToString()\r\n                        ?? \"\";\r\n\r\n\tvar destinationName = arguments.Count > 0 ? arguments[0].ToString() : \"\";\r\n\tvar sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\\\', '\"') : \"\";\r\n\t\r\n\tLogging.Message($\"Creating wire for {sourceName}.WireTo({destinationName}, \\\"{sourcePortName}\\\") ({_wireToCount}/{_wireToTotal})\");\r\n}",
+          "Value": "wireTo =>\r\n{\r\n\t_wireToCount++;\r\n\t\r\n\tvar arguments = (wireTo.Expression as InvocationExpressionSyntax).ArgumentList.Arguments;\r\n\t\r\n\tvar sourceName = (((wireTo.Expression as InvocationExpressionSyntax)\r\n                        ?.Expression as MemberAccessExpressionSyntax)\r\n                        ?.Expression as IdentifierNameSyntax)\r\n                        ?.Identifier.ToString()\r\n                        ?? \"\";\r\n\r\n\tvar destinationName = arguments.Count > 0 ? arguments[0].ToString() : \"\";\r\n\tvar sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\\\', '\"') : \"\";\r\n\t\r\n\tLogging.Message($\"Creating wire for {sourceName}.WireTo({destinationName}, \\\"{sourcePortName}\\\") ({_wireToCount}/{_wireToTotal})...\");\r\n}",
           "ParameterType": "Property"
         }
       ],
