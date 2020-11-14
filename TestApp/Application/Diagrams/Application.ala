@@ -2164,7 +2164,8 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "ff45a1e5026247e58f428bdfc39ce7bd"
+            "ff45a1e5026247e58f428bdfc39ce7bd",
+            "d098e9dfca3148c8817743cb596054bb"
           ]
         }
       ],
@@ -2741,8 +2742,9 @@
           "IsInputPort": false,
           "Index": 0,
           "ConnectionIds": [
-            "cbfee8ce670f434ea70442c695d53d4b",
-            "46b4ecdca5c5402ebf5c53ebdc4f03fd"
+            "11691ceb6909433e94a3b582b4dacb7a",
+            "46b4ecdca5c5402ebf5c53ebdc4f03fd",
+            "cbfee8ce670f434ea70442c695d53d4b"
           ]
         },
         {
@@ -3995,6 +3997,114 @@
         }
       ],
       "Visible": true
+    },
+    {
+      "Id": "2181f612d2374cd292581d92e43fed23",
+      "Type": "ExtractALACode",
+      "Name": "extractALACode",
+      "TreeParent": "2e564dc2204b4e96a2178dd6b61cb605",
+      "Ports": [
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "codeInput",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "instantiationCodeOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "wiringCodeOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "122cab5811fa469abdfd1b4e36e28f68",
+      "Type": "ConvertToEvent<string>",
+      "Name": "",
+      "TreeParent": "9083cba7f786401f872613f39fc2ab1e",
+      "Ports": [
+        {
+          "Type": "IDataFlow<T>",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IEvent",
+          "Name": "eventOutput",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": [
+            "ef01d9cc5ebd4d4089f5cc039b7643e6"
+          ]
+        }
+      ],
+      "NodeParameters": [],
+      "Visible": true
+    },
+    {
+      "Id": "b79514b23eea4e848baf5ad05f0e934e",
+      "Type": "Data<string>",
+      "Name": "",
+      "TreeParent": "122cab5811fa469abdfd1b4e36e28f68",
+      "Ports": [
+        {
+          "Type": "IEvent",
+          "Name": "start",
+          "IsInputPort": true,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "inputDataB",
+          "IsInputPort": false,
+          "Index": 0,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataInput",
+          "IsInputPort": true,
+          "Index": 1,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlowB<string>",
+          "Name": "dataOutputB",
+          "IsInputPort": true,
+          "Index": 2,
+          "ConnectionIds": []
+        },
+        {
+          "Type": "IDataFlow<string>",
+          "Name": "dataOutput",
+          "IsInputPort": false,
+          "Index": 1,
+          "ConnectionIds": []
+        }
+      ],
+      "NodeParameters": [
+        {
+          "Name": "Lambda",
+          "Value": "() => \r\n{\r\n\t/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly */\r\n\tvar sb = new StringBuilder();\r\n\t\r\n\tsb.AppendLine(\"class DummyClass {\");\r\n\tsb.AppendLine(\"void CreateWiring(){\");\r\n\tsb.AppendLine(extractALACode.Instantiations);\r\n\tsb.AppendLine(extractALACode.Wiring);\r\n\tsb.AppendLine(\"}\");\r\n\tsb.AppendLine(\"}\");\r\n\t\r\n\treturn sb.ToString();\r\n}",
+          "ParameterType": "Property"
+        }
+      ],
+      "Visible": true
     }
   ],
   "NodeIds": [
@@ -4099,7 +4209,10 @@
     "e98c0491bfc543a6bbb193a845f90443",
     "a6e8f322f210437299111bc385f9ba4a",
     "305af633e78d4341bd6ecc1672fa7fca",
-    "698c68c998c1487784a0096658c4eea6"
+    "698c68c998c1487784a0096658c4eea6",
+    "2181f612d2374cd292581d92e43fed23",
+    "122cab5811fa469abdfd1b4e36e28f68",
+    "b79514b23eea4e848baf5ad05f0e934e"
   ],
   "Connections": [
     {
@@ -5637,13 +5750,38 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "ff45a1e5026247e58f428bdfc39ce7bd"
+          "ff45a1e5026247e58f428bdfc39ce7bd",
+          "d098e9dfca3148c8817743cb596054bb"
         ]
       },
       "DestinationId": "9083cba7f786401f872613f39fc2ab1e",
       "DestinationPort": {
         "Type": "IDataFlow<string>",
         "Name": "dataInput",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "d098e9dfca3148c8817743cb596054bb",
+      "SourceId": "9083cba7f786401f872613f39fc2ab1e",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "fanoutList",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "11691ceb6909433e94a3b582b4dacb7a",
+          "46b4ecdca5c5402ebf5c53ebdc4f03fd",
+          "cbfee8ce670f434ea70442c695d53d4b"
+        ]
+      },
+      "DestinationId": "2181f612d2374cd292581d92e43fed23",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "codeInput",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
@@ -6041,7 +6179,7 @@
       "Visible": true
     },
     {
-      "Id": "cbfee8ce670f434ea70442c695d53d4b",
+      "Id": "11691ceb6909433e94a3b582b4dacb7a",
       "SourceId": "9083cba7f786401f872613f39fc2ab1e",
       "SourcePort": {
         "Type": "IDataFlow<string>",
@@ -6049,14 +6187,15 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "cbfee8ce670f434ea70442c695d53d4b",
-          "46b4ecdca5c5402ebf5c53ebdc4f03fd"
+          "11691ceb6909433e94a3b582b4dacb7a",
+          "46b4ecdca5c5402ebf5c53ebdc4f03fd",
+          "cbfee8ce670f434ea70442c695d53d4b"
         ]
       },
-      "DestinationId": "f50a9253f5c04b26a24cf2b52e468398",
+      "DestinationId": "122cab5811fa469abdfd1b4e36e28f68",
       "DestinationPort": {
-        "Type": "IDataFlow<string>",
-        "Name": "code",
+        "Type": "IDataFlow<T>",
+        "Name": "start",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
@@ -6072,14 +6211,35 @@
         "IsInputPort": false,
         "Index": 0,
         "ConnectionIds": [
-          "cbfee8ce670f434ea70442c695d53d4b",
-          "46b4ecdca5c5402ebf5c53ebdc4f03fd"
+          "11691ceb6909433e94a3b582b4dacb7a",
+          "46b4ecdca5c5402ebf5c53ebdc4f03fd",
+          "cbfee8ce670f434ea70442c695d53d4b"
         ]
       },
       "DestinationId": "7cf3c04cf59043d9a8043800e1c749d7",
       "DestinationPort": {
         "Type": "IDataFlow<object>",
         "Name": "start",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "cbfee8ce670f434ea70442c695d53d4b",
+      "SourceId": "b79514b23eea4e848baf5ad05f0e934e",
+      "SourcePort": {
+        "Type": "IDataFlow<string>",
+        "Name": "dataOutput",
+        "IsInputPort": false,
+        "Index": 1,
+        "ConnectionIds": []
+      },
+      "DestinationId": "f50a9253f5c04b26a24cf2b52e468398",
+      "DestinationPort": {
+        "Type": "IDataFlow<string>",
+        "Name": "code",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []
@@ -6750,6 +6910,28 @@
       "DestinationPort": {
         "Type": "IUI",
         "Name": "child",
+        "IsInputPort": true,
+        "Index": 0,
+        "ConnectionIds": []
+      },
+      "Visible": true
+    },
+    {
+      "Id": "ef01d9cc5ebd4d4089f5cc039b7643e6",
+      "SourceId": "122cab5811fa469abdfd1b4e36e28f68",
+      "SourcePort": {
+        "Type": "IEvent",
+        "Name": "eventOutput",
+        "IsInputPort": false,
+        "Index": 0,
+        "ConnectionIds": [
+          "ef01d9cc5ebd4d4089f5cc039b7643e6"
+        ]
+      },
+      "DestinationId": "b79514b23eea4e848baf5ad05f0e934e",
+      "DestinationPort": {
+        "Type": "IEvent",
+        "Name": "start",
         "IsInputPort": true,
         "Index": 0,
         "ConnectionIds": []

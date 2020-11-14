@@ -220,6 +220,7 @@
     <Compile Include="RequirementsAbstractions\ALAWire.cs" />
     <Compile Include="RequirementsAbstractions\ALANode.cs" />
     <Compile Include="RequirementsAbstractions\EditSetting.cs" />
+    <Compile Include="RequirementsAbstractions\ExtractALACode.cs" />
     <Compile Include="RequirementsAbstractions\GetSetting.cs" />
     <Compile Include="RequirementsAbstractions\InsertStatements.cs" />
   </ItemGroup>

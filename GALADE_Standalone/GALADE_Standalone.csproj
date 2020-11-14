@@ -128,7 +128,6 @@
     <Compile Include="Application\Modules\CreateConnectionsFromJSON.cs" />
     <Compile Include="Application\Modules\CreateVPGNsFromJSON.cs" />
     <Compile Include="Application\Modules\DragRectMultiSelectNodes.cs" />
-    <Compile Include="Application\Modules\ExtractALACode.cs" />
     <Compile Include="Application\Modules\GenerateCode.cs" />
     <Compile Include="Application\Modules\InsertFileCodeLines.cs" />
     <Compile Include="Application\Modules\LoadGraphFromFile.cs" />
