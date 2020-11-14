@@ -4100,7 +4100,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() => \r\n{\r\n\t/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly */\r\n\tvar sb = new StringBuilder();\r\n\t\r\n\tsb.AppendLine(\"class DummyClass {\");\r\n\tsb.AppendLine(\"void CreateWiring(){\");\r\n\tsb.AppendLine(extractALACode.Instantiations);\r\n\tsb.AppendLine(extractALACode.Wiring);\r\n\tsb.AppendLine(\"}\");\r\n\tsb.AppendLine(\"}\");\r\n\t\r\n\treturn sb.ToString();\r\n}",
+          "Value": "() => \r\n{\r\n\t/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly.\r\n\tTODO: Update CreateDiagramFromCode to use landmarks by default. */\r\n\tvar sb = new StringBuilder();\r\n\t\r\n\tsb.AppendLine(\"class DummyClass {\");\r\n\tsb.AppendLine(\"void CreateWiring() {\");\r\n\tsb.AppendLine(extractALACode.Instantiations);\r\n\tsb.AppendLine(extractALACode.Wiring);\r\n\tsb.AppendLine(\"}\");\r\n\tsb.AppendLine(\"}\");\r\n\t\r\n\treturn sb.ToString();\r\n}",
           "ParameterType": "Property"
         }
       ],
