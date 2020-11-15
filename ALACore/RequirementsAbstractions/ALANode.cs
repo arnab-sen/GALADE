@@ -145,16 +145,21 @@ namespace RequirementsAbstractions
         /// <returns></returns>
         public Box GetPortBox(string name)
         {
-            foreach (var inputPortBox in _inputPortBoxes)
-            {
-                if (inputPortBox.Payload is Port port && port.Name == name) return inputPortBox;
-            }
-
             foreach (var outputPortBox in _outputPortBoxes)
             {
                 if (outputPortBox.Payload is Port port && port.Name == name) return outputPortBox;
             }
 
+            foreach (var inputPortBox in _inputPortBoxes)
+            {
+                if (inputPortBox.Payload is Port port && port.Name == name) return inputPortBox;
+            }
+
+            // Return a default port if no matches are found
+            if (_outputPortBoxes.Any()) return _outputPortBoxes.First();
+            if (_inputPortBoxes.Any()) return _inputPortBoxes.First();
+
+            // Return null if the abstraction has no ports at all
             return null;
         }
 
@@ -274,8 +279,8 @@ namespace RequirementsAbstractions
         {
             var model = new AbstractionModel()
             {
-                Type = "NewNode",
-                Name = "defaultName"
+                Type = "UNKNOWN",
+                Name = ""
             };
 
             model.AddImplementedPort("Port", "input");

@@ -29,19 +29,7 @@ namespace Application
 
 
         // Methods
-		
-		public void CreateWiring() // Wiring should always be in a CreateWiring method
-		{		
-            // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var id_bb9476c0448b4417bb857b437ab4687e = new Apply<string, string>() {Lambda=() =>{    DoSomething();}};
-            var id_6327733ea04148289bf5631ba122a37e = new Apply<string, object>() {};
-            // END AUTO-GENERATED INSTANTIATIONS
-			
-			// BEGIN AUTO-GENERATED WIRING
-            id_bb9476c0448b4417bb857b437ab4687e.WireTo(id_6327733ea04148289bf5631ba122a37e, "lambdaInput");
-			// END AUTO-GENERATED WIRING
-		}
-		
+
 		public void DoSomething()
 		{
 			
@@ -49,7 +37,17 @@ namespace Application
 
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
-			CreateWiring();
+			// BEGIN AUTO-GENERATED INSTANTIATIONS
+            var id_12345 = new Data<string>();
+			Data<int> _testData = new Data<int>()
+			{
+            storedData = 10
+			};
+            // END AUTO-GENERATED INSTANTIATIONS
+			
+			// BEGIN AUTO-GENERATED WIRING
+            _testData.WireTo(id_12345, "undefinedPort");
+			// END AUTO-GENERATED WIRING
         }
     }
 }
