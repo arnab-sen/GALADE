@@ -7,6 +7,7 @@ using Libraries;
 using ProgrammingParadigms;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows.Threading;
 
 namespace DomainAbstractions
 {
@@ -33,18 +34,6 @@ namespace DomainAbstractions
 
         public FileBrowser()
         {
-            _openBrowser.FileOk += (sender, args) =>
-            {
-                if (File.Exists(_openBrowser.FileName))
-                {
-                    Output(_openBrowser.FileName);
-                }
-            };
-
-            _saveBrowser.FileOk += (sender, args) =>
-            {
-                Output(_saveBrowser.FileName);
-            };
 
         }
 
@@ -64,14 +53,23 @@ namespace DomainAbstractions
                 if (!string.IsNullOrEmpty(Filter)) _openBrowser.Filter = Filter;
                 if (defaultPathIsValid) _openBrowser.InitialDirectory = DefaultPath;
 
-                _openBrowser.ShowDialog();
+                if (_openBrowser.ShowDialog() == true)
+                {
+                    if (File.Exists(_openBrowser.FileName))
+                    {
+                        Output(_openBrowser.FileName);
+                    }
+                }
             }
             else if (mode == "save")
             {
                 if (!string.IsNullOrEmpty(Filter)) _saveBrowser.Filter = Filter;
                 if (defaultPathIsValid) _saveBrowser.InitialDirectory = DefaultPath;
 
-                _saveBrowser.ShowDialog();
+                if (_saveBrowser.ShowDialog() == true)
+                {
+                    Output(_saveBrowser.FileName);
+                }
             }
         }
     }
