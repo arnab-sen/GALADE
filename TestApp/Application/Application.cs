@@ -319,10 +319,11 @@ namespace TestApplication
             Text globalMessageTextDisplay = new Text(text: "") { InstanceName = "globalMessageTextDisplay", Height = 20 };
             EventLambda id_c4f838d19a6b4af9ac320799ebe9791f = new EventLambda() { Lambda = () =>{Logging.MessageOutput += message => (globalMessageTextDisplay as IDataFlow<string>).Data = message;} };
             EventLambda id_5e77c28f15294641bb881592d2cd7ac9 = new EventLambda() { Lambda = () =>{Logging.Message("Beginning code generation...");} };
-            EventLambda id_3f30a573358d4fd08c4c556281737360 = new EventLambda() { Lambda = () =>{Logging.Message($"Completed code generation successfully at {DateTime.Now:h:mm:ss tt}!");} };
+            EventLambda id_3f30a573358d4fd08c4c556281737360 = new EventLambda() { Lambda = () =>{Logging.Message($"[{DateTime.Now:hh:mm:ss tt}] Completed code generation successfully!");} };
             ExtractALACode extractALACode = new ExtractALACode() { InstanceName = "extractALACode" };
             ConvertToEvent<string> id_13061fa931bc49d599a3a2f0b1cab26c = new ConvertToEvent<string>() {  };
             Data<string> id_a2d71044048840b0a69356270e6520ac = new Data<string>() { Lambda = () => {/* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to use landmarks by default. */var sb = new StringBuilder();sb.AppendLine("class DummyClass {");sb.AppendLine("void CreateWiring() {");sb.AppendLine(extractALACode.Instantiations);sb.AppendLine(extractALACode.Wiring);sb.AppendLine("}");sb.AppendLine("}");return sb.ToString();} };
+            KeyEvent id_a26b08b25184469db6f0c4987d4c68dd = new KeyEvent(eventName: "KeyDown") { Keys = new[] { Key.LeftCtrl, Key.S} };
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -338,6 +339,7 @@ namespace TestApplication
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_44b41ddf67864f29ae9b59ed0bec2927, "eventHandlers");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_1de443ed1108447199237a8c0c584fcf, "eventHandlers");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_2a7c8f3b6b5e4879ad5a35ff6d8538fd, "eventHandlers");
+            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_a26b08b25184469db6f0c4987d4c68dd, "eventHandlers");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu");
             id_855f86954b3e4776909cde23cd96d071.WireTo(id_ad29db53c0d64d4b8be9e31474882158, "eventHappened");
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children");
@@ -429,6 +431,7 @@ namespace TestApplication
             id_c5fdc10d2ceb4577bef01977ee8e9dd1.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "settingJsonOutput");
             id_72140c92ac4f4255abe9d149068fa16f.WireTo(id_1d55a1faa3dd4f78ad22ac73051f5d2d, "fileContentOutput");
             id_1d55a1faa3dd4f78ad22ac73051f5d2d.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "fanoutList");
+            id_a26b08b25184469db6f0c4987d4c68dd.WireTo(generateCode, "eventHappened");
             generateCode.WireTo(id_c5fdc10d2ceb4577bef01977ee8e9dd1, "fanoutList");
             generateCode.WireTo(id_5e77c28f15294641bb881592d2cd7ac9, "fanoutList");
             generateCode.WireTo(id_b5364bf1c9cd46a28e62bb2eb0e11692, "fanoutList");
@@ -447,6 +450,8 @@ namespace TestApplication
             id_a2d71044048840b0a69356270e6520ac.WireTo(id_c72bf019e76a4e44831cc0bba40caa50, "dataOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
+            _mainWindow = mainWindow;
+
             // BEGIN MANUAL INSTANTIATIONS
             // var AMM = new AbstractionModelManager();
             // // AMM.OpenFile();
@@ -459,8 +464,6 @@ namespace TestApplication
             // BEGIN MANUAL WIRING
             // END MANUAL WIRING
 
-
-            _mainWindow = mainWindow;
         }
 
         private Application()
@@ -469,6 +472,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
