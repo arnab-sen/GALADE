@@ -464,7 +464,7 @@ namespace TestApplication
 
             var lines = new List<string>()
             {
-                "var data = new Data<string>();",
+                "var data = new Data<string>() { Lambda = () => { DoSomething(); \nDoSomething();}};",
                 "data.WireTo(data, \"output\");"
             };
 

@@ -85,15 +85,28 @@ namespace RequirementsAbstractions
 
             var statements = new List<StatementSyntax>();
 
-            foreach (var line in lines)
+            for (var i = 0; i < lines.Count; i++)
             {
+                var line = lines[i];
                 var node = parser.GetRoot(line).DescendantNodesAndSelf().OfType<StatementSyntax>().FirstOrDefault();
                 if (node == null) return;
 
                 // node = node.ReplaceTrivia(SyntaxTrivia(SyntaxKind.EndOfLineTrivia, "\n"), SyntaxTrivia(SyntaxKind.WhitespaceTrivia, ""));
 
                 // newMethodNode = newMethodNode.AddBodyStatements(node);
-                statements.Add(node.WithLeadingTrivia(TriviaList(Enumerable.Repeat(Space, 8))));
+                if (i == 0)
+                {
+                    statements.Add(node
+                        .WithLeadingTrivia(
+                            TriviaList(SyntaxTrivia(SyntaxKind.WhitespaceTrivia, "            ")))); 
+                }
+                else
+                {
+                    statements.Add(node
+                        .WithLeadingTrivia(
+                            TriviaList(
+                                SyntaxTrivia(SyntaxKind.WhitespaceTrivia, "\n"), SyntaxTrivia(SyntaxKind.WhitespaceTrivia, "            ")))); 
+                }
             }
 
 
