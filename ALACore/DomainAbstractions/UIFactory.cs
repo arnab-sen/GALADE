@@ -14,9 +14,9 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public Func<IUI> GetUIContainer { get; set; }
 
         // Private fields
-        private Func<IUI> _getUIDelegate;
 
         // Ports
         private IDataFlow<object> uiInstanceOutput;
@@ -24,7 +24,7 @@ namespace DomainAbstractions
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            var uiContainer = _getUIDelegate();
+            var uiContainer = GetUIContainer();
             if (uiInstanceOutput != null) uiInstanceOutput.Data = uiContainer;
 
             return uiContainer.GetWPFElement();
@@ -32,9 +32,9 @@ namespace DomainAbstractions
 
         // Methods
 
-        public UIFactory(Func<IUI> getUIContainer)
+        public UIFactory()
         {
-            _getUIDelegate = getUIContainer;
+
         }
     }
 }
