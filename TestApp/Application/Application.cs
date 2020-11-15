@@ -461,6 +461,22 @@ namespace TestApplication
 
 
             _mainWindow = mainWindow;
+
+            var lines = new List<string>()
+            {
+                "var data = new Data<string>();",
+                "data.WireTo(data, \"output\");"
+            };
+
+            var data = new Data<List<string>>() {storedData = lines};
+
+            var writer = new FileWriter() { FilePath = @"D:\Coding\C#\Projects\GALADE\TestApp\Application\ExampleApplication.cs" };
+
+            var destinationCode = File.ReadAllText(@"D:\Coding\C#\Projects\GALADE\TestApp\Application\ExampleApplication.cs");
+
+            data.WireTo(new InsertStatements(){DestinationCode = destinationCode}.WireTo(writer));
+
+            (data as IEvent).Execute();
         }
 
         private Application()

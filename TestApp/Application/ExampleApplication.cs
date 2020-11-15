@@ -30,7 +30,7 @@ namespace Application
 
         // Methods
 
-		public void DoSomething()
+		public void CreateWiring()
 		{
 			
 		}
@@ -45,28 +45,3 @@ namespace Application
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

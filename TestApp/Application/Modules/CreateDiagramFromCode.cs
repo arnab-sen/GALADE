@@ -142,7 +142,7 @@ namespace TestApplication
                     {
                         if (expression is AssignmentExpressionSyntax assignment)
                         {
-                            model.SetValue(assignment.Left.ToString(), assignment.Right.NormalizeWhitespace().ToString(), initialise: true);
+                            model.SetValue(assignment.Left.ToString(), assignment.Right.NormalizeWhitespace(elasticTrivia: true).ToString(), initialise: true);
                         }
                     } 
                 }

@@ -22,7 +22,8 @@ namespace RequirementsAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public string MethodName { get; set; }
+        public string MethodName { get; set; } = "CreateWiring";
+        public string DestinationCode { get; set; }
 
         // Private fields
         private List<string> _inputCodeLines;
@@ -51,7 +52,14 @@ namespace RequirementsAbstractions
         private void InsertLines(List<string> lines)
         {
             var parser = new CodeParser();
-            var destinationCode = destinationCodeInput?.Data;
+            var destinationCode = destinationCodeInput?.Data ?? DestinationCode;
+
+            if (string.IsNullOrEmpty(destinationCode))
+            {
+                Logging.Log("Failed to insert code in InsertStatement: DestinationCode was not provided");
+                return;
+            }
+
             var root = parser.GetRoot(destinationCode);
 
             var methods = parser.GetMethods(root);
@@ -82,7 +90,7 @@ namespace RequirementsAbstractions
                 var node = parser.GetRoot(line).DescendantNodesAndSelf().OfType<StatementSyntax>().FirstOrDefault();
                 if (node == null) return;
 
-                node = node.ReplaceTrivia(SyntaxTrivia(SyntaxKind.EndOfLineTrivia, "\n"), SyntaxTrivia(SyntaxKind.WhitespaceTrivia, ""));
+                // node = node.ReplaceTrivia(SyntaxTrivia(SyntaxKind.EndOfLineTrivia, "\n"), SyntaxTrivia(SyntaxKind.WhitespaceTrivia, ""));
 
                 // newMethodNode = newMethodNode.AddBodyStatements(node);
                 statements.Add(node.WithLeadingTrivia(TriviaList(Enumerable.Repeat(Space, 8))));
@@ -102,7 +110,12 @@ namespace RequirementsAbstractions
             //     newMethodNode.NormalizeWhitespace().WithLeadingTrivia(destinationMethod?.GetLeadingTrivia() ?? default)
             //     .WithTrailingTrivia(destinationMethod?.GetTrailingTrivia() ?? default));
             
-            _newCode = _root.NormalizeWhitespace().ToString();
+            // _newCode = _root.NormalizeWhitespace(elasticTrivia: true).ToString();
+
+            Formatter.Format(_root.WithAdditionalAnnotations(SyntaxAnnotation.ElasticAnnotation), new AdhocWorkspace());
+
+            _newCode = _root.ToString();
+
         }
 
         public InsertStatements()
