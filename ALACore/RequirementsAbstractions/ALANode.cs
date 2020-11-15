@@ -996,7 +996,6 @@ namespace RequirementsAbstractions
             var id_9c912c6b764641d592796b0d3753424b = new MenuItem(header:"Through your default external editor") {};
             var id_736f961d1ae84d80bfa4570d41685828 = new MenuItem(header:"Through the GALADE text editor") {};
             var id_a09b14f6afef41e59fac3fd10dd6ce00 = new Data<string>() {Lambda=Model.GetCodeFilePath};
-            var id_8725125c990e428181b7b064a7b95b72 = new ApplyAction<object>() {Lambda=input => AddUIEventsToNode(input as Box)};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -1010,13 +1009,14 @@ namespace RequirementsAbstractions
             id_403baaf79a824981af02ae135627767f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "children");
             id_9c912c6b764641d592796b0d3753424b.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent");
             id_736f961d1ae84d80bfa4570d41685828.WireTo(id_a09b14f6afef41e59fac3fd10dd6ce00, "clickedEvent");
-            rootUI.WireTo(id_8725125c990e428181b7b064a7b95b72, "eventHandlers");
             // END AUTO-GENERATED WIRING
 
             Render = _nodeMask;
             _nodeMask.Children.Clear();
             _detailedRender.Child = (rootUI as IUI).GetWPFElement();
             _nodeMask.Children.Add(_detailedRender);
+
+            AddUIEventsToNode(rootUI);
 
             // Instance mapping
             _rootUI = rootUI;
