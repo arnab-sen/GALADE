@@ -38,19 +38,23 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
-            var id_12345 = new Data<string>();
-			Data<int> _testData = new Data<int>()
-			{
-            storedData = 10
-			};
             // END AUTO-GENERATED INSTANTIATIONS
 			
 			// BEGIN AUTO-GENERATED WIRING
-            _testData.WireTo(id_12345, "undefinedPort");
 			// END AUTO-GENERATED WIRING
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

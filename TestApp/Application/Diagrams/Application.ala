@@ -3993,7 +3993,7 @@
       "NodeParameters": [
         {
           "Name": "Lambda",
-          "Value": "() =>\r\n{\r\n\tLogging.Message(\"Completed code generation!\");\r\n}",
+          "Value": "() =>\r\n{\r\n\tLogging.Message($\"Completed code generation successfully at {DateTime.Now:hh-mm-ss}!\");\r\n}",
           "ParameterType": "Property"
         }
       ],
