@@ -33,7 +33,7 @@ namespace RequirementsAbstractions
         public string Type { get; set; } = "?";
         public string Name => !string.IsNullOrWhiteSpace(Model?.Name) ? Model.Name : "id_" + Id;
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
-        public List<string> AvailableDomainAbstractions { get; } = new List<string>();
+        public List<string> AvailableAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
         public Graph Graph { get; set; }
         // public List<object> Edges { get; } = new List<object>();
@@ -861,7 +861,7 @@ namespace RequirementsAbstractions
             var nodeIdRow = new Horizontal();
             var nodeTypeDropDownMenu = new DropDownMenu()
             {
-                Items = AvailableDomainAbstractions,
+                Items = AvailableAbstractions,
                 Text = Model.Type,
                 Width = 100
             };

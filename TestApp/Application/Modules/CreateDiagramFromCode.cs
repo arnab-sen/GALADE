@@ -284,7 +284,7 @@ namespace TestApplication
             node.Graph = Graph;
             node.Canvas = Canvas;
             node.StateTransition = StateTransition;
-            node.AvailableDomainAbstractions.AddRange(
+            node.AvailableAbstractions.AddRange(
                 ModelManager.GetAbstractionTypes());
 
             node.TypeChanged += newType =>
