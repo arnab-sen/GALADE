@@ -996,7 +996,6 @@ namespace RequirementsAbstractions
                 if (Mouse.LeftButton == MouseButtonState.Pressed)
                 {
                     var mousePos = Mouse.GetPosition(Canvas);
-                    var oldPosition = new Point(PositionX, PositionY);
                     PositionX = mousePos.X - _mousePosInBox.X;
                     PositionY = mousePos.Y - _mousePosInBox.Y;
                     PositionChanged?.Invoke();
