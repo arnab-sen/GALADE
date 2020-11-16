@@ -217,6 +217,8 @@ namespace TestApplication
             WPFCanvas mainCanvas = new WPFCanvas();
             AbstractionModelManager abstractionModelManager = new AbstractionModelManager();
 
+            List<string> availableAbstractions = null;
+
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
             var id_ee1e7b52a2e8458fbd2a889433dfca79 = new Vertical() {Layouts=new[]{0, 2, 0}};
@@ -231,7 +233,9 @@ namespace TestApplication
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {};
             var id_15060f49bdb841e5beeca76952775df3 = new ApplyAction<ALANode>() {Lambda=node =>{    Dispatcher.CurrentDispatcher.Invoke(() =>    {        var edges = mainGraph.Edges;        foreach (var edge in edges)        {            (edge as ALAWire).Refresh();        }    }    , DispatcherPriority.ContextIdle);}};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Keys=new[]{Key.R}};
-            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.AvailableAbstractions.AddRange(abstractionModelManager.GetAbstractionTypes());    node.TypeChanged += newType =>    {        abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType), node.Model);        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;
+                if (availableAbstractions == null
+                ) availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType), node.Model);        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
             var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {};
             var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {};
             var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {};

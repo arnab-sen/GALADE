@@ -90,7 +90,7 @@ namespace RequirementsAbstractions
         }
 
         public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;
-        public List<string> GetAbstractionTypes() => _abstractionModels.Keys.OrderBy(s => s).ToList();
+        public List<string> GetAbstractionTypes() => _abstractionModels.Keys.ToList();
 
         private bool MatchStartOfString(string candidate, IEnumerable<string> set, string prefix = "", string suffix = "")
         {
