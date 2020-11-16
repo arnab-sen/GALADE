@@ -215,7 +215,7 @@ namespace DomainAbstractions
             // if (x2 > x1 && y2 > y1) then currently in the first (bottom right) quadrant, no change needed
             if (x2 < x1 && y2 > y1) // In the second (bottom left) quadrant
             {
-                angle = 90 + (90 - angle); // Triangle is mirrored horizontally but not vertically so need to negate the angle
+                angle = 90 + (90 - angle); // Triangle is mirrored horizontally but not vertically, so need to negate the angle
             }
             else if (x2 < x1 && y2 < y1) // In the third (top left) quadrant
             {
@@ -223,7 +223,7 @@ namespace DomainAbstractions
             }
             else if (x2 > x1 && y2 < y1) // In the fourth (top right) quadrant
             {
-                angle = 270 + (90 - angle); // Triangle is mirrored vertically but not horizontally so need to negate the angle
+                angle = 270 + (90 - angle); // Triangle is mirrored vertically but not horizontally, so need to negate the angle
             }
 
             if (_arrowCap.RenderTransform != null && _arrowCap.RenderTransform is RotateTransform transform)
