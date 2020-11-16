@@ -109,10 +109,10 @@ namespace RequirementsAbstractions
         private List<DropDownMenu> _genericDropDowns = new List<DropDownMenu>();
 
         // Global instances
+        public Vertical _inputPortsVert;
+        public Vertical _outputPortsVert;
         public StackPanel _parameterRowsPanel = new StackPanel();
-        private Data<object> _refreshInputPorts;
-        private Data<object> _refreshOutputPorts;
-        private Horizontal _nodeIdRow;
+        private IUI _nodeIdRow;
 
         // Ports
 
@@ -165,9 +165,9 @@ namespace RequirementsAbstractions
             Render.Dispatcher.Invoke(() =>
             {
                 UpdateNodeParameters();
-                (_refreshInputPorts as IEvent).Execute();
-                (_refreshOutputPorts as IEvent).Execute();
-                (_nodeIdRow as IUI).GetWPFElement();
+                RefreshPorts(inputPorts: true);
+                RefreshPorts(inputPorts: false);
+                _nodeIdRow.GetWPFElement();
                 Model.RefreshGenericsInPorts();
             }, DispatcherPriority.Loaded);
             
@@ -354,6 +354,8 @@ namespace RequirementsAbstractions
 		        Width = 100,
                 Height = 25
 	        };
+
+            SubscribeTextEditingEvent(dropDown);
 		        
 	        var textBox = new TextBox() 
 	        {
@@ -363,6 +365,8 @@ namespace RequirementsAbstractions
 		        Font = "Consolas",
                 TabString = "    "
 	        };
+
+            SubscribeTextEditingEvent(textBox);
 
             textBox.WireTo(new ApplyAction<string>()
             {
@@ -378,6 +382,7 @@ namespace RequirementsAbstractions
 		        Height = 20
 	        };
 	        
+
 	        var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;
 	        
 	        var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
@@ -385,6 +390,7 @@ namespace RequirementsAbstractions
 	        dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);
 	        
 	        dropDownUI.SelectionChanged += (sender, args) => textBox.Text = Model.GetValue(dropDownUI.SelectedValue?.ToString() ?? "");
+
 	        
 	        var horiz = new Horizontal();
 	        horiz.WireTo(dropDown, "children");
@@ -637,6 +643,18 @@ namespace RequirementsAbstractions
             return SeparatedList<ExpressionSyntax>(list);
         }
 
+        private void SubscribeTextEditingEvent(TextBox textBox)
+        {
+            var textBoxUI = ((textBox as IUI).GetWPFElement() as System.Windows.Controls.TextBox);
+            textBoxUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+        }
+
+        private void SubscribeTextEditingEvent(DropDownMenu dropDown)
+        {
+            var dropDownUI = ((dropDown as IUI).GetWPFElement() as System.Windows.Controls.ComboBox);
+            dropDownUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+        }
+
         private IUI CreateTypeGenericsDropDownMenus()
         {
             var horiz = new Horizontal() { };
@@ -687,16 +705,30 @@ namespace RequirementsAbstractions
                 Margin = new Thickness(0)
             };
 
+            if (inputPorts)
+            {
+                _inputPortsVert = portsVert;
+            }
+            else
+            {
+                _outputPortsVert = portsVert;
+            }
+
+            RefreshPorts(inputPorts: inputPorts);
+
+            return portsVert;
+        }
+
+        private void RefreshPorts(bool inputPorts = true)
+        {
             var ports = inputPorts ? GetImplementedPorts() : GetAcceptedPorts();
 
             var notUpdated = UpdatePorts(ports);
 
             foreach (var port in notUpdated)
             {
-                SetUpPortBox(port, portsVert);
+                SetUpPortBox(port, inputPorts ? _inputPortsVert : _outputPortsVert);
             }
-
-            return portsVert;
         }
 
 
@@ -802,7 +834,8 @@ namespace RequirementsAbstractions
                 Margin = new Thickness(1, 0, 1, 0)
             };
 
-            nodeMiddle.WireTo(CreateNodeIdRow(), "children");
+            _nodeIdRow = CreateNodeIdRow();
+            nodeMiddle.WireTo(_nodeIdRow, "children");
             nodeMiddle.WireTo(CreateParameterRowVert(), "children");
             nodeMiddle.WireTo(CreateAddNewParameterRowHoriz(), "children");
 
@@ -834,6 +867,9 @@ namespace RequirementsAbstractions
             nodeTypeDropDownMenu.WireTo(typeChanged, "selectedItem");
 
             nodeNameTextBox.WireTo(nameChanged, "textOutput");
+
+            SubscribeTextEditingEvent(nodeTypeDropDownMenu);
+            SubscribeTextEditingEvent(nodeNameTextBox);
 
             return nodeIdRow;
         }
