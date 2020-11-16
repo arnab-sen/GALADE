@@ -27,6 +27,11 @@ namespace TestApplication
         public AbstractionModelManager ModelManager { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public string DefaultModelType { get; set; } = "Apply";
+        
+        /// <summary>
+        /// Determines whether to update the existing graph or to create a new one.
+        /// </summary>
+        public bool Update { get; set; } = false;
 
         // Private fields
         private string _code = "";
@@ -66,7 +71,23 @@ namespace TestApplication
         {
             try
             {
-                Reset();
+                if (!Update) Reset();
+
+                // Should still recreate all wires
+                _wiresById.Clear();
+
+                var edges = Graph.Edges.ToList();
+
+                foreach (object edge in edges)
+                {
+                    if (edge is ALAWire wire && Canvas.Children.Contains(wire.Render))
+                    {
+                        Canvas.Children.Remove(wire.Render);
+                        Graph.DeleteEdge(edge);
+                    }
+                }
+
+                Graph.Edges.Clear();
 
                 // Logging.Message("Beginning diagram generation from code...");
 
@@ -156,8 +177,17 @@ namespace TestApplication
                     } 
                 }
 
-                var node = CreateNodeFromModel(model);
-                _nodesByName[node.Name] = node;
+                if (!_nodesByName.ContainsKey(model.Name))
+                {
+                    var node = CreateNodeFromModel(model);
+                    _nodesByName[node.Name] = node; 
+                }
+                else
+                {
+                    var node = _nodesByName[model.Name];
+                    node.Model.CloneFrom(model);
+                    node.UpdateUI();
+                }
 
                 // if (!_rootCreated)
                 // {
@@ -240,7 +270,7 @@ namespace TestApplication
                 _rootCreated = true;
             }
 
-            var wire = CreateWire(source, destination, sourcePort, matchingPort);
+            var wire = CreateALAWire(source, destination, sourcePort, matchingPort);
 
             Graph.AddEdge(wire);
 
@@ -264,7 +294,7 @@ namespace TestApplication
             return destination.GetPortBox(matchingPort.Name);
         }
 
-        private ALAWire CreateWire(ALANode source, ALANode destination, Box sourcePort, Box destinationPort)
+        private ALAWire CreateALAWire(ALANode source, ALANode destination, Box sourcePort, Box destinationPort)
         {
             var wire = new ALAWire()
             {

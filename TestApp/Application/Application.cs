@@ -274,7 +274,7 @@ namespace TestApplication
             var id_bb687ee0b7dd4b86a38a3f81ddbab75f = new MenuItem(header:"Open Code File") {};
             var id_14170585873a4fb6a7550bfb3ce8ecd4 = new FileBrowser() {Mode="Open"};
             var id_2810e4e86da348b98b39c987e6ecd7b6 = new FileReader() {};
-            var id_c72bf019e76a4e44831cc0bba40caa50 = new CreateDiagramFromCode() {Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition};
+            var id_c72bf019e76a4e44831cc0bba40caa50 = new CreateDiagramFromCode() {Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=true};
             var id_f9b8e7f524a14884be753d19a351a285 = new EventConnector() {};
             var id_8fc35564768b4a64a57dc321cc1f621f = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("ProgrammingParadigms"))    {        list = input["ProgrammingParadigms"];    }    return list;}};
             var id_0fd49143884d4a6e86e6ed0ea2f1b5b4 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("RequirementsAbstractions"))    {        list = input["RequirementsAbstractions"];    }    return list;}};
@@ -328,9 +328,8 @@ namespace TestApplication
             var id_a26b08b25184469db6f0c4987d4c68dd = new KeyEvent(eventName:"KeyDown") {Keys=new[]{Key.LeftCtrl, Key.S}};
             var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {};
             var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {};
-            var id_024e0818b9a248568da74b6c75799a46 = new CreateDiagramFromCode() {};
             var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {};
-            var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {Lambda=() => {    mainGraph.Clear();    mainCanvas.Children.Clear();}};
+            var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
             var id_38f485b172f44e038b63a3456b693bf7 = new DataFlowConnector<string>() {};
             var id_d59ccc1fe1ef492e9b436b3464466171 = new ConvertToEvent<string>() {};
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
@@ -457,13 +456,13 @@ namespace TestApplication
             id_a2d71044048840b0a69356270e6520ac.WireTo(id_c72bf019e76a4e44831cc0bba40caa50, "dataOutput");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
-            id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_024e0818b9a248568da74b6c75799a46, "fileContentOutput");
             id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
             id_db598ad59e5542a0adc5df67ced27f73.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "fanoutList");
             id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_38f485b172f44e038b63a3456b693bf7, "selectedFilePathOutput");
             id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d59ccc1fe1ef492e9b436b3464466171, "fanoutList");
             id_d59ccc1fe1ef492e9b436b3464466171.WireTo(id_f3bf83d06926453bb054330f899b605b, "eventOutput");
             id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d56630aa25974f9a9c8d1ecf188f88ac, "fanoutList");
+            id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             _mainWindow = mainWindow;
@@ -488,6 +487,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

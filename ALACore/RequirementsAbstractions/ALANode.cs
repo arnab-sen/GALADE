@@ -294,6 +294,13 @@ namespace RequirementsAbstractions
             NodeParameters.AddRange(Model.GetConstructorArgs().Select(kvp => kvp.Key));
             NodeParameters.AddRange(Model.GetProperties().Select(kvp => kvp.Key));
             NodeParameters.AddRange(Model.GetFields().Select(kvp => kvp.Key));
+
+            foreach (var row in _nodeParameterRows)
+            {
+                var paramName = row.Item2.Text;
+                var paramValueTextBox = row.Item3;
+                paramValueTextBox.Text = Model.GetValue(paramName);
+            }
         }
 
         public void CreateInternals()
