@@ -378,9 +378,9 @@ namespace RequirementsAbstractions
 
             textBox.WireTo(new ApplyAction<string>()
             {
-                Lambda = s =>
+                Lambda = text =>
                 {
-                    Model.SetValue(dropDown.Text, s, initialise: true);
+                    Model.SetValue(dropDown.Text, text, initialise: true);
                 }
             }, "textOutput");
 	        

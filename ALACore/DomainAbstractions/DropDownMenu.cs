@@ -26,7 +26,7 @@ namespace DomainAbstractions
 
         public string Text
         {
-            get => _dropDown.Dispatcher.Invoke(() => _dropDown.SelectedValue.ToString());
+            get => _dropDown.Dispatcher.Invoke(() => _dropDown.Text);
             set
             {
                 _dropDown.Dispatcher.Invoke(() => _dropDown.Text = value);
