@@ -76,6 +76,13 @@ namespace DomainAbstractions
         public object Get(string key) => _payload.ContainsKey(key) ? _payload[key] : null;
         public void Set(string key, object value) => _payload[key] = value;
 
+        public void Clear()
+        {
+            Nodes.Clear();
+            Edges.Clear();
+            Roots.Clear();
+        }
+
         public Graph()
         {
 

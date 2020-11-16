@@ -55,10 +55,19 @@ namespace TestApplication
         }
 
         // Methods
+        public void Reset()
+        {
+            _nodesByName.Clear();
+            _wiresById.Clear();
+            _rootCreated = false;
+        }
+
         public void Create(string code)
         {
             try
             {
+                Reset();
+
                 // Logging.Message("Beginning diagram generation from code...");
 
                 _code = code;
@@ -312,7 +321,7 @@ namespace TestApplication
             return node;
         }
 
-        public void CreateWiring()
+        public CreateDiagramFromCode()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             DataFlowConnector<string> startCreation = new DataFlowConnector<string>() { InstanceName = "startCreation" };
@@ -359,11 +368,6 @@ namespace TestApplication
 
             // Instance mapping
             _startCreation = startCreation;
-        }
-
-        public CreateDiagramFromCode()
-        {
-            CreateWiring();
         }
 
     }

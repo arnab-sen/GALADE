@@ -233,9 +233,7 @@ namespace TestApplication
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {};
             var id_15060f49bdb841e5beeca76952775df3 = new ApplyAction<ALANode>() {Lambda=node =>{    Dispatcher.CurrentDispatcher.Invoke(() =>    {        var edges = mainGraph.Edges;        foreach (var edge in edges)        {            (edge as ALAWire).Refresh();        }    }    , DispatcherPriority.ContextIdle);}};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Keys=new[]{Key.R}};
-            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;
-                if (availableAbstractions == null
-                ) availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType), node.Model);        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType), node.Model);        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
             var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {};
             var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {};
             var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {};
@@ -331,6 +329,10 @@ namespace TestApplication
             var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {};
             var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {};
             var id_024e0818b9a248568da74b6c75799a46 = new CreateDiagramFromCode() {};
+            var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {};
+            var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {Lambda=() => {    mainGraph.Clear();    mainCanvas.Children.Clear();}};
+            var id_38f485b172f44e038b63a3456b693bf7 = new DataFlowConnector<string>() {};
+            var id_d59ccc1fe1ef492e9b436b3464466171 = new ConvertToEvent<string>() {};
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -399,8 +401,6 @@ namespace TestApplication
             id_83c3db6e4dfa46518991f706f8425177.WireTo(layoutDiagram, "clickedEvent");
             id_5297a497d2de44e5bc0ea2c431cdcee6.WireTo(id_9bd4555e80434a7b91b65e0b386593b0, "dataOutput");
             id_9bd4555e80434a7b91b65e0b386593b0.WireTo(id_7fabbaae488340a59d940100d38e9447, "output");
-            id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "clickedEvent");
-            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_d56630aa25974f9a9c8d1ecf188f88ac, "selectedFilePathOutput");
             id_2810e4e86da348b98b39c987e6ecd7b6.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_c4f838d19a6b4af9ac320799ebe9791f, "fanoutList");
             id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
@@ -458,6 +458,12 @@ namespace TestApplication
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
             id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_024e0818b9a248568da74b6c75799a46, "fileContentOutput");
+            id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
+            id_db598ad59e5542a0adc5df67ced27f73.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "fanoutList");
+            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_38f485b172f44e038b63a3456b693bf7, "selectedFilePathOutput");
+            id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d59ccc1fe1ef492e9b436b3464466171, "fanoutList");
+            id_d59ccc1fe1ef492e9b436b3464466171.WireTo(id_f3bf83d06926453bb054330f899b605b, "eventOutput");
+            id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d56630aa25974f9a9c8d1ecf188f88ac, "fanoutList");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             _mainWindow = mainWindow;
@@ -482,6 +488,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
