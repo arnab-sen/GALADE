@@ -41,6 +41,8 @@ namespace DomainAbstractions
         private ScintillaWPF _editor = new ScintillaWPF();
 
         // Ports
+        private IDataFlow<string> textOutput;
+        private IEvent eventEnterPressed;
 
         // IUI implementation
         UIElement IUI.GetWPFElement()

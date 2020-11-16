@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using ScintillaNET.WPF;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
@@ -102,6 +103,7 @@ namespace RequirementsAbstractions
         private List<string> _nodeParameters = new List<string>();
         private List<string> _genericTypeOptions = new List<string>();
         private List<Tuple<Horizontal, DropDownMenu, TextBox, Button>> _nodeParameterRows = new List<Tuple<Horizontal, DropDownMenu, TextBox, Button>>();
+        // private List<Tuple<Horizontal, DropDownMenu, TextEditor, Button>> _nodeParameterRows = new List<Tuple<Horizontal, DropDownMenu, TextEditor, Button>>();
         private Canvas _nodeMask = new Canvas();
         private Border _detailedRender = new Border();
         private UIElement _textMaskRender;
@@ -356,7 +358,7 @@ namespace RequirementsAbstractions
 	        };
 
             SubscribeTextEditingEvent(dropDown);
-		        
+		    
 	        var textBox = new TextBox() 
 	        {
 		        Text = name,
@@ -365,6 +367,12 @@ namespace RequirementsAbstractions
 		        Font = "Consolas",
                 TabString = "    "
 	        };
+            
+            // var textBox = new TextEditor()
+            // {
+            //     Text = name,
+            //     Width = 100
+            // };
 
             SubscribeTextEditingEvent(textBox);
 
@@ -655,6 +663,12 @@ namespace RequirementsAbstractions
             dropDownUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
         }
 
+        private void SubscribeTextEditingEvent(TextEditor textEditor)
+        {
+            var textEditorUI = ((textEditor as IUI).GetWPFElement() as ScintillaWPF);
+            textEditorUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+        }
+
         private IUI CreateTypeGenericsDropDownMenus()
         {
             var horiz = new Horizontal() { };
@@ -939,8 +953,19 @@ namespace RequirementsAbstractions
         {
             var render = nodeBox.Render;
 
+            var toolTipLabel = new System.Windows.Controls.Label()
+            {
+                Content = Model.GetDocumentation()
+            };
+
+            render.ToolTip = new System.Windows.Controls.ToolTip()
+            {
+                Content = toolTipLabel
+            };
+
             render.MouseEnter += (sender, args) =>
             {
+                toolTipLabel.Content = Model.GetDocumentation();
                 nodeBox.Background = NodeHighlightedBackground;
             };
 
@@ -1012,6 +1037,8 @@ namespace RequirementsAbstractions
                     wire.StartMoving(source: false);
                 }
             };
+
+
 
         }
 
