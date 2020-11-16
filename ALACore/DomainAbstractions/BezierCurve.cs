@@ -212,18 +212,18 @@ namespace DomainAbstractions
             angle = angle * 180 / Math.PI; // Convert angle to degrees
 
             // Add an angular offset (90 to 270 deg) based on the current rotational quadrant
-            // if (x2 > x1 && y2 > y1) then currently in the first (bottom right) quadrant
+            // if (x2 > x1 && y2 > y1) then currently in the first (bottom right) quadrant, no change needed
             if (x2 < x1 && y2 > y1) // In the second (bottom left) quadrant
             {
-                angle = 90 + (90 - angle);
+                angle = 90 + (90 - angle); // Triangle is mirrored horizontally but not vertically so need to negate the angle
             }
             else if (x2 < x1 && y2 < y1) // In the third (top left) quadrant
             {
-                angle += 180;
+                angle += 180; // Triangle is mirrored both horizontally and vertically, so the angle just needs to be offset
             }
             else if (x2 > x1 && y2 < y1) // In the fourth (top right) quadrant
             {
-                angle = 270 + (90 - angle);
+                angle = 270 + (90 - angle); // Triangle is mirrored vertically but not horizontally so need to negate the angle
             }
 
             if (_arrowCap.RenderTransform != null && _arrowCap.RenderTransform is RotateTransform transform)
