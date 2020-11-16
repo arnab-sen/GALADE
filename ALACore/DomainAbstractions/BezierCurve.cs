@@ -183,7 +183,7 @@ namespace DomainAbstractions
 
             // Get triangle measurements
 
-            // Since the line is a Bezier curve, the angle that the curve is pointing to is not consistent when compared to a straight line.
+            // Since the line is a Bezier curve, the angle that the curve is pointing with is not consistent when compared to a straight line.
             // Usually, when |Point3.X - Point0.X| >> 0, using the last segment (Point2 to the end point Point3) gives the best approximate angle of rotation.
             // However, as |Point3.X - Point0.X| gets smaller, the angle calculation using the last segment becomes more inaccurate, so for small |Point3.X - Point0.X|,
             // treating the entire curve as a straight line gives a better approximate angle.
