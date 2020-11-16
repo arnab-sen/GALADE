@@ -993,7 +993,7 @@ namespace RequirementsAbstractions
             
             render.MouseMove += (sender, args) =>
             {
-                if (Mouse.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftShift))
+                if (Mouse.LeftButton == MouseButtonState.Pressed)
                 {
                     var mousePos = Mouse.GetPosition(Canvas);
                     var oldPosition = new Point(PositionX, PositionY);
