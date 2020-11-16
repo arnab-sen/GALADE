@@ -124,6 +124,7 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\Modules\CreateDiagramFromCode.cs" />
     <Compile Include="Application\Modules\GenerateALACode.cs" />
+    <Compile Include="Application\Modules\UpdateDiagramFromCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

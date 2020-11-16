@@ -71,7 +71,7 @@ namespace DomainAbstractions
         public List<Port> GetImplementedPorts() => _implementedPorts.Values.ToList();
         public List<Port> GetAcceptedPorts() => _acceptedPorts.Values.ToList();
         public List<string> GetGenerics() => _generics.ToList();
-        public List<int> GetGenericPortIndices(string portName) => _portGenericIndices.ContainsKey(portName) ? _portGenericIndices[portName].ToList() : new List<int>();
+        public List<int> GetPortGenericIndices(string portName) => _portGenericIndices.ContainsKey(portName) ? _portGenericIndices[portName].ToList() : new List<int>();
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
         public string GetCodeFilePath() => CodeFilePath;
@@ -205,18 +205,20 @@ namespace DomainAbstractions
 
             _portsById.Clear();
 
+            _implementedPorts.Clear();
             foreach (var pair in source._implementedPorts)
             {
                 var port = pair.Value;
                 AddImplementedPort(port.Type, port.Name);
-                AddPortGenericIndices(port.Name, source.GetGenericPortIndices(port.Name));
+                AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 
+            _acceptedPorts.Clear();
             foreach (var pair in source._acceptedPorts)
             {
                 var port = pair.Value;
                 AddAcceptedPort(port.Type, port.Name);
-                AddPortGenericIndices(port.Name, source.GetGenericPortIndices(port.Name));
+                AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 
             _fields.Clear();

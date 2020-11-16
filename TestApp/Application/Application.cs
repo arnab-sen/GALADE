@@ -324,6 +324,9 @@ namespace TestApplication
             var id_13061fa931bc49d599a3a2f0b1cab26c = new ConvertToEvent<string>() {};
             var id_a2d71044048840b0a69356270e6520ac = new Data<string>() {Lambda=() =>{ /* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to use landmarks by default. */    var sb = new StringBuilder();    sb.AppendLine("class DummyClass {");    sb.AppendLine("void CreateWiring() {");    sb.AppendLine(extractALACode.Instantiations);    sb.AppendLine(extractALACode.Wiring);    sb.AppendLine("}");    sb.AppendLine("}");    return sb.ToString();}};
             var id_a26b08b25184469db6f0c4987d4c68dd = new KeyEvent(eventName:"KeyDown") {Keys=new[]{Key.LeftCtrl, Key.S}};
+            var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {};
+            var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {};
+            var id_024e0818b9a248568da74b6c75799a46 = new CreateDiagramFromCode() {};
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -386,7 +389,7 @@ namespace TestApplication
             id_c80f46b08d894d4faa674408bf846b3f.WireTo(layoutDiagram, "ifOutput");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_fcc9a08cebcf4c9c89188d7033288e1c, "fanoutList");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList");
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "fanoutList");
+            id_6f93680658e04f8a9ab15337cee1eca3.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "clickedEvent");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete");
             id_1de443ed1108447199237a8c0c584fcf.WireTo(id_46a4d6e6cfb940278eb27561c43cbf37, "eventHappened");
             id_83c3db6e4dfa46518991f706f8425177.WireTo(layoutDiagram, "clickedEvent");
@@ -448,6 +451,9 @@ namespace TestApplication
             statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
             id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(id_a2d71044048840b0a69356270e6520ac, "eventOutput");
             id_a2d71044048840b0a69356270e6520ac.WireTo(id_c72bf019e76a4e44831cc0bba40caa50, "dataOutput");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
+            id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
+            id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_024e0818b9a248568da74b6c75799a46, "fileContentOutput");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             _mainWindow = mainWindow;
@@ -472,6 +478,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
