@@ -993,7 +993,7 @@ namespace RequirementsAbstractions
             
             render.MouseMove += (sender, args) =>
             {
-                if (Mouse.LeftButton == MouseButtonState.Pressed)
+                if (Mouse.LeftButton == MouseButtonState.Pressed && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
                 {
                     var mousePos = Mouse.GetPosition(Canvas);
                     PositionX = mousePos.X - _mousePosInBox.X;
