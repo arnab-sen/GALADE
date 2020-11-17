@@ -337,6 +337,7 @@ namespace TestApplication
             var id_7a3fa22880894f01a993fad31c8354a3 = new Data<string>() {};
             var id_28d229073cb049c997824e1d436eaa7e = new DispatcherEvent() {};
             var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
+            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {Lambda=() => stateTransition.Update(Enums.DiagramMode.Idle)};
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -478,6 +479,7 @@ namespace TestApplication
             id_7a3fa22880894f01a993fad31c8354a3.WireTo(startDiagramCreationProcess, "dataOutput");
             id_2ce385b32256413ab2489563287afaac.WireTo(id_28d229073cb049c997824e1d436eaa7e, "ifOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
+            layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             _mainWindow = mainWindow;
@@ -502,6 +504,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

@@ -135,15 +135,15 @@ namespace DomainAbstractions
             // Right click is used to reset focus to the backgroundCanvas, when it is the only element found from a hit test.
             // Left click is not used here because elements like combobox dropdown menus are treated as popup windows, and don't appear in the hit test results, meaning
             // that a left click on one of those elements would be mistaken for a left click on the blank backgroundCanvas, and unintentionally resetting the focus
-            backgroundCanvas.PreviewMouseRightButtonDown += (sender, args) =>
-            {
-                var hitTestItems = GetHitTestItems(args.GetPosition(backgroundCanvas));
-                if (hitTestItems.Count == 1 && hitTestItems.Last().Equals(backgroundCanvas))
-                {
-                    StateTransition.Update(Enums.DiagramMode.Idle);
-                    backgroundCanvas.Focus();
-                }
-            };
+            // backgroundCanvas.PreviewMouseRightButtonUp += (sender, args) =>
+            // {
+            //     var hitTestItems = GetHitTestItems(args.GetPosition(backgroundCanvas));
+            //     if (hitTestItems.Count == 1 && hitTestItems.Last().Equals(backgroundCanvas) && !_panning)
+            //     {
+            //         StateTransition.Update(Enums.DiagramMode.Idle);
+            //         backgroundCanvas.Focus();
+            //     }
+            // };
 
             // backgroundCanvas.PreviewMouseLeftButtonDown += (sender, args) =>
             // {

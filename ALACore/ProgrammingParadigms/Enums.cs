@@ -41,7 +41,8 @@ namespace ProgrammingParadigms
             SingleConnectionSelect = 1 << 8,
             MovingConnection = 1 << 9,
             AwaitingPortSelection = 1 << 10,
-            AddingCrossConnection = 1 << 11
+            AddingCrossConnection = 1 << 11,
+            Panning = 1 << 12
         }
     }
 }
