@@ -53,7 +53,7 @@ namespace RequirementsAbstractions
 
         // Private fields
         private Box rootUI;
-        private BezierCurve _bezier = new BezierCurve();
+        private CurvedArrow _bezier = new CurvedArrow();
         private ALANode _source;
         private ALANode _destination;
 
@@ -218,20 +218,20 @@ namespace RequirementsAbstractions
         private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var curvedWire = new BezierCurve() {InstanceName="curvedWire"};
+            var curvedWire = new CurvedArrow() {InstanceName="curvedWire"};
             var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} -> {Destination?.Model.Type}{" " + Destination?.Model.Name}";}};
-            var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as BezierCurve).Render};
-            var id_f32929906cd24a5eb978130e10f76155 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as BezierCurve;    curve.Colour = Brushes.LightSkyBlue;}};
-            var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as BezierCurve).Render};
-            var id_2f22cc567e744a88a1e63e7b495af5a6 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as BezierCurve;    curve.Colour = Brushes.Black;}};
+            var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedArrow).Render};
+            var id_f32929906cd24a5eb978130e10f76155 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as CurvedArrow;    curve.Colour = Brushes.LightSkyBlue;}};
+            var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedArrow).Render};
+            var id_2f22cc567e744a88a1e63e7b495af5a6 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as CurvedArrow;    curve.Colour = Brushes.Black;}};
             var wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"};
             var id_5a22e8db5ff94ecf8539826f46c5b735 = new MenuItem(header:"Move source") {};
             var id_262a1b5c183d4b24bf3443567697cef1 = new MenuItem(header:"Move destination") {};
-            var id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {ExtractSender=input => (input as BezierCurve).Render};
+            var id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {ExtractSender=input => (input as CurvedArrow).Render};
             var id_d22091c77e774610943606a3674e7ee5 = new EventLambda() {Lambda=() =>{    if (MovingSource)    {        _bezier.Point0 = Mouse.GetPosition(Canvas);    }    else if (MovingDestination)    {        _bezier.Point3 = Mouse.GetPosition(Canvas);    }}};
             var id_4fa94caebd1040708ad83788d3477089 = new EventLambda() {Lambda=() =>{    StartMoving(source: true);}};
             var id_0f34a06bd3574531a6c9b0579dd8b56a = new EventLambda() {Lambda=() =>{    StartMoving(source: false);}};
-            var id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {ExtractSender=input => (input as BezierCurve).Render};
+            var id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {ExtractSender=input => (input as CurvedArrow).Render};
             var id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))     {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }}};
             var id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header:"Delete wire") {};
             var id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() {Lambda=() =>{    Delete();}};

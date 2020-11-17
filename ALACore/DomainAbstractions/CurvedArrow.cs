@@ -18,9 +18,9 @@ using Point = System.Windows.Point;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// 
+    /// A curved line that can have arrowheads at either end.
     /// </summary>
-    public class BezierCurve : IUI
+    public class CurvedArrow : IUI
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -85,6 +85,9 @@ namespace DomainAbstractions
                 Update();
             }
         }
+
+        public bool StartArrowHead { get; set; } = false;
+        public bool EndArrowHead { get; set; } = true;
 
         public UIElement Render => _render;
 
@@ -240,7 +243,7 @@ namespace DomainAbstractions
 
         public List<Point> GetPoints() => new List<Point>() { Point1, Point2, Point3 };
 
-        public BezierCurve()
+        public CurvedArrow()
         {
 
         }

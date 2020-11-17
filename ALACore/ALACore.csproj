@@ -135,7 +135,7 @@
     <Compile Include="DomainAbstractions\ConditionalData.cs" />
     <Compile Include="DomainAbstractions\ContextMenu.cs" />
     <Compile Include="DomainAbstractions\ConvertToEvent.cs" />
-    <Compile Include="DomainAbstractions\BezierCurve.cs" />
+    <Compile Include="DomainAbstractions\CurvedArrow.cs" />
     <Compile Include="DomainAbstractions\Data.cs" />
     <Compile Include="DomainAbstractions\AbstractionModel.cs" />
     <Compile Include="DomainAbstractions\DirectorySearch.cs" />
