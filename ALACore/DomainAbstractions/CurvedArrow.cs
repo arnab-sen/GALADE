@@ -87,7 +87,7 @@ namespace DomainAbstractions
         }
 
         public bool StartArrowHead { get; set; } = false;
-        public bool EndArrowHead { get; set; } = true;
+        public bool EndArrowHead { get; set; } = false;
 
         public UIElement Render => _render;
 
@@ -146,15 +146,18 @@ namespace DomainAbstractions
 
             _render.Children.Add(_path);
 
-            var trianglePoints = new List<Point>();
-            trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y - _arrowCapWidth / 2.0));
-            trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y + _arrowCapWidth / 2.0));
-            trianglePoints.Add(new Point(Point3.X, Point3.Y));
-            trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y - _arrowCapWidth / 2.0));
+            if (EndArrowHead)
+            {
+                var trianglePoints = new List<Point>();
+                trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y - _arrowCapWidth / 2.0));
+                trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y + _arrowCapWidth / 2.0));
+                trianglePoints.Add(new Point(Point3.X, Point3.Y));
+                trianglePoints.Add(new Point(Point3.X - _arrowCapHeight, Point3.Y - _arrowCapWidth / 2.0));
 
-            _arrowCap.Points = new PointCollection(trianglePoints);
+                _arrowCap.Points = new PointCollection(trianglePoints);
 
-            _render.Children.Add(_arrowCap);
+                _render.Children.Add(_arrowCap); 
+            }
 
             Update();
 
@@ -169,10 +172,13 @@ namespace DomainAbstractions
             _bezier.Point2 = Point2;
             _bezier.Point3 = Point3;
 
-            Canvas.SetLeft(_arrowCap, Point3.X);
-            Canvas.SetTop(_arrowCap, Point3.Y - _arrowCapWidth / 2.0);
+            if (EndArrowHead)
+            {
+                Canvas.SetLeft(_arrowCap, Point3.X);
+                Canvas.SetTop(_arrowCap, Point3.Y - _arrowCapWidth / 2.0);
 
-            AlignArrowCapRotation();
+                AlignArrowCapRotation(); 
+            }
         }
 
         /// <summary>
