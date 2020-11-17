@@ -663,22 +663,11 @@ namespace RequirementsAbstractions
             return SeparatedList<ExpressionSyntax>(list);
         }
 
-        private void SubscribeTextEditingEvent(TextBox textBox)
+        private void SubscribeTextEditingEvent(IUI uiAbstraction)
         {
-            var textBoxUI = ((textBox as IUI).GetWPFElement() as System.Windows.Controls.TextBox);
-            textBoxUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
-        }
-
-        private void SubscribeTextEditingEvent(DropDownMenu dropDown)
-        {
-            var dropDownUI = ((dropDown as IUI).GetWPFElement() as System.Windows.Controls.ComboBox);
-            dropDownUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
-        }
-
-        private void SubscribeTextEditingEvent(TextEditor textEditor)
-        {
-            var textEditorUI = ((textEditor as IUI).GetWPFElement() as ScintillaWPF);
-            textEditorUI.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+            var ui = uiAbstraction.GetWPFElement();
+            ui.GotFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+            ui.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
         }
 
         private IUI CreateTypeGenericsDropDownMenus()
@@ -1000,6 +989,8 @@ namespace RequirementsAbstractions
             {
                 if (Mouse.LeftButton == MouseButtonState.Pressed && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
                 {
+                    if (!Mouse.Captured?.Equals(render) ?? true) Mouse.Capture(render);
+
                     var mousePos = Mouse.GetPosition(Canvas);
                     PositionX = mousePos.X - _mousePosInBox.X;
                     PositionY = mousePos.Y - _mousePosInBox.Y;
@@ -1014,7 +1005,7 @@ namespace RequirementsAbstractions
                 StateTransition.Update(Enums.DiagramMode.IdleSelected);
 
                 _mousePosInBox = Mouse.GetPosition(render);
-                Mouse.Capture(render);
+                // Mouse.Capture(render);
 
                 Graph.Set("SelectedNode", this);
             };
