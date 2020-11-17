@@ -64,10 +64,20 @@ namespace DomainAbstractions
 
         }
 
-        public void Run()
+        public void CreateUI()
         {
             window.Content = iuiStructure?.GetWPFElement();
+        }
+
+        public System.Windows.Application CreateApp()
+        {
             System.Windows.Application app = new System.Windows.Application();
+            return app;
+        }
+
+        public void Run(System.Windows.Application app = null)
+        {
+            if (app == null) app = CreateApp();
 
             app.Run(window);
         }

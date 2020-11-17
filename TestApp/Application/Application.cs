@@ -29,6 +29,14 @@ namespace TestApplication
 
         // Private fields
         private MainWindow _mainWindow = null;
+        private Dictionary<string, string> _startUpSettings = new Dictionary<string, string>()
+        {
+            {"DefaultFilePath", "" },
+            {"LatestDiagramFilePath", "" },
+            {"LatestCodeFilePath", "" },
+            {"ProjectFolderPath", "" },
+            {"ApplicationCodeFilePath", "" }
+        };
 
         // Methods
         private Application Initialize()
@@ -37,46 +45,42 @@ namespace TestApplication
             return this;
         }
 
-        private void AddNewNode(VisualPortGraph graph, StateTransition<Enums.DiagramMode> stateTransition, UndoHistory undoHistory, VisualStyle nodeStyle, VisualStyle portStyle)
+        [STAThread]
+        public static void Main(string[] args)
         {
-            VisualPortGraphNode newNode = new VisualPortGraphNode()
+            Logging.Log(args.ToString());
+
+            Application app = new Application();
+            var mainWindow = app.Initialize()._mainWindow;
+            mainWindow.CreateUI();
+            var windowApp = mainWindow.CreateApp();
+            windowApp.Startup += (sender, eventArgs) =>
             {
-                Graph = graph,
-                StateTransition = stateTransition,
-                NodeStyle = nodeStyle,
-                PortStyle = portStyle,
-                Ports = new List<Port>
-                {
-                    new Port() { Type = "Port", Name = "p0", IsInputPort = true },
-                    new Port() { Type = "Port", Name = "p1", IsInputPort = false }
-                }
+                var filePath = "";
+                if (eventArgs.Args.Length > 0) filePath = eventArgs.Args[0];
+
+                app.ChangeSetting("DefaultFilePath", filePath);
             };
 
-            newNode.ActionPerformed += undoHistory.Push;
-            newNode.Initialise();
+            mainWindow.Run(windowApp);
+        }
 
-            newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
+        public string GetSetting(string name)
+        {
+            var value = "";
+            if (_startUpSettings.ContainsKey(name)) value = _startUpSettings[name];
+            return value;
+        }
 
-            if (graph.GetRoot() == null)
+        public bool ChangeSetting(string name, string value)
+        {
+            if (_startUpSettings.ContainsKey(name))
             {
-                graph.AddNode(newNode);
+                _startUpSettings[name] = value;
+                return true;
             }
-        }
 
-        private void Test(object o)
-        {
-        }
-
-        private void AddEdge(Graph graph, ALANode A, ALANode B, Port sourcePort = null, Port destinationPort = null)
-        {
-
-        }
-
-        [STAThread]
-        public static void Main()
-        {
-            Application app = new Application();
-            app.Initialize()._mainWindow.Run();
+            return false;
         }
 
         private void CreateWiring()
@@ -113,13 +117,7 @@ namespace TestApplication
 
             if (!File.Exists(SETTINGS_FILEPATH))
             {
-                var obj = new JObject();
-                obj["LatestDiagramFilePath"] = "";
-                obj["LatestCodeFilePath"] = "";
-                obj["ProjectFolderPath"] = "";
-                obj["ApplicationCodeFilePath"] = "";
-
-                File.WriteAllText(SETTINGS_FILEPATH, obj.ToString());
+                File.WriteAllText(SETTINGS_FILEPATH, JObject.FromObject(_startUpSettings).ToString());
             }
             #endregion
 
@@ -330,8 +328,15 @@ namespace TestApplication
             var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {};
             var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {};
             var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
-            var id_38f485b172f44e038b63a3456b693bf7 = new DataFlowConnector<string>() {};
+            var startDiagramCreationProcess = new DataFlowConnector<string>() {};
             var id_d59ccc1fe1ef492e9b436b3464466171 = new ConvertToEvent<string>() {};
+            var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"DefaultFilePath") {};
+            var id_d5d3af7a3c9a47bf9af3b1a1e1246267 = new Apply<string, bool>() {Lambda=s => !string.IsNullOrEmpty(s)};
+            var id_2ce385b32256413ab2489563287afaac = new IfElse() {};
+            var id_5e96a550771141bc8cc378e652d16250 = new DataFlowConnector<string>() {};
+            var id_7a3fa22880894f01a993fad31c8354a3 = new Data<string>() {};
+            var id_28d229073cb049c997824e1d436eaa7e = new DispatcherEvent() {};
+            var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
             // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
 
             // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
@@ -458,11 +463,21 @@ namespace TestApplication
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
             id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
             id_db598ad59e5542a0adc5df67ced27f73.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "fanoutList");
-            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_38f485b172f44e038b63a3456b693bf7, "selectedFilePathOutput");
-            id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d59ccc1fe1ef492e9b436b3464466171, "fanoutList");
+            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(startDiagramCreationProcess, "selectedFilePathOutput");
+            startDiagramCreationProcess.WireTo(id_d59ccc1fe1ef492e9b436b3464466171, "fanoutList");
             id_d59ccc1fe1ef492e9b436b3464466171.WireTo(id_f3bf83d06926453bb054330f899b605b, "eventOutput");
-            id_38f485b172f44e038b63a3456b693bf7.WireTo(id_d56630aa25974f9a9c8d1ecf188f88ac, "fanoutList");
+            startDiagramCreationProcess.WireTo(id_d56630aa25974f9a9c8d1ecf188f88ac, "fanoutList");
             id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
+            id_dcd4c90552dc4d3fb579833da87cd829.WireTo(id_5ddd02478c734777b9e6f1079b4b3d45, "delayedEvent");
+            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
+            id_5e96a550771141bc8cc378e652d16250.WireTo(id_d5d3af7a3c9a47bf9af3b1a1e1246267, "fanoutList");
+            id_d5d3af7a3c9a47bf9af3b1a1e1246267.WireTo(id_2ce385b32256413ab2489563287afaac, "output");
+            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_5e96a550771141bc8cc378e652d16250, "settingJsonOutput");
+            id_28d229073cb049c997824e1d436eaa7e.WireTo(id_7a3fa22880894f01a993fad31c8354a3, "delayedEvent");
+            id_7a3fa22880894f01a993fad31c8354a3.WireTo(id_5e96a550771141bc8cc378e652d16250, "inputDataB");
+            id_7a3fa22880894f01a993fad31c8354a3.WireTo(startDiagramCreationProcess, "dataOutput");
+            id_2ce385b32256413ab2489563287afaac.WireTo(id_28d229073cb049c997824e1d436eaa7e, "ifOutput");
+            id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
             // END AUTO-GENERATED WIRING FOR Application.xmind
 
             _mainWindow = mainWindow;
@@ -487,6 +502,20 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
