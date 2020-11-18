@@ -194,6 +194,10 @@ namespace DomainAbstractions
             }
         }
 
+        /// <summary>
+        /// Replaces the contents of this node with that of another source. Note: This is destructive.
+        /// </summary>
+        /// <param name="source"></param>
         public void CloneFrom(AbstractionModel source)
         {
             Type = source.Type;

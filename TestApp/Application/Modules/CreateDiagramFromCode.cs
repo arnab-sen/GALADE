@@ -328,9 +328,7 @@ namespace TestApplication
 
             node.TypeChanged += newType =>
             {
-                ModelManager.UpdateAbstractionModel(
-                    ModelManager.GetAbstractionModel(newType),
-                    node.Model);
+                node.Model.CloneFrom(ModelManager.GetAbstractionModel(newType));
 
                 node.UpdateUI();
 

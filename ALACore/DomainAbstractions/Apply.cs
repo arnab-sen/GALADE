@@ -35,7 +35,7 @@ namespace DomainAbstractions
 
         private void TestLambda(T1 input)
         {
-
+            var a = "";
         }
 
         // IDataFlow<T1> implementation

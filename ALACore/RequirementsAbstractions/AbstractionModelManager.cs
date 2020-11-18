@@ -79,16 +79,6 @@ namespace RequirementsAbstractions
             return null;
         }
 
-        /// <summary>
-        /// Clones an AbstractionModel source into an AbstractionModel destination.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="destination"></param>
-        public void UpdateAbstractionModel(AbstractionModel source, AbstractionModel destination)
-        {
-            destination.CloneFrom(source);
-        }
-
         public AbstractionModel GetAbstractionModel(string type) => _abstractionModels.ContainsKey(type) ? _abstractionModels[type] : null;
         public List<string> GetAbstractionTypes() => _abstractionModels.Keys.ToList();
 

@@ -229,9 +229,8 @@ namespace TestApplication
             var id_54cdb3b62fb0433a996dc0dc58ddfa93 = new RightTreeLayout<ALANode>() {GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50};
             var layoutDiagram = new EventConnector() {InstanceName="layoutDiagram"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {};
-            var id_15060f49bdb841e5beeca76952775df3 = new ApplyAction<ALANode>() {Lambda=node =>{    Dispatcher.CurrentDispatcher.Invoke(() =>    {        var edges = mainGraph.Edges;        foreach (var edge in edges)        {            (edge as ALAWire).Refresh();        }    }    , DispatcherPriority.ContextIdle);}};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Keys=new[]{Key.R}};
-            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        abstractionModelManager.UpdateAbstractionModel(abstractionModelManager.GetAbstractionModel(newType), node.Model);        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType)); node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    return node;}};
             var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {};
             var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {};
             var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {};
@@ -251,14 +250,11 @@ namespace TestApplication
             var id_a2e6aa4f4d8e41b59616d63362768dde = new Box() {Width=100,Height=100};
             var id_826249b1b9d245709de6f3b24503be2d = new TextEditor() {Width=1280,Height=720};
             var id_a1f87102954345b69de6841053fce813 = new DataFlowConnector<string>() {};
-            var projectFolderWatcher = new FolderWatcher() {InstanceName="projectFolderWatcher",RootPath="",Filter="*.cs",PathRegex=@".*\.cs$",WatchSubdirectories=true};
-            var id_9370d465784448c897f2121e81e2ad1a = new Apply<string, object>() {Lambda=input =>{    var newModel = abstractionModelManager.CreateAbstractionModelFromPath(input);    foreach (var node in mainGraph.Nodes)    {        var alaNode = node as ALANode;        if (alaNode.Model.Type != newModel.Type)            continue;        abstractionModelManager.UpdateAbstractionModel(newModel, alaNode.Model);        alaNode.UpdateUI();    }    return input;}};
-            var id_8be754ff1ae8469d85b6c52692dd1628 = new ConvertToEvent<object>() {};
             var id_6d1f4415e8d849e19f5d432ea96d9abb = new MouseButtonEvent(eventName:"MouseRightButtonDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_e7e60dd036af4a869e10a64b2c216104 = new ApplyAction<object>() {Lambda=input =>{    Mouse.Capture(input as WPFCanvas);    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_da4f1dedd74549e283777b5f7259ad7f = new ApplyAction<object>() {Lambda=input =>{    if (Mouse.Captured?.Equals(input) ?? false)        Mouse.Capture(null);    stateTransition.Update(Enums.DiagramMode.Idle);}};
-            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any};
+            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=default};
             var id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}};
             var id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {};
             var id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {};
@@ -284,7 +280,7 @@ namespace TestApplication
             var id_607ebc3589a34e86a6eee0c0639f57cc = new Scale() {WidthMultiplier=0.9,HeightMultiplier=0.9,GetAbsoluteCentre=() => mouseWheelArgs.Data.GetPosition(mainCanvas),GetScaleSensitiveCentre=() => Mouse.GetPosition(mainCanvas)};
             var id_843620b3a9ed45bea231b841b52e5621 = new DataFlowConnector<UIElement>() {};
             var id_04c07393f532472792412d2a555510b9 = new DataFlowConnector<UIElement>() {};
-            var id_841e8fee0e8a4f45819508b2086496cc = new ApplyAction<UIElement>() {Lambda=input =>{ var transform = (input.RenderTransform as TransformGroup)?.Children.OfType<ScaleTransform>().FirstOrDefault();    if (transform == null) return;        var minScale = 0.6; /*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/    bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;    var nodes = mainGraph.Nodes;    foreach (var node in nodes)    {        if (node is ALANode alaNode)            alaNode.ShowTypeTextMask(nodeIsTooSmall);    }}};
+            var id_841e8fee0e8a4f45819508b2086496cc = new ApplyAction<UIElement>() {Lambda=input =>{    var transform = (input.RenderTransform as TransformGroup)?.Children.OfType<ScaleTransform>().FirstOrDefault();    if (transform == null)        return;    var minScale = 0.6; /*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/    bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;    var nodes = mainGraph.Nodes;    foreach (var node in nodes)    {        if (node is ALANode alaNode)            alaNode.ShowTypeTextMask(nodeIsTooSmall);    }}};
             var id_2a7c8f3b6b5e4879ad5a35ff6d8538fd = new MouseWheelEvent(eventName:"MouseWheel") {};
             var id_33990435606f4bbc9ba1786ed05672ab = new Apply<MouseWheelEventArgs, bool>() {Lambda=args =>{    return args.Delta > 0;}};
             var id_6909a5f3b0e446d3bb0c1382dac1faa9 = new IfElse() {};
@@ -357,7 +353,7 @@ namespace TestApplication
             var projectDirectoryTreeHoriz = new Horizontal() {};
             var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom};
             var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {};
-            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Idle};
+            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=default,CurrentStateShouldMatch=Enums.DiagramMode.Any};
             var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {};
             var unhighlightAllWires = new EventLambda() {Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {};
@@ -385,7 +381,6 @@ namespace TestApplication
             getFirstRoot.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "dataOutput");
             layoutDiagram.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList");
             id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_54cdb3b62fb0433a996dc0dc58ddfa93, "fanoutList");
-            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_15060f49bdb841e5beeca76952775df3, "fanoutList");
             id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(layoutDiagram, "eventHappened");
             createNewALANode.WireTo(createAndPaintALAWire, "output");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_f19494c1e76f460a9189c172ac98de60, "children");
@@ -409,11 +404,7 @@ namespace TestApplication
             id_91726b8a13804a0994e27315b0213fe8.WireTo(id_a2e6aa4f4d8e41b59616d63362768dde, "children");
             id_a2e6aa4f4d8e41b59616d63362768dde.WireTo(id_826249b1b9d245709de6f3b24503be2d, "uiLayout");
             id_a1f87102954345b69de6841053fce813.WireTo(id_63088b53f85b4e6bb564712c525e063c, "fanoutList");
-            id_a1f87102954345b69de6841053fce813.WireTo(projectFolderWatcher, "fanoutList");
             id_a1f87102954345b69de6841053fce813.WireTo(id_460891130e9e499184b84a23c2e43c9f, "fanoutList");
-            projectFolderWatcher.WireTo(id_9370d465784448c897f2121e81e2ad1a, "changedFile");
-            id_9370d465784448c897f2121e81e2ad1a.WireTo(id_8be754ff1ae8469d85b6c52692dd1628, "output");
-            id_8be754ff1ae8469d85b6c52692dd1628.WireTo(id_15060f49bdb841e5beeca76952775df3, "eventOutput");
             id_6d1f4415e8d849e19f5d432ea96d9abb.WireTo(id_e7e60dd036af4a869e10a64b2c216104, "argsOutput");
             id_44b41ddf67864f29ae9b59ed0bec2927.WireTo(id_da4f1dedd74549e283777b5f7259ad7f, "argsOutput");
             id_368a7dc77fe24060b5d4017152492c1e.WireTo(id_2f4df1d9817246e5a9184857ec5a2bf8, "transitionOutput");
@@ -553,6 +544,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 
