@@ -175,7 +175,7 @@ namespace RequirementsAbstractions
                 RefreshPorts(inputPorts: true);
                 RefreshPorts(inputPorts: false);
                 _nodeIdRow.GetWPFElement();
-                Model.RefreshGenericsInPorts();
+                Model.RefreshGenerics();
             }, DispatcherPriority.Loaded);
             
             Render.Dispatcher.Invoke(() =>
@@ -321,8 +321,7 @@ namespace RequirementsAbstractions
                 "object"
             };
 
-            Model.RefreshFullTypeWithGenerics();
-            Model.RefreshGenericsInPorts();
+            Model.RefreshGenerics();
 
             CreateWiring();
 

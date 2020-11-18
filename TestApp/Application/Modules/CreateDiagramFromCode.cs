@@ -177,6 +177,8 @@ namespace TestApplication
                     } 
                 }
 
+                model.RefreshGenerics();
+
                 if (!_nodesByName.ContainsKey(model.Name))
                 {
                     var node = CreateNodeFromModel(model);

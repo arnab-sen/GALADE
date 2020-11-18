@@ -352,8 +352,12 @@ namespace DomainAbstractions
 
             _generics[index] = newType;
 
-            RefreshFullTypeWithGenerics();
+            RefreshGenerics();
+        }
 
+        public void RefreshGenerics()
+        {
+            RefreshFullTypeWithGenerics();
             RefreshGenericsInPorts();
         }
 

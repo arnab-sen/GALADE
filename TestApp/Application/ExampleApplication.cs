@@ -30,7 +30,7 @@ namespace Application
 
         // Methods
 
-		public void CreateWiring()
+		public void DoSomething()
 		{
 			
 		}
@@ -38,20 +38,24 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
-            var id_798fc60f12954410b2c64f2f9dcb24a6 = new Apply<T1, T2>() {};
-            var id_d86679376a34439a8a824907fcb2af49 = new ApplyAction<T>() {};
-            var id_3be082c66e214d9eb85f3b1f717dd47f = new Apply<string, string>() {};
-            var id_ecdcc130ff464419a29b6df5306a2049 = new DataFlowConnector<object>() {};
+            var id_798fc60f12954410b2c64f2f9dcb24a6 = new Apply<string, string>() {Lambda=() =>{    DoSomething();    DoSomething();}};
+            var id_3978b85f12654e1a96b0f9fc32e18e16 = new Apply<string, string>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 			
 			// BEGIN AUTO-GENERATED WIRING
-            id_798fc60f12954410b2c64f2f9dcb24a6.WireTo(id_d86679376a34439a8a824907fcb2af49, "lambdaInput");
-			id_798fc60f12954410b2c64f2f9dcb24a6.WireTo(id_ecdcc130ff464419a29b6df5306a2049, "lambdaInput");
-			id_798fc60f12954410b2c64f2f9dcb24a6.WireTo(id_3be082c66e214d9eb85f3b1f717dd47f, "lambdaInput");
+            id_798fc60f12954410b2c64f2f9dcb24a6.WireTo(id_3978b85f12654e1a96b0f9fc32e18e16, "output");
 			// END AUTO-GENERATED WIRING
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
