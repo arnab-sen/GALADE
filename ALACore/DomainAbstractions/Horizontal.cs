@@ -62,15 +62,36 @@ namespace DomainAbstractions
 
             for (var i = 0; i < children.Count; i++)
             {
-                var r = (Ratios != null && i < Ratios.Length) ? Ratios[i] : 100;
+                var ratio = (Ratios != null && i < Ratios.Length) ? Ratios[i] : 100;
+
+                var uiElement = children[i].GetWPFElement();
+                gridPanel.Children.Add(uiElement);
+
                 gridPanel.ColumnDefinitions.Add(new ColumnDefinition() {
-                    Width = new GridLength(r, GridUnitType.Star)
+                    Width = uiElement.Visibility == Visibility.Collapsed ? new GridLength(0, GridUnitType.Auto) : new GridLength(ratio, GridUnitType.Star)
                 });
 
-                var e = children[i].GetWPFElement();
-                gridPanel.Children.Add(e);
-                System.Windows.Controls.Grid.SetColumn(e, i);
-                System.Windows.Controls.Grid.SetRow(e, 0);
+                System.Windows.Controls.Grid.SetColumn(uiElement, i);
+                System.Windows.Controls.Grid.SetRow(uiElement, 0);
+
+                // Hide cell when content is collapsed
+                uiElement.IsVisibleChanged += (sender, args) =>
+                {
+                    if (uiElement.Visibility == Visibility.Collapsed)
+                    {
+                        var index = gridPanel.Children.IndexOf(uiElement);
+                        if (index != -1 && gridPanel.ColumnDefinitions.Count > index) 
+                            gridPanel.ColumnDefinitions[index].Width = new GridLength(0, GridUnitType.Auto);
+                    }
+                    else if (uiElement.Visibility == Visibility.Visible)
+                    {
+                        var index = gridPanel.Children.IndexOf(uiElement);
+                        var width = (Ratios != null && index < Ratios.Length) ? Ratios[index] : 100;
+                        if (index != -1 && gridPanel.ColumnDefinitions.Count > index) 
+                            gridPanel.ColumnDefinitions[index].Width = new GridLength(width, GridUnitType.Star);
+                    }
+                };
+
             }
 
             return gridPanel;
