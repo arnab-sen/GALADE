@@ -342,7 +342,7 @@ namespace TestApplication
             var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {Lambda=input => (input as UIElement)?.Focus()};
             var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3}};
             var sidePanelHoriz = new Horizontal(visible:false) {};
-            var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {};
+            var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {Layouts=new int[]{2}};
             var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {};
             var id_a7a6bd8275dd4fd1a27617400894e790 = new Tab(title:"File Explorer") {};
             var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {};
@@ -351,6 +351,7 @@ namespace TestApplication
             var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {storedData=true};
             var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {storedData=false};
             var canvasDisplayHoriz = new Horizontal() {};
+            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -508,6 +509,7 @@ namespace TestApplication
             id_4dd09c40831648ea884eed68407b900e.WireTo(sidePanelHoriz, "dataOutput");
             id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
             mainHorizontal.WireTo(canvasDisplayHoriz, "children");
+            id_a7a6bd8275dd4fd1a27617400894e790.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "children");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -532,6 +534,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

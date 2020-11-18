@@ -15,9 +15,6 @@ namespace DomainAbstractions
     /// </summary>
     public class Tab : IUI
     {
-        // outputs
-        private List<IUI> tabItemList = new List<IUI>();
-
         // properties
         public string InstanceName = "Default";
         public double FontSize { set => tabItem.FontSize = value; }
@@ -27,6 +24,9 @@ namespace DomainAbstractions
         // private fields
         private TabItem tabItem;
         private StackPanel stackPanel;
+
+        // Ports
+        private List<IUI> children = new List<IUI>();
 
         /// <summary>
         /// UI element that stores the content of each tab
@@ -44,7 +44,7 @@ namespace DomainAbstractions
         // Adds all the IU content into the tab panel
         UIElement IUI.GetWPFElement()
         {
-            foreach (var c in tabItemList) stackPanel.Children.Add(c.GetWPFElement());
+            foreach (var c in children) stackPanel.Children.Add(c.GetWPFElement());
             return tabItem;
         }
     }
