@@ -254,7 +254,7 @@ namespace TestApplication
             var id_e7e60dd036af4a869e10a64b2c216104 = new ApplyAction<object>() {Lambda=input =>{    Mouse.Capture(input as WPFCanvas);    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_da4f1dedd74549e283777b5f7259ad7f = new ApplyAction<object>() {Lambda=input =>{    if (Mouse.Captured?.Equals(input) ?? false)        Mouse.Capture(null);    stateTransition.Update(Enums.DiagramMode.Idle);}};
-            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=default};
+            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() { StateTransition = stateTransition, PreviousStateShouldMatch = Enums.DiagramMode.Any, CurrentStateShouldMatch = Enums.DiagramMode.Any };
             var id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}};
             var id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {};
             var id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {};
@@ -353,7 +353,7 @@ namespace TestApplication
             var projectDirectoryTreeHoriz = new Horizontal() {};
             var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom};
             var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {};
-            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=default,CurrentStateShouldMatch=Enums.DiagramMode.Any};
+            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() { StateTransition = stateTransition, PreviousStateShouldMatch = Enums.DiagramMode.Any, CurrentStateShouldMatch = Enums.DiagramMode.Idle };
             var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {};
             var unhighlightAllWires = new EventLambda() {Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {};
