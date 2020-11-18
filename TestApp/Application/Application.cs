@@ -278,12 +278,13 @@ namespace TestApplication
             var id_0fd49143884d4a6e86e6ed0ea2f1b5b4 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("RequirementsAbstractions"))    {        list = input["RequirementsAbstractions"];    }    return list;}};
             var id_35fceab68423425195096666f27475e9 = new DataFlowConnector<Dictionary<string, List<string>>>() {};
             var id_643997d9890f41d7a3fcab722aa48f89 = new Data<UIElement>() {Lambda=() => mainCanvas};
-            var id_39850a5c8e0941b3bfe846cbc45ebc90 = new Scale() {WidthMultiplier=1.1,HeightMultiplier=1.1};
+            var mouseWheelArgs = new DataFlowConnector<MouseWheelEventArgs>() {};
+            var id_39850a5c8e0941b3bfe846cbc45ebc90 = new Scale() {WidthMultiplier=1.1,HeightMultiplier=1.1,GetAbsoluteCentre=() => mouseWheelArgs.Data.GetPosition(mainCanvas),GetScaleSensitiveCentre=() => Mouse.GetPosition(mainCanvas)};
             var id_261d188e3ce64cc8a06f390ba51e092f = new Data<UIElement>() {Lambda=() => mainCanvas};
-            var id_607ebc3589a34e86a6eee0c0639f57cc = new Scale() {WidthMultiplier=0.9,HeightMultiplier=0.9};
+            var id_607ebc3589a34e86a6eee0c0639f57cc = new Scale() {WidthMultiplier=0.9,HeightMultiplier=0.9,GetAbsoluteCentre=() => mouseWheelArgs.Data.GetPosition(mainCanvas),GetScaleSensitiveCentre=() => Mouse.GetPosition(mainCanvas)};
             var id_843620b3a9ed45bea231b841b52e5621 = new DataFlowConnector<UIElement>() {};
             var id_04c07393f532472792412d2a555510b9 = new DataFlowConnector<UIElement>() {};
-            var id_841e8fee0e8a4f45819508b2086496cc = new ApplyAction<UIElement>() {Lambda=input =>{    if (!(input.RenderTransform is ScaleTransform))        return;    var transform = input.RenderTransform as ScaleTransform;    var minScale = 0.6; /*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/    bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;    var nodes = mainGraph.Nodes;    foreach (var node in nodes)    {        if (node is ALANode alaNode)            alaNode.ShowTypeTextMask(nodeIsTooSmall);    }}};
+            var id_841e8fee0e8a4f45819508b2086496cc = new ApplyAction<UIElement>() {Lambda=input =>{ var transform = (input.RenderTransform as TransformGroup)?.Children.OfType<ScaleTransform>().FirstOrDefault();    if (transform == null) return;        var minScale = 0.6; /*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/    bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;    var nodes = mainGraph.Nodes;    foreach (var node in nodes)    {        if (node is ALANode alaNode)            alaNode.ShowTypeTextMask(nodeIsTooSmall);    }}};
             var id_2a7c8f3b6b5e4879ad5a35ff6d8538fd = new MouseWheelEvent(eventName:"MouseWheel") {};
             var id_33990435606f4bbc9ba1786ed05672ab = new Apply<MouseWheelEventArgs, bool>() {Lambda=args =>{    return args.Delta > 0;}};
             var id_6909a5f3b0e446d3bb0c1382dac1faa9 = new IfElse() {};
@@ -359,6 +360,7 @@ namespace TestApplication
             var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Idle};
             var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {};
             var unhighlightAllWires = new EventLambda() {Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
+            var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -439,7 +441,6 @@ namespace TestApplication
             id_843620b3a9ed45bea231b841b52e5621.WireTo(id_841e8fee0e8a4f45819508b2086496cc, "fanoutList");
             id_04c07393f532472792412d2a555510b9.WireTo(id_607ebc3589a34e86a6eee0c0639f57cc, "fanoutList");
             id_04c07393f532472792412d2a555510b9.WireTo(id_841e8fee0e8a4f45819508b2086496cc, "fanoutList");
-            id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "argsOutput");
             id_33990435606f4bbc9ba1786ed05672ab.WireTo(id_6909a5f3b0e446d3bb0c1382dac1faa9, "output");
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput");
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput");
@@ -525,6 +526,9 @@ namespace TestApplication
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
             id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged");
             id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList");
+            id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_6d789ff1a0bc4a2d8e88733adc266be8, "argsOutput");
+            id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(mouseWheelArgs, "fanoutList");
+            id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -549,6 +553,32 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

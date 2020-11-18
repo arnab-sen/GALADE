@@ -21,6 +21,9 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public double WidthMultiplier { get; set; } = 1.0;
         public double HeightMultiplier { get; set; } = 1.0;
+        public Func<Point> GetAbsoluteCentre { get; set; } = () => new Point(0, 0); // e.g. MouseWheelEventArgs.GetPosition(canvas)
+        public Func<Point> GetScaleSensitiveCentre { get; set; } = () => new Point(0, 0); // e.g. Mouse.GetPosition(canvas)
+        public bool MouseOnElement { get; set; } = true;
 
         // Private fields
         private UIElement _ui;
@@ -45,15 +48,71 @@ namespace DomainAbstractions
         {
             _currentXScale *= WidthMultiplier;
             _currentYScale *= HeightMultiplier;
+            var absCentre = GetAbsoluteCentre();
+            Point scaledCentre;
+            Point centreDiff;
 
-            if (input.RenderTransform is ScaleTransform currentTransform)
+
+            ScaleTransform scaleTransform;
+            TransformGroup transformGroup;
+            TranslateTransform translateTransform;
+
+            if (input.RenderTransform is TransformGroup group)
             {
-                input.RenderTransform = new ScaleTransform(currentTransform.ScaleX * WidthMultiplier, currentTransform.ScaleY * HeightMultiplier);
+                transformGroup = group;
+
+                scaleTransform = transformGroup.Children.OfType<ScaleTransform>().FirstOrDefault();
+                if (scaleTransform != null)
+                {
+                    scaleTransform.ScaleX *= WidthMultiplier;
+                    scaleTransform.ScaleY *= HeightMultiplier;
+                    scaleTransform.CenterX = absCentre.X;
+                    scaleTransform.CenterY = absCentre.Y;
+                }
+                else
+                {
+                    scaleTransform = new ScaleTransform(_currentXScale, _currentYScale, absCentre.X, absCentre.Y);
+                    group.Children.Add(scaleTransform);
+                }
+
+                scaledCentre = GetScaleSensitiveCentre();
+                centreDiff = new Point(scaledCentre.X - absCentre.X, scaledCentre.Y - absCentre.Y);
+                translateTransform = transformGroup.Children.OfType<TranslateTransform>().FirstOrDefault();
+                if (translateTransform != null)
+                {
+                    translateTransform.X += centreDiff.X;
+                    translateTransform.Y += centreDiff.Y;
+                }
+                else
+                {
+                    translateTransform = new TranslateTransform(centreDiff.X, centreDiff.Y);
+                    group.Children.Add(translateTransform);
+                }
+
             }
             else
             {
-                input.RenderTransform = new ScaleTransform(_currentXScale, _currentYScale);
+                transformGroup = new TransformGroup();
+                var otherTransform = input.RenderTransform;
+                if (!(otherTransform is ScaleTransform))
+                {
+                    scaleTransform = new ScaleTransform(_currentXScale, _currentYScale, absCentre.X, absCentre.Y);
+                    transformGroup.Children.Add(scaleTransform); 
+                }
+
+                if (!(otherTransform is TranslateTransform))
+                {
+                    scaledCentre = GetScaleSensitiveCentre();
+                    centreDiff = new Point(scaledCentre.X - absCentre.X, scaledCentre.Y - absCentre.Y);
+                    translateTransform = new TranslateTransform(centreDiff.X, centreDiff.Y);
+                    transformGroup.Children.Add(translateTransform); 
+                }
+                transformGroup.Children.Add(otherTransform);
+
+                input.RenderTransform = transformGroup;
             }
+
+
         }
 
         public Scale()

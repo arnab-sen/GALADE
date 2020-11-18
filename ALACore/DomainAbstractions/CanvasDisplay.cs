@@ -92,6 +92,8 @@ namespace DomainAbstractions
             };
         }
 
+        // Methods
+
         private void Initialise()
         {
             if (foregroundCanvas == null)
@@ -215,6 +217,10 @@ namespace DomainAbstractions
             //
             //     args.Handled = true;
             // };
+        }
+        public void CentreOn(Point point)
+        {
+
         }
 
         private List<object> GetHitTestItems(Point position)
