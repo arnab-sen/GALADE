@@ -987,7 +987,9 @@ namespace RequirementsAbstractions
             
             render.MouseMove += (sender, args) =>
             {
-                if (Mouse.LeftButton == MouseButtonState.Pressed && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
+                if (Mouse.LeftButton == MouseButtonState.Pressed 
+                    && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
                 {
                     if (!Mouse.Captured?.Equals(render) ?? true) Mouse.Capture(render);
 
