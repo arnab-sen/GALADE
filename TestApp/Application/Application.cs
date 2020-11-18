@@ -344,14 +344,18 @@ namespace TestApplication
             var sidePanelHoriz = new Horizontal(visible:false) {};
             var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {Layouts=new int[]{2}};
             var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {};
-            var id_a7a6bd8275dd4fd1a27617400894e790 = new Tab(title:"File Explorer") {};
+            var id_a7a6bd8275dd4fd1a27617400894e790 = new Tab(title:"Directory Explorer") {};
             var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {};
             var id_b5985971664e42b3a5b0869fce7b0f9b = new MenuItem(header:"Show side panel") {};
             var id_ba60beaed16c4e2f8ac431a8174ed12b = new MenuItem(header:"Hide side panel") {};
             var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {storedData=true};
             var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {storedData=false};
             var canvasDisplayHoriz = new Horizontal() {};
-            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {};
+            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {FilenameFilter="*.cs",MaxHeight=500};
+            var id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {};
+            var projectDirectoryTreeHoriz = new Horizontal() {};
+            var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom};
+            var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -509,7 +513,12 @@ namespace TestApplication
             id_4dd09c40831648ea884eed68407b900e.WireTo(sidePanelHoriz, "dataOutput");
             id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
             mainHorizontal.WireTo(canvasDisplayHoriz, "children");
-            id_a7a6bd8275dd4fd1a27617400894e790.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "children");
+            projectDirectoryTreeHoriz.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "children");
+            id_a1f87102954345b69de6841053fce813.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "fanoutList");
+            id_a7a6bd8275dd4fd1a27617400894e790.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
+            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
+            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
+            projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -534,6 +543,24 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
