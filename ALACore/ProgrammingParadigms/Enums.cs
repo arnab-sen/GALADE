@@ -36,7 +36,7 @@ namespace ProgrammingParadigms
             MultiNodeSelect = 1 << 3,
             DragSelect = 1 << 4,
             IdleSelected = 1 << 5,
-            All = 1 << 6,
+            Any = 1 << 6,
             Paused = 1 << 7,
             SingleConnectionSelect = 1 << 8,
             MovingConnection = 1 << 9,

@@ -88,6 +88,7 @@ namespace DomainAbstractions
 
         public bool StartArrowHead { get; set; } = false;
         public bool EndArrowHead { get; set; } = false;
+        public bool Focusable { get; set; } = true;
 
         public UIElement Render => _render;
 
@@ -112,8 +113,19 @@ namespace DomainAbstractions
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-
             _render.Children.Clear();
+
+            if (Focusable)
+            {
+                _render.Focusable = true;
+                _render.FocusVisualStyle = null;
+            }
+            else
+            {
+                _render.Focusable = false;
+            }
+
+
 
             _pathFigure.Segments = new PathSegmentCollection()
             {

@@ -50,6 +50,7 @@ namespace RequirementsAbstractions
         public Box SourcePort { get; set; }
         public Box DestinationPort { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
+        public bool Selected { get; set; } = false;
 
         // Private fields
         private Box rootUI;
@@ -74,6 +75,16 @@ namespace RequirementsAbstractions
             Canvas.Children.Add(Render);
             Canvas.SetLeft(Render, 0);
             Canvas.SetTop(Render, 0);
+        }
+
+        public void Highlight()
+        {
+            _bezier.Colour = Brushes.LightSkyBlue;
+        }
+
+        public void Unhighlight()
+        {
+            _bezier.Colour = Brushes.Black;
         }
 
         public Point GetAttachmentPoint(bool inputPort = false)
@@ -142,7 +153,7 @@ namespace RequirementsAbstractions
 
             // End point
             // _bezier.Point3 = GetCanvasPosition(DestinationPort.Render); 
-            _bezier.Point3 = GetAttachmentPoint(inputPort: true); 
+            _bezier.Point3 = GetAttachmentPoint(inputPort: true);
 
             var midX = (_bezier.Point0.X + _bezier.Point3.X) / 2;
 
@@ -150,6 +161,30 @@ namespace RequirementsAbstractions
             _bezier.Point2 = new Point(midX, _bezier.Point3.Y);
 
             Validate();
+        }
+
+        public void Select()
+        {
+            Selected = true;
+            Highlight();
+        }
+
+        public void Deselect()
+        {
+            Selected = false;
+            Unhighlight();
+        }
+
+        public void ToggleSelect()
+        {
+            if (Selected)
+            {
+                Deselect();
+            }
+            else
+            {
+                Select();
+            }
         }
 
         public void Validate()
@@ -218,12 +253,10 @@ namespace RequirementsAbstractions
         private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var curvedWire = new CurvedLine() {InstanceName="curvedWire"};
+            var curvedWire = new CurvedLine() {};
             var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} -> {Destination?.Model.Type}{" " + Destination?.Model.Name}";}};
             var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render};
-            var id_f32929906cd24a5eb978130e10f76155 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as CurvedLine;    curve.Colour = Brushes.LightSkyBlue;}};
             var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render};
-            var id_2f22cc567e744a88a1e63e7b495af5a6 = new ApplyAction<object>() {Lambda=input =>{    var curve = input as CurvedLine;    curve.Colour = Brushes.Black;}};
             var wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"};
             var id_5a22e8db5ff94ecf8539826f46c5b735 = new MenuItem(header:"Move source") {};
             var id_262a1b5c183d4b24bf3443567697cef1 = new MenuItem(header:"Move destination") {};
@@ -232,9 +265,11 @@ namespace RequirementsAbstractions
             var id_4fa94caebd1040708ad83788d3477089 = new EventLambda() {Lambda=() =>{    StartMoving(source: true);}};
             var id_0f34a06bd3574531a6c9b0579dd8b56a = new EventLambda() {Lambda=() =>{    StartMoving(source: false);}};
             var id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {ExtractSender=input => (input as CurvedLine).Render};
-            var id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))     {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }}};
+            var id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))    {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }    ToggleSelect();}};
             var id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header:"Delete wire") {};
             var id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() {Lambda=() =>{    Delete();}};
+            var id_5724d3f527eb4a69baaceb9929d0361c = new EventLambda() {Lambda=() => {    Highlight();}};
+            var id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {Lambda=() => {    if (!Selected) Unhighlight();}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -244,8 +279,6 @@ namespace RequirementsAbstractions
             curvedWire.WireTo(id_b7877b330b854e33a1cb9ab810091c7f, "eventHandlers");
             curvedWire.WireTo(id_375a4e94d9d34270a4a028096c72ccea, "eventHandlers");
             curvedWire.WireTo(id_a3bafb1880ea4ae3b2825dee844c50b1, "eventHandlers");
-            id_bd225a8fef8e4e2c895b2e67ba4a99f6.WireTo(id_f32929906cd24a5eb978130e10f76155, "sourceOutput");
-            id_b7877b330b854e33a1cb9ab810091c7f.WireTo(id_2f22cc567e744a88a1e63e7b495af5a6, "sourceOutput");
             wireContextMenu.WireTo(id_5a22e8db5ff94ecf8539826f46c5b735, "children");
             wireContextMenu.WireTo(id_262a1b5c183d4b24bf3443567697cef1, "children");
             wireContextMenu.WireTo(id_55239d2e49364d59a3eb3e9a5ad20def, "children");
@@ -254,6 +287,8 @@ namespace RequirementsAbstractions
             id_375a4e94d9d34270a4a028096c72ccea.WireTo(id_d22091c77e774610943606a3674e7ee5, "eventHappened");
             id_a3bafb1880ea4ae3b2825dee844c50b1.WireTo(id_0959a4bad0bd41f4ba02c7725022dc05, "eventHappened");
             id_55239d2e49364d59a3eb3e9a5ad20def.WireTo(id_a06846997c5341ad94996d7aaf6b7e50, "clickedEvent");
+            id_bd225a8fef8e4e2c895b2e67ba4a99f6.WireTo(id_5724d3f527eb4a69baaceb9929d0361c, "eventHappened");
+            id_b7877b330b854e33a1cb9ab810091c7f.WireTo(id_f09af2cbf36c4a1f8b0f7d36707b5779, "eventHappened");
             // END AUTO-GENERATED WIRING
 
             _bezier = curvedWire;
@@ -267,6 +302,20 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

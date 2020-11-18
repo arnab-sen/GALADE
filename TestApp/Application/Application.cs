@@ -218,7 +218,7 @@ namespace TestApplication
             List<string> availableAbstractions = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
+            var mainWindow = new MainWindow(title:"MyApplication") {InstanceName="mainWindow"};
             var mainWindowVertical = new Vertical() {Layouts=new[]{0, 2, 0}};
             var id_88aa5fdf3bbc4e429db278dd29f81159 = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas};
             var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyDown") {Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Keys=new[]{Key.A}};
@@ -258,7 +258,7 @@ namespace TestApplication
             var id_e7e60dd036af4a869e10a64b2c216104 = new ApplyAction<object>() {Lambda=input =>{    Mouse.Capture(input as WPFCanvas);    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_da4f1dedd74549e283777b5f7259ad7f = new ApplyAction<object>() {Lambda=input =>{    if (Mouse.Captured?.Equals(input) ?? false)        Mouse.Capture(null);    stateTransition.Update(Enums.DiagramMode.Idle);}};
-            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,CurrentStateShouldMatch=Enums.DiagramMode.All};
+            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any};
             var id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}};
             var id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {};
             var id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {};
@@ -339,7 +339,7 @@ namespace TestApplication
             var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
             var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {Lambda=() => stateTransition.Update(Enums.DiagramMode.Idle)};
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
-            var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {Lambda=input => (input as UIElement)?.Focus()};
+            var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {Lambda=input =>{    (input as UIElement)?.Focus();    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3}};
             var sidePanelHoriz = new Horizontal(visible:false) {};
             var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {Layouts=new int[]{2}};
@@ -356,6 +356,9 @@ namespace TestApplication
             var projectDirectoryTreeHoriz = new Horizontal() {};
             var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom};
             var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {};
+            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Idle};
+            var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {};
+            var unhighlightAllWires = new EventLambda() {Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -519,6 +522,9 @@ namespace TestApplication
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
             projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
+            id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged");
+            id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -543,6 +549,24 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -26,7 +26,8 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName = "Default";
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
-        public Enums.DiagramMode CurrentStateShouldMatch { get; set; } = Enums.DiagramMode.All;
+        public Enums.DiagramMode PreviousStateShouldMatch { get; set; } = Enums.DiagramMode.Any;
+        public Enums.DiagramMode CurrentStateShouldMatch { get; set; } = Enums.DiagramMode.Any;
 
         // Private fields
 
@@ -49,16 +50,20 @@ namespace DomainAbstractions
         {
             if (StateTransition != null)
             {
-                StateTransition.StateChanged += transition =>
-                    {
-                        if (CurrentStateShouldMatch == Enums.DiagramMode.All || StateTransition.CurrentStateMatches(CurrentStateShouldMatch))
-                        {
-                            stateChanged?.Execute();
-                            if (currentStateOutput != null) currentStateOutput.Data = StateTransition.CurrentState;
-                            if (currentStateAsStringOutput != null) currentStateAsStringOutput.Data = Enum.GetName(typeof(Enums.DiagramMode), StateTransition.CurrentState);
-                            if (transitionOutput != null) transitionOutput.Data = transition;
-                        }
-                    }; 
+                StateTransition.StateChanged += Output;
+                StateTransition.StateRefreshed += Output;
+            }
+        }
+
+        private void Output(Tuple<Enums.DiagramMode, Enums.DiagramMode> transition)
+        {
+            if ((PreviousStateShouldMatch == Enums.DiagramMode.Any || StateTransition.CurrentStateMatches(PreviousStateShouldMatch))
+                && (CurrentStateShouldMatch == Enums.DiagramMode.Any || StateTransition.CurrentStateMatches(CurrentStateShouldMatch)))
+            {
+                stateChanged?.Execute();
+                if (currentStateOutput != null) currentStateOutput.Data = StateTransition.CurrentState;
+                if (currentStateAsStringOutput != null) currentStateAsStringOutput.Data = Enum.GetName(typeof(Enums.DiagramMode), StateTransition.CurrentState);
+                if (transitionOutput != null) transitionOutput.Data = transition;
             }
         }
 
