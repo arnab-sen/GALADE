@@ -217,9 +217,9 @@ namespace TestApplication
 
             List<string> availableAbstractions = null;
 
-            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
+            // BEGIN AUTO-GENERATED INSTANTIATIONS
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
-            var id_ee1e7b52a2e8458fbd2a889433dfca79 = new Vertical() {Layouts=new[]{0, 2, 0}};
+            var mainWindowVertical = new Vertical() {Layouts=new[]{0, 2, 0}};
             var id_88aa5fdf3bbc4e429db278dd29f81159 = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas};
             var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyDown") {Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Keys=new[]{Key.A}};
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {};
@@ -340,14 +340,23 @@ namespace TestApplication
             var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {Lambda=() => stateTransition.Update(Enums.DiagramMode.Idle)};
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
             var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {Lambda=input => (input as UIElement)?.Focus()};
-            // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
+            var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3}};
+            var sidePanelHoriz = new Horizontal(visible:false) {};
+            var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {};
+            var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {};
+            var id_a7a6bd8275dd4fd1a27617400894e790 = new Tab(title:"File Explorer") {};
+            var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {};
+            var id_b5985971664e42b3a5b0869fce7b0f9b = new MenuItem(header:"Show side panel") {};
+            var id_ba60beaed16c4e2f8ac431a8174ed12b = new MenuItem(header:"Hide side panel") {};
+            var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {storedData=true};
+            var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {storedData=false};
+            var canvasDisplayHoriz = new Horizontal() {};
+            // END AUTO-GENERATED INSTANTIATIONS
 
-            // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_ee1e7b52a2e8458fbd2a889433dfca79, "iuiStructure");
+            // BEGIN AUTO-GENERATED WIRING
+            mainWindow.WireTo(mainWindowVertical, "iuiStructure");
             mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart");
-            id_ee1e7b52a2e8458fbd2a889433dfca79.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children");
-            id_ee1e7b52a2e8458fbd2a889433dfca79.WireTo(id_88aa5fdf3bbc4e429db278dd29f81159, "children");
-            id_ee1e7b52a2e8458fbd2a889433dfca79.WireTo(statusBarHorizontal, "children");
+            mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_ed16dd83790542f4bce1db7c9f2b928f, "eventHandlers");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_bbd9df1f15ea4926b97567d08b6835dd, "eventHandlers");
@@ -484,7 +493,22 @@ namespace TestApplication
             layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
             id_0b4478e56d614ca091979014db65d076.WireTo(id_d90fbf714f5f4fdc9b43cbe4d5cebf1c, "senderOutput");
-            // END AUTO-GENERATED WIRING FOR Application.xmind
+            mainWindowVertical.WireTo(mainHorizontal, "children");
+            mainWindowVertical.WireTo(statusBarHorizontal, "children");
+            mainHorizontal.WireTo(sidePanelHoriz, "children");
+            canvasDisplayHoriz.WireTo(id_88aa5fdf3bbc4e429db278dd29f81159, "children");
+            sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children");
+            id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(id_a7a6bd8275dd4fd1a27617400894e790, "childrenTabs");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4a42bbf671cd4dba8987bd656e5a2ced, "children");
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_b5985971664e42b3a5b0869fce7b0f9b, "children");
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_ba60beaed16c4e2f8ac431a8174ed12b, "children");
+            id_b5985971664e42b3a5b0869fce7b0f9b.WireTo(id_4dd09c40831648ea884eed68407b900e, "clickedEvent");
+            id_ba60beaed16c4e2f8ac431a8174ed12b.WireTo(id_e5ab69539a364aee809c668bc9d0e1a8, "clickedEvent");
+            id_4dd09c40831648ea884eed68407b900e.WireTo(sidePanelHoriz, "dataOutput");
+            id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
+            mainHorizontal.WireTo(canvasDisplayHoriz, "children");
+            // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
 
@@ -508,6 +532,24 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

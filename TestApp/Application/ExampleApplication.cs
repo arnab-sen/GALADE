@@ -40,7 +40,7 @@ namespace Application
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
             var id_798fc60f12954410b2c64f2f9dcb24a6 = new Apply<T1, T2>() {};
             var id_d86679376a34439a8a824907fcb2af49 = new ApplyAction<T>() {};
-            var id_3be082c66e214d9eb85f3b1f717dd47f = new Apply<T1, T2>() {};
+            var id_3be082c66e214d9eb85f3b1f717dd47f = new Apply<string, string>() {};
             var id_ecdcc130ff464419a29b6df5306a2049 = new DataFlowConnector<object>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 			
