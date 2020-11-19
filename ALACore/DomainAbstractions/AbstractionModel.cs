@@ -255,8 +255,6 @@ namespace DomainAbstractions
                 _types[pair.Key] = pair.Value;
             }
 
-            _initialised.Clear();
-
             SetGenerics(source.GetGenerics());
         }
 
