@@ -1063,7 +1063,6 @@ namespace RequirementsAbstractions
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 inputSim.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.TAB);
-                dropDown.Text = "";
             }, DispatcherPriority.ApplicationIdle);
         }
 
