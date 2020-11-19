@@ -28,6 +28,7 @@ namespace DomainAbstractions
         /// </summary>
         public string FullType { get; set; } = "Object";
         public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
         public string SourceCode { get; set; }
         public string CodeFilePath { get; set; }
 
@@ -166,6 +167,8 @@ namespace DomainAbstractions
             }
 
             if (initialise) _initialised.Add(name);
+
+            if (name == "InstanceName") Description = value; 
         }
 
         public void SetImplementedPort(string type, string name)
@@ -195,7 +198,7 @@ namespace DomainAbstractions
         }
 
         /// <summary>
-        /// Replaces the contents of this node with that of another source. Note: This is destructive.
+        /// Replaces the contents of this node with that of another source. Note: This is destructive, and will set the destination with the default values found in the source.
         /// </summary>
         /// <param name="source"></param>
         public void CloneFrom(AbstractionModel source)
@@ -261,7 +264,7 @@ namespace DomainAbstractions
         }
 
         /// <summary>
-        /// Returns the value of the first occurrence of a given variable name.
+        /// Returns the value of the first occurrence of a given member name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>

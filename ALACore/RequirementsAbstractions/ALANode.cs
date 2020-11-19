@@ -183,7 +183,7 @@ namespace RequirementsAbstractions
             
             Render.Dispatcher.Invoke(() =>
             {
-                _textMaskRender = CreateTextMask(Model.FullType);
+                _textMaskRender = CreateTextMask();
             }, DispatcherPriority.Loaded);
 
         }
@@ -431,8 +431,19 @@ namespace RequirementsAbstractions
 	        _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
         }
 
-        private UIElement CreateTextMask(string text)
+        private UIElement CreateTextMask(string text = "")
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                text = $"{Model.Type}";
+                var description = !string.IsNullOrEmpty(Model.Description)
+                    ? Model.Description
+                    : Model.GetValue("InstanceName");
+
+                if (!string.IsNullOrEmpty(Model.Description) && !Model.Description.StartsWith("\"id_") && Model.Description != "Default") 
+                    text = text + "\n" + description;
+            }
+
             var maskContainer = new Canvas()
             {
                 
@@ -474,7 +485,6 @@ namespace RequirementsAbstractions
             maskContainer.Children.Add(foreground);
 
             maskContainer.MouseLeftButtonDown += (sender, args) => ShowTypeTextMask(false);
-            
 
             return maskContainer;
         }
@@ -487,23 +497,18 @@ namespace RequirementsAbstractions
         {
             if (show)
             {
-                if (_textMaskRender == null) _textMaskRender = CreateTextMask(Model.FullType);
+                if (_textMaskRender == null) _textMaskRender = CreateTextMask();
 
-                if (!_nodeMask.Children.Contains(_textMaskRender))
-                {
-                    _nodeMask.Children.Add(_textMaskRender);
-                }
-                else
-                {
-                    if (_textMaskRender != null) _textMaskRender.Visibility = Visibility.Visible;
-                }
+                if (!_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Add(_textMaskRender);
 
-                // _detailedRender.Visibility = Visibility.Collapsed;
             }
             else
             {
                 if (_textMaskRender != null) _textMaskRender.Visibility = Visibility.Collapsed;
-                // _detailedRender.Visibility = Visibility.Visible;
+
+                if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
+                
+                _textMaskRender = null;
             }
 
         }
@@ -700,7 +705,7 @@ namespace RequirementsAbstractions
                     Lambda = newType =>
                     {
                         Model.UpdateGeneric(genericIndex, newType);
-                        _textMaskRender = CreateTextMask(Model.FullType);
+                        _textMaskRender = CreateTextMask();
                     }
 
                 };
@@ -877,7 +882,11 @@ namespace RequirementsAbstractions
                 Width = 50
             };
             var typeChanged = new ApplyAction<string>() { Lambda = input => TypeChanged?.Invoke(input) };
-            var nameChanged = new ApplyAction<string>() { Lambda = input => Model.Name = input };
+            var nameChanged = new ApplyAction<string>() { Lambda = input =>
+            {
+                Model.Name = input;
+                Model.SetValue("InstanceName", $"\"{input}\"");
+            } };
 
             nodeIdRow.WireTo(nodeTypeDropDownMenu, "children");
             nodeIdRow.WireTo(createGenericDropDownMenus, "children");

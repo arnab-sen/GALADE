@@ -23,6 +23,12 @@ namespace DomainAbstractions
         public bool ShowBorder = false;
 
         // Properties for customizing UI
+        public string InnerText
+        {
+            get => textBlock.Text;
+            set => textBlock.Text = value;
+        }
+
         public int Width
         {
             set => textBlock.Width = value;

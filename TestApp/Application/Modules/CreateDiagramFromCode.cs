@@ -151,6 +151,7 @@ namespace TestApplication
                 model.CloneFrom(modelTemplate);
 
                 model.Name = variableName;
+                model.SetValue("InstanceName", $"\"{variableName}\"");
                 model.SetGenerics(generics);
 
                 var initialiser = instantiation.Declaration.Variables.FirstOrDefault()?.Initializer.Value as ObjectCreationExpressionSyntax;
