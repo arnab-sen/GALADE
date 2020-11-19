@@ -340,7 +340,7 @@ namespace RequirementsAbstractions
             }
         }
 
-        public void Delete(bool deleteAttachedWires = false)
+        public void Delete(bool deleteChildren = false)
         {
             if (Graph.Get("SelectedNode")?.Equals(this) ?? false) Graph.Set("SelectedNode", null);
             Graph.DeleteNode(this);
@@ -355,7 +355,7 @@ namespace RequirementsAbstractions
 
             foreach (var edge in edgesToDelete)
             {
-                edge?.Delete(deleteDestination: deleteAttachedWires);
+                edge?.Delete(deleteDestination: deleteChildren);
             }
         }
 
@@ -1081,6 +1081,10 @@ namespace RequirementsAbstractions
             var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {};
             var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => Name};
             var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {};
+            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {};
+            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {Lambda=() => Delete(deleteChildren: false)};
+            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {};
+            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {Lambda=() => Delete(deleteChildren: true)};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -1097,6 +1101,10 @@ namespace RequirementsAbstractions
             id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children");
             id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent");
             id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput");
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children");
+            id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent");
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children");
+            id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent");
             // END AUTO-GENERATED WIRING
 
             Render = _nodeMask;
@@ -1116,5 +1124,7 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 

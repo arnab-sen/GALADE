@@ -260,7 +260,7 @@ namespace TestApplication
             var id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {};
             var createAndPaintALAWire = new Apply<object, object>() {InstanceName="createAndPaintALAWire",Lambda=input =>{    var source = mainGraph.Get("SelectedNode") as ALANode;    var destination = input as ALANode;    var sourcePort = source.GetSelectedPort(inputPort: false);    var destinationPort = destination.GetSelectedPort(inputPort: true);    var wire = new ALAWire()    {Graph = mainGraph, Canvas = mainCanvas, Source = source, Destination = destination, SourcePort = sourcePort, DestinationPort = destinationPort, StateTransition = stateTransition};    mainGraph.AddEdge(wire);    wire.Paint();    return wire;}};
             var id_1de443ed1108447199237a8c0c584fcf = new KeyEvent(eventName:"KeyDown") {Keys=new[]{Key.Delete}};
-            var id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteAttachedWires: true);}};
+            var id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}};
             var id_83c3db6e4dfa46518991f706f8425177 = new MenuItem(header:"Refresh") {};
             var id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {Lambda=() => abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault())};
             var id_9bd4555e80434a7b91b65e0b386593b0 = new Apply<AbstractionModel, object>() {Lambda=createNewALANode.Lambda};
@@ -552,6 +552,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 
