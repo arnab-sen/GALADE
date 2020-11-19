@@ -116,6 +116,7 @@ namespace RequirementsAbstractions
         private Text _textMask;
         private List<DropDownMenu> _genericDropDowns = new List<DropDownMenu>();
         private DropDownMenu _typeDropDown;
+        private SimulateKeyboard _keyboardSim = new SimulateKeyboard();
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -1057,13 +1058,7 @@ namespace RequirementsAbstractions
             }
 
             dropDown.Focus();
-
-            var inputSim = new InputSimulator();
-            
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-            {
-                inputSim.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.TAB);
-            }, DispatcherPriority.ApplicationIdle);
+            _keyboardSim.SimulateKey("Tab");
         }
 
         private void CreateWiring()

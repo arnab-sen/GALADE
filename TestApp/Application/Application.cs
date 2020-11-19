@@ -221,7 +221,7 @@ namespace TestApplication
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
             var mainWindowVertical = new Vertical() {Layouts=new[]{0, 2, 0}};
             var id_88aa5fdf3bbc4e429db278dd29f81159 = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas};
-            var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyUp") {Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Keys=new[]{Key.A}};
+            var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyUp") {Condition=args => args.Key == Key.A && mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Keys=new[]{Key.A}};
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {};
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {};
             var id_ad29db53c0d64d4b8be9e31474882158 = new EventConnector() {};
@@ -230,7 +230,7 @@ namespace TestApplication
             var layoutDiagram = new EventConnector() {InstanceName="layoutDiagram"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Keys=new[]{Key.R}};
-            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();        return node;}};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}};
             var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {};
             var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {};
             var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {};
@@ -552,6 +552,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

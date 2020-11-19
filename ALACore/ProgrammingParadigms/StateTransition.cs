@@ -34,7 +34,7 @@ namespace ProgrammingParadigms
             else
             {
                 StateRefreshed?.Invoke(LatestTransition);
-                Logging.Log($"StateTransition: State {LatestTransition.Item2} refreshed");
+                // Logging.Log($"StateTransition: State {LatestTransition.Item2} refreshed");
             }
         }
 
