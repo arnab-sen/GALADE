@@ -200,6 +200,8 @@ namespace DomainAbstractions
         /// <param name="source"></param>
         public void CloneFrom(AbstractionModel source)
         {
+            if (source == null) return;
+
             Type = source.Type;
             FullType = source.FullType;
 

@@ -80,7 +80,7 @@ namespace DomainAbstractions
                 {
                     if (Key != Key.None)
                     {
-                        keyCondition = args => Keyboard.IsKeyDown(Key);
+                        keyCondition = args => keyCheck(Key);
                     }
                     else if (Keys != null)
                     {
@@ -90,7 +90,7 @@ namespace DomainAbstractions
 
                             foreach (var key in Keys)
                             {
-                                if (!Keyboard.IsKeyDown(key))
+                                if (!keyCheck(key))
                                 {
                                     satisfied = false;
                                     break;

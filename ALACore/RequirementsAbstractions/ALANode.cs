@@ -22,6 +22,7 @@ using ScintillaNET.WPF;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
+using WindowsInput;
 
 namespace RequirementsAbstractions
 {
@@ -114,6 +115,7 @@ namespace RequirementsAbstractions
         private UIElement _textMaskRender;
         private Text _textMask;
         private List<DropDownMenu> _genericDropDowns = new List<DropDownMenu>();
+        private DropDownMenu _typeDropDown;
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -865,6 +867,8 @@ namespace RequirementsAbstractions
                 Text = Model.Type,
                 Width = 100
             };
+            _typeDropDown = nodeTypeDropDownMenu;
+
             var createGenericDropDownMenus = new UIFactory() { GetUIContainer = CreateTypeGenericsDropDownMenus };
             var nodeNameTextBox = new TextBox()
             {
@@ -1041,6 +1045,26 @@ namespace RequirementsAbstractions
                 }
             };
 
+        }
+
+        public void FocusOnTypeDropDown()
+        {
+            var dropDown = (_typeDropDown as IUI).GetWPFElement() as ComboBox;
+            if (dropDown == null)
+            {
+                Logging.Log("Failed to convert DropDownMenu to ComboBox in ALANode.FocusOnTypeDropDown()");
+                return;
+            }
+
+            dropDown.Focus();
+
+            var inputSim = new InputSimulator();
+            
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                inputSim.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.TAB);
+                dropDown.Text = "";
+            }, DispatcherPriority.ApplicationIdle);
         }
 
         private void CreateWiring()
