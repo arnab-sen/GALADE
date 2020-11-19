@@ -10,7 +10,7 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// <para></para>
+    /// <para>Copies text to the user's clipboard.</para>
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;string&gt; contentInput:</para>
     /// <para>2. IEvent sendOutput:</para>

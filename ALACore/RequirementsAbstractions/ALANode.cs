@@ -1078,6 +1078,9 @@ namespace RequirementsAbstractions
             var id_9c912c6b764641d592796b0d3753424b = new MenuItem(header:"Through your default external editor") {};
             var id_736f961d1ae84d80bfa4570d41685828 = new MenuItem(header:"Through the GALADE text editor") {};
             var id_a09b14f6afef41e59fac3fd10dd6ce00 = new Data<string>() {Lambda=Model.GetCodeFilePath};
+            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {};
+            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => Name};
+            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -1091,6 +1094,9 @@ namespace RequirementsAbstractions
             id_403baaf79a824981af02ae135627767f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "children");
             id_9c912c6b764641d592796b0d3753424b.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent");
             id_736f961d1ae84d80bfa4570d41685828.WireTo(id_a09b14f6afef41e59fac3fd10dd6ce00, "clickedEvent");
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children");
+            id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent");
+            id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             Render = _nodeMask;
@@ -1110,3 +1116,5 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
