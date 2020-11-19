@@ -268,7 +268,7 @@ namespace TestApplication
             var id_bb687ee0b7dd4b86a38a3f81ddbab75f = new MenuItem(header:"Open Code File") {};
             var id_14170585873a4fb6a7550bfb3ce8ecd4 = new FileBrowser() {Mode="Open"};
             var id_2810e4e86da348b98b39c987e6ecd7b6 = new FileReader() {};
-            var id_c72bf019e76a4e44831cc0bba40caa50 = new CreateDiagramFromCode() {Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=true};
+            var createDiagramFromCode = new CreateDiagramFromCode() {Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=false};
             var id_f9b8e7f524a14884be753d19a351a285 = new EventConnector() {};
             var id_8fc35564768b4a64a57dc321cc1f621f = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("ProgrammingParadigms"))    {        list = input["ProgrammingParadigms"];    }    return list;}};
             var id_0fd49143884d4a6e86e6ed0ea2f1b5b4 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("RequirementsAbstractions"))    {        list = input["RequirementsAbstractions"];    }    return list;}};
@@ -334,7 +334,7 @@ namespace TestApplication
             var id_7a3fa22880894f01a993fad31c8354a3 = new Data<string>() {};
             var id_28d229073cb049c997824e1d436eaa7e = new DispatcherEvent() {};
             var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
-            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {Lambda=() => stateTransition.Update(Enums.DiagramMode.Idle)};
+            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {Lambda=() => {    stateTransition.Update(Enums.DiagramMode.Idle);    createDiagramFromCode.Update = false;}};
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
             var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {Lambda=input =>{    (input as UIElement)?.Focus();    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3}};
@@ -358,6 +358,8 @@ namespace TestApplication
             var unhighlightAllWires = new EventLambda() {Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {};
             var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {Lambda=node =>{    Dispatcher.CurrentDispatcher.Invoke(() =>    {        var edges = mainGraph.Edges;        foreach (var edge in edges)        {            (edge as ALAWire).Refresh();        }    }    , DispatcherPriority.ContextIdle);}};
+            var id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {};
+            var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {Lambda=() => createDiagramFromCode.Update = true};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -413,7 +415,6 @@ namespace TestApplication
             id_c80f46b08d894d4faa674408bf846b3f.WireTo(layoutDiagram, "ifOutput");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_fcc9a08cebcf4c9c89188d7033288e1c, "fanoutList");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList");
-            id_6f93680658e04f8a9ab15337cee1eca3.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "clickedEvent");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete");
             id_1de443ed1108447199237a8c0c584fcf.WireTo(id_46a4d6e6cfb940278eb27561c43cbf37, "eventHappened");
             id_83c3db6e4dfa46518991f706f8425177.WireTo(layoutDiagram, "clickedEvent");
@@ -471,7 +472,7 @@ namespace TestApplication
             id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
             statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
             id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(id_a2d71044048840b0a69356270e6520ac, "eventOutput");
-            id_a2d71044048840b0a69356270e6520ac.WireTo(id_c72bf019e76a4e44831cc0bba40caa50, "dataOutput");
+            id_a2d71044048840b0a69356270e6520ac.WireTo(createDiagramFromCode, "dataOutput");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
             id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
@@ -522,6 +523,9 @@ namespace TestApplication
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(mouseWheelArgs, "fanoutList");
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "fanoutList");
             id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
+            id_6f93680658e04f8a9ab15337cee1eca3.WireTo(id_a236bd13c516401eb5a83a451a875dd0, "clickedEvent");
+            id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_6fdaaf997d974e30bbb7c106c40e997c, "fanoutList");
+            id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -546,6 +550,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
