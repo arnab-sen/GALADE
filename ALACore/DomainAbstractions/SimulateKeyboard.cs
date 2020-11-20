@@ -94,15 +94,6 @@ namespace DomainAbstractions
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     _inputSim.Keyboard.ModifiedKeyStroke(modCodes, keyCodes);
-                    // foreach (var code in modCodes)
-                    // {
-                    //     _inputSim.Keyboard.KeyPress(code);
-                    // }
-                    //
-                    // foreach (var code in keyCodes)
-                    // {
-                    //     _inputSim.Keyboard.KeyPress(code);
-                    // }
 
                 }, DispatcherPriority.ApplicationIdle);
             }
