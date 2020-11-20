@@ -365,10 +365,11 @@ namespace TestApplication
             var id_3710469340354a1bbb4b9d3371c9c012 = new FolderBrowser() {InstanceName="Choose test folder"};
             var testDirectoryTree = new DirectoryTree() {InstanceName="testDirectoryTree"};
             var testSimulateKeyboard = new MenuItem(header:"Test SimulateKeyboard") {InstanceName="testSimulateKeyboard"};
-            var id_5c31090d2c954aa7b4a10e753bdfc03a = new SimulateKeyboard() {InstanceName="id_5c31090d2c954aa7b4a10e753bdfc03a",Keys=new List<string>(){"H", "E", "L", "L", "O"},Modifiers=new List<string>(){"LSHIFT"}};
-            var id_52b8f2c28c2e40cabedbd531171c779a = new EventConnector() {};
-            var id_86ecd8f953324e34adc6238338f75db5 = new SimulateKeyboard() {Keys=new List<string>() { "COMMA", "SPACE" }};
-            var id_63e463749abe41d28d05b877479070f8 = new SimulateKeyboard() {Keys=new List<string>() { "W", "O", "R", "L", "D" },Modifiers=new List<string>() { "LSHIFT" }};
+            var id_5c31090d2c954aa7b4a10e753bdfc03a = new SimulateKeyboard() {InstanceName="Type 'HELLO'",Keys="HELLO".Select(c => c.ToString()).ToList(),Modifiers=new List<string>() { "SHIFT" }};
+            var id_52b8f2c28c2e40cabedbd531171c779a = new EventConnector() {InstanceName="id_52b8f2c28c2e40cabedbd531171c779a"};
+            var id_86ecd8f953324e34adc6238338f75db5 = new SimulateKeyboard() {InstanceName="Type comma and space",Keys=new List<string>(){"COMMA", "SPACE"}};
+            var id_63e463749abe41d28d05b877479070f8 = new SimulateKeyboard() {InstanceName="Type 'WORLD'",Keys="WORLD".Select(c => c.ToString()).ToList(),Modifiers=new List<string>(){"SHIFT"}};
+            var id_66e516b6027649e1995a531d03c0c518 = new SimulateKeyboard() {InstanceName="Type '!'",Keys=new List<string>() { "1" },Modifiers=new List<string>() { "SHIFT" }};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -544,6 +545,7 @@ namespace TestApplication
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_5c31090d2c954aa7b4a10e753bdfc03a, "fanoutList");
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_86ecd8f953324e34adc6238338f75db5, "fanoutList");
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_63e463749abe41d28d05b877479070f8, "fanoutList");
+            id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_66e516b6027649e1995a531d03c0c518, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -568,6 +570,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
