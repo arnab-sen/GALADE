@@ -153,7 +153,7 @@ namespace DomainAbstractions
                         TreeParent = directoryNode
                     };
 
-                    nodes.Add(fileNode);
+                    (directoryNode.ItemsSource as List<TreeViewNode>)?.Add(fileNode);
                 }
             }
 
