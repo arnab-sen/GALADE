@@ -178,7 +178,7 @@ namespace RequirementsAbstractions
                 RefreshPorts(inputPorts: false);
                 _nodeIdRow.GetWPFElement();
                 Model.RefreshGenerics();
-                RefreshParameterRows();
+                // RefreshParameterRows();
             }, DispatcherPriority.Loaded);
             
             Render.Dispatcher.Invoke(() =>
@@ -318,17 +318,22 @@ namespace RequirementsAbstractions
                 _nodeParameterRows.Clear();
                 foreach (var initVar in initVars)
                 {
-                    if (string.IsNullOrWhiteSpace(initVar)) continue;
+                    if (string.IsNullOrWhiteSpace(initVar))
+                    {
+                        Model.RemoveValue("");
+                        continue;
+                    }
+
                     CreateNodeParameterRow(initVar, Model.GetValue(initVar));
                 }
+
+                RefreshParameterRows();
             }
         }
-
+        
         public void CreateInternals()
         {
             if (Model == null) Model = CreateDummyAbstractionModel();
-
-            UpdateNodeParameters();
 
             GenericTypeOptions = new List<string>()
             {
@@ -341,14 +346,18 @@ namespace RequirementsAbstractions
 
             CreateWiring();
 
+            // UpdateNodeParameters();
+            RefreshParameterRows(removeEmptyRows: true);
         }
 
-        public void RefreshParameterRows()
+        public void RefreshParameterRows(bool removeEmptyRows = false)
         {
             _parameterRowsPanel.Children.Clear();
 
             foreach (var row in _nodeParameterRows)
             {
+                if (removeEmptyRows && string.IsNullOrEmpty(row.Item2?.Text) && string.IsNullOrEmpty(row.Item3?.Text)) continue;
+
                 _parameterRowsPanel.Children.Add((row.Item1 as IUI).GetWPFElement());
             }
         }
@@ -940,19 +949,19 @@ namespace RequirementsAbstractions
                 Ratios = new[] { 40, 20, 40 }
             };
 
-            // var getInitialisedRow = new UIFactory()
-            // {
-            //     GetUIContainer = () =>
-            //     {
-            //         foreach (var initialised in Model.GetInitialisedVariables())
-            //         {
-            //             CreateNodeParameterRow(initialised, Model.GetValue(initialised));
-            //         }
-            //
-            //         RefreshParameterRows();
-            //         return new Text("");
-            //     }
-            // };
+            var getInitialisedRow = new UIFactory()
+            {
+                GetUIContainer = () =>
+                {
+                    foreach (var initialised in Model.GetInitialisedVariables())
+                    {
+                        CreateNodeParameterRow(initialised, Model.GetValue(initialised));
+                    }
+            
+                    RefreshParameterRows();
+                    return new Text("");
+                }
+            };
 
             var addNewRowButton = new Button("+")
             {
@@ -960,7 +969,7 @@ namespace RequirementsAbstractions
                 Margin = new Thickness(5)
             };
 
-            // addNewParameterRow.WireTo(getInitialisedRow, "children");
+            addNewParameterRow.WireTo(getInitialisedRow, "children");
             addNewParameterRow.WireTo(addNewRowButton, "children");
             addNewParameterRow.WireTo(new Text(""), "children");
 
