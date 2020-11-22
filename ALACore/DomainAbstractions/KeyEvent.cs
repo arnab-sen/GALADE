@@ -18,7 +18,7 @@ namespace DomainAbstractions
         public KeyEventHandler Lambda { get; set; }
         public Predicate<KeyEventArgs> Condition { get; set; }
         public Key Key { get; set; } = Key.None;
-        public Key[] Keys { get; set; } // The key combination that must be pressed
+        public Key[] Modifiers { get; set; } = new Key[] {  };
         public Func<object, object> ExtractSender { get; set; }
 
         // Private fields
@@ -65,42 +65,21 @@ namespace DomainAbstractions
                 if (Lambda != null) senderEvent.AddEventHandler(sender, Lambda);
 
                 Predicate<KeyEventArgs> keyCondition = null;
-                Predicate<Key> keyCheck = null;
 
-                if (eventToHandle == "KeyDown")
+                keyCondition = args =>
                 {
-                    keyCheck = Keyboard.IsKeyDown;
-                }
-                else if (eventToHandle == "KeyUp")
-                {
-                    keyCheck = Keyboard.IsKeyUp;
-                }
+                    if (Key != args.Key) return false;
 
-                if (keyCheck != null)
-                {
-                    if (Key != Key.None)
+                    foreach (var modifier in Modifiers)
                     {
-                        keyCondition = args => keyCheck(Key);
-                    }
-                    else if (Keys != null)
-                    {
-                        keyCondition = args =>
+                        if (!Keyboard.IsKeyDown(modifier))
                         {
-                            var satisfied = true;
-
-                            foreach (var key in Keys)
-                            {
-                                if (!keyCheck(key))
-                                {
-                                    satisfied = false;
-                                    break;
-                                }
-                            }
-
-                            return satisfied;
-                        };
+                            return false;
+                        }
                     }
-                }
+
+                    return true;
+                };
 
                 if (keyCondition == null) keyCondition = args => true;
 
