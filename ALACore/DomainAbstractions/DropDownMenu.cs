@@ -107,15 +107,15 @@ namespace DomainAbstractions
                 }
             };
 
-            _dropDown.LostKeyboardFocus += (sender, args) =>
-            {
-                if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
-                {
-                    _lastSentValue = _dropDown.Text;
-                    if (selectedItem != null) selectedItem.Data = _lastSentValue;
-                }
-                
-            };
+            // _dropDown.LostKeyboardFocus += (sender, args) =>
+            // {
+            //     if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
+            //     {
+            //         _lastSentValue = _dropDown.Text;
+            //         if (selectedItem != null) selectedItem.Data = _lastSentValue;
+            //     }
+            //     
+            // };
 
         }
 

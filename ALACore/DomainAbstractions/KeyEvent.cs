@@ -81,8 +81,6 @@ namespace DomainAbstractions
                     return true;
                 };
 
-                if (keyCondition == null) keyCondition = args => true;
-
                 // Propagate the sender, args, and event (as an IEvent) after the event has been handled by the user-specified lambda
                 senderEvent.AddEventHandler(sender, new KeyEventHandler((o, args) =>
                 {

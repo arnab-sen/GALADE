@@ -197,6 +197,28 @@ namespace DomainAbstractions
             }
         }
 
+        public void Clear()
+        {
+            Type = "";
+            FullType = "";
+
+            _documentation = "";
+            SourceCode = "";
+            CodeFilePath = "";
+
+            _portsById.Clear();
+
+            _implementedPorts.Clear();
+            _acceptedPorts.Clear();
+            _fields.Clear();
+            _constructorArgs.Clear();
+            _fields.Clear();
+            _properties.Clear();
+            _types.Clear();
+
+            _initialised.Clear();
+        }
+
         /// <summary>
         /// Replaces the contents of this node with that of another source. Note: This is destructive, and will set the destination with the default values found in the source.
         /// </summary>
@@ -259,6 +281,8 @@ namespace DomainAbstractions
             {
                 _types[pair.Key] = pair.Value;
             }
+
+            _initialised = source._initialised.ToHashSet();
 
             SetGenerics(source.GetGenerics());
         }

@@ -22,7 +22,6 @@ using ScintillaNET.WPF;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
-using WindowsInput;
 
 namespace RequirementsAbstractions
 {
@@ -179,6 +178,7 @@ namespace RequirementsAbstractions
                 RefreshPorts(inputPorts: false);
                 _nodeIdRow.GetWPFElement();
                 Model.RefreshGenerics();
+                RefreshParameterRows();
             }, DispatcherPriority.Loaded);
             
             Render.Dispatcher.Invoke(() =>
@@ -303,11 +303,24 @@ namespace RequirementsAbstractions
             NodeParameters.AddRange(Model.GetProperties().Select(kvp => kvp.Key));
             NodeParameters.AddRange(Model.GetFields().Select(kvp => kvp.Key));
 
+            var initVars = Model.GetInitialisedVariables();
+
             foreach (var row in _nodeParameterRows)
             {
                 var paramName = row.Item2.Text;
                 var paramValueTextBox = row.Item3;
                 paramValueTextBox.Text = Model.GetValue(paramName);
+            }
+
+            if (initVars.Count > _nodeParameterRows.Count)
+            {
+                // Recreate node parameter rows because a mismatch is found
+                _nodeParameterRows.Clear();
+                foreach (var initVar in initVars)
+                {
+                    if (string.IsNullOrWhiteSpace(initVar)) continue;
+                    CreateNodeParameterRow(initVar, Model.GetValue(initVar));
+                }
             }
         }
 
@@ -927,19 +940,19 @@ namespace RequirementsAbstractions
                 Ratios = new[] { 40, 20, 40 }
             };
 
-            var getInitialisedRow = new UIFactory()
-            {
-                GetUIContainer = () =>
-                {
-                    foreach (var initialised in Model.GetInitialisedVariables())
-                    {
-                        CreateNodeParameterRow(initialised, Model.GetValue(initialised));
-                    }
-
-                    RefreshParameterRows();
-                    return new Text("");
-                }
-            };
+            // var getInitialisedRow = new UIFactory()
+            // {
+            //     GetUIContainer = () =>
+            //     {
+            //         foreach (var initialised in Model.GetInitialisedVariables())
+            //         {
+            //             CreateNodeParameterRow(initialised, Model.GetValue(initialised));
+            //         }
+            //
+            //         RefreshParameterRows();
+            //         return new Text("");
+            //     }
+            // };
 
             var addNewRowButton = new Button("+")
             {
@@ -947,7 +960,7 @@ namespace RequirementsAbstractions
                 Margin = new Thickness(5)
             };
 
-            addNewParameterRow.WireTo(getInitialisedRow, "children");
+            // addNewParameterRow.WireTo(getInitialisedRow, "children");
             addNewParameterRow.WireTo(addNewRowButton, "children");
             addNewParameterRow.WireTo(new Text(""), "children");
 
