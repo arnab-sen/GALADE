@@ -359,7 +359,7 @@ namespace TestApplication
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="id_6d789ff1a0bc4a2d8e88733adc266be8"};
             var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {InstanceName="id_8ba0c38df0f041a3a7e75fb859376491",Lambda=node =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire).Refresh();    }}};
             var id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {InstanceName="id_a236bd13c516401eb5a83a451a875dd0"};
-            var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="id_6fdaaf997d974e30bbb7c106c40e997c",Lambda=() => createDiagramFromCode.Update = true};
+            var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="Change createDiagramFromCode.Update to true",Lambda=() => createDiagramFromCode.Update = true};
             var latestAddedNode = new DataFlowConnector<object>() {InstanceName="latestAddedNode"};
             var id_86a7f0259b204907a092da0503eb9873 = new MenuItem(header:"Test DirectoryTree") {InstanceName="Test DirectoryTree"};
             var id_3710469340354a1bbb4b9d3371c9c012 = new FolderBrowser() {InstanceName="Choose test folder"};
@@ -382,12 +382,19 @@ namespace TestApplication
             var id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {InstanceName="id_4341066281bc4015a668a3bbbcb7256b",Lambda=args => args.Handled = true};
             var id_024b1810c2d24db3b9fac1ccce2fad9e = new DataFlowConnector<AbstractionModel>() {InstanceName="id_024b1810c2d24db3b9fac1ccce2fad9e"};
             var id_2c933997055b4122bdb77945f1abb560 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
-            var id_0eea701e0bc84c42a9f17ccc200ef2ef = new Data<ALANode>() {Lambda=() => mainGraph.Roots.First() as ALANode};
-            var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node => {    if (node == null) return;        var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
+            var id_0eea701e0bc84c42a9f17ccc200ef2ef = new Data<ALANode>() {InstanceName="id_0eea701e0bc84c42a9f17ccc200ef2ef",Lambda=() => mainGraph?.Roots.FirstOrDefault() as ALANode};
+            var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
             var id_29ed401eb9c240d98bf5c6d1f00c5c76 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
-            var id_fa857dd7432e406c8c6c642152b37730 = new Data<ALANode>() {Lambda=() => mainGraph.Get("SelectedNode") as ALANode};
-            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherData<ALANode>() {Priority=DispatcherPriority.ApplicationIdle};
-            var id_40ca2809cd8744c780b0c99165e6a7bd = new DataFlowConnector<ALANode>() {};
+            var id_fa857dd7432e406c8c6c642152b37730 = new Data<ALANode>() {InstanceName="id_fa857dd7432e406c8c6c642152b37730",Lambda=() => mainGraph.Get("SelectedNode") as ALANode};
+            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherData<ALANode>() {InstanceName="id_61b3caf63ee84893babc3972f0887b44",Priority=DispatcherPriority.ApplicationIdle};
+            var id_40ca2809cd8744c780b0c99165e6a7bd = new DataFlowConnector<ALANode>() {InstanceName="id_40ca2809cd8744c780b0c99165e6a7bd"};
+            var id_42c7f12c13804ec7b111291739be78f5 = new DataFlowConnector<string>() {InstanceName="id_42c7f12c13804ec7b111291739be78f5"};
+            var id_409be365df274cc6a7a124e8a80316a5 = new ConvertToEvent<string>() {InstanceName="id_409be365df274cc6a7a124e8a80316a5"};
+            var id_5e2f0621c62142c1b5972961c93cb725 = new Data<UIElement>() {InstanceName="id_5e2f0621c62142c1b5972961c93cb725",Lambda=() => mainCanvas};
+            var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1};
+            var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
+            var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {};
+            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {Lambda=canvas => {    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -498,7 +505,7 @@ namespace TestApplication
             id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
             statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
             id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(id_a2d71044048840b0a69356270e6520ac, "eventOutput");
-            id_a2d71044048840b0a69356270e6520ac.WireTo(createDiagramFromCode, "dataOutput");
+            id_42c7f12c13804ec7b111291739be78f5.WireTo(createDiagramFromCode, "fanoutList");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
             id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
@@ -577,14 +584,20 @@ namespace TestApplication
             cloneSelectedNodeModel.WireTo(id_024b1810c2d24db3b9fac1ccce2fad9e, "dataOutput");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_2c933997055b4122bdb77945f1abb560, "children");
             id_2c933997055b4122bdb77945f1abb560.WireTo(id_0eea701e0bc84c42a9f17ccc200ef2ef, "clickedEvent");
-            id_0eea701e0bc84c42a9f17ccc200ef2ef.WireTo(resetViewOnNode, "dataOutput");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_29ed401eb9c240d98bf5c6d1f00c5c76, "children");
             id_29ed401eb9c240d98bf5c6d1f00c5c76.WireTo(id_fa857dd7432e406c8c6c642152b37730, "clickedEvent");
-            id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
             id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_61b3caf63ee84893babc3972f0887b44, "fanoutList");
             id_61b3caf63ee84893babc3972f0887b44.WireTo(id_40ca2809cd8744c780b0c99165e6a7bd, "delayedData");
             id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
-            id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(resetViewOnNode, "fanoutList");
+            id_a2d71044048840b0a69356270e6520ac.WireTo(id_42c7f12c13804ec7b111291739be78f5, "dataOutput");
+            id_42c7f12c13804ec7b111291739be78f5.WireTo(id_409be365df274cc6a7a124e8a80316a5, "fanoutList");
+            id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(resetScale, "fanoutList");
+            id_409be365df274cc6a7a124e8a80316a5.WireTo(id_82b26eeaba664ee7b2a2c0682e25ce08, "eventOutput");
+            id_82b26eeaba664ee7b2a2c0682e25ce08.WireTo(id_5e2f0621c62142c1b5972961c93cb725, "fanoutList");
+            id_0eea701e0bc84c42a9f17ccc200ef2ef.WireTo(resetViewOnNode, "dataOutput");
+            id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
+            id_5e2f0621c62142c1b5972961c93cb725.WireTo(id_57e7dd98a0874e83bbd5014f7e9c9ef5, "dataOutput");
+            id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(id_e1e6cf54f73d4f439c6f18b668a73f1a, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -609,6 +622,22 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

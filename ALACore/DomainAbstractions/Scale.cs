@@ -19,6 +19,12 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        
+        /// <summary>
+        /// The scale to apply to the UIElement. If this is set to a value greater than 0, then neither of the multipliers will be used.
+        /// If this is set to 0, then it will not be used, and the existing scale will be multiplied by the multipliers instead.
+        /// </summary>
+        public double AbsoluteScale { get; set; } = 0;
         public double WidthMultiplier { get; set; } = 1.0;
         public double HeightMultiplier { get; set; } = 1.0;
         public Func<Point> GetAbsoluteCentre { get; set; } = () => new Point(0, 0); // e.g. MouseWheelEventArgs.GetPosition(canvas)
@@ -46,12 +52,21 @@ namespace DomainAbstractions
         // Methods
         private void ScaleElement(UIElement input)
         {
-            _currentXScale *= WidthMultiplier;
-            _currentYScale *= HeightMultiplier;
-            var absCentre = GetAbsoluteCentre();
             Point scaledCentre;
             Point centreDiff;
 
+            if (AbsoluteScale > 0)
+            {
+                _currentXScale = AbsoluteScale;
+                _currentYScale = AbsoluteScale;
+            }
+            else
+            {
+                _currentXScale *= WidthMultiplier;
+                _currentYScale *= HeightMultiplier; 
+            }
+
+            var absCentre = GetAbsoluteCentre();
 
             ScaleTransform scaleTransform;
             TransformGroup transformGroup;
@@ -64,8 +79,16 @@ namespace DomainAbstractions
                 scaleTransform = transformGroup.Children.OfType<ScaleTransform>().FirstOrDefault();
                 if (scaleTransform != null)
                 {
-                    scaleTransform.ScaleX *= WidthMultiplier;
-                    scaleTransform.ScaleY *= HeightMultiplier;
+                    if (AbsoluteScale > 0)
+                    {
+                        scaleTransform.ScaleX = AbsoluteScale;
+                        scaleTransform.ScaleY = AbsoluteScale; 
+                    }
+                    else
+                    {
+                        scaleTransform.ScaleX *= WidthMultiplier;
+                        scaleTransform.ScaleY *= HeightMultiplier; 
+                    }
                     scaleTransform.CenterX = absCentre.X;
                     scaleTransform.CenterY = absCentre.Y;
                 }
@@ -88,7 +111,6 @@ namespace DomainAbstractions
                     translateTransform = new TranslateTransform(centreDiff.X, centreDiff.Y);
                     group.Children.Add(translateTransform);
                 }
-
             }
             else
             {
