@@ -428,6 +428,15 @@ namespace DomainAbstractions
             return result.ToHashSet().ToList();
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append(FullType);
+            if (!string.IsNullOrWhiteSpace(Name)) sb.Append(" " + Name);
+
+            return sb.ToString();
+        }
+
         public AbstractionModel()
         {
 

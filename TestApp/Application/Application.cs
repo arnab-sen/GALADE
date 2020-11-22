@@ -230,7 +230,7 @@ namespace TestApplication
             var layoutDiagram = new EventConnector() {InstanceName="layoutDiagram"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R};
-            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType) return;                   node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}};
             var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"};
             var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {InstanceName="File"};
             var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {InstanceName="Open Project"};
@@ -370,16 +370,17 @@ namespace TestApplication
             var id_86ecd8f953324e34adc6238338f75db5 = new SimulateKeyboard() {InstanceName="Type comma and space",Keys=new List<string>(){"COMMA", "SPACE"}};
             var id_63e463749abe41d28d05b877479070f8 = new SimulateKeyboard() {InstanceName="Type 'WORLD'",Keys="WORLD".Select(c => c.ToString()).ToList(),Modifiers=new List<string>(){"SHIFT"}};
             var id_66e516b6027649e1995a531d03c0c518 = new SimulateKeyboard() {InstanceName="Type '!'",Keys=new List<string>(){"1"},Modifiers=new List<string>(){"SHIFT"}};
-            var id_8863f404bed34d47922654bd0190259c = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + C pressed",Key=Key.C,Modifiers=new Key[]{Key.LeftCtrl}, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)};
+            var id_8863f404bed34d47922654bd0190259c = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + C pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.C,Modifiers=new Key[]{Key.LeftCtrl}};
             var cloneSelectedNodeModel = new Data<AbstractionModel>() {InstanceName="cloneSelectedNodeModel",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return null;    var baseModel = selectedNode.Model;    var clone = new AbstractionModel();    clone.CloneFrom(baseModel);    return clone;}};
-            var id_0f802a208aad42209777c13b2e61fe56 = new ApplyAction<AbstractionModel>() {InstanceName="id_0f802a208aad42209777c13b2e61fe56",Lambda=input =>{    if (input == null)        return;    mainGraph.Set("ClonedModel", input);}};
-            var id_7363c80d952e4246aba050e007287444 = new KeyEvent(eventName:"KeyUp") {InstanceName="CTRL + V pressed",Key=Key.V,Modifiers=new Key[]{Key.LeftCtrl}, Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)};
-            var id_316a3befaa364f0186efabcf5efaa33f = new Data<AbstractionModel>() {InstanceName="Create empty model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;            var tempModel = new AbstractionModel();    var clonedModelType = abstractionModelManager.GetAbstractionModel(clonedModel?.Type ?? "Apply");    return clonedModelType;}};
+            var id_0f802a208aad42209777c13b2e61fe56 = new ApplyAction<AbstractionModel>() {InstanceName="id_0f802a208aad42209777c13b2e61fe56",Lambda=input =>{    if (input == null)     {        Logging.Message("Nothing was copied.", timestamp: true);    }    else     {        mainGraph.Set("ClonedModel", input);        Logging.Message($"Copied {input} successfully.", timestamp: true);    }}};
+            var id_7363c80d952e4246aba050e007287444 = new KeyEvent(eventName:"KeyUp") {InstanceName="CTRL + V pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.V,Modifiers=new Key[]{Key.LeftCtrl}};
+            var id_316a3befaa364f0186efabcf5efaa33f = new Data<AbstractionModel>() {InstanceName="Create empty model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var tempModel = new AbstractionModel();    var clonedModelType = abstractionModelManager.GetAbstractionModel(clonedModel?.Type ?? "Apply");    return clonedModelType;}};
             var id_8647cbf4ac4049a99204b0e3aa70c326 = new ConvertToEvent<object>() {InstanceName="id_8647cbf4ac4049a99204b0e3aa70c326"};
             var id_5a22e32e96e641d49c6fb4bdf6fcd94b = new EventConnector() {InstanceName="id_5a22e32e96e641d49c6fb4bdf6fcd94b"};
-            var id_36c5f05380b04b378de94534411f3f88 = new EventLambda() {InstanceName="Overwrite with cloned model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var latestNode = latestAddedNode.Data as ALANode;    var model = latestNode?.Model;        if (model == null) return;        model.CloneFrom(clonedModel);    latestNode?.UpdateUI(); latestNode.RefreshParameterRows(removeEmptyRows: true);}};
+            var id_36c5f05380b04b378de94534411f3f88 = new EventLambda() {InstanceName="Overwrite with cloned model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var latestNode = latestAddedNode.Data as ALANode;    var model = latestNode?.Model;    if (model == null)        return;    model.CloneFrom(clonedModel);    latestNode?.UpdateUI();    latestNode.RefreshParameterRows(removeEmptyRows: true);}};
             var id_0945b34f58a146ff983962f595f57fb2 = new DispatcherEvent() {InstanceName="id_0945b34f58a146ff983962f595f57fb2"};
-            var id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {Lambda=args => args.Handled = true};
+            var id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {InstanceName="id_4341066281bc4015a668a3bbbcb7256b",Lambda=args => args.Handled = true};
+            var id_024b1810c2d24db3b9fac1ccce2fad9e = new DataFlowConnector<AbstractionModel>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -558,7 +559,7 @@ namespace TestApplication
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_66e516b6027649e1995a531d03c0c518, "fanoutList");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_8863f404bed34d47922654bd0190259c, "eventHandlers");
             id_8863f404bed34d47922654bd0190259c.WireTo(cloneSelectedNodeModel, "eventHappened");
-            cloneSelectedNodeModel.WireTo(id_0f802a208aad42209777c13b2e61fe56, "dataOutput");
+            id_024b1810c2d24db3b9fac1ccce2fad9e.WireTo(id_0f802a208aad42209777c13b2e61fe56, "fanoutList");
             id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_7363c80d952e4246aba050e007287444, "eventHandlers");
             id_316a3befaa364f0186efabcf5efaa33f.WireTo(createNewALANode, "dataOutput");
             createAndPaintALAWire.WireTo(id_8647cbf4ac4049a99204b0e3aa70c326, "output");
@@ -567,6 +568,7 @@ namespace TestApplication
             id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(id_0945b34f58a146ff983962f595f57fb2, "complete");
             id_0945b34f58a146ff983962f595f57fb2.WireTo(id_36c5f05380b04b378de94534411f3f88, "delayedEvent");
             id_7363c80d952e4246aba050e007287444.WireTo(id_4341066281bc4015a668a3bbbcb7256b, "argsOutput");
+            cloneSelectedNodeModel.WireTo(id_024b1810c2d24db3b9fac1ccce2fad9e, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -591,6 +593,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
