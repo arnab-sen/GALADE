@@ -357,7 +357,7 @@ namespace TestApplication
             var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {InstanceName="id_9d14914fdf0647bb8b4b20ea799e26c8"};
             var unhighlightAllWires = new EventLambda() {InstanceName="unhighlightAllWires",Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="id_6d789ff1a0bc4a2d8e88733adc266be8"};
-            var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {InstanceName="id_8ba0c38df0f041a3a7e75fb859376491",Lambda=node =>{    Dispatcher.CurrentDispatcher.Invoke(() =>    {        var edges = mainGraph.Edges;        foreach (var edge in edges)        {            (edge as ALAWire).Refresh();        }    }    , DispatcherPriority.ContextIdle);}};
+            var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {InstanceName="id_8ba0c38df0f041a3a7e75fb859376491",Lambda=node =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire).Refresh();    }}};
             var id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {InstanceName="id_a236bd13c516401eb5a83a451a875dd0"};
             var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="id_6fdaaf997d974e30bbb7c106c40e997c",Lambda=() => createDiagramFromCode.Update = true};
             var latestAddedNode = new DataFlowConnector<object>() {InstanceName="latestAddedNode"};
@@ -386,6 +386,8 @@ namespace TestApplication
             var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node => {    if (node == null) return;        var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
             var id_29ed401eb9c240d98bf5c6d1f00c5c76 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
             var id_fa857dd7432e406c8c6c642152b37730 = new Data<ALANode>() {Lambda=() => mainGraph.Get("SelectedNode") as ALANode};
+            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherData<ALANode>() {Priority=DispatcherPriority.ApplicationIdle};
+            var id_40ca2809cd8744c780b0c99165e6a7bd = new DataFlowConnector<ALANode>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -546,7 +548,6 @@ namespace TestApplication
             id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_6d789ff1a0bc4a2d8e88733adc266be8, "argsOutput");
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(mouseWheelArgs, "fanoutList");
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "fanoutList");
-            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
             id_6f93680658e04f8a9ab15337cee1eca3.WireTo(id_a236bd13c516401eb5a83a451a875dd0, "clickedEvent");
             id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_6fdaaf997d974e30bbb7c106c40e997c, "fanoutList");
             id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "fanoutList");
@@ -580,6 +581,10 @@ namespace TestApplication
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_29ed401eb9c240d98bf5c6d1f00c5c76, "children");
             id_29ed401eb9c240d98bf5c6d1f00c5c76.WireTo(id_fa857dd7432e406c8c6c642152b37730, "clickedEvent");
             id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
+            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_61b3caf63ee84893babc3972f0887b44, "fanoutList");
+            id_61b3caf63ee84893babc3972f0887b44.WireTo(id_40ca2809cd8744c780b0c99165e6a7bd, "delayedData");
+            id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
+            id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(resetViewOnNode, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -604,6 +609,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
