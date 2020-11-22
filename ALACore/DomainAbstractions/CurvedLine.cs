@@ -102,8 +102,8 @@ namespace DomainAbstractions
         private PathFigure _pathFigure = new PathFigure();
         private BezierSegment _bezier = new BezierSegment();
         private Polygon _arrowCap = new Polygon();
-        private double _arrowCapWidth = 10;
-        private double _arrowCapHeight = 15;
+        private double _arrowCapWidth = 6;
+        private double _arrowCapHeight = 8;
 
         // Ports
         private IUI toolTip;
@@ -186,8 +186,8 @@ namespace DomainAbstractions
 
             if (EndArrowHead)
             {
-                Canvas.SetLeft(_arrowCap, Point3.X);
-                Canvas.SetTop(_arrowCap, Point3.Y - _arrowCapWidth / 2.0);
+                Canvas.SetLeft(_arrowCap, Point3.X - 4);
+                Canvas.SetTop(_arrowCap, Point3.Y - _arrowCapWidth);
 
                 AlignArrowCapRotation(); 
             }
@@ -204,23 +204,12 @@ namespace DomainAbstractions
 
             // Get triangle measurements
 
-            // Since the line is a Bezier curve, the angle that the curve is pointing with is not consistent when compared to a straight line.
-            // Usually, when |Point3.X - Point0.X| >> 0, using the last segment (Point2 to the end point Point3) gives the best approximate angle of rotation.
-            // However, as |Point3.X - Point0.X| gets smaller, the angle calculation using the last segment becomes more inaccurate, so for small |Point3.X - Point0.X|,
-            // treating the entire curve as a straight line gives a better approximate angle.
+            // Should use the line between a control point and its closes endpoint to determine the angle of rotation
 
             double x1, y1;
             // if (Math.Abs(Point3.Y - Point0.Y) > Math.Abs(Point3.X - Point0.X) * 2) 
-            if (Math.Abs(Point3.X - Point0.X) < 75) 
-            {
-                x1 = Point0.X;
-                y1 = Point0.Y; 
-            }
-            else
-            {
-                x1 = Point2.X;
-                y1 = Point2.Y; 
-            }
+            x1 = Point2.X;
+            y1 = Point2.Y; 
 
             var x2 = Point3.X;
             var y2 = Point3.Y;
