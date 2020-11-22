@@ -60,10 +60,14 @@ namespace Libraries
         /// Output a message to the user. This differs from Log in that debug info should not be included here.
         /// Instead, only output messages that you expect the user to read.
         /// </summary>
-        /// <param name="message"></param>
-        public static void Message(string message)
+        /// <param name="message">The message to send.</param>
+        /// <param name="timestamp">Whether the message should be prefixed with a timestamp of when this method was called.</param>
+        public static void Message(string message, bool timestamp = false)
         {
+            if (timestamp) message = $"[{DateTime.Now:h:mm:ss tt}] {message}";
+
             MessageOutput?.Invoke(message);
         }
+
     }
 }
