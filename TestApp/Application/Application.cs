@@ -239,8 +239,8 @@ namespace TestApplication
             var id_a98457fc05fc4e84bfb827f480db93d3 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_a98457fc05fc4e84bfb827f480db93d3",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("DomainAbstractions"))    {        list = input["DomainAbstractions"];    }    return list;}};
             var id_f5d3730393ab40d78baebcb9198808da = new ForEach<string>() {InstanceName="id_f5d3730393ab40d78baebcb9198808da"};
             var id_6bc94d5f257847ff8a9a9c45e02333b4 = new ApplyAction<string>() {InstanceName="id_6bc94d5f257847ff8a9a9c45e02333b4",Lambda=input =>{    abstractionModelManager.CreateAbstractionModelFromPath(input);}};
-            var id_57a0335de8c047d2b2e99333c37753c1 = new Data<string>() {InstanceName="id_57a0335de8c047d2b2e99333c37753c1",storedData="Apply"};
-            var createNewAbstractionModel = new Apply<string, AbstractionModel>() {InstanceName="createNewAbstractionModel",Lambda=input =>{    var baseModel = abstractionModelManager.GetAbstractionModel(input);    var newModel = new AbstractionModel();    newModel.CloneFrom(baseModel);    return newModel;}};
+            var id_57a0335de8c047d2b2e99333c37753c1 = new Data<string>() {InstanceName="[Deprecated]",storedData="Apply"};
+            var createNewAbstractionModel = new Apply<string, AbstractionModel>() {InstanceName="[Deprecated]",Lambda=input =>{    var baseModel = abstractionModelManager.GetAbstractionModel(input);    var newModel = new AbstractionModel();    newModel.CloneFrom(baseModel);    return newModel;}};
             var getProjectFolderPath = new GetSetting(name:"ProjectFolderPath") {InstanceName="getProjectFolderPath"};
             var id_bbd9df1f15ea4926b97567d08b6835dd = new KeyEvent(eventName:"KeyDown") {InstanceName="Enter key pressed",Key=Key.Enter};
             var id_6e249d6520104ca5a1a4d847a6c862a8 = new ApplyAction<object>() {InstanceName="Focus on backgroundCanvas",Lambda=input =>{    (input as WPFCanvas).Focus();}};
@@ -262,7 +262,8 @@ namespace TestApplication
             var id_1de443ed1108447199237a8c0c584fcf = new KeyEvent(eventName:"KeyDown") {InstanceName="Delete pressed",Key=Key.Delete};
             var id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {InstanceName="id_46a4d6e6cfb940278eb27561c43cbf37",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}};
             var id_83c3db6e4dfa46518991f706f8425177 = new MenuItem(header:"Refresh") {InstanceName="id_83c3db6e4dfa46518991f706f8425177"};
-            var id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {InstanceName="id_5297a497d2de44e5bc0ea2c431cdcee6",Lambda=() => abstractionModelManager.GetAbstractionModel(abstractionModelManager.GetAbstractionTypes().FirstOrDefault())};
+            var createDummyAbstractionModel = new Data<AbstractionModel>() {InstanceName="createDummyAbstractionModel",Lambda=() => {    var model = new AbstractionModel()     {        Type = "NewNode",        Name = ""    };        model.AddImplementedPort("Port", "input");    model.AddAcceptedPort("Port", "output");        return model;},storedData=default};
+            var id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {InstanceName="id_5297a497d2de44e5bc0ea2c431cdcee6",Lambda=createDummyAbstractionModel.Lambda};
             var id_9bd4555e80434a7b91b65e0b386593b0 = new Apply<AbstractionModel, object>() {InstanceName="id_9bd4555e80434a7b91b65e0b386593b0",Lambda=createNewALANode.Lambda};
             var id_7fabbaae488340a59d940100d38e9447 = new ApplyAction<object>() {InstanceName="id_7fabbaae488340a59d940100d38e9447",Lambda=input =>{    var alaNode = input as ALANode;    var mousePos = Mouse.GetPosition(mainCanvas);    alaNode.PositionX = mousePos.X;    alaNode.PositionY = mousePos.Y;    mainGraph.Set("LatestNode", input);    if (mainGraph.Get("SelectedNode") == null)    {        mainGraph.Set("SelectedNode", input);    }    mainGraph.Roots.Add(input);}};
             var id_bb687ee0b7dd4b86a38a3f81ddbab75f = new MenuItem(header:"Open Code File") {InstanceName="Open Code File"};
@@ -395,6 +396,13 @@ namespace TestApplication
             var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
             var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {};
             var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas => {    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
+            var id_a6ff394fac4e4cd88382a2adaa867805 = new Tab(title:"Search") {InstanceName="id_a6ff394fac4e4cd88382a2adaa867805"};
+            var id_fed56a4aef6748178fa7078388643323 = new Horizontal() {};
+            var searchTextBox = new TextBox() {InstanceName="searchTextBox"};
+            var startSearchButton = new Button(title:"Search") {InstanceName="startSearchButton"};
+            var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {};
+            var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {};
+            var id_48e0bd57859045ffa66becb3b97fce9e = new Apply<string, List<string>>() {Lambda=searchQuery => {    var results = new List<string>();        return results;}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -429,7 +437,6 @@ namespace TestApplication
             id_a98457fc05fc4e84bfb827f480db93d3.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_f5d3730393ab40d78baebcb9198808da.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "elementOutput");
             id_57a0335de8c047d2b2e99333c37753c1.WireTo(createNewAbstractionModel, "dataOutput");
-            createNewAbstractionModel.WireTo(createNewALANode, "output");
             getProjectFolderPath.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
             getProjectFolderPath.WireTo(id_a1f87102954345b69de6841053fce813, "settingJsonOutput");
             id_bbd9df1f15ea4926b97567d08b6835dd.WireTo(id_6e249d6520104ca5a1a4d847a6c862a8, "senderOutput");
@@ -598,6 +605,16 @@ namespace TestApplication
             id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
             id_5e2f0621c62142c1b5972961c93cb725.WireTo(id_57e7dd98a0874e83bbd5014f7e9c9ef5, "dataOutput");
             id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(id_e1e6cf54f73d4f439c6f18b668a73f1a, "fanoutList");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(id_a6ff394fac4e4cd88382a2adaa867805, "childrenTabs");
+            id_a6ff394fac4e4cd88382a2adaa867805.WireTo(id_fed56a4aef6748178fa7078388643323, "children");
+            id_fed56a4aef6748178fa7078388643323.WireTo(searchTextBox, "children");
+            id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
+            searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
+            startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(id_48e0bd57859045ffa66becb3b97fce9e, "dataOutput");
+            id_ad29db53c0d64d4b8be9e31474882158.WireTo(createDummyAbstractionModel, "fanoutList");
+            createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -622,6 +639,20 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
