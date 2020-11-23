@@ -179,18 +179,21 @@ namespace TestApplication
                 }
 
                 model.RefreshGenerics();
+                
+                ALANode node;
 
                 if (!_nodesByName.ContainsKey(model.Name))
                 {
-                    var node = CreateNodeFromModel(model);
+                    node = CreateNodeFromModel(model);
                     _nodesByName[node.Name] = node; 
                 }
                 else
                 {
-                    var node = _nodesByName[model.Name];
+                    node = _nodesByName[model.Name];
                     node.Model.CloneFrom(model);
-                    node.UpdateUI();
                 }
+
+                node.UpdateUI();
 
                 // if (!_rootCreated)
                 // {
@@ -201,7 +204,7 @@ namespace TestApplication
             }
             catch (Exception e)
             {
-                Logging.Log($"Failed to parse node instantiation.\nException: {e}");
+                Logging.Log($"Failed to parse node instantiation in CreateDiagramFromCode.\nException: {e}");
             }
         }
 
