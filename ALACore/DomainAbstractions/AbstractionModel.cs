@@ -310,7 +310,7 @@ namespace DomainAbstractions
                 return _properties[name];
             }
 
-            return "";
+            return null;
         }
 
         private string GetValueAndDict(string name, out Dictionary<string, string> foundAt)

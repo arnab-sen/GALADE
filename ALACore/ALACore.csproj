@@ -147,6 +147,7 @@
     <Compile Include="DomainAbstractions\DispatcherEvent.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\FolderWatcher.cs" />
+    <Compile Include="DomainAbstractions\ListDisplay.cs" />
     <Compile Include="DomainAbstractions\MouseWheelEvent.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\Scale.cs" />

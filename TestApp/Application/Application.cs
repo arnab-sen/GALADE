@@ -250,9 +250,9 @@ namespace TestApplication
             var id_a2e6aa4f4d8e41b59616d63362768dde = new Box() {InstanceName="id_a2e6aa4f4d8e41b59616d63362768dde",Width=100,Height=100};
             var id_826249b1b9d245709de6f3b24503be2d = new TextEditor() {InstanceName="id_826249b1b9d245709de6f3b24503be2d",Width=1280,Height=720};
             var id_a1f87102954345b69de6841053fce813 = new DataFlowConnector<string>() {InstanceName="id_a1f87102954345b69de6841053fce813"};
-            var id_6d1f4415e8d849e19f5d432ea96d9abb = new MouseButtonEvent(eventName:"MouseRightButtonDown") {InstanceName="MouseRightButtonDown",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
+            var id_6d1f4415e8d849e19f5d432ea96d9abb = new MouseButtonEvent(eventName:"MouseRightButtonDown") {InstanceName="Right button down on canvas",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_e7e60dd036af4a869e10a64b2c216104 = new ApplyAction<object>() {InstanceName="Update to Idle",Lambda=input =>{    Mouse.Capture(input as WPFCanvas);    stateTransition.Update(Enums.DiagramMode.Idle);}};
-            var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {InstanceName="MouseRightButtonUp",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
+            var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {InstanceName="Right button up on canvas",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
             var id_da4f1dedd74549e283777b5f7259ad7f = new ApplyAction<object>() {InstanceName="Release capture and update to Idle",Lambda=input =>{    if (Mouse.Captured?.Equals(input) ?? false)        Mouse.Capture(null);    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any,InstanceName="id_368a7dc77fe24060b5d4017152492c1e"};
             var id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {InstanceName="id_2f4df1d9817246e5a9184857ec5a2bf8",Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}};
@@ -262,7 +262,7 @@ namespace TestApplication
             var id_1de443ed1108447199237a8c0c584fcf = new KeyEvent(eventName:"KeyDown") {InstanceName="Delete pressed",Key=Key.Delete};
             var id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {InstanceName="id_46a4d6e6cfb940278eb27561c43cbf37",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}};
             var id_83c3db6e4dfa46518991f706f8425177 = new MenuItem(header:"Refresh") {InstanceName="id_83c3db6e4dfa46518991f706f8425177"};
-            var createDummyAbstractionModel = new Data<AbstractionModel>() {InstanceName="createDummyAbstractionModel",Lambda=() => {    var model = new AbstractionModel()     {        Type = "NewNode",        Name = ""    };        model.AddImplementedPort("Port", "input");    model.AddAcceptedPort("Port", "output");        return model;},storedData=default};
+            var createDummyAbstractionModel = new Data<AbstractionModel>() {InstanceName="createDummyAbstractionModel",Lambda=() =>{    var model = new AbstractionModel()    {Type = "NewNode", Name = ""};    model.AddImplementedPort("Port", "input");    model.AddAcceptedPort("Port", "output");    return model;},storedData=default};
             var id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {InstanceName="id_5297a497d2de44e5bc0ea2c431cdcee6",Lambda=createDummyAbstractionModel.Lambda};
             var id_9bd4555e80434a7b91b65e0b386593b0 = new Apply<AbstractionModel, object>() {InstanceName="id_9bd4555e80434a7b91b65e0b386593b0",Lambda=createNewALANode.Lambda};
             var id_7fabbaae488340a59d940100d38e9447 = new ApplyAction<object>() {InstanceName="id_7fabbaae488340a59d940100d38e9447",Lambda=input =>{    var alaNode = input as ALANode;    var mousePos = Mouse.GetPosition(mainCanvas);    alaNode.PositionX = mousePos.X;    alaNode.PositionY = mousePos.Y;    mainGraph.Set("LatestNode", input);    if (mainGraph.Get("SelectedNode") == null)    {        mainGraph.Set("SelectedNode", input);    }    mainGraph.Roots.Add(input);}};
@@ -349,8 +349,8 @@ namespace TestApplication
             var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {InstanceName="id_4dd09c40831648ea884eed68407b900e",storedData=true};
             var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {InstanceName="id_e5ab69539a364aee809c668bc9d0e1a8",storedData=false};
             var canvasDisplayHoriz = new Horizontal() {InstanceName="canvasDisplayHoriz"};
-            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {InstanceName="id_225b04d097d24d0eb277c1c0df4a47db",FilenameFilter="*.cs",MaxHeight=500};
-            var id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {InstanceName="id_e8a68acda2aa4d54add689bd669589d3"};
+            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {InstanceName="id_225b04d097d24d0eb277c1c0df4a47db",FilenameFilter="*.cs",Height=700};
+            var id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {InstanceName="id_e8a68acda2aa4d54add689bd669589d3",Layouts=new int[]{2, 0}};
             var projectDirectoryTreeHoriz = new Horizontal() {InstanceName="projectDirectoryTreeHoriz"};
             var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom,InstanceName="projectDirectoryOptionsHoriz"};
             var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {InstanceName="id_0d4d34a2cd6749759ac0c2708ddf0cbc"};
@@ -394,15 +394,15 @@ namespace TestApplication
             var id_5e2f0621c62142c1b5972961c93cb725 = new Data<UIElement>() {InstanceName="id_5e2f0621c62142c1b5972961c93cb725",Lambda=() => mainCanvas};
             var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1};
             var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
-            var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {};
-            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas => {    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
+            var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {InstanceName="id_57e7dd98a0874e83bbd5014f7e9c9ef5"};
+            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas =>{    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
             var id_a6ff394fac4e4cd88382a2adaa867805 = new Tab(title:"Search") {InstanceName="id_a6ff394fac4e4cd88382a2adaa867805"};
-            var id_fed56a4aef6748178fa7078388643323 = new Horizontal() {};
+            var id_fed56a4aef6748178fa7078388643323 = new Horizontal() {InstanceName="id_fed56a4aef6748178fa7078388643323"};
             var searchTextBox = new TextBox() {InstanceName="searchTextBox"};
             var startSearchButton = new Button(title:"Search") {InstanceName="startSearchButton"};
-            var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {};
-            var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {};
-            var id_48e0bd57859045ffa66becb3b97fce9e = new Apply<string, List<string>>() {Lambda=searchQuery => {    var results = new List<string>();        return results;}};
+            var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {InstanceName="id_00b0ca72bbce4ef4ba5cf395c666a26e"};
+            var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {InstanceName="id_5da1d2f5b13746f29802078592e59346"};
+            var findNodesMatchingSearchQuery = new Apply<string, List<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    return mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsMatch(searchQuery)).ToList();}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -554,7 +554,6 @@ namespace TestApplication
             id_a1f87102954345b69de6841053fce813.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "fanoutList");
             id_a7a6bd8275dd4fd1a27617400894e790.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
-            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
             projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
             id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged");
@@ -612,9 +611,11 @@ namespace TestApplication
             searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
             startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked");
             id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB");
-            id_5da1d2f5b13746f29802078592e59346.WireTo(id_48e0bd57859045ffa66becb3b97fce9e, "dataOutput");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(findNodesMatchingSearchQuery, "dataOutput");
             id_ad29db53c0d64d4b8be9e31474882158.WireTo(createDummyAbstractionModel, "fanoutList");
             createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput");
+            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
+            searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -639,6 +640,54 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

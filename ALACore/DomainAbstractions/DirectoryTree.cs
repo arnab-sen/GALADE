@@ -35,30 +35,6 @@ namespace DomainAbstractions
             set => _treeView.Width = value;
         }
 
-        public double MaxHeight
-        {
-            get => _treeView.MaxHeight;
-            set => _treeView.MaxHeight = value;
-        }
-
-        public double MaxWidth
-        {
-            get => _treeView.MaxWidth;
-            set => _treeView.MaxWidth = value;
-        }
-
-        public double MinHeight
-        {
-            get => _treeView.MinHeight;
-            set => _treeView.MinHeight = value;
-        }
-
-        public double MinWidth
-        {
-            get => _treeView.MinWidth;
-            set => _treeView.MinWidth = value;
-        }
-
         public string RootDirectory
         {
             get => _rootDirectory;

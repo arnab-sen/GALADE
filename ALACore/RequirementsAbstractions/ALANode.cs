@@ -1092,6 +1092,21 @@ namespace RequirementsAbstractions
             _keyboardSim.SimulateKey("Tab");
         }
 
+        /// <summary>
+        /// Searches the contents of the node to determine whether this node is a match for the search query.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public bool IsMatch(string query)
+        {
+            if (Model.FullType.Contains(query)) return true;
+            if (Model.Name.Contains(query)) return true;
+            if (Model.GetValue("InstanceName")?.Contains(query) ?? false) return true;
+            if (Model.GetValue("InstanceDescription")?.Contains(query) ?? false) return true;
+
+            return false;
+        }
+
         private void CreateWiring()
         {
             Vertical inputPortsVert = null;
