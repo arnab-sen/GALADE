@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -121,24 +122,24 @@ namespace DomainAbstractions
         }
 
         // Methods
-        private IEnumerable<TreeViewNode> CreateTreeViewNodes(IEnumerable<object> sourceItems)
+        private IEnumerable<TreeViewItem> CreateTreeViewNodes(IEnumerable<object> sourceItems)
         {
-            return sourceItems.Select(item => new TreeViewNode() { Header = item });
+            return sourceItems.Select(item => new TreeViewItem() { Header = item });
         }
 
-        public TreeViewNode CreateNodeFromDirectory(string rootDirectory, TreeViewNode parent = null)
+        public TreeViewItem CreateNodeFromDirectory(string rootDirectory, TreeViewItem parent = null)
         {
             var root = new DirectoryInfo(rootDirectory);
             var directories = root.GetDirectories("*", SearchOption.TopDirectoryOnly);
 
-            var rootNode = new TreeViewNode()
+            var rootNode = new TreeViewItem()
             {
                 Header = root.Name,
-                TreeParent = parent
+                Tag = parent
             };
 
             // Recursively run a DFT to create all child nodes
-            var nodes = new List<TreeViewNode>();
+            var nodes = new ObservableCollection<TreeViewItem>();
             foreach (var directory in directories)
             {
                 var directoryNode = CreateNodeFromDirectory(directory.FullName, rootNode);
@@ -147,13 +148,13 @@ namespace DomainAbstractions
                 var directoryFiles = directory.GetFiles(FilenameFilter, SearchOption.TopDirectoryOnly);
                 foreach (var file in directoryFiles)
                 {
-                    var fileNode = new TreeViewNode()
+                    var fileNode = new TreeViewItem()
                     {
                         Header = file.Name,
-                        TreeParent = directoryNode
+                        Tag = directoryNode
                     };
 
-                    (directoryNode.ItemsSource as List<TreeViewNode>)?.Add(fileNode);
+                    (directoryNode.ItemsSource as ObservableCollection<TreeViewItem>)?.Add(fileNode);
                 }
             }
 
@@ -168,13 +169,13 @@ namespace DomainAbstractions
         /// <param name="node"></param>
         /// <param name="separator"></param>
         /// <returns></returns>
-        private string GetPathToNode(TreeViewNode node, string separator)
+        private string GetPathToNode(TreeViewItem node, string separator)
         {
             var sb = new StringBuilder();
             var nodeNames = new List<string>() { };
 
             var currentNode = node;
-            while (currentNode.TreeParent != null && currentNode.TreeParent is TreeViewNode parent)
+            while (currentNode.Tag != null && currentNode.Tag is TreeViewItem parent)
             {
                 nodeNames.Add(parent.Header.ToString());
                 currentNode = parent;
@@ -195,7 +196,7 @@ namespace DomainAbstractions
         {
             _treeView.SelectedItemChanged += (sender, args) =>
             {
-                if (args.NewValue is TreeViewNode node)
+                if (args.NewValue is TreeViewItem node)
                 {
                     _selectedPath = GetPathToNode(node, "\\");
 
@@ -205,12 +206,5 @@ namespace DomainAbstractions
             };
         }
 
-        /// <summary>
-        /// A TreeViewItem that keeps track of its parent node.
-        /// </summary>
-        public class TreeViewNode : TreeViewItem
-        {
-            public TreeViewNode TreeParent { get; set; }
-        }
     }
 }

@@ -38,16 +38,15 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
-            var id_798fc60f12954410b2c64f2f9dcb24a6 = new Apply<string, string>() {Lambda=() =>{    DoSomething();    DoSomething();}};
-            var id_3978b85f12654e1a96b0f9fc32e18e16 = new Apply<string, string>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 			
 			// BEGIN AUTO-GENERATED WIRING
-            id_798fc60f12954410b2c64f2f9dcb24a6.WireTo(id_3978b85f12654e1a96b0f9fc32e18e16, "output");
 			// END AUTO-GENERATED WIRING
         }
     }
 }
+
+
 
 
 

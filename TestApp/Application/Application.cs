@@ -394,7 +394,7 @@ namespace TestApplication
             var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1};
             var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
             var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {};
-            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {Lambda=canvas => {    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
+            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas => {    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -622,6 +622,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
