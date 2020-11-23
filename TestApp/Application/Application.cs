@@ -342,7 +342,7 @@ namespace TestApplication
             var sidePanelHoriz = new Horizontal(visible:false) {InstanceName="sidePanelHoriz"};
             var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {InstanceName="id_987196dd20ab4721b0c193bb7a2064f4",Layouts=new int[]{2}};
             var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {InstanceName="id_7b250b222ca44ba2922547f03a4aef49"};
-            var id_a7a6bd8275dd4fd1a27617400894e790 = new Tab(title:"Directory Explorer") {InstanceName="id_a7a6bd8275dd4fd1a27617400894e790"};
+            var directoryExplorerTab = new Tab(title:"Directory Explorer") {InstanceName="directoryExplorerTab"};
             var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {InstanceName="View"};
             var id_b5985971664e42b3a5b0869fce7b0f9b = new MenuItem(header:"Show side panel") {InstanceName="Show side panel"};
             var id_ba60beaed16c4e2f8ac431a8174ed12b = new MenuItem(header:"Hide side panel") {InstanceName="Hide side panel"};
@@ -396,13 +396,16 @@ namespace TestApplication
             var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
             var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {InstanceName="id_57e7dd98a0874e83bbd5014f7e9c9ef5"};
             var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas =>{    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
-            var id_a6ff394fac4e4cd88382a2adaa867805 = new Tab(title:"Search") {InstanceName="id_a6ff394fac4e4cd88382a2adaa867805"};
+            var searchTab = new Tab(title:"Search") {InstanceName="searchTab"};
             var id_fed56a4aef6748178fa7078388643323 = new Horizontal() {InstanceName="id_fed56a4aef6748178fa7078388643323"};
             var searchTextBox = new TextBox() {InstanceName="searchTextBox"};
             var startSearchButton = new Button(title:"Search") {InstanceName="startSearchButton"};
             var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {InstanceName="id_00b0ca72bbce4ef4ba5cf395c666a26e"};
             var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {InstanceName="id_5da1d2f5b13746f29802078592e59346"};
             var findNodesMatchingSearchQuery = new Apply<string, List<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    return mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsMatch(searchQuery)).ToList();}};
+            var id_cc0c82a2157f4b0291c812236a6e45ba = new Vertical() {};
+            var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {};
+            var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -541,7 +544,7 @@ namespace TestApplication
             canvasDisplayHoriz.WireTo(id_88aa5fdf3bbc4e429db278dd29f81159, "children");
             sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children");
             id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children");
-            id_7b250b222ca44ba2922547f03a4aef49.WireTo(id_a7a6bd8275dd4fd1a27617400894e790, "childrenTabs");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(directoryExplorerTab, "childrenTabs");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4a42bbf671cd4dba8987bd656e5a2ced, "children");
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_b5985971664e42b3a5b0869fce7b0f9b, "children");
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_ba60beaed16c4e2f8ac431a8174ed12b, "children");
@@ -552,7 +555,7 @@ namespace TestApplication
             mainHorizontal.WireTo(canvasDisplayHoriz, "children");
             projectDirectoryTreeHoriz.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "children");
             id_a1f87102954345b69de6841053fce813.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "fanoutList");
-            id_a7a6bd8275dd4fd1a27617400894e790.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
+            directoryExplorerTab.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
             projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
@@ -604,8 +607,8 @@ namespace TestApplication
             id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
             id_5e2f0621c62142c1b5972961c93cb725.WireTo(id_57e7dd98a0874e83bbd5014f7e9c9ef5, "dataOutput");
             id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(id_e1e6cf54f73d4f439c6f18b668a73f1a, "fanoutList");
-            id_7b250b222ca44ba2922547f03a4aef49.WireTo(id_a6ff394fac4e4cd88382a2adaa867805, "childrenTabs");
-            id_a6ff394fac4e4cd88382a2adaa867805.WireTo(id_fed56a4aef6748178fa7078388643323, "children");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(searchTab, "childrenTabs");
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_fed56a4aef6748178fa7078388643323, "children");
             id_fed56a4aef6748178fa7078388643323.WireTo(searchTextBox, "children");
             id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
             searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
@@ -616,6 +619,10 @@ namespace TestApplication
             createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
             searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
+            searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children");
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_3622556a1b37410691b51b83c004a315, "children");
+            findNodesMatchingSearchQuery.WireTo(id_06910bcd35b847d9a1ed9ce47caf3822, "output");
+            id_06910bcd35b847d9a1ed9ce47caf3822.WireTo(id_3622556a1b37410691b51b83c004a315, "output");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -640,6 +647,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 

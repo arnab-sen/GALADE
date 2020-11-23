@@ -46,7 +46,8 @@ namespace DomainAbstractions
             _listBox.SelectionChanged += (sender, args) =>
             {
                 var i = 0;
-                while (args.AddedItems.GetEnumerator().MoveNext())
+                var enumerator = args.AddedItems.GetEnumerator();
+                while (enumerator.MoveNext())
                 {
                     if (selectedItem != null) selectedItem.Data = args.AddedItems[i].ToString();
                     if (selectedIndex != null) selectedIndex.Data = i;

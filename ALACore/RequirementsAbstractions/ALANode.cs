@@ -1097,14 +1097,33 @@ namespace RequirementsAbstractions
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public bool IsMatch(string query)
+        public bool IsMatch(string query, bool matchCase = false)
         {
-            if (Model.FullType.Contains(query)) return true;
-            if (Model.Name.Contains(query)) return true;
-            if (Model.GetValue("InstanceName")?.Contains(query) ?? false) return true;
-            if (Model.GetValue("InstanceDescription")?.Contains(query) ?? false) return true;
+            if (MatchString(Model.FullType, query, matchCase)) return true;
+            if (MatchString(Model.Name, query, matchCase)) return true;
+            if (MatchString(Model.GetValue("InstanceName"), query, matchCase)) return true;
+            if (MatchString(Model.GetValue("InstanceDescription"), query, matchCase)) return true;
 
             return false;
+        }
+
+        private bool MatchString(string toMatch, string searchToken, bool matchCase = false)
+        {
+            try
+            {
+                if (!matchCase)
+                {
+                    searchToken = searchToken.ToLower();
+                    toMatch = toMatch.ToLower();
+                }
+
+                return toMatch.Contains(searchToken);
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to match string in ALANode for toMatch: {toMatch} and searchToken: {searchToken} with options [matchCase: {matchCase}].\nException: {e}");
+                return false;
+            }
         }
 
         private void CreateWiring()
