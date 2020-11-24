@@ -414,12 +414,14 @@ namespace TestApplication
             var id_8e347b7f5f3b4aa6b1c8f1966d0280a3 = new ForEach<ALANode>() {InstanceName="id_8e347b7f5f3b4aa6b1c8f1966d0280a3"};
             var id_282744d2590b4d3e8b337d73c05e0823 = new DataFlowConnector<ALANode>() {InstanceName="id_282744d2590b4d3e8b337d73c05e0823"};
             var currentSearchResultIndex = new DataFlowConnector<int>() {InstanceName="currentSearchResultIndex"};
-            var id_2c9472651f984aa8ab763f327bcfa45e = new ApplyAction<ALANode>() {InstanceName="id_2c9472651f984aa8ab763f327bcfa45e",Lambda=node =>{    var i = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    Logging.Message($"Searching node {i+1}/{total}...");}};
+            var id_2c9472651f984aa8ab763f327bcfa45e = new ApplyAction<ALANode>() {InstanceName="id_2c9472651f984aa8ab763f327bcfa45e",Lambda=node =>{    var i = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    Logging.Message($"Searching node {i + 1}/{total}...");}};
             var currentSearchQuery = new DataFlowConnector<string>() {InstanceName="currentSearchQuery"};
-            var id_08aea84aa9b54808b173fe1a29163d9b = new Data<List<ALANode>>() {Lambda=() => nodeSearchResults};
-            var id_1c95fb3a139b4602bba7b10201112546 = new DispatcherData<ALANode>() {};
-            var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {};
-            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {Lambda=node => {    var query = currentSearchQuery.Data;    if (node.IsMatch(query)) nodeSearchResults.Add(node);        var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1)) Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}};
+            var id_08aea84aa9b54808b173fe1a29163d9b = new Data<List<ALANode>>() {InstanceName="id_08aea84aa9b54808b173fe1a29163d9b",Lambda=() => nodeSearchResults};
+            var id_1c95fb3a139b4602bba7b10201112546 = new DispatcherData<ALANode>() {InstanceName="id_1c95fb3a139b4602bba7b10201112546"};
+            var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {InstanceName="id_01bdd051f2034331bd9f121029b0e2e8"};
+            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {InstanceName="id_67bc4eb50bb04d9694a1a0d5ce65c9d9",Lambda=node =>{    var query = currentSearchQuery.Data;    if (node.IsMatch(query))        nodeSearchResults.Add(node);    var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1))        Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}};
+            var id_f526f560b3504a0b8115879e5d5354ff = new MenuItem(header:"Test ContextMenu") {InstanceName="Test ContextMenu"};
+            var id_dea56e5fd7174cd7983e8f2c837a941b = new ContextMenu() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -652,6 +654,8 @@ namespace TestApplication
             id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_1c95fb3a139b4602bba7b10201112546, "fanoutList");
             id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_01bdd051f2034331bd9f121029b0e2e8, "fanoutList");
             id_01bdd051f2034331bd9f121029b0e2e8.WireTo(id_67bc4eb50bb04d9694a1a0d5ce65c9d9, "delayedData");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_f526f560b3504a0b8115879e5d5354ff, "children");
+            id_f526f560b3504a0b8115879e5d5354ff.WireTo(id_dea56e5fd7174cd7983e8f2c837a941b, "clickedEvent");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -676,6 +680,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

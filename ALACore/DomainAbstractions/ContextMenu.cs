@@ -9,31 +9,46 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class ContextMenu : IUI
+    /// <summary>
+    /// A UI container than can hold interactive items in a context menu.
+    /// </summary>
+    public class ContextMenu : IUI, IEvent
     {
         // Public fields and properties
         public string InstanceName = "Default";
 
         // Private fields
-        private System.Windows.Controls.ContextMenu contextMenu = new System.Windows.Controls.ContextMenu();
+        private System.Windows.Controls.ContextMenu _contextMenu = new System.Windows.Controls.ContextMenu();
 
         // Ports
         private List<IUI> children = new List<IUI>();
-
-        public ContextMenu()
-        {
-
-        }
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
             foreach (var child in children)
             {
-                contextMenu.Items.Add(child.GetWPFElement());
+                _contextMenu.Items.Add(child.GetWPFElement());
             }
 
-            return contextMenu;
+            return _contextMenu;
+        }
+
+        // IEvent implementation
+        void IEvent.Execute()
+        {
+            Open();
+        }
+
+        // Methods
+        public void Open()
+        {
+            _contextMenu.IsOpen = true;
+        }
+
+        public ContextMenu()
+        {
+
         }
     }
 }
