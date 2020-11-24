@@ -220,7 +220,7 @@ namespace TestApplication
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
             var mainWindowVertical = new Vertical() {InstanceName="mainWindowVertical",Layouts=new[]{0, 2, 0}};
-            var id_88aa5fdf3bbc4e429db278dd29f81159 = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas,InstanceName="id_88aa5fdf3bbc4e429db278dd29f81159"};
+            var mainCanvasDisplay = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas,InstanceName="mainCanvasDisplay"};
             var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyUp") {InstanceName="Pressed the A key",Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.A};
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {InstanceName="id_581015f073614919a33126efd44bf477"};
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"};
@@ -382,7 +382,7 @@ namespace TestApplication
             var id_0945b34f58a146ff983962f595f57fb2 = new DispatcherEvent() {InstanceName="id_0945b34f58a146ff983962f595f57fb2"};
             var id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {InstanceName="id_4341066281bc4015a668a3bbbcb7256b",Lambda=args => args.Handled = true};
             var id_024b1810c2d24db3b9fac1ccce2fad9e = new DataFlowConnector<AbstractionModel>() {InstanceName="id_024b1810c2d24db3b9fac1ccce2fad9e"};
-            var id_2c933997055b4122bdb77945f1abb560 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
+            var id_2c933997055b4122bdb77945f1abb560 = new MenuItem(header:"Test reset canvas on root") {InstanceName="Test reset canvas on root"};
             var id_0eea701e0bc84c42a9f17ccc200ef2ef = new Data<ALANode>() {InstanceName="id_0eea701e0bc84c42a9f17ccc200ef2ef",Lambda=() => mainGraph?.Roots.FirstOrDefault() as ALANode};
             var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
             var id_29ed401eb9c240d98bf5c6d1f00c5c76 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
@@ -403,24 +403,26 @@ namespace TestApplication
             var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {InstanceName="id_00b0ca72bbce4ef4ba5cf395c666a26e"};
             var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {InstanceName="id_5da1d2f5b13746f29802078592e59346"};
             var findNodesMatchingSearchQuery = new Apply<string, List<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    return mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsMatch(searchQuery)).ToList();}};
-            var id_cc0c82a2157f4b0291c812236a6e45ba = new Vertical() {};
-            var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {};
-            var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
+            var id_cc0c82a2157f4b0291c812236a6e45ba = new Vertical() {InstanceName="id_cc0c82a2157f4b0291c812236a6e45ba"};
+            var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {InstanceName="id_3622556a1b37410691b51b83c004a315"};
+            var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {InstanceName="id_06910bcd35b847d9a1ed9ce47caf3822",Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
+            var nodeSearchResults = new DataFlowConnector<List<ALANode>>() {InstanceName="nodeSearchResults"};
+            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {Lambda=index => {    var results = nodeSearchResults.Data;    if (results.Count > index)     {        return results[index];    }    else    {        return null;    }}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
             mainWindow.WireTo(mainWindowVertical, "iuiStructure");
             mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart");
             mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_ed16dd83790542f4bce1db7c9f2b928f, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_bbd9df1f15ea4926b97567d08b6835dd, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_6d1f4415e8d849e19f5d432ea96d9abb, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_44b41ddf67864f29ae9b59ed0bec2927, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_1de443ed1108447199237a8c0c584fcf, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_2a7c8f3b6b5e4879ad5a35ff6d8538fd, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_a26b08b25184469db6f0c4987d4c68dd, "eventHandlers");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu");
+            mainCanvasDisplay.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_ed16dd83790542f4bce1db7c9f2b928f, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_bbd9df1f15ea4926b97567d08b6835dd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_6d1f4415e8d849e19f5d432ea96d9abb, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_44b41ddf67864f29ae9b59ed0bec2927, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_1de443ed1108447199237a8c0c584fcf, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_2a7c8f3b6b5e4879ad5a35ff6d8538fd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_a26b08b25184469db6f0c4987d4c68dd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu");
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children");
             id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children");
             id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent");
@@ -536,12 +538,12 @@ namespace TestApplication
             id_2ce385b32256413ab2489563287afaac.WireTo(id_28d229073cb049c997824e1d436eaa7e, "ifOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
             layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
             id_0b4478e56d614ca091979014db65d076.WireTo(id_d90fbf714f5f4fdc9b43cbe4d5cebf1c, "senderOutput");
             mainWindowVertical.WireTo(mainHorizontal, "children");
             mainWindowVertical.WireTo(statusBarHorizontal, "children");
             mainHorizontal.WireTo(sidePanelHoriz, "children");
-            canvasDisplayHoriz.WireTo(id_88aa5fdf3bbc4e429db278dd29f81159, "children");
+            canvasDisplayHoriz.WireTo(mainCanvasDisplay, "children");
             sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children");
             id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children");
             id_7b250b222ca44ba2922547f03a4aef49.WireTo(directoryExplorerTab, "childrenTabs");
@@ -579,10 +581,10 @@ namespace TestApplication
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_86ecd8f953324e34adc6238338f75db5, "fanoutList");
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_63e463749abe41d28d05b877479070f8, "fanoutList");
             id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_66e516b6027649e1995a531d03c0c518, "fanoutList");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_8863f404bed34d47922654bd0190259c, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_8863f404bed34d47922654bd0190259c, "eventHandlers");
             id_8863f404bed34d47922654bd0190259c.WireTo(cloneSelectedNodeModel, "eventHappened");
             id_024b1810c2d24db3b9fac1ccce2fad9e.WireTo(id_0f802a208aad42209777c13b2e61fe56, "fanoutList");
-            id_88aa5fdf3bbc4e429db278dd29f81159.WireTo(id_7363c80d952e4246aba050e007287444, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_7363c80d952e4246aba050e007287444, "eventHandlers");
             id_316a3befaa364f0186efabcf5efaa33f.WireTo(createNewALANode, "dataOutput");
             createAndPaintALAWire.WireTo(id_8647cbf4ac4049a99204b0e3aa70c326, "output");
             id_7363c80d952e4246aba050e007287444.WireTo(id_5a22e32e96e641d49c6fb4bdf6fcd94b, "eventHappened");
@@ -621,8 +623,11 @@ namespace TestApplication
             searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
             searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children");
             id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_3622556a1b37410691b51b83c004a315, "children");
-            findNodesMatchingSearchQuery.WireTo(id_06910bcd35b847d9a1ed9ce47caf3822, "output");
+            nodeSearchResults.WireTo(id_06910bcd35b847d9a1ed9ce47caf3822, "fanoutList");
             id_06910bcd35b847d9a1ed9ce47caf3822.WireTo(id_3622556a1b37410691b51b83c004a315, "output");
+            findNodesMatchingSearchQuery.WireTo(nodeSearchResults, "output");
+            id_3622556a1b37410691b51b83c004a315.WireTo(id_73274d9ce8d5414899772715a1d0f266, "selectedIndex");
+            id_73274d9ce8d5414899772715a1d0f266.WireTo(resetViewOnNode, "output");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -647,6 +652,16 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

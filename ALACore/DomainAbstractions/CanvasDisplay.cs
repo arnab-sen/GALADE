@@ -60,6 +60,8 @@ namespace DomainAbstractions
             set => foregroundCanvas = value;
         }
 
+        public Canvas BackgroundDisplay => backgroundCanvas;
+
         // Private fields
         private Canvas backgroundCanvas; // Should never move
         private Canvas foregroundCanvas; // Holds all child elements and can be moved around

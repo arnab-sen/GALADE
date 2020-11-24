@@ -18,9 +18,24 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public string InstanceDescription { get; set; } = "";
-        
+
+        public bool CanSelectMultiple
+        {
+            get => _canSelectMultiple;
+            set
+            {
+                _canSelectMultiple = value;
+                _listBox.SelectionMode = _canSelectMultiple ? SelectionMode.Extended : SelectionMode.Single;
+            }
+        }
+
         // Private fields
-        private ListBox _listBox = new ListBox();
+        private ListBox _listBox = new ListBox()
+        {
+            SelectionMode = SelectionMode.Single
+        };
+
+        private bool _canSelectMultiple = false;
 
         // Ports
         private IDataFlow<string> selectedItem;
@@ -45,14 +60,10 @@ namespace DomainAbstractions
         {
             _listBox.SelectionChanged += (sender, args) =>
             {
-                var i = 0;
-                var enumerator = args.AddedItems.GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                    if (selectedItem != null) selectedItem.Data = args.AddedItems[i].ToString();
-                    if (selectedIndex != null) selectedIndex.Data = i;
-                    i++;
-                }
+                if (_listBox.SelectedValue == null) return;
+
+                if (selectedItem != null) selectedItem.Data = _listBox.SelectedValue.ToString();
+                if (selectedIndex != null) selectedIndex.Data = _listBox.SelectedIndex;
             };
         }
     }
