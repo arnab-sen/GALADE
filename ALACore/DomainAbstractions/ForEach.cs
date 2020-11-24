@@ -26,6 +26,7 @@ namespace DomainAbstractions
         
         // Ports
         private IDataFlow<T> elementOutput;
+        private IDataFlow<int> indexOutput;
         private IEvent complete;
         
         // IDataFlow<T1> implementation
@@ -38,9 +39,13 @@ namespace DomainAbstractions
 
                 if (collection != null)
                 {
+                    var i = 0; 
                     foreach (var element in collection)
                     {
+                        if (indexOutput != null) indexOutput.Data = i;
                         if (elementOutput != null) elementOutput.Data = element;
+                        
+                        i++;
                     }
 
                     complete?.Execute();

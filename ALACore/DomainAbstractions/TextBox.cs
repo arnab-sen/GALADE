@@ -80,6 +80,10 @@ namespace DomainAbstractions
 
         // Outputs
         private IDataFlow<string> textOutput;
+
+        /// <summary>
+        /// Sends an event when the enter key is released.
+        /// </summary>
         private IEvent eventEnterPressed;
 
         /// <summary>
@@ -152,7 +156,7 @@ namespace DomainAbstractions
             _textBox.VerticalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto;
             _textBox.IsReadOnly = readOnly;
 
-            _textBox.KeyDown += (sender, args) =>
+            _textBox.KeyUp += (sender, args) =>
             {
                 if (args.Key == Key.Enter) eventEnterPressed?.Execute();
             };

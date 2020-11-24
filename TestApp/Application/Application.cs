@@ -216,6 +216,7 @@ namespace TestApplication
             AbstractionModelManager abstractionModelManager = new AbstractionModelManager();
 
             List<string> availableAbstractions = null;
+            List<ALANode> nodeSearchResults = new List<ALANode>();
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
@@ -402,15 +403,23 @@ namespace TestApplication
             var startSearchButton = new Button(title:"Search") {InstanceName="startSearchButton"};
             var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {InstanceName="id_00b0ca72bbce4ef4ba5cf395c666a26e"};
             var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {InstanceName="id_5da1d2f5b13746f29802078592e59346"};
-            var findNodesMatchingSearchQuery = new Apply<string, List<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    return mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsMatch(searchQuery)).ToList();}};
             var id_cc0c82a2157f4b0291c812236a6e45ba = new Vertical() {InstanceName="id_cc0c82a2157f4b0291c812236a6e45ba"};
             var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {InstanceName="id_3622556a1b37410691b51b83c004a315"};
             var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {InstanceName="id_06910bcd35b847d9a1ed9ce47caf3822",Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
-            var nodeSearchResults = new DataFlowConnector<List<ALANode>>() {InstanceName="nodeSearchResults"};
-            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {InstanceName="id_73274d9ce8d5414899772715a1d0f266",Lambda=index =>{    var results = nodeSearchResults.Data;    if (results.Count > index)    {        return results[index];    }    else    {        return null;    }}};
+            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {InstanceName="id_73274d9ce8d5414899772715a1d0f266",Lambda=index =>{    var results = nodeSearchResults;    if (results.Count > index)    {        return results[index];    }    else    {        return null;    }}};
             var id_fff8d82dbdd04da18793108f9b8dd5cf = new DataFlowConnector<ALANode>() {InstanceName="id_fff8d82dbdd04da18793108f9b8dd5cf"};
             var id_75ecf8c2602c41829602707be8a8a481 = new ConvertToEvent<ALANode>() {InstanceName="id_75ecf8c2602c41829602707be8a8a481"};
             var id_23a625377ea745ee8253482ee1f0d437 = new ApplyAction<ALANode>() {InstanceName="id_23a625377ea745ee8253482ee1f0d437",Lambda=selectedNode =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();    }    selectedNode.Select();}};
+            var id_5f1c0f0187eb4dc99f15254fd36fa9b6 = new Apply<string, IEnumerable<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    nodeSearchResults.Clear();    return mainGraph.Nodes.OfType<ALANode>();}};
+            var id_8e347b7f5f3b4aa6b1c8f1966d0280a3 = new ForEach<ALANode>() {InstanceName="id_8e347b7f5f3b4aa6b1c8f1966d0280a3"};
+            var id_282744d2590b4d3e8b337d73c05e0823 = new DataFlowConnector<ALANode>() {InstanceName="id_282744d2590b4d3e8b337d73c05e0823"};
+            var currentSearchResultIndex = new DataFlowConnector<int>() {InstanceName="currentSearchResultIndex"};
+            var id_2c9472651f984aa8ab763f327bcfa45e = new ApplyAction<ALANode>() {InstanceName="id_2c9472651f984aa8ab763f327bcfa45e",Lambda=node =>{    var i = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    Logging.Message($"Searching node {i+1}/{total}...");}};
+            var currentSearchQuery = new DataFlowConnector<string>() {InstanceName="currentSearchQuery"};
+            var id_08aea84aa9b54808b173fe1a29163d9b = new Data<List<ALANode>>() {Lambda=() => nodeSearchResults};
+            var id_1c95fb3a139b4602bba7b10201112546 = new DispatcherData<ALANode>() {};
+            var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {};
+            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {Lambda=node => {    var query = currentSearchQuery.Data;    if (node.IsMatch(query)) nodeSearchResults.Add(node);        var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1)) Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -619,22 +628,30 @@ namespace TestApplication
             searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
             startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked");
             id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB");
-            id_5da1d2f5b13746f29802078592e59346.WireTo(findNodesMatchingSearchQuery, "dataOutput");
             id_ad29db53c0d64d4b8be9e31474882158.WireTo(createDummyAbstractionModel, "fanoutList");
             createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
             searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
             searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children");
             id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_3622556a1b37410691b51b83c004a315, "children");
-            nodeSearchResults.WireTo(id_06910bcd35b847d9a1ed9ce47caf3822, "fanoutList");
             id_06910bcd35b847d9a1ed9ce47caf3822.WireTo(id_3622556a1b37410691b51b83c004a315, "output");
-            findNodesMatchingSearchQuery.WireTo(nodeSearchResults, "output");
             id_3622556a1b37410691b51b83c004a315.WireTo(id_73274d9ce8d5414899772715a1d0f266, "selectedIndex");
             id_73274d9ce8d5414899772715a1d0f266.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "output");
             id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_75ecf8c2602c41829602707be8a8a481, "fanoutList");
             id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_23a625377ea745ee8253482ee1f0d437, "fanoutList");
             id_75ecf8c2602c41829602707be8a8a481.WireTo(id_5e2f0621c62142c1b5972961c93cb725, "eventOutput");
             id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(resetViewOnNode, "fanoutList");
+            currentSearchQuery.WireTo(id_5f1c0f0187eb4dc99f15254fd36fa9b6, "fanoutList");
+            id_5f1c0f0187eb4dc99f15254fd36fa9b6.WireTo(id_8e347b7f5f3b4aa6b1c8f1966d0280a3, "output");
+            id_8e347b7f5f3b4aa6b1c8f1966d0280a3.WireTo(id_282744d2590b4d3e8b337d73c05e0823, "elementOutput");
+            id_1c95fb3a139b4602bba7b10201112546.WireTo(id_2c9472651f984aa8ab763f327bcfa45e, "delayedData");
+            id_8e347b7f5f3b4aa6b1c8f1966d0280a3.WireTo(currentSearchResultIndex, "indexOutput");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(currentSearchQuery, "dataOutput");
+            id_8e347b7f5f3b4aa6b1c8f1966d0280a3.WireTo(id_08aea84aa9b54808b173fe1a29163d9b, "complete");
+            id_08aea84aa9b54808b173fe1a29163d9b.WireTo(id_06910bcd35b847d9a1ed9ce47caf3822, "dataOutput");
+            id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_1c95fb3a139b4602bba7b10201112546, "fanoutList");
+            id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_01bdd051f2034331bd9f121029b0e2e8, "fanoutList");
+            id_01bdd051f2034331bd9f121029b0e2e8.WireTo(id_67bc4eb50bb04d9694a1a0d5ce65c9d9, "delayedData");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -659,6 +676,24 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
