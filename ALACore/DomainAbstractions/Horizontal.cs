@@ -37,6 +37,7 @@ namespace DomainAbstractions
         // ports ---------------------------------------------------------------------
         private List<IUI> children = new List<IUI>();
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
+        private List<IUI> contextMenuChildren = new List<IUI>();
 
         // private fields ---------------------------------------------------------------------
         private System.Windows.Controls.Grid gridPanel = new System.Windows.Controls.Grid();
@@ -92,6 +93,12 @@ namespace DomainAbstractions
                     }
                 };
 
+            }
+
+            gridPanel.ContextMenu = new System.Windows.Controls.ContextMenu();
+            foreach (var contextMenuChild in contextMenuChildren)
+            {
+                gridPanel.ContextMenu.Items.Add(contextMenuChild.GetWPFElement());
             }
 
             return gridPanel;
