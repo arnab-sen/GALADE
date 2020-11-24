@@ -1002,22 +1002,17 @@ namespace RequirementsAbstractions
             render.MouseEnter += (sender, args) =>
             {
                 toolTipLabel.Content = Model.GetDocumentation();
-                nodeBox.Background = NodeHighlightedBackground;
+                HighlightNode();
             };
 
             render.MouseLeave += (sender, args) =>
             {
-                if (!render.IsKeyboardFocusWithin) nodeBox.Background = NodeBackground;
-            };
-
-            render.GotFocus += (sender, args) =>
-            {
-                nodeBox.Background = NodeHighlightedBackground;
+                if (!render.IsKeyboardFocusWithin) UnhighlightNode();
             };
 
             render.LostFocus += (sender, args) =>
             {
-                nodeBox.Background = NodeBackground;
+                UnhighlightNode();
             };
             
             render.MouseMove += (sender, args) =>
@@ -1037,14 +1032,9 @@ namespace RequirementsAbstractions
 
             render.MouseLeftButtonDown += (sender, args) =>
             {
-                if (!render.IsKeyboardFocusWithin) render.Focus();
-
-                StateTransition.Update(Enums.DiagramMode.IdleSelected);
-
                 _mousePosInBox = Mouse.GetPosition(render);
-                // Mouse.Capture(render);
 
-                Graph.Set("SelectedNode", this);
+                Select();
             };
 
             render.MouseLeftButtonUp += (sender, args) =>
@@ -1077,6 +1067,31 @@ namespace RequirementsAbstractions
                 }
             };
 
+        }
+
+        private void HighlightNode()
+        {
+            _rootUI.Background = NodeHighlightedBackground;
+        }
+
+        private void UnhighlightNode()
+        {
+            _rootUI.Background = NodeBackground;
+        }
+
+        public void Select()
+        {
+            HighlightNode();
+            Graph.Set("SelectedNode", this);
+            if (!_rootUI.Render.IsKeyboardFocusWithin) _rootUI.Render.Focus();
+            StateTransition.Update(Enums.DiagramMode.IdleSelected);
+        }
+
+        public void Deselect()
+        {
+            UnhighlightNode();
+            if (Graph.Get("SelectedNode")?.Equals(this) ?? false) Graph.Set("SelectedNode", null);
+            if (Mouse.Captured?.Equals(_rootUI.Render) ?? false) Mouse.Capture(null);
         }
 
         public void FocusOnTypeDropDown()

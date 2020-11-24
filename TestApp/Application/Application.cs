@@ -408,6 +408,9 @@ namespace TestApplication
             var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {InstanceName="id_06910bcd35b847d9a1ed9ce47caf3822",Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
             var nodeSearchResults = new DataFlowConnector<List<ALANode>>() {InstanceName="nodeSearchResults"};
             var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {Lambda=index => {    var results = nodeSearchResults.Data;    if (results.Count > index)     {        return results[index];    }    else    {        return null;    }}};
+            var id_fff8d82dbdd04da18793108f9b8dd5cf = new DataFlowConnector<ALANode>() {};
+            var id_75ecf8c2602c41829602707be8a8a481 = new ConvertToEvent<ALANode>() {};
+            var id_23a625377ea745ee8253482ee1f0d437 = new ApplyAction<ALANode>() {Lambda=selectedNode => {    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)     {        node.Deselect();    }        selectedNode.Select();}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -627,7 +630,11 @@ namespace TestApplication
             id_06910bcd35b847d9a1ed9ce47caf3822.WireTo(id_3622556a1b37410691b51b83c004a315, "output");
             findNodesMatchingSearchQuery.WireTo(nodeSearchResults, "output");
             id_3622556a1b37410691b51b83c004a315.WireTo(id_73274d9ce8d5414899772715a1d0f266, "selectedIndex");
-            id_73274d9ce8d5414899772715a1d0f266.WireTo(resetViewOnNode, "output");
+            id_73274d9ce8d5414899772715a1d0f266.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "output");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_75ecf8c2602c41829602707be8a8a481, "fanoutList");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_23a625377ea745ee8253482ee1f0d437, "fanoutList");
+            id_75ecf8c2602c41829602707be8a8a481.WireTo(id_5e2f0621c62142c1b5972961c93cb725, "eventOutput");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(resetViewOnNode, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -652,6 +659,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
