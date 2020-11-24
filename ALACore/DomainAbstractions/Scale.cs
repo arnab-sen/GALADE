@@ -30,6 +30,7 @@ namespace DomainAbstractions
         public Func<Point> GetAbsoluteCentre { get; set; } = () => new Point(0, 0); // e.g. MouseWheelEventArgs.GetPosition(canvas)
         public Func<Point> GetScaleSensitiveCentre { get; set; } = () => new Point(0, 0); // e.g. Mouse.GetPosition(canvas)
         public bool MouseOnElement { get; set; } = true;
+        public bool Reset { get; set; } = false;
 
         // Private fields
         private UIElement _ui;
@@ -103,12 +104,20 @@ namespace DomainAbstractions
                 translateTransform = transformGroup.Children.OfType<TranslateTransform>().FirstOrDefault();
                 if (translateTransform != null)
                 {
-                    translateTransform.X += centreDiff.X;
-                    translateTransform.Y += centreDiff.Y;
+                    if (!Reset)
+                    {
+                        translateTransform.X += centreDiff.X;
+                        translateTransform.Y += centreDiff.Y; 
+                    }
+                    else
+                    {
+                        translateTransform.X = 0;
+                        translateTransform.Y = 0;
+                    }
                 }
                 else
                 {
-                    translateTransform = new TranslateTransform(centreDiff.X, centreDiff.Y);
+                    translateTransform = !Reset ? new TranslateTransform(centreDiff.X, centreDiff.Y) : new TranslateTransform(0, 0);
                     group.Children.Add(translateTransform);
                 }
             }

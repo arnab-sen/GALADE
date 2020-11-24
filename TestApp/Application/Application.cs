@@ -392,7 +392,7 @@ namespace TestApplication
             var id_42c7f12c13804ec7b111291739be78f5 = new DataFlowConnector<string>() {InstanceName="id_42c7f12c13804ec7b111291739be78f5"};
             var id_409be365df274cc6a7a124e8a80316a5 = new ConvertToEvent<string>() {InstanceName="id_409be365df274cc6a7a124e8a80316a5"};
             var id_5e2f0621c62142c1b5972961c93cb725 = new Data<UIElement>() {InstanceName="id_5e2f0621c62142c1b5972961c93cb725",Lambda=() => mainCanvas};
-            var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1};
+            var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1,Reset=true};
             var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
             var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {InstanceName="id_57e7dd98a0874e83bbd5014f7e9c9ef5"};
             var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas =>{    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
@@ -407,10 +407,10 @@ namespace TestApplication
             var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {InstanceName="id_3622556a1b37410691b51b83c004a315"};
             var id_06910bcd35b847d9a1ed9ce47caf3822 = new Apply<List<ALANode>, List<string>>() {InstanceName="id_06910bcd35b847d9a1ed9ce47caf3822",Lambda=input => input.Select(n => $"{n.Model.FullType} {n.Model.Name}").ToList()};
             var nodeSearchResults = new DataFlowConnector<List<ALANode>>() {InstanceName="nodeSearchResults"};
-            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {Lambda=index => {    var results = nodeSearchResults.Data;    if (results.Count > index)     {        return results[index];    }    else    {        return null;    }}};
-            var id_fff8d82dbdd04da18793108f9b8dd5cf = new DataFlowConnector<ALANode>() {};
-            var id_75ecf8c2602c41829602707be8a8a481 = new ConvertToEvent<ALANode>() {};
-            var id_23a625377ea745ee8253482ee1f0d437 = new ApplyAction<ALANode>() {Lambda=selectedNode => {    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)     {        node.Deselect();    }        selectedNode.Select();}};
+            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {InstanceName="id_73274d9ce8d5414899772715a1d0f266",Lambda=index =>{    var results = nodeSearchResults.Data;    if (results.Count > index)    {        return results[index];    }    else    {        return null;    }}};
+            var id_fff8d82dbdd04da18793108f9b8dd5cf = new DataFlowConnector<ALANode>() {InstanceName="id_fff8d82dbdd04da18793108f9b8dd5cf"};
+            var id_75ecf8c2602c41829602707be8a8a481 = new ConvertToEvent<ALANode>() {InstanceName="id_75ecf8c2602c41829602707be8a8a481"};
+            var id_23a625377ea745ee8253482ee1f0d437 = new ApplyAction<ALANode>() {InstanceName="id_23a625377ea745ee8253482ee1f0d437",Lambda=selectedNode =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();    }    selectedNode.Select();}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -659,6 +659,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
