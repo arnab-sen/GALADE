@@ -340,7 +340,7 @@ namespace TestApplication
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {InstanceName="id_0b4478e56d614ca091979014db65d076",Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
             var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {InstanceName="id_d90fbf714f5f4fdc9b43cbe4d5cebf1c",Lambda=input =>{    (input as UIElement)?.Focus();    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3},InstanceName="mainHorizontal"};
-            var sidePanelHoriz = new Horizontal(visible:false) {InstanceName="sidePanelHoriz"};
+            var sidePanelHoriz = new Horizontal(visible:true) {InstanceName="sidePanelHoriz"};
             var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {InstanceName="id_987196dd20ab4721b0c193bb7a2064f4",Layouts=new int[]{2}};
             var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {InstanceName="id_7b250b222ca44ba2922547f03a4aef49"};
             var directoryExplorerTab = new Tab(title:"Directory Explorer") {InstanceName="directoryExplorerTab"};
@@ -425,7 +425,7 @@ namespace TestApplication
             var directoryExplorerConfig = new UIConfig() {InstanceName="directoryExplorerConfig"};
             var currentSelectedDirectoryTreeFilePath = new DataFlowConnector<string>() {InstanceName="currentSelectedDirectoryTreeFilePath"};
             var id_8b908f2be6094d5b8cd3dce5c5fc2b8b = new MenuItem(header:"Open code file") {InstanceName="Open file through directory tree"};
-            var id_692716a735e44e948a8d14cd550c1276 = new Data<string>() {};
+            var id_692716a735e44e948a8d14cd550c1276 = new Data<string>() {InstanceName="id_692716a735e44e948a8d14cd550c1276"};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -690,6 +690,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
