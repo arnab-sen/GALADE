@@ -100,7 +100,14 @@ namespace DomainAbstractions
         // Methods
         private IEnumerable<TreeViewItem> CreateTreeViewNodes(IEnumerable<object> sourceItems)
         {
-            return sourceItems.Select(item => new TreeViewItem() { Header = item });
+            var treeViewItems = sourceItems.Select(item => new TreeViewItem() {Header = item});
+
+            foreach (var treeViewItem in treeViewItems)
+            {
+                SubscribeEvents(treeViewItem);
+            }
+
+            return treeViewItems;
         }
 
         public TreeViewItem CreateNodeFromDirectory(string rootDirectory, TreeViewItem parent = null)
@@ -110,9 +117,11 @@ namespace DomainAbstractions
 
             var rootNode = new TreeViewItem()
             {
-                Header = root.Name,
+                Header = parent != null ? root.Name : root.FullName,
                 Tag = parent
             };
+
+            SubscribeEvents(rootNode);
 
             // Recursively run a DFT to create all child nodes
             var nodes = new ObservableCollection<TreeViewItem>();
@@ -130,6 +139,8 @@ namespace DomainAbstractions
                         Tag = directoryNode
                     };
 
+                    SubscribeEvents(fileNode);
+
                     (directoryNode.ItemsSource as ObservableCollection<TreeViewItem>)?.Add(fileNode);
                 }
             }
@@ -137,6 +148,46 @@ namespace DomainAbstractions
             rootNode.ItemsSource = nodes;
 
             return rootNode;
+        }
+
+        private void SubscribeEvents(TreeViewItem item)
+        {
+            item.PreviewMouseRightButtonDown += (sender, args) =>
+            {
+                if (IsDesiredNode(sender, args.OriginalSource))
+                {
+                    item.IsSelected = true;
+                    Output(item);
+                    args.Handled = true;
+                }
+            };
+
+            item.PreviewMouseLeftButtonDown += (sender, args) =>
+            {
+                if (IsDesiredNode(sender, args.OriginalSource))
+                {
+                    item.IsSelected = true;
+                    Output(item);
+                    args.Handled = true;
+                }
+            };
+        }
+
+        private bool IsDesiredNode(object sender, object originalSource)
+        {
+            return originalSource is FrameworkElement fe
+                   && sender is TreeViewItem tvi
+                   && fe.DataContext != null
+                   && fe.DataContext.ToString() == tvi.Header.ToString();
+        }
+
+        private void Output(TreeViewItem item)
+        {
+            var pathToNode = GetPathToNode(item, "\\");
+            _selectedPath = (pathToNode != _rootDirectory) ?  Path.Combine(RootDirectory, pathToNode) : pathToNode;
+
+            if (selectedName != null) selectedName.Data = item.Header.ToString();
+            if (selectedFullPath != null) selectedFullPath.Data = _selectedPath;
         }
 
         /// <summary>
@@ -170,16 +221,7 @@ namespace DomainAbstractions
 
         public DirectoryTree()
         {
-            _treeView.SelectedItemChanged += (sender, args) =>
-            {
-                if (args.NewValue is TreeViewItem node)
-                {
-                    _selectedPath = GetPathToNode(node, "\\");
 
-                    if (selectedName != null) selectedName.Data = _selectedPath;
-                    if (selectedFullPath != null) selectedFullPath.Data = node.Header.ToString();
-                }
-            };
         }
 
     }

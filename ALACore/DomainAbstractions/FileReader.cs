@@ -47,6 +47,10 @@ namespace DomainAbstractions
                     fileContent = File.ReadAllText(filePath);
                     if (fileContentOutput != null) fileContentOutput.Data = fileContent;
                 }
+                else
+                {
+                    Logging.Log($"File does not exist at {value}");
+                }
             }
         }
     }

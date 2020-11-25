@@ -350,7 +350,7 @@ namespace TestApplication
             var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {InstanceName="id_4dd09c40831648ea884eed68407b900e",storedData=true};
             var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {InstanceName="id_e5ab69539a364aee809c668bc9d0e1a8",storedData=false};
             var canvasDisplayHoriz = new Horizontal() {InstanceName="canvasDisplayHoriz"};
-            var id_225b04d097d24d0eb277c1c0df4a47db = new DirectoryTree() {InstanceName="id_225b04d097d24d0eb277c1c0df4a47db",FilenameFilter="*.cs",Height=700};
+            var directoryTreeExplorer = new DirectoryTree() {InstanceName="directoryTreeExplorer",FilenameFilter="*.cs",Height=700};
             var id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {InstanceName="id_e8a68acda2aa4d54add689bd669589d3",Layouts=new int[]{2, 0}};
             var projectDirectoryTreeHoriz = new Horizontal() {InstanceName="projectDirectoryTreeHoriz"};
             var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom,InstanceName="projectDirectoryOptionsHoriz"};
@@ -421,7 +421,11 @@ namespace TestApplication
             var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {InstanceName="id_01bdd051f2034331bd9f121029b0e2e8"};
             var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {InstanceName="id_67bc4eb50bb04d9694a1a0d5ce65c9d9",Lambda=node =>{    var query = currentSearchQuery.Data;    if (node.IsMatch(query))        nodeSearchResults.Add(node);    var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1))        Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}};
             var id_f526f560b3504a0b8115879e5d5354ff = new MenuItem(header:"Test ContextMenu") {InstanceName="Test ContextMenu"};
-            var id_dea56e5fd7174cd7983e8f2c837a941b = new ContextMenu() {};
+            var id_dea56e5fd7174cd7983e8f2c837a941b = new ContextMenu() {InstanceName="id_dea56e5fd7174cd7983e8f2c837a941b"};
+            var directoryExplorerConfig = new UIConfig() {InstanceName="directoryExplorerConfig"};
+            var currentSelectedDirectoryTreeFilePath = new DataFlowConnector<string>() {InstanceName="currentSelectedDirectoryTreeFilePath"};
+            var id_8b908f2be6094d5b8cd3dce5c5fc2b8b = new MenuItem(header:"Open code file") {InstanceName="Open file through directory tree"};
+            var id_692716a735e44e948a8d14cd550c1276 = new Data<string>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -569,8 +573,7 @@ namespace TestApplication
             id_4dd09c40831648ea884eed68407b900e.WireTo(sidePanelHoriz, "dataOutput");
             id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
             mainHorizontal.WireTo(canvasDisplayHoriz, "children");
-            projectDirectoryTreeHoriz.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "children");
-            id_a1f87102954345b69de6841053fce813.WireTo(id_225b04d097d24d0eb277c1c0df4a47db, "fanoutList");
+            id_a1f87102954345b69de6841053fce813.WireTo(directoryTreeExplorer, "fanoutList");
             directoryExplorerTab.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
             projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
@@ -656,6 +659,13 @@ namespace TestApplication
             id_01bdd051f2034331bd9f121029b0e2e8.WireTo(id_67bc4eb50bb04d9694a1a0d5ce65c9d9, "delayedData");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_f526f560b3504a0b8115879e5d5354ff, "children");
             id_f526f560b3504a0b8115879e5d5354ff.WireTo(id_dea56e5fd7174cd7983e8f2c837a941b, "clickedEvent");
+            projectDirectoryTreeHoriz.WireTo(directoryExplorerConfig, "children");
+            directoryExplorerConfig.WireTo(directoryTreeExplorer, "child");
+            directoryTreeExplorer.WireTo(currentSelectedDirectoryTreeFilePath, "selectedFullPath");
+            directoryExplorerConfig.WireTo(id_8b908f2be6094d5b8cd3dce5c5fc2b8b, "contextMenuChildren");
+            id_8b908f2be6094d5b8cd3dce5c5fc2b8b.WireTo(id_692716a735e44e948a8d14cd550c1276, "clickedEvent");
+            id_692716a735e44e948a8d14cd550c1276.WireTo(currentSelectedDirectoryTreeFilePath, "inputDataB");
+            id_692716a735e44e948a8d14cd550c1276.WireTo(startDiagramCreationProcess, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -680,6 +690,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 

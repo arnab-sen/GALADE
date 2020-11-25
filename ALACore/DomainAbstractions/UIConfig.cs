@@ -29,12 +29,12 @@ namespace DomainAbstractions
         /// <summary>
         /// Choose from left, right, or middle.
         /// </summary>
-        public string HorizAlignment { get; set; } = "middle";
+        public string HorizAlignment { get; set; } = "";
 
         /// <summary>
         /// Choose from left, right, or middle.
         /// </summary>
-        public string VertAlignment { get; set; } = "middle";
+        public string VertAlignment { get; set; } = "";
 
         // Private fields
         private UIElement _uiElement = new UIElement();
@@ -42,7 +42,7 @@ namespace DomainAbstractions
         // Ports
         private IUI child;
         private List<IUI> contextMenuChildren;
-        private List<IEventHandler> eventHandlers;
+        private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
@@ -62,9 +62,9 @@ namespace DomainAbstractions
             if (ui is FrameworkElement fe)
             {
                 fe.ContextMenu = new System.Windows.Controls.ContextMenu();
-                foreach (var child in contextMenuChildren)
+                foreach (var contextMenuItem in contextMenuChildren)
                 {
-                    fe.ContextMenu.Items.Add(child);
+                    fe.ContextMenu.Items.Add(contextMenuItem.GetWPFElement());
                 }
 
                 // Use a TextBlock so that the tooltip text can be dynamically updated
@@ -98,6 +98,10 @@ namespace DomainAbstractions
                 {
                     fe.HorizontalAlignment = HorizontalAlignment.Center;
                 }
+                else
+                {
+                    fe.HorizontalAlignment = HorizontalAlignment.Stretch;
+                }
 
                 var vertAlignment = VertAlignment.ToLower();
                 if (vertAlignment == "top")
@@ -111,6 +115,10 @@ namespace DomainAbstractions
                 else if (vertAlignment == "middle")
                 {
                     fe.VerticalAlignment = VerticalAlignment.Center;
+                }
+                else
+                {
+                    fe.VerticalAlignment = VerticalAlignment.Stretch;
                 }
 
                 if (!double.IsNaN(Height)) fe.Height = Height;

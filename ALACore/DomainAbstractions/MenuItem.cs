@@ -9,12 +9,13 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class MenuItem : System.Windows.Controls.MenuItem,  IUI
+    public class MenuItem : IUI
     {
         // Public fields and properties
         public string InstanceName = "Default";
 
         // Private fields
+        private System.Windows.Controls.MenuItem _menuItem = new System.Windows.Controls.MenuItem();
 
         // Ports
         private List<IUI> children = new List<IUI>();
@@ -22,8 +23,8 @@ namespace DomainAbstractions
 
         public MenuItem(string header = "")
         {
-            Header = header;
-            FontSize = 12;
+            _menuItem.Header = header;
+            _menuItem.FontSize = 12;
         }
 
         // IUI implementation
@@ -31,12 +32,12 @@ namespace DomainAbstractions
         {
             foreach (var child in children)
             {
-                this.Items.Add(child.GetWPFElement());
+                _menuItem.Items.Add(child.GetWPFElement());
             }
 
-            Click += (sender, args) => clickedEvent?.Execute();
+            _menuItem.Click += (sender, args) => clickedEvent?.Execute();
 
-            return this;
+            return _menuItem;
         }
     }
 }
