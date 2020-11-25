@@ -181,20 +181,27 @@ namespace DomainAbstractions
             {
                 if (_panning)
                 {
-                    // Calculate relative mouse movement
-                    Point currentMousePosition = args.GetPosition(backgroundCanvas);
-                    double relativeMouseMovementY = currentMousePosition.Y - lastMousePosition.Y;
-                    double relativeMouseMovementX = currentMousePosition.X - lastMousePosition.X;
+                    if (Mouse.RightButton == MouseButtonState.Pressed)
+                    {
+                        // Calculate relative mouse movement
+                        Point currentMousePosition = args.GetPosition(backgroundCanvas);
+                        double relativeMouseMovementY = currentMousePosition.Y - lastMousePosition.Y;
+                        double relativeMouseMovementX = currentMousePosition.X - lastMousePosition.X;
 
-                    // Translate foregroundCanvas by relative movement amount
-                    var left = System.Windows.Controls.Canvas.GetLeft(foregroundCanvas);
-                    var top = System.Windows.Controls.Canvas.GetTop(foregroundCanvas);
-                    System.Windows.Controls.Canvas.SetLeft(foregroundCanvas, left + relativeMouseMovementX);
-                    System.Windows.Controls.Canvas.SetTop(foregroundCanvas, top + relativeMouseMovementY);
-                    // Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
+                        // Translate foregroundCanvas by relative movement amount
+                        var left = System.Windows.Controls.Canvas.GetLeft(foregroundCanvas);
+                        var top = System.Windows.Controls.Canvas.GetTop(foregroundCanvas);
+                        System.Windows.Controls.Canvas.SetLeft(foregroundCanvas, left + relativeMouseMovementX);
+                        System.Windows.Controls.Canvas.SetTop(foregroundCanvas, top + relativeMouseMovementY);
+                        // Logging.Log($"Moved from {lastMousePosition} to {currentMousePosition}");
 
-                    lastMousePosition = currentMousePosition;
-                    _canOpenCtxMenu = false;
+                        lastMousePosition = currentMousePosition;
+                        _canOpenCtxMenu = false; 
+                    }
+                    else
+                    {
+                        _panning = false;
+                    }
                 }
 
                 if (currentMousePositionOutput != null) currentMousePositionOutput.Data = args.GetPosition(backgroundCanvas);

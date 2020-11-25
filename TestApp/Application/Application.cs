@@ -666,6 +666,7 @@ namespace TestApplication
             id_8b908f2be6094d5b8cd3dce5c5fc2b8b.WireTo(id_692716a735e44e948a8d14cd550c1276, "clickedEvent");
             id_692716a735e44e948a8d14cd550c1276.WireTo(currentSelectedDirectoryTreeFilePath, "inputDataB");
             id_692716a735e44e948a8d14cd550c1276.WireTo(startDiagramCreationProcess, "dataOutput");
+            id_0d4d34a2cd6749759ac0c2708ddf0cbc.WireTo(id_692716a735e44e948a8d14cd550c1276, "eventButtonClicked");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -690,6 +691,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
