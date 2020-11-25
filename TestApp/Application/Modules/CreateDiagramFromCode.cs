@@ -157,11 +157,26 @@ namespace TestApplication
                 var initialiser = instantiation.Declaration.Variables.FirstOrDefault()?.Initializer.Value as ObjectCreationExpressionSyntax;
 
                 // Get constructor arguments
-                var constructorArgs = initialiser.ArgumentList.Arguments.Where(arg => arg.NameColon != null);
-
+                var constructorArgs = initialiser.ArgumentList.Arguments;
+                var unnamedArgCount = 0;
                 foreach (var constructorArg in constructorArgs)
                 {
-                    model.SetValue(constructorArg.NameColon.ToString().Trim(':'), constructorArg.Expression.ToString(), initialise: true);
+                    string argName;
+                    if (constructorArg.NameColon == null)
+                    {
+                        argName = $"~arg{unnamedArgCount}";
+                        unnamedArgCount++;
+                        model.AddConstructorArg(argName, type: "Unnamed constructor argument");
+                    }
+                    else
+                    {
+                        argName = constructorArg.NameColon.ToString().Trim(':');
+                    }
+
+                    var argValue = constructorArg.Expression.ToString();
+
+                    model.SetValue(argName, argValue, initialise: true);
+
                 }
 
                 // Get initializer properties

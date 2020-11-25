@@ -648,12 +648,19 @@ namespace RequirementsAbstractions
                 var argName = arg.Key;
                 var argValue = arg.Value;
 
-                var argNode = 
-                    Argument(
-                            IdentifierName(argValue))
-                        .WithNameColon(
-                            NameColon(
-                                IdentifierName(argName)));
+                ArgumentSyntax argNode;
+                if (!argName.StartsWith("~")) // If the arg is not an unnamed constructor arg
+                {
+                    argNode = 
+                        Argument(IdentifierName(argValue))
+                            .WithNameColon(
+                                NameColon(
+                                    IdentifierName(argName))); 
+                }
+                else
+                {
+                    argNode = Argument(IdentifierName(argValue)); 
+                }
 
                 if (list.Count > 0)
                 {
