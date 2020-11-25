@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Displays a vertical list of strings that can be selected. 
     /// </summary>
-    public class ListDisplay : IUI, IDataFlow<List<string>>
+    public class ListDisplay : IUI, IDataFlow<ObservableCollection<string>>
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -27,6 +28,12 @@ namespace DomainAbstractions
                 _canSelectMultiple = value;
                 _listBox.SelectionMode = _canSelectMultiple ? SelectionMode.Extended : SelectionMode.Single;
             }
+        }
+
+        public ObservableCollection<string> ItemList
+        {
+            get => _listBox.ItemsSource as ObservableCollection<string>;
+            set => _listBox.ItemsSource = value;
         }
 
         // Private fields
@@ -48,9 +55,9 @@ namespace DomainAbstractions
         }
 
         // IDataFlow<List<string>> implementation
-        List<string> IDataFlow<List<string>>.Data
+        ObservableCollection<string> IDataFlow<ObservableCollection<string>>.Data
         {
-            get => _listBox.ItemsSource as List<string>;
+            get => _listBox.ItemsSource as ObservableCollection<string>;
             set => _listBox.ItemsSource = value;
         }
 
