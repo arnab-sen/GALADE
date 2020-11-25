@@ -23,8 +23,25 @@ namespace DomainAbstractions
     {
         // properties
         public string InstanceName = "Default";
-        public double Width { set => window.MinWidth = value; }
-        public double Height { set => window.MinHeight = value; }
+
+        public double MinWidth
+        {
+            set => window.MinWidth = value;
+        }
+
+        public double MinHeight
+        {
+            set => window.MinHeight = value;
+        }
+
+        public double Height
+        {
+            set => window.Height = value;
+        }
+        public double Width
+        {
+            set => window.Width = value;
+        }
 
         public SizeToContent Resize
         {

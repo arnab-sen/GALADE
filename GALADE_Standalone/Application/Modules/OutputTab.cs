@@ -95,7 +95,7 @@ namespace Application
             MenuBar id_1f81f86effe548948bcc08c65fd7d9d9 = new MenuBar() { InstanceName = "Default", Background = Brushes.Transparent };
             MenuItem id_00fba5bcebf34ab69faeed3f361afd39 = new MenuItem("Open in new window" ) { InstanceName = "Default" };
             MenuItem id_c7c3e3d696944eccada04dacfba70207 = new MenuItem("Clear" ) { InstanceName = "Default" };
-            PopupWindow id_b00b249750ed4a559599c2885d2fbe3c = new PopupWindow("Console Output" ) { InstanceName = "Default", Height = 500, Width = 1000 };
+            PopupWindow id_b00b249750ed4a559599c2885d2fbe3c = new PopupWindow("Console Output" ) { InstanceName = "Default", MinHeight = 500, MinWidth = 1000 };
             TextBox id_3bd4ae00ec0547e69c421bd95a62bbd7 = new TextBox() { InstanceName = "Default", Height = 500, AcceptsReturn = true };
             Vertical id_c0819407c7c04027a51fa8448c75949a = new Vertical() { InstanceName = "Default" };
             // END AUTO-GENERATED INSTANTIATIONS FOR OutputTab.xmind

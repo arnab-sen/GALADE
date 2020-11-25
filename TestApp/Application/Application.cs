@@ -247,7 +247,7 @@ namespace TestApplication
             var id_6e249d6520104ca5a1a4d847a6c862a8 = new ApplyAction<object>() {InstanceName="Focus on backgroundCanvas",Lambda=input =>{    (input as WPFCanvas).Focus();}};
             var id_08d455bfa9744704b21570d06c3c5389 = new MenuItem(header:"Debug") {InstanceName="Debug"};
             var id_843593fbc341437bb7ade21d0c7f6729 = new MenuItem(header:"TextEditor test") {InstanceName="TextEditor test"};
-            var id_91726b8a13804a0994e27315b0213fe8 = new PopupWindow(title:"") {Width=1280,Height=720,Resize=SizeToContent.WidthAndHeight,InstanceName="id_91726b8a13804a0994e27315b0213fe8"};
+            var id_91726b8a13804a0994e27315b0213fe8 = new PopupWindow(title:"") {Height=720,Width=1280,Resize=SizeToContent.WidthAndHeight,InstanceName="id_91726b8a13804a0994e27315b0213fe8"};
             var id_a2e6aa4f4d8e41b59616d63362768dde = new Box() {InstanceName="id_a2e6aa4f4d8e41b59616d63362768dde",Width=100,Height=100};
             var id_826249b1b9d245709de6f3b24503be2d = new TextEditor() {InstanceName="id_826249b1b9d245709de6f3b24503be2d",Width=1280,Height=720};
             var id_a1f87102954345b69de6841053fce813 = new DataFlowConnector<string>() {InstanceName="id_a1f87102954345b69de6841053fce813"};
@@ -328,12 +328,10 @@ namespace TestApplication
             var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
             var startDiagramCreationProcess = new DataFlowConnector<string>() {InstanceName="startDiagramCreationProcess"};
             var id_d59ccc1fe1ef492e9b436b3464466171 = new ConvertToEvent<string>() {InstanceName="id_d59ccc1fe1ef492e9b436b3464466171"};
-            var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"DefaultFilePath") {InstanceName="id_5ddd02478c734777b9e6f1079b4b3d45"};
+            var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"ApplicationCodeFilePath") {InstanceName="id_5ddd02478c734777b9e6f1079b4b3d45"};
             var id_d5d3af7a3c9a47bf9af3b1a1e1246267 = new Apply<string, bool>() {InstanceName="id_d5d3af7a3c9a47bf9af3b1a1e1246267",Lambda=s => !string.IsNullOrEmpty(s)};
             var id_2ce385b32256413ab2489563287afaac = new IfElse() {InstanceName="id_2ce385b32256413ab2489563287afaac"};
-            var id_5e96a550771141bc8cc378e652d16250 = new DataFlowConnector<string>() {InstanceName="id_5e96a550771141bc8cc378e652d16250"};
-            var id_7a3fa22880894f01a993fad31c8354a3 = new Data<string>() {InstanceName="id_7a3fa22880894f01a993fad31c8354a3"};
-            var id_28d229073cb049c997824e1d436eaa7e = new DispatcherEvent() {InstanceName="id_28d229073cb049c997824e1d436eaa7e"};
+            var latestCodeFilePath = new DataFlowConnector<string>() {InstanceName="latestCodeFilePath"};
             var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {InstanceName="id_dcd4c90552dc4d3fb579833da87cd829",Priority=DispatcherPriority.Loaded};
             var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {InstanceName="id_1e62a1e411c9464c94ee234dd9dd3fdc",Lambda=() =>{    stateTransition.Update(Enums.DiagramMode.Idle);    createDiagramFromCode.Update = false;}};
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {InstanceName="id_0b4478e56d614ca091979014db65d076",Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
@@ -431,6 +429,30 @@ namespace TestApplication
             var id_ab5c789d2d72413d90b6bbc63302322c = new EventLambda() {InstanceName="id_ab5c789d2d72413d90b6bbc63302322c",Lambda=() =>{    (makeSidePanelVisible as IEvent)?.Execute();}};
             var id_a690d6dd37ba4c98b5506777df6dc9db = new EventLambda() {InstanceName="id_a690d6dd37ba4c98b5506777df6dc9db",Lambda=() =>{    searchTab.Select();}};
             var id_63db7722e48a4c5aabd905f75b0519b2 = new EventLambda() {InstanceName="id_63db7722e48a4c5aabd905f75b0519b2",Lambda=() =>{    searchTextBox.Select();}};
+            var id_006b07cc90c64e398b945bb43fdd4de9 = new EventConnector() {InstanceName="id_006b07cc90c64e398b945bb43fdd4de9"};
+            var id_e7da19475fcc44bdaf4a64d05f92b771 = new Data<string>() {InstanceName="id_e7da19475fcc44bdaf4a64d05f92b771"};
+            var id_68cfe1cc12f948cab25289d853300813 = new PopupWindow(title:"Open diagram?") {Height=100,Resize=SizeToContent.WidthAndHeight,InstanceName="id_68cfe1cc12f948cab25289d853300813"};
+            var id_95ddd89b36d54db298eaa05165284569 = new Vertical() {InstanceName="id_95ddd89b36d54db298eaa05165284569"};
+            var id_939726bef757459b914412aead1bb5f9 = new Text(text:"") {InstanceName="id_939726bef757459b914412aead1bb5f9"};
+            var id_c7dc32a5f12b41ad94a910a74de38827 = new Horizontal() {InstanceName="id_c7dc32a5f12b41ad94a910a74de38827"};
+            var id_89ab09564cea4a8b93d8925e8234e44c = new UIConfig() {InstanceName="id_89ab09564cea4a8b93d8925e8234e44c",HorizAlignment="right",RightMargin=5,BottomMargin=5};
+            var id_c180a82fd3a6495a885e9dde61aaaef3 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",HorizAlignment="left",RightMargin=5,BottomMargin=5};
+            var id_add742a4683f4dd0b34d8d0eebbe3f07 = new Button(title:"Yes") {InstanceName="id_add742a4683f4dd0b34d8d0eebbe3f07"};
+            var id_e82c1f80e1884a57b79c681462efd65d = new Button(title:"No") {InstanceName="id_e82c1f80e1884a57b79c681462efd65d"};
+            var id_5fbec6b061cc428a8c00e5c2a652b89e = new EventConnector() {InstanceName="id_5fbec6b061cc428a8c00e5c2a652b89e"};
+            var id_b0d86bb898944ded83ec7f58b9f4a1b8 = new EventConnector() {InstanceName="id_b0d86bb898944ded83ec7f58b9f4a1b8"};
+            var id_721b5692fa5a4ba39f509fd7e4a6291b = new Data<string>() {InstanceName="id_721b5692fa5a4ba39f509fd7e4a6291b"};
+            var id_1928c515b2414f6690c6924a76461081 = new EditSetting() {InstanceName="id_1928c515b2414f6690c6924a76461081",JSONPath="$..ApplicationCodeFilePath"};
+            var id_1a403a85264c4074bc7ce5a71262c6c0 = new Data<object>() {InstanceName="id_1a403a85264c4074bc7ce5a71262c6c0",storedData=""};
+            var id_de49d2fafc2140e996eb38fbf1e62103 = new Horizontal() {InstanceName="id_de49d2fafc2140e996eb38fbf1e62103"};
+            var id_d890df432c1f4e60a62b8913a5069b34 = new Horizontal() {InstanceName="id_d890df432c1f4e60a62b8913a5069b34"};
+            var id_e4c9f92bbd6643a286683c9ff5f9fb3a = new Apply<string, string>() {InstanceName="id_e4c9f92bbd6643a286683c9ff5f9fb3a",Lambda=path => $"Default code file path is set to \"{path}\".\nOpen a diagram from this path?"};
+            var id_5b134e68e31b40f4b3e95eb007a020dc = new UIConfig() {InstanceName="id_5b134e68e31b40f4b3e95eb007a020dc",HorizAlignment="middle",UniformMargin=5};
+            var id_0fafdba1ad834904ac7330f95dffd966 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",HorizAlignment="left",BottomMargin=5};
+            var id_2bfcbb47c2c745578829e1b0f8287f42 = new Button(title:"No, and clear the setting") {InstanceName="id_2bfcbb47c2c745578829e1b0f8287f42"};
+            var id_1139c3821d834efc947d5c4e949cd1ba = new EventConnector() {InstanceName="id_1139c3821d834efc947d5c4e949cd1ba"};
+            var id_4686253b1d7d4cd9a4d5bf03d6b7e380 = new Horizontal() {InstanceName="id_4686253b1d7d4cd9a4d5bf03d6b7e380"};
+            var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -549,13 +571,9 @@ namespace TestApplication
             id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             id_dcd4c90552dc4d3fb579833da87cd829.WireTo(id_5ddd02478c734777b9e6f1079b4b3d45, "delayedEvent");
             id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
-            id_5e96a550771141bc8cc378e652d16250.WireTo(id_d5d3af7a3c9a47bf9af3b1a1e1246267, "fanoutList");
+            latestCodeFilePath.WireTo(id_d5d3af7a3c9a47bf9af3b1a1e1246267, "fanoutList");
             id_d5d3af7a3c9a47bf9af3b1a1e1246267.WireTo(id_2ce385b32256413ab2489563287afaac, "output");
-            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_5e96a550771141bc8cc378e652d16250, "settingJsonOutput");
-            id_28d229073cb049c997824e1d436eaa7e.WireTo(id_7a3fa22880894f01a993fad31c8354a3, "delayedEvent");
-            id_7a3fa22880894f01a993fad31c8354a3.WireTo(id_5e96a550771141bc8cc378e652d16250, "inputDataB");
-            id_7a3fa22880894f01a993fad31c8354a3.WireTo(startDiagramCreationProcess, "dataOutput");
-            id_2ce385b32256413ab2489563287afaac.WireTo(id_28d229073cb049c997824e1d436eaa7e, "ifOutput");
+            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(latestCodeFilePath, "settingJsonOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
             layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
             mainCanvasDisplay.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
@@ -674,6 +692,37 @@ namespace TestApplication
             id_9e6a74b0dbea488cba6027ee5187ad0f.WireTo(id_ab5c789d2d72413d90b6bbc63302322c, "delayedEvent");
             id_b55e77a5d78243bf9612ecb7cb20c2c7.WireTo(id_a690d6dd37ba4c98b5506777df6dc9db, "delayedEvent");
             id_45593aeb91a145aa9d84d8b77a8d4d8e.WireTo(id_63db7722e48a4c5aabd905f75b0519b2, "delayedEvent");
+            id_2ce385b32256413ab2489563287afaac.WireTo(id_006b07cc90c64e398b945bb43fdd4de9, "ifOutput");
+            id_006b07cc90c64e398b945bb43fdd4de9.WireTo(id_e7da19475fcc44bdaf4a64d05f92b771, "fanoutList");
+            id_006b07cc90c64e398b945bb43fdd4de9.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_68cfe1cc12f948cab25289d853300813.WireTo(id_95ddd89b36d54db298eaa05165284569, "children");
+            id_e7da19475fcc44bdaf4a64d05f92b771.WireTo(latestCodeFilePath, "inputDataB");
+            id_89ab09564cea4a8b93d8925e8234e44c.WireTo(id_add742a4683f4dd0b34d8d0eebbe3f07, "child");
+            id_c180a82fd3a6495a885e9dde61aaaef3.WireTo(id_e82c1f80e1884a57b79c681462efd65d, "child");
+            id_add742a4683f4dd0b34d8d0eebbe3f07.WireTo(id_5fbec6b061cc428a8c00e5c2a652b89e, "eventButtonClicked");
+            id_2bfcbb47c2c745578829e1b0f8287f42.WireTo(id_b0d86bb898944ded83ec7f58b9f4a1b8, "eventButtonClicked");
+            id_5fbec6b061cc428a8c00e5c2a652b89e.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_5fbec6b061cc428a8c00e5c2a652b89e.WireTo(id_721b5692fa5a4ba39f509fd7e4a6291b, "fanoutList");
+            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(latestCodeFilePath, "inputDataB");
+            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(startDiagramCreationProcess, "dataOutput");
+            id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_1a403a85264c4074bc7ce5a71262c6c0, "fanoutList");
+            id_1a403a85264c4074bc7ce5a71262c6c0.WireTo(id_1928c515b2414f6690c6924a76461081, "dataOutput");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_d890df432c1f4e60a62b8913a5069b34, "children");
+            id_e7da19475fcc44bdaf4a64d05f92b771.WireTo(id_e4c9f92bbd6643a286683c9ff5f9fb3a, "dataOutput");
+            id_e4c9f92bbd6643a286683c9ff5f9fb3a.WireTo(id_939726bef757459b914412aead1bb5f9, "output");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_89ab09564cea4a8b93d8925e8234e44c, "children");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_c180a82fd3a6495a885e9dde61aaaef3, "children");
+            id_95ddd89b36d54db298eaa05165284569.WireTo(id_5b134e68e31b40f4b3e95eb007a020dc, "children");
+            id_5b134e68e31b40f4b3e95eb007a020dc.WireTo(id_939726bef757459b914412aead1bb5f9, "child");
+            id_95ddd89b36d54db298eaa05165284569.WireTo(id_c7dc32a5f12b41ad94a910a74de38827, "children");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_0fafdba1ad834904ac7330f95dffd966, "children");
+            id_0fafdba1ad834904ac7330f95dffd966.WireTo(id_2bfcbb47c2c745578829e1b0f8287f42, "child");
+            id_e82c1f80e1884a57b79c681462efd65d.WireTo(id_1139c3821d834efc947d5c4e949cd1ba, "eventButtonClicked");
+            id_1139c3821d834efc947d5c4e949cd1ba.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_de49d2fafc2140e996eb38fbf1e62103, "children");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_4686253b1d7d4cd9a4d5bf03d6b7e380, "children");
+            id_1928c515b2414f6690c6924a76461081.WireTo(id_f140e9e4ef3f4c07898073fde207da99, "filePathInput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -698,6 +747,54 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

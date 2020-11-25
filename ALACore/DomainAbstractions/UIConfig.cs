@@ -38,12 +38,21 @@ namespace DomainAbstractions
         /// </summary>
         public string VertAlignment { get; set; } = "";
 
+        /// <summary>
+        /// Represents a margin that should be applied uniformly to all sides.
+        /// </summary>
+        public double UniformMargin { get; set; } = double.NaN;
+        public double LeftMargin { get; set; } = double.NaN;
+        public double TopMargin { get; set; } = double.NaN;
+        public double RightMargin { get; set; } = double.NaN;
+        public double BottomMargin { get; set; } = double.NaN;
+
         // Private fields
         private UIElement _uiElement = new UIElement();
 
         // Ports
         private IUI child;
-        private List<IUI> contextMenuChildren;
+        private List<IUI> contextMenuChildren = new List<IUI>();
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
         // IUI implementation
@@ -129,6 +138,20 @@ namespace DomainAbstractions
                 if (!double.IsNaN(MinWidth)) fe.MinWidth = MinWidth;
                 if (!double.IsNaN(MaxHeight)) fe.MaxHeight = MaxHeight;
                 if (!double.IsNaN(MaxWidth)) fe.MaxWidth = MaxWidth;
+
+                if (double.IsNaN(UniformMargin))
+                {
+                    var margin = new double[] { 0, 0, 0, 0 };
+                    if (!double.IsNaN(LeftMargin)) margin[0] = LeftMargin;
+                    if (!double.IsNaN(TopMargin)) margin[1] = TopMargin;
+                    if (!double.IsNaN(RightMargin)) margin[2] = RightMargin;
+                    if (!double.IsNaN(BottomMargin)) margin[3] = BottomMargin;
+                    if (margin.Any(d => d > 0 || d < 0)) fe.Margin = new Thickness(margin[0], margin[1], margin[2], margin[3]); 
+                }
+                else
+                {
+                    fe.Margin = new Thickness(UniformMargin);
+                }
 
                 fe.Visibility = Visible ? Visibility.Visible : Visibility.Collapsed;
             }

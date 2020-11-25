@@ -489,9 +489,9 @@ namespace Application
             NewVisualPortGraphNode id_144ab8b860b6473db75b7ee5594a2f6e = new NewVisualPortGraphNode() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory, NodeStyle = nodeStyle, PortStyle = portStyle };
             NewVisualPortGraphNode id_f9559f3d5d6b4bd09ab31db34d2a9444 = new NewVisualPortGraphNode() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory, NodeStyle = nodeStyle, PortStyle = portStyle };
             OutputTab id_66690e3d478746f485717c3de09d7e75 = new OutputTab() { InstanceName = "Default" };
-            PopupWindow id_4783415fded6420a83e0b214a3abf2e0 = new PopupWindow("New User Guide" ) { InstanceName = "Default", Width = 720, Resize = SizeToContent.WidthAndHeight };
-            PopupWindow id_cef138236635424782b3dd215a86008f = new PopupWindow("Debug Info" ) { InstanceName = "Default", Height = 600, Width = 600 };
-            PopupWindow id_d4cff65ce0a24619b2f59178001f2041 = new PopupWindow("Preferences" ) { InstanceName = "Default", Width = 720, Resize = SizeToContent.Height };
+            PopupWindow id_4783415fded6420a83e0b214a3abf2e0 = new PopupWindow("New User Guide" ) { InstanceName = "Default", MinWidth = 720, Resize = SizeToContent.WidthAndHeight };
+            PopupWindow id_cef138236635424782b3dd215a86008f = new PopupWindow("Debug Info" ) { InstanceName = "Default", MinHeight = 600, MinWidth = 600 };
+            PopupWindow id_d4cff65ce0a24619b2f59178001f2041 = new PopupWindow("Preferences" ) { InstanceName = "Default", MinWidth = 720, Resize = SizeToContent.Height };
             RightTreeLayout<IVisualPortGraphNode> id_5de5980d74a1467c8a9462e4427422bf = new RightTreeLayout<IVisualPortGraphNode>() { InstanceName = "Default", GetID = n => n.Id, GetWidth = n => (n as VisualPortGraphNode).Width, GetHeight = n => (n as VisualPortGraphNode).Height, SetX = (n,x) => n.PositionX = x, SetY = (n,y) => n.PositionY = y, GetChildren = n => n.Graph.GetChildren(n.Id), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
             SaveGraphToFile id_367efd63e1234a75b0c82f727bce73f9 = new SaveGraphToFile() { InstanceName = "Default", Graph = mainGraph };
             SaveGraphToFile id_ad5da8fd9e5e45bf81184e4b54864a0c = new SaveGraphToFile() { InstanceName = "Default", Graph = mainGraph };
