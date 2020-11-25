@@ -166,8 +166,6 @@ namespace TestApplication
                 if (modelTemplate == null)
                 {
                     modelTemplate = ModelManager.CreateDummyAbstractionModel("UNDEFINED"); 
-
-                    Logging.Log($"Could not find an AbstractionModel for type {typeWithoutGenerics}. Using a dummy model of type \"{modelTemplate.Type}\" instead.");
                 }
 
                 var model = new AbstractionModel();
@@ -279,7 +277,7 @@ namespace TestApplication
 
             if (!_nodesByName.ContainsKey(sourceName))
             {
-                Logging.Log($"Error: no instantiation for {sourceName} found. Creating a dummy one to use instead.");
+                Logging.Log($"Error: No instantiation for {sourceName} found. Creating a dummy one to use instead.");
 
                 var dummyInstantiation = CreateDummyInstantiation("UNDEFINED", sourceName);
                 CreateNode(dummyInstantiation);
@@ -287,7 +285,7 @@ namespace TestApplication
 
             if (!_nodesByName.ContainsKey(destinationName))
             {
-                Logging.Log($"Error: no instantiation for {destinationName} found. Creating a dummy one to use instead.");
+                Logging.Log($"Error: No instantiation for {destinationName} found. Creating a dummy one to use instead.");
 
                 var dummyInstantiation = CreateDummyInstantiation("UNDEFINED", destinationName);
                 CreateNode(dummyInstantiation);
