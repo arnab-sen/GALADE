@@ -8,7 +8,7 @@ namespace DomainAbstractions
 {
     /// <summary>
     /// The abstraction is a UI element of TabControl for the containment of tabs.
-    /// Margin can be specifiied for customisation.
+    /// Margin can be specified for customisation.
     /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
     /// IUI "inputIUI": input IUI to get the WPF element
