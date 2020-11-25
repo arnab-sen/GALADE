@@ -34,7 +34,7 @@ namespace DomainAbstractions
         public string HorizAlignment { get; set; } = "";
 
         /// <summary>
-        /// Choose from left, right, or middle.
+        /// Choose from top, bottom, or middle.
         /// </summary>
         public string VertAlignment { get; set; } = "";
 
