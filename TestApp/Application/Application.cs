@@ -242,8 +242,6 @@ namespace TestApplication
             var id_a98457fc05fc4e84bfb827f480db93d3 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_a98457fc05fc4e84bfb827f480db93d3",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("DomainAbstractions"))    {        list = input["DomainAbstractions"];    }    return list;}};
             var id_f5d3730393ab40d78baebcb9198808da = new ForEach<string>() {InstanceName="id_f5d3730393ab40d78baebcb9198808da"};
             var id_6bc94d5f257847ff8a9a9c45e02333b4 = new ApplyAction<string>() {InstanceName="id_6bc94d5f257847ff8a9a9c45e02333b4",Lambda=input =>{    abstractionModelManager.CreateAbstractionModelFromPath(input);}};
-            var id_57a0335de8c047d2b2e99333c37753c1 = new Data<string>() {InstanceName="[Deprecated]",storedData="Apply"};
-            var createNewAbstractionModel = new Apply<string, AbstractionModel>() {InstanceName="[Deprecated]",Lambda=input =>{    var baseModel = abstractionModelManager.GetAbstractionModel(input);    var newModel = new AbstractionModel();    newModel.CloneFrom(baseModel);    return newModel;}};
             var getProjectFolderPath = new GetSetting(name:"ProjectFolderPath") {InstanceName="getProjectFolderPath"};
             var id_bbd9df1f15ea4926b97567d08b6835dd = new KeyEvent(eventName:"KeyDown") {InstanceName="Enter key pressed",Key=Key.Enter};
             var id_6e249d6520104ca5a1a4d847a6c862a8 = new ApplyAction<object>() {InstanceName="Focus on backgroundCanvas",Lambda=input =>{    (input as WPFCanvas).Focus();}};
@@ -349,7 +347,7 @@ namespace TestApplication
             var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {InstanceName="View"};
             var id_b5985971664e42b3a5b0869fce7b0f9b = new MenuItem(header:"Show side panel") {InstanceName="Show side panel"};
             var id_ba60beaed16c4e2f8ac431a8174ed12b = new MenuItem(header:"Hide side panel") {InstanceName="Hide side panel"};
-            var id_4dd09c40831648ea884eed68407b900e = new Data<bool>() {InstanceName="id_4dd09c40831648ea884eed68407b900e",storedData=true};
+            var makeSidePanelVisible = new Data<bool>() {InstanceName="makeSidePanelVisible",storedData=true};
             var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {InstanceName="id_e5ab69539a364aee809c668bc9d0e1a8",storedData=false};
             var canvasDisplayHoriz = new Horizontal() {InstanceName="canvasDisplayHoriz"};
             var directoryTreeExplorer = new DirectoryTree() {InstanceName="directoryTreeExplorer",FilenameFilter="*.cs",Height=700};
@@ -426,6 +424,14 @@ namespace TestApplication
             var currentSelectedDirectoryTreeFilePath = new DataFlowConnector<string>() {InstanceName="currentSelectedDirectoryTreeFilePath"};
             var id_8b908f2be6094d5b8cd3dce5c5fc2b8b = new MenuItem(header:"Open code file") {InstanceName="Open file through directory tree"};
             var id_692716a735e44e948a8d14cd550c1276 = new Data<string>() {InstanceName="id_692716a735e44e948a8d14cd550c1276"};
+            var id_f77e477a71954e20a587ec6fb4d006ce = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + F pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.F,Modifiers=new Key[] { Key.LeftCtrl }};
+            var id_87a897a783884990bf10e4d7a9e276b9 = new EventConnector() {};
+            var id_9e6a74b0dbea488cba6027ee5187ad0f = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
+            var id_b55e77a5d78243bf9612ecb7cb20c2c7 = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
+            var id_45593aeb91a145aa9d84d8b77a8d4d8e = new DispatcherEvent() {Priority=DispatcherPriority.Loaded};
+            var id_ab5c789d2d72413d90b6bbc63302322c = new EventLambda() {Lambda=() => {    (makeSidePanelVisible as IEvent)?.Execute();}};
+            var id_a690d6dd37ba4c98b5506777df6dc9db = new EventLambda() {Lambda=() => {    searchTab.Select();}};
+            var id_63db7722e48a4c5aabd905f75b0519b2 = new EventLambda() {Lambda=() => {    searchTextBox.Select();}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -444,7 +450,6 @@ namespace TestApplication
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children");
             id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children");
             id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent");
-            id_ad29db53c0d64d4b8be9e31474882158.WireTo(id_57a0335de8c047d2b2e99333c37753c1, "fanoutList");
             id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(layoutDiagram, "eventOutput");
             getFirstRoot.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "dataOutput");
             layoutDiagram.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList");
@@ -459,7 +464,6 @@ namespace TestApplication
             id_63088b53f85b4e6bb564712c525e063c.WireTo(id_35fceab68423425195096666f27475e9, "foundFiles");
             id_a98457fc05fc4e84bfb827f480db93d3.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_f5d3730393ab40d78baebcb9198808da.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "elementOutput");
-            id_57a0335de8c047d2b2e99333c37753c1.WireTo(createNewAbstractionModel, "dataOutput");
             getProjectFolderPath.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
             getProjectFolderPath.WireTo(id_a1f87102954345b69de6841053fce813, "settingJsonOutput");
             id_bbd9df1f15ea4926b97567d08b6835dd.WireTo(id_6e249d6520104ca5a1a4d847a6c862a8, "senderOutput");
@@ -568,9 +572,9 @@ namespace TestApplication
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4a42bbf671cd4dba8987bd656e5a2ced, "children");
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_b5985971664e42b3a5b0869fce7b0f9b, "children");
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_ba60beaed16c4e2f8ac431a8174ed12b, "children");
-            id_b5985971664e42b3a5b0869fce7b0f9b.WireTo(id_4dd09c40831648ea884eed68407b900e, "clickedEvent");
+            id_b5985971664e42b3a5b0869fce7b0f9b.WireTo(makeSidePanelVisible, "clickedEvent");
             id_ba60beaed16c4e2f8ac431a8174ed12b.WireTo(id_e5ab69539a364aee809c668bc9d0e1a8, "clickedEvent");
-            id_4dd09c40831648ea884eed68407b900e.WireTo(sidePanelHoriz, "dataOutput");
+            makeSidePanelVisible.WireTo(sidePanelHoriz, "dataOutput");
             id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
             mainHorizontal.WireTo(canvasDisplayHoriz, "children");
             id_a1f87102954345b69de6841053fce813.WireTo(directoryTreeExplorer, "fanoutList");
@@ -664,6 +668,14 @@ namespace TestApplication
             id_692716a735e44e948a8d14cd550c1276.WireTo(currentSelectedDirectoryTreeFilePath, "inputDataB");
             id_692716a735e44e948a8d14cd550c1276.WireTo(startDiagramCreationProcess, "dataOutput");
             id_0d4d34a2cd6749759ac0c2708ddf0cbc.WireTo(id_692716a735e44e948a8d14cd550c1276, "eventButtonClicked");
+            mainCanvasDisplay.WireTo(id_f77e477a71954e20a587ec6fb4d006ce, "eventHandlers");
+            id_f77e477a71954e20a587ec6fb4d006ce.WireTo(id_87a897a783884990bf10e4d7a9e276b9, "eventHappened");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_9e6a74b0dbea488cba6027ee5187ad0f, "fanoutList");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_b55e77a5d78243bf9612ecb7cb20c2c7, "fanoutList");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_45593aeb91a145aa9d84d8b77a8d4d8e, "fanoutList");
+            id_9e6a74b0dbea488cba6027ee5187ad0f.WireTo(id_ab5c789d2d72413d90b6bbc63302322c, "delayedEvent");
+            id_b55e77a5d78243bf9612ecb7cb20c2c7.WireTo(id_a690d6dd37ba4c98b5506777df6dc9db, "delayedEvent");
+            id_45593aeb91a145aa9d84d8b77a8d4d8e.WireTo(id_63db7722e48a4c5aabd905f75b0519b2, "delayedEvent");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -688,6 +700,32 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

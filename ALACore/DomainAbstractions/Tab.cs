@@ -40,6 +40,11 @@ namespace DomainAbstractions
             tabItem.Content = stackPanel;
         }
 
+        public void Select()
+        {
+            tabItem.Focus();
+        }
+
         // IUI implementation ------------------------------------------------------
         // Adds all the IU content into the tab panel
         UIElement IUI.GetWPFElement()

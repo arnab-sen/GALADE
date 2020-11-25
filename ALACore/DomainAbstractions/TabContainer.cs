@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Libraries;
 using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
     /// <summary>
     /// The abstraction is a UI element of TabControl for the containment of tabs.
-    /// Margin can be specificied for customisation.
+    /// Margin can be specifiied for customisation.
     /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
     /// IUI "inputIUI": input IUI to get the WPF element

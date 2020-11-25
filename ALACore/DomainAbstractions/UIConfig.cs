@@ -26,6 +26,8 @@ namespace DomainAbstractions
         public double MinHeight { get; set; } = double.NaN;
         public double MaxWidth { get; set; } = double.NaN;
         public double MaxHeight { get; set; } = double.NaN;
+        public bool Visible { get; set; } = true;
+
         /// <summary>
         /// Choose from left, right, or middle.
         /// </summary>
@@ -127,6 +129,8 @@ namespace DomainAbstractions
                 if (!double.IsNaN(MinWidth)) fe.MinWidth = MinWidth;
                 if (!double.IsNaN(MaxHeight)) fe.MaxHeight = MaxHeight;
                 if (!double.IsNaN(MaxWidth)) fe.MaxWidth = MaxWidth;
+
+                fe.Visibility = Visible ? Visibility.Visible : Visibility.Collapsed;
             }
 
             foreach (var eventHandler in eventHandlers)
