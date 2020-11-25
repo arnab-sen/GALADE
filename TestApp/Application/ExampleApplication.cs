@@ -45,6 +45,7 @@ namespace Application
 			
 			// BEGIN AUTO-GENERATED WIRING
             a.WireTo(text, "output");
+			a.WireTo(unknownInstance, "output");
 			// END AUTO-GENERATED WIRING
         }
     }

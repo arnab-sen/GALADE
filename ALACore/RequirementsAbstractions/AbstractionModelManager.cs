@@ -42,6 +42,19 @@ namespace RequirementsAbstractions
             }
         }
 
+        public AbstractionModel CreateDummyAbstractionModel(string type)
+        {
+            var model = new AbstractionModel()
+            {
+                Type = type,
+                Name = ""
+            };
+
+            model.AddImplementedPort("Port", "input");
+            model.AddAcceptedPort("Port", "output");
+
+            return model;
+        }
 
         public AbstractionModel CreateAbstractionModel(string code, string path = "")
         {

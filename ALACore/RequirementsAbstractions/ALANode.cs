@@ -282,20 +282,6 @@ namespace RequirementsAbstractions
             return notUpdated;
         }
 
-        private AbstractionModel CreateDummyAbstractionModel()
-        {
-            var model = new AbstractionModel()
-            {
-                Type = "UNKNOWN",
-                Name = ""
-            };
-
-            model.AddImplementedPort("Port", "input");
-            model.AddAcceptedPort("Port", "output");
-
-            return model;
-        }
-
         private void UpdateNodeParameters()
         {
             NodeParameters.Clear();
@@ -329,6 +315,20 @@ namespace RequirementsAbstractions
 
                 RefreshParameterRows();
             }
+        }
+
+        private AbstractionModel CreateDummyAbstractionModel()
+        {
+            var model = new AbstractionModel()
+            {
+                Type = "UNDEFINED",
+                Name = ""
+            };
+
+            model.AddImplementedPort("Port", "input");
+            model.AddAcceptedPort("Port", "output");
+
+            return model;
         }
         
         public void CreateInternals()

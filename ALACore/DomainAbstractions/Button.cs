@@ -39,11 +39,7 @@ namespace DomainAbstractions
             button = new System.Windows.Controls.Button();
             button.Content = title;
             button.FontSize = 14;
-            button.Click += (object sender, RoutedEventArgs e) =>
-            {
-                Logging.Log($"{InstanceName} {button.Content} button clicked!");
-                eventButtonClicked?.Execute();
-            };
+            button.Click += (sender, args) => eventButtonClicked?.Execute();
         }
 
         // IUI implementation ------------------------------------------------------

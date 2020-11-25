@@ -14,7 +14,9 @@ using ProgrammingParadigms;
 using DomainAbstractions;
 using RequirementsAbstractions;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 using System.Windows.Threading;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace TestApplication
 {
@@ -26,7 +28,6 @@ namespace TestApplication
         public Canvas Canvas { get; set; }
         public AbstractionModelManager ModelManager { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
-        public string DefaultModelType { get; set; } = "Apply";
         
         /// <summary>
         /// Determines whether to update the existing graph or to create a new one.
@@ -115,6 +116,27 @@ namespace TestApplication
             return instantiations;
         }
 
+        public LocalDeclarationStatementSyntax CreateDummyInstantiation(string type, string name)
+        {
+            var instantiation =
+                LocalDeclarationStatement(
+                        VariableDeclaration(
+                                IdentifierName("var"))
+                            .WithVariables(
+                                SingletonSeparatedList<VariableDeclaratorSyntax>(
+                                    VariableDeclarator(
+                                            Identifier(name))
+                                        .WithInitializer(
+                                            EqualsValueClause(
+                                                ObjectCreationExpression(
+                                                        IdentifierName(type))
+                                                    .WithArgumentList(
+                                                        ArgumentList()))))))
+                    .NormalizeWhitespace();
+
+            return instantiation;
+        }
+
         public void CreateNode(LocalDeclarationStatementSyntax instantiation)
         {
             try
@@ -143,8 +165,9 @@ namespace TestApplication
                 var modelTemplate = ModelManager.GetAbstractionModel(typeWithoutGenerics);
                 if (modelTemplate == null)
                 {
-                    modelTemplate = ModelManager.GetAbstractionModel(DefaultModelType);
-                    Logging.Log($"Could not find an AbstractionModel for type {typeWithoutGenerics}. Using a default model of type {DefaultModelType} instead.");
+                    modelTemplate = ModelManager.CreateDummyAbstractionModel("UNDEFINED"); 
+
+                    Logging.Log($"Could not find an AbstractionModel for type {typeWithoutGenerics}. Using a dummy model of type \"{modelTemplate.Type}\" instead.");
                 }
 
                 var model = new AbstractionModel();
@@ -256,14 +279,18 @@ namespace TestApplication
 
             if (!_nodesByName.ContainsKey(sourceName))
             {
-                Logging.Log($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}\nCause: source node {sourceName} not created.");
-                return;
+                Logging.Log($"Error: no instantiation for {sourceName} found. Creating a dummy one to use instead.");
+
+                var dummyInstantiation = CreateDummyInstantiation("UNDEFINED", sourceName);
+                CreateNode(dummyInstantiation);
             }
 
             if (!_nodesByName.ContainsKey(destinationName))
             {
-                Logging.Log($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}\nCause: destination node {destinationName} not created.");
-                return;
+                Logging.Log($"Error: no instantiation for {destinationName} found. Creating a dummy one to use instead.");
+
+                var dummyInstantiation = CreateDummyInstantiation("UNDEFINED", destinationName);
+                CreateNode(dummyInstantiation);
             }
 
             var source = _nodesByName[sourceName];
@@ -338,6 +365,13 @@ namespace TestApplication
             {
                 node.Id = model.Name.Substring(3);
                 node.ShowName = false;
+            }
+
+            if (model.Type == "UNDEFINED")
+            {
+                node.NodeBackground = Brushes.Red;
+                var documentation = "Error: No instantiation for this instance was found in the wiring code. Please add one in the code, then regenerate this diagram.";
+                model.AddDocumentation(documentation);
             }
 
             node.Model = model;
