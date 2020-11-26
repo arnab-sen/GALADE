@@ -453,6 +453,8 @@ namespace TestApplication
             var id_1139c3821d834efc947d5c4e949cd1ba = new EventConnector() {InstanceName="id_1139c3821d834efc947d5c4e949cd1ba"};
             var id_4686253b1d7d4cd9a4d5bf03d6b7e380 = new Horizontal() {InstanceName="id_4686253b1d7d4cd9a4d5bf03d6b7e380"};
             var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
+            var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {MaxHeight=700};
+            var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {HorizAlignment="middle",UniformMargin=5};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -596,7 +598,6 @@ namespace TestApplication
             id_a1f87102954345b69de6841053fce813.WireTo(directoryTreeExplorer, "fanoutList");
             directoryExplorerTab.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
-            projectDirectoryOptionsHoriz.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "children");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
             id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged");
             id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList");
@@ -658,7 +659,6 @@ namespace TestApplication
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
             searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
             searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children");
-            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_3622556a1b37410691b51b83c004a315, "children");
             id_3622556a1b37410691b51b83c004a315.WireTo(id_73274d9ce8d5414899772715a1d0f266, "selectedIndex");
             id_73274d9ce8d5414899772715a1d0f266.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "output");
             id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_75ecf8c2602c41829602707be8a8a481, "fanoutList");
@@ -723,6 +723,10 @@ namespace TestApplication
             id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_de49d2fafc2140e996eb38fbf1e62103, "children");
             id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_4686253b1d7d4cd9a4d5bf03d6b7e380, "children");
             id_1928c515b2414f6690c6924a76461081.WireTo(id_f140e9e4ef3f4c07898073fde207da99, "filePathInput");
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_25a53022f6ab4e9284fd321e9535801b, "children");
+            id_25a53022f6ab4e9284fd321e9535801b.WireTo(id_3622556a1b37410691b51b83c004a315, "child");
+            projectDirectoryOptionsHoriz.WireTo(id_de10db4d6b8a426ba76b02959a58cb88, "children");
+            id_de10db4d6b8a426ba76b02959a58cb88.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "child");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -747,6 +751,12 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
 
 
 
