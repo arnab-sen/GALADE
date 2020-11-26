@@ -368,7 +368,18 @@ namespace TestApplication
             if (model.Type == "UNDEFINED")
             {
                 node.NodeBackground = Brushes.Red;
-                var documentation = "Error: No instantiation for this instance was found in the wiring code. Please add one in the code, and then regenerate this diagram.";
+                var sb = new StringBuilder();
+
+                sb.AppendLine("Error: No instantiation for this instance was found in the source code. Please add one in the code, and then regenerate this diagram.");
+                sb.AppendLine("");
+                sb.AppendLine("If this instance is a global variable, then simply set a dummy instantiation in the auto-generated instantiations area, and in ");
+                sb.AppendLine("between that area and the wiring code area, assign a reference from the global variable to that dummy instantiation, so that the");
+                sb.AppendLine("global variable is used in the WireTos instead of the dummy instantiation.");
+                sb.AppendLine("");
+                sb.AppendLine("The dummy instantiation will appear in the diagram, so maybe give it an InstanceName of \"Global variable\" to make it clearer");
+                sb.AppendLine("to anyone else viewing the diagram.");
+
+                var documentation = sb.ToString();
                 model.AddDocumentation(documentation);
             }
 
