@@ -426,9 +426,11 @@ namespace TestApplication
             var id_9e6a74b0dbea488cba6027ee5187ad0f = new DispatcherEvent() {InstanceName="id_9e6a74b0dbea488cba6027ee5187ad0f",Priority=DispatcherPriority.Loaded};
             var id_b55e77a5d78243bf9612ecb7cb20c2c7 = new DispatcherEvent() {InstanceName="id_b55e77a5d78243bf9612ecb7cb20c2c7",Priority=DispatcherPriority.Loaded};
             var id_45593aeb91a145aa9d84d8b77a8d4d8e = new DispatcherEvent() {InstanceName="id_45593aeb91a145aa9d84d8b77a8d4d8e",Priority=DispatcherPriority.Loaded};
+            var UIConfig_searchTab = new UIConfig() {InstanceName="UIConfig_searchTab"};
+            var UIConfig_searchTextBox = new UIConfig() {InstanceName="UIConfig_searchTextBox"};
             var id_ab5c789d2d72413d90b6bbc63302322c = new EventLambda() {InstanceName="id_ab5c789d2d72413d90b6bbc63302322c",Lambda=() =>{    (makeSidePanelVisible as IEvent)?.Execute();}};
-            var id_a690d6dd37ba4c98b5506777df6dc9db = new EventLambda() {InstanceName="id_a690d6dd37ba4c98b5506777df6dc9db",Lambda=() =>{    searchTab.Select();}};
-            var id_63db7722e48a4c5aabd905f75b0519b2 = new EventLambda() {InstanceName="id_63db7722e48a4c5aabd905f75b0519b2",Lambda=() =>{    searchTextBox.Select();}};
+            var id_a690d6dd37ba4c98b5506777df6dc9db = new EventLambda() {InstanceName="id_a690d6dd37ba4c98b5506777df6dc9db",Lambda=() =>{    UIConfig_searchTab.Focus();}};
+            var id_63db7722e48a4c5aabd905f75b0519b2 = new EventLambda() {InstanceName="id_63db7722e48a4c5aabd905f75b0519b2",Lambda=() =>{    UIConfig_searchTextBox.Focus();}};
             var id_006b07cc90c64e398b945bb43fdd4de9 = new EventConnector() {InstanceName="id_006b07cc90c64e398b945bb43fdd4de9"};
             var id_e7da19475fcc44bdaf4a64d05f92b771 = new Data<string>() {InstanceName="id_e7da19475fcc44bdaf4a64d05f92b771"};
             var id_68cfe1cc12f948cab25289d853300813 = new PopupWindow(title:"Open diagram?") {Height=100,Resize=SizeToContent.WidthAndHeight,InstanceName="id_68cfe1cc12f948cab25289d853300813"};
@@ -453,8 +455,8 @@ namespace TestApplication
             var id_1139c3821d834efc947d5c4e949cd1ba = new EventConnector() {InstanceName="id_1139c3821d834efc947d5c4e949cd1ba"};
             var id_4686253b1d7d4cd9a4d5bf03d6b7e380 = new Horizontal() {InstanceName="id_4686253b1d7d4cd9a4d5bf03d6b7e380"};
             var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
-            var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {MaxHeight=700};
-            var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {HorizAlignment="middle",UniformMargin=5};
+            var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {InstanceName="id_25a53022f6ab4e9284fd321e9535801b",MaxHeight=700};
+            var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {InstanceName="id_de10db4d6b8a426ba76b02959a58cb88",HorizAlignment="middle",UniformMargin=5};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -647,10 +649,7 @@ namespace TestApplication
             id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
             id_5e2f0621c62142c1b5972961c93cb725.WireTo(id_57e7dd98a0874e83bbd5014f7e9c9ef5, "dataOutput");
             id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(id_e1e6cf54f73d4f439c6f18b668a73f1a, "fanoutList");
-            id_7b250b222ca44ba2922547f03a4aef49.WireTo(searchTab, "childrenTabs");
             id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_fed56a4aef6748178fa7078388643323, "children");
-            id_fed56a4aef6748178fa7078388643323.WireTo(searchTextBox, "children");
-            id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
             searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
             startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked");
             id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB");
@@ -727,6 +726,11 @@ namespace TestApplication
             id_25a53022f6ab4e9284fd321e9535801b.WireTo(id_3622556a1b37410691b51b83c004a315, "child");
             projectDirectoryOptionsHoriz.WireTo(id_de10db4d6b8a426ba76b02959a58cb88, "children");
             id_de10db4d6b8a426ba76b02959a58cb88.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "child");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(UIConfig_searchTab, "childrenTabs");
+            UIConfig_searchTab.WireTo(searchTab, "child");
+            id_fed56a4aef6748178fa7078388643323.WireTo(UIConfig_searchTextBox, "children");
+            UIConfig_searchTextBox.WireTo(searchTextBox, "child");
+            id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -751,6 +755,10 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
 
 
 

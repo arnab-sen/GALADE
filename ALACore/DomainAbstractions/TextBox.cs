@@ -164,10 +164,7 @@ namespace DomainAbstractions
         }
 
         // Methods
-        public void Select()
-        {
-            _textBox.Focus();
-        }
+
 
         // IUI implementation
         System.Windows.UIElement IUI.GetWPFElement()

@@ -68,6 +68,11 @@ namespace DomainAbstractions
         }
 
         // Methods
+        public void Focus()
+        {
+            _uiElement.Focus();
+        }
+
         private void Configure(UIElement ui)
         {
             if (ui is FrameworkElement fe)
