@@ -522,7 +522,6 @@ namespace RequirementsAbstractions
                 if (_textMaskRender == null) _textMaskRender = CreateTextMask();
 
                 if (!_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Add(_textMaskRender);
-
             }
             else
             {
@@ -532,7 +531,6 @@ namespace RequirementsAbstractions
                 
                 _textMaskRender = null;
             }
-
         }
 
         public string ToInstantiation(bool singleLine = true)
