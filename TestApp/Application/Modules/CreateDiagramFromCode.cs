@@ -368,7 +368,7 @@ namespace TestApplication
             if (model.Type == "UNDEFINED")
             {
                 node.NodeBackground = Brushes.Red;
-                var documentation = "Error: No instantiation for this instance was found in the wiring code. Please add one in the code, then regenerate this diagram.";
+                var documentation = "Error: No instantiation for this instance was found in the wiring code. Please add one in the code, and then regenerate this diagram.";
                 model.AddDocumentation(documentation);
             }
 
