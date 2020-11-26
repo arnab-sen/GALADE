@@ -22,7 +22,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         
         // Private fields
-        private IEnumerable<T> collection;
+        private List<T> collection;
         
         // Ports
         private IDataFlow<T> elementOutput;
@@ -35,21 +35,18 @@ namespace DomainAbstractions
             get => collection;
             set
             {
-                collection = value;
+                collection = value.ToList(); // Create a copy to prevent issues with the collection being modified during its traversal
 
-                if (collection != null)
+                var i = 0; 
+                foreach (var element in collection)
                 {
-                    var i = 0; 
-                    foreach (var element in collection)
-                    {
-                        if (indexOutput != null) indexOutput.Data = i;
-                        if (elementOutput != null) elementOutput.Data = element;
-                        
-                        i++;
-                    }
-
-                    complete?.Execute();
+                    if (indexOutput != null) indexOutput.Data = i;
+                    if (elementOutput != null) elementOutput.Data = element;
+                    
+                    i++;
                 }
+
+                complete?.Execute();
             }
         }
         
