@@ -11,7 +11,7 @@ using ProgrammingParadigms;
 namespace DomainAbstractions 
 {
     /// <summary>
-    /// This class applies a configuration onto a child IUI, and then propagates that child up to the parent IUI of this class.
+    /// An IUI decorator that applies a configuration onto a child IUI, and then propagates that child up to the parent IUI of this class.
     /// </summary>
     public class UIConfig : IUI
     {
