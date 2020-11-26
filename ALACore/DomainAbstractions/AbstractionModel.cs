@@ -166,7 +166,7 @@ namespace DomainAbstractions
                 _properties[name] = value;
             }
 
-            if (initialise) _initialised.Add(name);
+            if (initialise) Initialise(name);
 
             if (name == "InstanceName") Description = value; 
         }
@@ -354,6 +354,16 @@ namespace DomainAbstractions
                 _properties.Remove(key);
             }
 
+        }
+
+        public void Initialise(string varName)
+        {
+            if (!_initialised.Contains(varName)) _initialised.Add(varName);
+        }
+
+        public void Uninitialise(string varName)
+        {
+            if (_initialised.Contains(varName)) _initialised.Remove(varName);
         }
 
         public void RefreshFullTypeWithGenerics()

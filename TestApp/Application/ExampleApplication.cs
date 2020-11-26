@@ -38,75 +38,16 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS
-            var text = new Text("testText",true) {InstanceName="text"};
+            var text = new Text(text:"testText") {InstanceName="text"};
             var a = new Apply<string, string>() {InstanceName="a"};
             var b = new Apply<string, string>() {InstanceName="b"};
+            var unknownInstance = new Object() {};
             // END AUTO-GENERATED INSTANTIATIONS
 			
 			// BEGIN AUTO-GENERATED WIRING
             a.WireTo(text, "output");
-			a.WireTo(unknownInstance, "output");
+            a.WireTo(unknownInstance, "output");
 			// END AUTO-GENERATED WIRING
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

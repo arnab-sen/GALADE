@@ -383,7 +383,7 @@ namespace RequirementsAbstractions
 
         private void CreateNodeParameterRow() => CreateNodeParameterRow("", "");
 
-        private void CreateNodeParameterRow(string type = "", string name = "")
+        private void CreateNodeParameterRow(string type, string name)
         {
 	        var dropDown = new DropDownMenu() 
 	        {
@@ -433,7 +433,12 @@ namespace RequirementsAbstractions
 	        dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
 	        dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);
 	        
-	        dropDownUI.SelectionChanged += (sender, args) => textBox.Text = Model.GetValue(dropDownUI.SelectedValue?.ToString() ?? "");
+	        dropDownUI.SelectionChanged += (sender, args) =>
+            {
+                var varName = dropDownUI.SelectedValue?.ToString() ?? "";
+                textBox.Text = Model.GetValue(varName);
+                Model.Initialise(varName);
+            };
 
 	        
 	        var horiz = new Horizontal();
@@ -446,6 +451,8 @@ namespace RequirementsAbstractions
 	        buttonUI.Click += (sender, args) => 
 	        {
 		        var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));
+                var varName = row?.Item2.Text ?? "";
+                Model.Uninitialise(varName);
 		        _nodeParameterRows.Remove(row);
 		        RefreshParameterRows();
 	        };
