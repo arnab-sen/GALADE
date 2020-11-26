@@ -72,28 +72,34 @@ namespace DomainAbstractions
         {
             if (ui is FrameworkElement fe)
             {
-                fe.ContextMenu = new System.Windows.Controls.ContextMenu();
-                foreach (var contextMenuItem in contextMenuChildren)
+                if (contextMenuChildren.Any())
                 {
-                    fe.ContextMenu.Items.Add(contextMenuItem.GetWPFElement());
+                    fe.ContextMenu = new System.Windows.Controls.ContextMenu();
+                    foreach (var contextMenuItem in contextMenuChildren)
+                    {
+                        fe.ContextMenu.Items.Add(contextMenuItem.GetWPFElement());
+                    } 
                 }
 
-                // Use a TextBlock so that the tooltip text can be dynamically updated
-                var toolTipLabel = new TextBlock()
+                if (!string.IsNullOrEmpty(ToolTipText))
                 {
-                    Text = ToolTipText
-                };
+                    // Use a TextBlock so that the tooltip text can be dynamically updated
+                    var toolTipLabel = new TextBlock()
+                    {
+                        Text = ToolTipText
+                    };
 
-                var toolTip = new System.Windows.Controls.ToolTip()
-                {
-                    Content = toolTipLabel
-                };
+                    var toolTip = new System.Windows.Controls.ToolTip()
+                    {
+                        Content = toolTipLabel
+                    };
 
-                fe.ToolTip = toolTip;
+                    fe.ToolTip = toolTip;
 
-                if (UpdateToolTip != null)
-                {
-                    toolTip.ToolTipOpening += (sender, args) => toolTipLabel.Text = UpdateToolTip();
+                    if (UpdateToolTip != null)
+                    {
+                        toolTip.ToolTipOpening += (sender, args) => toolTipLabel.Text = UpdateToolTip();
+                    } 
                 }
 
                 var horizAlignment = HorizAlignment.ToLower();
