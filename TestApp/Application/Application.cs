@@ -287,7 +287,6 @@ namespace TestApplication
             var id_33990435606f4bbc9ba1786ed05672ab = new Apply<MouseWheelEventArgs, bool>() {InstanceName="Is scroll up?",Lambda=args =>{    return args.Delta > 0;}};
             var id_6909a5f3b0e446d3bb0c1382dac1faa9 = new IfElse() {InstanceName="id_6909a5f3b0e446d3bb0c1382dac1faa9"};
             var id_cf7df48ac3304a8894a7536261a3b474 = new DataFlowConnector<string>() {InstanceName="id_cf7df48ac3304a8894a7536261a3b474"};
-            var id_8dd402ea46b042f6a0ab358514fa6a1f = new ConvertToEvent<string>() {InstanceName="id_8dd402ea46b042f6a0ab358514fa6a1f"};
             var id_4a268943755348b68ee2cb6b71f73c40 = new DispatcherEvent() {InstanceName="id_4a268943755348b68ee2cb6b71f73c40",Priority=DispatcherPriority.ApplicationIdle};
             var id_a34c047df9ae4235a08b037fd9e48ab8 = new MenuItem(header:"Generate Code") {InstanceName="Generate Code"};
             var id_b5364bf1c9cd46a28e62bb2eb0e11692 = new GenerateALACode() {InstanceName="id_b5364bf1c9cd46a28e62bb2eb0e11692",Graph=mainGraph};
@@ -325,9 +324,7 @@ namespace TestApplication
             var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {InstanceName="Pull from code"};
             var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {InstanceName="id_9f411cfea16b45ed9066dd8f2006e1f1"};
             var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {InstanceName="id_db598ad59e5542a0adc5df67ced27f73"};
-            var id_f3bf83d06926453bb054330f899b605b = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
-            var startDiagramCreationProcess = new DataFlowConnector<string>() {InstanceName="startDiagramCreationProcess"};
-            var id_d59ccc1fe1ef492e9b436b3464466171 = new ConvertToEvent<string>() {InstanceName="id_d59ccc1fe1ef492e9b436b3464466171"};
+            var id_9b866e4112fd4347a2a3e81441401dea = new DataFlowConnector<string>() {};
             var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"ApplicationCodeFilePath") {InstanceName="id_5ddd02478c734777b9e6f1079b4b3d45"};
             var id_d5d3af7a3c9a47bf9af3b1a1e1246267 = new Apply<string, bool>() {InstanceName="id_d5d3af7a3c9a47bf9af3b1a1e1246267",Lambda=s => !string.IsNullOrEmpty(s)};
             var id_2ce385b32256413ab2489563287afaac = new IfElse() {InstanceName="id_2ce385b32256413ab2489563287afaac"};
@@ -457,6 +454,11 @@ namespace TestApplication
             var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
             var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {InstanceName="id_25a53022f6ab4e9284fd321e9535801b",MaxHeight=700};
             var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {InstanceName="id_de10db4d6b8a426ba76b02959a58cb88",HorizAlignment="middle",UniformMargin=5};
+            var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="id_a9db513fb0e749bda7f42b03964e5dce"};
+            var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="id_efeb87ef1b3c4f9e8ed2f8193e6b78b1"};
+            var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
+            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
+            var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {Lambda=() => {    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))     {        return setting_currentDiagramCodeFilePath.Data;    }    else     {        return latestCodeFilePath.Data;    }}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -531,8 +533,6 @@ namespace TestApplication
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput");
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList");
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(id_13061fa931bc49d599a3a2f0b1cab26c, "fanoutList");
-            id_cf7df48ac3304a8894a7536261a3b474.WireTo(id_8dd402ea46b042f6a0ab358514fa6a1f, "fanoutList");
-            id_8dd402ea46b042f6a0ab358514fa6a1f.WireTo(layoutDiagram, "eventOutput");
             id_4a268943755348b68ee2cb6b71f73c40.WireTo(getFirstRoot, "delayedEvent");
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent");
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "instantiations");
@@ -562,16 +562,13 @@ namespace TestApplication
             id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_3f30a573358d4fd08c4c556281737360, "complete");
             id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
             statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
-            id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(id_a2d71044048840b0a69356270e6520ac, "eventOutput");
             id_42c7f12c13804ec7b111291739be78f5.WireTo(createDiagramFromCode, "fanoutList");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
             id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
             id_db598ad59e5542a0adc5df67ced27f73.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "fanoutList");
-            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(startDiagramCreationProcess, "selectedFilePathOutput");
-            startDiagramCreationProcess.WireTo(id_d59ccc1fe1ef492e9b436b3464466171, "fanoutList");
-            id_d59ccc1fe1ef492e9b436b3464466171.WireTo(id_f3bf83d06926453bb054330f899b605b, "eventOutput");
-            startDiagramCreationProcess.WireTo(setting_currentDiagramCodeFilePath, "fanoutList");
+            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "selectedFilePathOutput");
+            id_9b866e4112fd4347a2a3e81441401dea.WireTo(setting_currentDiagramCodeFilePath, "fanoutList");
             id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             id_dcd4c90552dc4d3fb579833da87cd829.WireTo(id_5ddd02478c734777b9e6f1079b4b3d45, "delayedEvent");
             id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
@@ -681,7 +678,7 @@ namespace TestApplication
             directoryExplorerConfig.WireTo(id_8b908f2be6094d5b8cd3dce5c5fc2b8b, "contextMenuChildren");
             id_8b908f2be6094d5b8cd3dce5c5fc2b8b.WireTo(id_692716a735e44e948a8d14cd550c1276, "clickedEvent");
             id_692716a735e44e948a8d14cd550c1276.WireTo(currentSelectedDirectoryTreeFilePath, "inputDataB");
-            id_692716a735e44e948a8d14cd550c1276.WireTo(startDiagramCreationProcess, "dataOutput");
+            id_692716a735e44e948a8d14cd550c1276.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "dataOutput");
             id_0d4d34a2cd6749759ac0c2708ddf0cbc.WireTo(id_692716a735e44e948a8d14cd550c1276, "eventButtonClicked");
             mainCanvasDisplay.WireTo(id_f77e477a71954e20a587ec6fb4d006ce, "eventHandlers");
             id_f77e477a71954e20a587ec6fb4d006ce.WireTo(id_87a897a783884990bf10e4d7a9e276b9, "eventHappened");
@@ -704,7 +701,7 @@ namespace TestApplication
             id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
             id_5fbec6b061cc428a8c00e5c2a652b89e.WireTo(id_721b5692fa5a4ba39f509fd7e4a6291b, "fanoutList");
             id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(latestCodeFilePath, "inputDataB");
-            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(startDiagramCreationProcess, "dataOutput");
+            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "dataOutput");
             id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_1a403a85264c4074bc7ce5a71262c6c0, "fanoutList");
             id_1a403a85264c4074bc7ce5a71262c6c0.WireTo(id_1928c515b2414f6690c6924a76461081, "dataOutput");
             id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_d890df432c1f4e60a62b8913a5069b34, "children");
@@ -731,6 +728,15 @@ namespace TestApplication
             id_fed56a4aef6748178fa7078388643323.WireTo(UIConfig_searchTextBox, "children");
             UIConfig_searchTextBox.WireTo(searchTextBox, "child");
             id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_a9db513fb0e749bda7f42b03964e5dce, "children");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_efeb87ef1b3c4f9e8ed2f8193e6b78b1, "children");
+            id_efeb87ef1b3c4f9e8ed2f8193e6b78b1.WireTo(generateCode, "clickedEvent");
+            id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(startDiagramCreationProcess, "eventOutput");
+            startDiagramCreationProcess.WireTo(id_db77c286e64241c48de4fad0dde80024, "fanoutList");
+            startDiagramCreationProcess.WireTo(id_a2d71044048840b0a69356270e6520ac, "fanoutList");
+            startDiagramCreationProcess.WireTo(layoutDiagram, "fanoutList");
+            id_a9db513fb0e749bda7f42b03964e5dce.WireTo(id_c9dbe185989e48c0869f984dd8e979f2, "clickedEvent");
+            id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -755,6 +761,18 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
