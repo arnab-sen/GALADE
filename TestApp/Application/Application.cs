@@ -435,8 +435,8 @@ namespace TestApplication
             var id_95ddd89b36d54db298eaa05165284569 = new Vertical() {InstanceName="id_95ddd89b36d54db298eaa05165284569"};
             var id_939726bef757459b914412aead1bb5f9 = new Text(text:"") {InstanceName="id_939726bef757459b914412aead1bb5f9"};
             var id_c7dc32a5f12b41ad94a910a74de38827 = new Horizontal() {InstanceName="id_c7dc32a5f12b41ad94a910a74de38827"};
-            var id_89ab09564cea4a8b93d8925e8234e44c = new UIConfig() {InstanceName="id_89ab09564cea4a8b93d8925e8234e44c",HorizAlignment="right",RightMargin=5,BottomMargin=5};
-            var id_c180a82fd3a6495a885e9dde61aaaef3 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",HorizAlignment="left",RightMargin=5,BottomMargin=5};
+            var id_89ab09564cea4a8b93d8925e8234e44c = new UIConfig() {InstanceName="id_89ab09564cea4a8b93d8925e8234e44c",Width=50,HorizAlignment="right",RightMargin=5,BottomMargin=5};
+            var id_c180a82fd3a6495a885e9dde61aaaef3 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",Width=50,HorizAlignment="left",RightMargin=5,BottomMargin=5};
             var id_add742a4683f4dd0b34d8d0eebbe3f07 = new Button(title:"Yes") {InstanceName="id_add742a4683f4dd0b34d8d0eebbe3f07"};
             var id_e82c1f80e1884a57b79c681462efd65d = new Button(title:"No") {InstanceName="id_e82c1f80e1884a57b79c681462efd65d"};
             var id_5fbec6b061cc428a8c00e5c2a652b89e = new EventConnector() {InstanceName="id_5fbec6b061cc428a8c00e5c2a652b89e"};
@@ -449,7 +449,7 @@ namespace TestApplication
             var id_e4c9f92bbd6643a286683c9ff5f9fb3a = new Apply<string, string>() {InstanceName="id_e4c9f92bbd6643a286683c9ff5f9fb3a",Lambda=path => $"Default code file path is set to \"{path}\".\nOpen a diagram from this path?"};
             var id_5b134e68e31b40f4b3e95eb007a020dc = new UIConfig() {InstanceName="id_5b134e68e31b40f4b3e95eb007a020dc",HorizAlignment="middle",UniformMargin=5};
             var id_0fafdba1ad834904ac7330f95dffd966 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",HorizAlignment="left",BottomMargin=5};
-            var id_2bfcbb47c2c745578829e1b0f8287f42 = new Button(title:"No, and clear the setting") {InstanceName="id_2bfcbb47c2c745578829e1b0f8287f42"};
+            var id_2bfcbb47c2c745578829e1b0f8287f42 = new Button(title:" No, and clear the setting ") {InstanceName="id_2bfcbb47c2c745578829e1b0f8287f42"};
             var id_1139c3821d834efc947d5c4e949cd1ba = new EventConnector() {InstanceName="id_1139c3821d834efc947d5c4e949cd1ba"};
             var id_4686253b1d7d4cd9a4d5bf03d6b7e380 = new Horizontal() {InstanceName="id_4686253b1d7d4cd9a4d5bf03d6b7e380"};
             var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
@@ -460,8 +460,8 @@ namespace TestApplication
             var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
             var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
-            var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {};
-            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {Lambda=path => {    return $"GALADE | {Path.GetFullPath(path)}";}};
+            var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
+            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -767,6 +767,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
