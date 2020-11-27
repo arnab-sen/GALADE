@@ -152,6 +152,7 @@
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\Scale.cs" />
     <Compile Include="DomainAbstractions\SimulateKeyboard.cs" />
+    <Compile Include="DomainAbstractions\Stopwatch.cs" />
     <Compile Include="DomainAbstractions\TextEditor.cs" />
     <Compile Include="DomainAbstractions\UIConfig.cs" />
     <Compile Include="DomainAbstractions\UIFactory.cs" />
