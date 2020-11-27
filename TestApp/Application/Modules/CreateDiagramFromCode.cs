@@ -416,39 +416,42 @@ namespace TestApplication
         public CreateDiagramFromCode()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            DataFlowConnector<string> startCreation = new DataFlowConnector<string>() { InstanceName = "startCreation" };
-            ForEach<LocalDeclarationStatementSyntax> id_fcaabe33216f4a58a93b0b2ef5f15010 = new ForEach<LocalDeclarationStatementSyntax>() {  };
-            DispatcherData<LocalDeclarationStatementSyntax> id_e9b477643ed94a8c9247968436584d38 = new DispatcherData<LocalDeclarationStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
-            DataFlowConnector<LocalDeclarationStatementSyntax> id_1cf09862061644bd81f58e0965b6420a = new DataFlowConnector<LocalDeclarationStatementSyntax>() {  };
-            ApplyAction<LocalDeclarationStatementSyntax> id_1588adb8d64b4fe6876b20a0eb5075fd = new ApplyAction<LocalDeclarationStatementSyntax>() { Lambda = instantiation =>{_instCount++;Logging.Message($"Creating node {_instCount}/{_instTotal}...");} };
-            ApplyAction<LocalDeclarationStatementSyntax> id_b7f04a7310894b7a884b171a3bade791 = new ApplyAction<LocalDeclarationStatementSyntax>() { Lambda = CreateNode };
-            EventLambda id_80f41b60cacd493c84808b1c4c8755f1 = new EventLambda() { Lambda = () =>{_instCount = 0;Logging.Message($"{_nodesByName.Keys.Count}/{_instTotal} nodes created.");} };
-            Apply<string, IEnumerable<LocalDeclarationStatementSyntax>> getInstantiations  = new Apply<string, IEnumerable<LocalDeclarationStatementSyntax>>() { InstanceName = "getInstantiations ", Lambda = GetInstantiations };
-            Apply<string, IEnumerable<ExpressionStatementSyntax>> id_8c692c6a27f449619146ed6dd8d9c621 = new Apply<string, IEnumerable<ExpressionStatementSyntax>>() { Lambda = GetWireTos };
-            ForEach<ExpressionStatementSyntax> id_22451793e0224fb4b2f387639abc3ff6 = new ForEach<ExpressionStatementSyntax>() {  };
-            DataFlowConnector<ExpressionStatementSyntax> id_3d924167517f4128bb970f478986843e = new DataFlowConnector<ExpressionStatementSyntax>() {  };
-            DispatcherData<ExpressionStatementSyntax> id_1475c43393ee4fc99a723c2e19c9630f = new DispatcherData<ExpressionStatementSyntax>() { Priority = DispatcherPriority.ApplicationIdle };
-            ApplyAction<ExpressionStatementSyntax> id_19d1288ca6b6498a97baa8269a45462c = new ApplyAction<ExpressionStatementSyntax>() { Lambda = wireTo =>{_wireToCount++;Logging.Message($"Creating wire {_wireToCount}/{_wireToTotal}...");} };
-            ApplyAction<ExpressionStatementSyntax> id_f5021eb48f0d462895ac67cd14f14031 = new ApplyAction<ExpressionStatementSyntax>() { Lambda = CreateWire };
-            EventLambda id_e5707746b1484708a6d77003adedaa8b = new EventLambda() { Lambda = () =>{_wireToCount = 0;Logging.Message($"{_wiresById.Keys.Count}/{_wireToTotal} wires created.");} };
-            DataFlowConnector<IEnumerable<LocalDeclarationStatementSyntax>> id_09ac5cb7b8854dffa0d0755e4d99d4f9 = new DataFlowConnector<IEnumerable<LocalDeclarationStatementSyntax>>() {  };
-            ApplyAction<IEnumerable<LocalDeclarationStatementSyntax>> id_2906f2e0dee248f5abe56872822e6ca7 = new ApplyAction<IEnumerable<LocalDeclarationStatementSyntax>>() { Lambda = input =>{_instTotal = input.Count();} };
-            DataFlowConnector<IEnumerable<ExpressionStatementSyntax>> id_eead8c20b8644a5b99bab14b5c783d0c = new DataFlowConnector<IEnumerable<ExpressionStatementSyntax>>() {  };
-            ApplyAction<IEnumerable<ExpressionStatementSyntax>> id_8abe632830344b4585a69c3fe4d099a7 = new ApplyAction<IEnumerable<ExpressionStatementSyntax>>() { Lambda = input =>{_wireToTotal = input.Count();} };
+            var startCreation = new DataFlowConnector<string>() {InstanceName="startCreation"};
+            var id_fcaabe33216f4a58a93b0b2ef5f15010 = new ForEach<LocalDeclarationStatementSyntax>() {InstanceName="id_fcaabe33216f4a58a93b0b2ef5f15010"};
+            var id_e9b477643ed94a8c9247968436584d38 = new DispatcherData<LocalDeclarationStatementSyntax>() {InstanceName="id_e9b477643ed94a8c9247968436584d38",Priority=DispatcherPriority.ApplicationIdle};
+            var id_1cf09862061644bd81f58e0965b6420a = new DataFlowConnector<LocalDeclarationStatementSyntax>() {InstanceName="id_1cf09862061644bd81f58e0965b6420a"};
+            var id_1588adb8d64b4fe6876b20a0eb5075fd = new ApplyAction<LocalDeclarationStatementSyntax>() {InstanceName="id_1588adb8d64b4fe6876b20a0eb5075fd",Lambda=instantiation =>{    _instCount++;    Logging.Message($"Creating node {_instCount}/{_instTotal}...");}};
+            var id_b7f04a7310894b7a884b171a3bade791 = new ApplyAction<LocalDeclarationStatementSyntax>() {InstanceName="id_b7f04a7310894b7a884b171a3bade791",Lambda=CreateNode};
+            var id_80f41b60cacd493c84808b1c4c8755f1 = new EventLambda() {InstanceName="id_80f41b60cacd493c84808b1c4c8755f1",Lambda=() =>{    _instCount = 0;    Logging.Message($"{_nodesByName.Keys.Count}/{_instTotal} nodes created");}};
+            var getInstantiations = new Apply<string, IEnumerable<LocalDeclarationStatementSyntax>>() {InstanceName="getInstantiations ",Lambda=GetInstantiations};
+            var id_8c692c6a27f449619146ed6dd8d9c621 = new Apply<string, IEnumerable<ExpressionStatementSyntax>>() {InstanceName="id_8c692c6a27f449619146ed6dd8d9c621",Lambda=GetWireTos};
+            var id_22451793e0224fb4b2f387639abc3ff6 = new ForEach<ExpressionStatementSyntax>() {InstanceName="id_22451793e0224fb4b2f387639abc3ff6"};
+            var id_3d924167517f4128bb970f478986843e = new DataFlowConnector<ExpressionStatementSyntax>() {InstanceName="id_3d924167517f4128bb970f478986843e"};
+            var id_1475c43393ee4fc99a723c2e19c9630f = new DispatcherData<ExpressionStatementSyntax>() {InstanceName="id_1475c43393ee4fc99a723c2e19c9630f",Priority=DispatcherPriority.ApplicationIdle};
+            var id_19d1288ca6b6498a97baa8269a45462c = new ApplyAction<ExpressionStatementSyntax>() {InstanceName="id_19d1288ca6b6498a97baa8269a45462c",Lambda=wireTo =>{    _wireToCount++;    Logging.Message($"Creating wire {_wireToCount}/{_wireToTotal}...");}};
+            var id_f5021eb48f0d462895ac67cd14f14031 = new ApplyAction<ExpressionStatementSyntax>() {InstanceName="id_f5021eb48f0d462895ac67cd14f14031",Lambda=CreateWire};
+            var id_09ac5cb7b8854dffa0d0755e4d99d4f9 = new DataFlowConnector<IEnumerable<LocalDeclarationStatementSyntax>>() {InstanceName="id_09ac5cb7b8854dffa0d0755e4d99d4f9"};
+            var id_2906f2e0dee248f5abe56872822e6ca7 = new ApplyAction<IEnumerable<LocalDeclarationStatementSyntax>>() {InstanceName="id_2906f2e0dee248f5abe56872822e6ca7",Lambda=input =>{    _instTotal = input.Count();}};
+            var id_eead8c20b8644a5b99bab14b5c783d0c = new DataFlowConnector<IEnumerable<ExpressionStatementSyntax>>() {InstanceName="id_eead8c20b8644a5b99bab14b5c783d0c"};
+            var id_8abe632830344b4585a69c3fe4d099a7 = new ApplyAction<IEnumerable<ExpressionStatementSyntax>>() {InstanceName="id_8abe632830344b4585a69c3fe4d099a7",Lambda=input =>{    _wireToTotal = input.Count();}};
+            var id_c55992ef95c5435499982c2cd8e1b746 = new ConvertToEvent<string>() {};
+            var id_cafde6e0d8754dd1a5bb3b699628ef4a = new Stopwatch() {};
+            var id_c4326ea59fdb4fc88c3eaaf12f66400e = new Data<string>() {Lambda=() => {    _wireToCount = 0;    return $"{_wiresById.Keys.Count}/{_wireToTotal} wires created";}};
+            var diagramCreatedMessage = new DataFlowConnector<string>() {InstanceName="diagramCreatedMessage"};
+            var id_534f5b681fb746fcbbe0717eb7a6eef3 = new ApplyAction<double>() {Lambda=time => {    Logging.Message($"{diagramCreatedMessage.Data} | Elapsed time: {time} seconds");}};
+            var id_4ad815216ff8473ab0a61d1309adc7ac = new EventConnector() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
-            startCreation.WireTo(getInstantiations , "fanoutList");
-            startCreation.WireTo(id_8c692c6a27f449619146ed6dd8d9c621, "fanoutList");
+            startCreation.WireTo(id_c55992ef95c5435499982c2cd8e1b746, "fanoutList");
             id_fcaabe33216f4a58a93b0b2ef5f15010.WireTo(id_1cf09862061644bd81f58e0965b6420a, "elementOutput");
             id_fcaabe33216f4a58a93b0b2ef5f15010.WireTo(id_80f41b60cacd493c84808b1c4c8755f1, "complete");
             id_e9b477643ed94a8c9247968436584d38.WireTo(id_1588adb8d64b4fe6876b20a0eb5075fd, "delayedData");
             id_1cf09862061644bd81f58e0965b6420a.WireTo(id_e9b477643ed94a8c9247968436584d38, "fanoutList");
             id_1cf09862061644bd81f58e0965b6420a.WireTo(id_b7f04a7310894b7a884b171a3bade791, "fanoutList");
-            getInstantiations .WireTo(id_09ac5cb7b8854dffa0d0755e4d99d4f9, "output");
+            getInstantiations.WireTo(id_09ac5cb7b8854dffa0d0755e4d99d4f9, "output");
             id_8c692c6a27f449619146ed6dd8d9c621.WireTo(id_eead8c20b8644a5b99bab14b5c783d0c, "output");
             id_22451793e0224fb4b2f387639abc3ff6.WireTo(id_3d924167517f4128bb970f478986843e, "elementOutput");
-            id_22451793e0224fb4b2f387639abc3ff6.WireTo(id_e5707746b1484708a6d77003adedaa8b, "complete");
             id_3d924167517f4128bb970f478986843e.WireTo(id_1475c43393ee4fc99a723c2e19c9630f, "fanoutList");
             id_3d924167517f4128bb970f478986843e.WireTo(id_f5021eb48f0d462895ac67cd14f14031, "fanoutList");
             id_1475c43393ee4fc99a723c2e19c9630f.WireTo(id_19d1288ca6b6498a97baa8269a45462c, "delayedData");
@@ -456,6 +459,14 @@ namespace TestApplication
             id_09ac5cb7b8854dffa0d0755e4d99d4f9.WireTo(id_fcaabe33216f4a58a93b0b2ef5f15010, "fanoutList");
             id_eead8c20b8644a5b99bab14b5c783d0c.WireTo(id_8abe632830344b4585a69c3fe4d099a7, "fanoutList");
             id_eead8c20b8644a5b99bab14b5c783d0c.WireTo(id_22451793e0224fb4b2f387639abc3ff6, "fanoutList");
+            id_c55992ef95c5435499982c2cd8e1b746.WireTo(id_cafde6e0d8754dd1a5bb3b699628ef4a, "eventOutput");
+            startCreation.WireTo(getInstantiations, "fanoutList");
+            startCreation.WireTo(id_8c692c6a27f449619146ed6dd8d9c621, "fanoutList");
+            id_c4326ea59fdb4fc88c3eaaf12f66400e.WireTo(diagramCreatedMessage, "dataOutput");
+            id_cafde6e0d8754dd1a5bb3b699628ef4a.WireTo(id_534f5b681fb746fcbbe0717eb7a6eef3, "elapsedSeconds");
+            id_22451793e0224fb4b2f387639abc3ff6.WireTo(id_4ad815216ff8473ab0a61d1309adc7ac, "complete");
+            id_4ad815216ff8473ab0a61d1309adc7ac.WireTo(id_c4326ea59fdb4fc88c3eaaf12f66400e, "fanoutList");
+            id_4ad815216ff8473ab0a61d1309adc7ac.WireTo(id_cafde6e0d8754dd1a5bb3b699628ef4a, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             // Instance mapping
@@ -464,6 +475,26 @@ namespace TestApplication
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

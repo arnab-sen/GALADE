@@ -16,6 +16,7 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public string InstanceDescription { get; set; } = "";
+        public int DecimalPlaces { get; set; } = 3;
 
         // Private fields
         private System.Diagnostics.Stopwatch _stopwatch = new System.Diagnostics.Stopwatch();
@@ -33,7 +34,7 @@ namespace DomainAbstractions
             else
             {
                 _stopwatch.Stop();
-                if (elapsedSeconds != null) elapsedSeconds.Data = _stopwatch.Elapsed.TotalSeconds;
+                if (elapsedSeconds != null) elapsedSeconds.Data = Math.Round(_stopwatch.Elapsed.TotalSeconds, DecimalPlaces);
 
                 _stopwatch.Reset();
             }
