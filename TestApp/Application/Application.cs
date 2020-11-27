@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Path = System.IO.Path;
 
 namespace TestApplication
 {
@@ -324,7 +325,7 @@ namespace TestApplication
             var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {InstanceName="Pull from code"};
             var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {InstanceName="id_9f411cfea16b45ed9066dd8f2006e1f1"};
             var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {InstanceName="id_db598ad59e5542a0adc5df67ced27f73"};
-            var id_9b866e4112fd4347a2a3e81441401dea = new DataFlowConnector<string>() {};
+            var id_9b866e4112fd4347a2a3e81441401dea = new DataFlowConnector<string>() {InstanceName="id_9b866e4112fd4347a2a3e81441401dea"};
             var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"ApplicationCodeFilePath") {InstanceName="id_5ddd02478c734777b9e6f1079b4b3d45"};
             var id_d5d3af7a3c9a47bf9af3b1a1e1246267 = new Apply<string, bool>() {InstanceName="id_d5d3af7a3c9a47bf9af3b1a1e1246267",Lambda=s => !string.IsNullOrEmpty(s)};
             var id_2ce385b32256413ab2489563287afaac = new IfElse() {InstanceName="id_2ce385b32256413ab2489563287afaac"};
@@ -454,11 +455,13 @@ namespace TestApplication
             var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
             var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {InstanceName="id_25a53022f6ab4e9284fd321e9535801b",MaxHeight=700};
             var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {InstanceName="id_de10db4d6b8a426ba76b02959a58cb88",HorizAlignment="middle",UniformMargin=5};
-            var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="id_a9db513fb0e749bda7f42b03964e5dce"};
-            var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="id_efeb87ef1b3c4f9e8ed2f8193e6b78b1"};
+            var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="Code to Diagram"};
+            var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="Diagram to Code"};
             var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
             var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
-            var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {Lambda=() => {    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))     {        return setting_currentDiagramCodeFilePath.Data;    }    else     {        return latestCodeFilePath.Data;    }}};
+            var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
+            var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {};
+            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {Lambda=path => {    return $"GALADE | {Path.GetFileName(path)}";}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -540,8 +543,7 @@ namespace TestApplication
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_fcfcb5f0ae544c968dcbc734ac1db51b, "filePathInput");
             id_f928bf426b204bc89ba97219c97df162.WireTo(id_c01710b47a2a4deb824311c4dc46222d, "filePathInput");
             id_f07ddae8b4ee431d8ede6c21e1fe01c5.WireTo(id_f928bf426b204bc89ba97219c97df162, "output");
-            setting_currentDiagramCodeFilePath.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "fanoutList");
-            setting_currentDiagramCodeFilePath.WireTo(id_f07ddae8b4ee431d8ede6c21e1fe01c5, "fanoutList");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_f07ddae8b4ee431d8ede6c21e1fe01c5, "fanoutList");
             id_460891130e9e499184b84a23c2e43c9f.WireTo(id_60229af56d92436996d2ee8d919083a3, "output");
             id_92effea7b90745299826cd566a0f2b88.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_c5fdc10d2ceb4577bef01977ee8e9dd1.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "dataOutput");
@@ -736,7 +738,11 @@ namespace TestApplication
             startDiagramCreationProcess.WireTo(id_a2d71044048840b0a69356270e6520ac, "fanoutList");
             startDiagramCreationProcess.WireTo(layoutDiagram, "fanoutList");
             id_a9db513fb0e749bda7f42b03964e5dce.WireTo(id_c9dbe185989e48c0869f984dd8e979f2, "clickedEvent");
-            id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "dataOutput");
+            setting_currentDiagramCodeFilePath.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "fanoutList");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "fanoutList");
+            id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "dataOutput");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "fanoutList");
+            id_e778c13b2c894113a7aff7ecfffe48f7.WireTo(mainWindow, "output");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -761,6 +767,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

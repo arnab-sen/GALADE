@@ -22,7 +22,7 @@ namespace DomainAbstractions
     /// 4. IEvent appStart: IEvent that is pushed out once window has been loaded
     /// <summary>
 
-    public class MainWindow : IEvent, IDataFlow<bool>
+    public class MainWindow : IEvent, IDataFlow<bool>, IDataFlow<string>
     {
         // Properties -----------------------------------------------------------------
         public string InstanceName = "Default";
@@ -98,6 +98,13 @@ namespace DomainAbstractions
         {
             get => window.IsEnabled;
             set => window.IsEnabled = value;
+        }
+
+        // IDataFlow<string> implementation
+        string IDataFlow<string>.Data
+        {
+            get => window.Title;
+            set => window.Title = value;
         }
     }
 }
