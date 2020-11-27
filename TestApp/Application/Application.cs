@@ -461,7 +461,7 @@ namespace TestApplication
             var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
             var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {};
-            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {Lambda=path => {    return $"GALADE | {Path.GetFileName(path)}";}};
+            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {Lambda=path => {    return $"GALADE | {Path.GetFullPath(path)}";}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
