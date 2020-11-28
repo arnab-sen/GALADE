@@ -87,12 +87,7 @@ namespace TestApplication
 
         private void CreateWiring()
         {
-            // object node = new VisualPortGraphNode() { Type = "TestType", Name = "TestName" };
-            // var id = node.GetHashCode();
-            //
-            // List<object> objs = new List<object>() {true, "str"};
-            // var a = objs.FirstOrDefault(obj => obj is bool b && b == true);
-            // var c = objs.FirstOrDefault(obj => obj is string s && s == "str");
+            var VERSION_NUMBER = "1.0.0";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -125,48 +120,10 @@ namespace TestApplication
 
             #region Diagram constants and singletons
 
-
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
                 InstanceName = "stateTransition",
                 Matches = (flag, currentState) => (flag & currentState) != 0
-            };
-
-            UndoHistory undoHistory = new UndoHistory() { InstanceName = "graphHistory" };
-
-            var PRIMARY_UX_BG_COLOUR = new SolidColorBrush(Color.FromRgb(249, 249, 249));
-            var PRIMARY_UX_FG_COLOUR = Brushes.Black;
-
-            VisualStyle defaultStyle = new VisualStyle();
-
-            VisualStyle nodeStyle = new VisualStyle()
-            {
-                Background = Brushes.LightSkyBlue,
-                BackgroundHighlight = Brushes.Aquamarine,
-                Foreground = Brushes.Black,
-                Border = Brushes.Black,
-                BorderHighlight = Brushes.Orange,
-                BorderThickness = 3,
-                Width = 200,
-                Height = 50
-            };
-
-            VisualStyle portStyle = new VisualStyle()
-            {
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
-                Border = Brushes.Black,
-                BorderHighlight = Brushes.LightSkyBlue,
-                BorderThickness = 1,
-                Width = 50,
-                Height = 25
-            };
-
-            VisualStyle dragRectStyle = new VisualStyle()
-            {
-                Background = new SolidColorBrush(Color.FromArgb(100, 171, 233, 255)),
-                Border = Brushes.LightSkyBlue,
-                BorderThickness = 1,
             };
 
             #endregion
@@ -462,6 +419,9 @@ namespace TestApplication
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
             var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
             var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
+            var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {HorizAlignment="left"};
+            var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {HorizAlignment="right"};
+            var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -563,7 +523,7 @@ namespace TestApplication
             id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "fanoutList");
             id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_3f30a573358d4fd08c4c556281737360, "complete");
             id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
-            statusBarHorizontal.WireTo(globalMessageTextDisplay, "children");
+            id_e3837af93b584ca9874336851ff0cd31.WireTo(globalMessageTextDisplay, "child");
             id_42c7f12c13804ec7b111291739be78f5.WireTo(createDiagramFromCode, "fanoutList");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
@@ -743,6 +703,9 @@ namespace TestApplication
             id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "dataOutput");
             id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "fanoutList");
             id_e778c13b2c894113a7aff7ecfffe48f7.WireTo(mainWindow, "output");
+            statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children");
+            statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children");
+            id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -767,6 +730,14 @@ namespace TestApplication
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
