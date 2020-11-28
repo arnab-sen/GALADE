@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -422,6 +423,8 @@ namespace TestApplication
             var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {HorizAlignment="left"};
             var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {HorizAlignment="right"};
             var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20};
+            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for updates") {};
+            var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() => {    Process.Start("https://github.com/arnab-sen/GALADE/releases");}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -706,6 +709,8 @@ namespace TestApplication
             statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children");
             statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children");
             id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children");
+            id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -730,6 +735,8 @@ namespace TestApplication
         }
     }
 }
+
+
 
 
 
