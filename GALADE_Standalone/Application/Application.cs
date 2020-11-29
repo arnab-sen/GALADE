@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Path = System.IO.Path;
 
-namespace TestApplication
+namespace Application
 {
     /// <summary>
     /// This version of GALADE is standalone, i.e. it is a single executable.

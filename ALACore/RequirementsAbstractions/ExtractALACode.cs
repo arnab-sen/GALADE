@@ -64,10 +64,10 @@ namespace RequirementsAbstractions
         public ExtractALACode()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS
-            FileSplit id_50a2021cb090489f9baf57992f68be19 = new FileSplit() { InstanceName = "Default", Match = "// BEGIN AUTO-", SplitAfterMatch = true };
-            FileSplit id_57594e708e264e5f95ac4ac289b4eac5 = new FileSplit() { InstanceName = "Default", Match = "// END AUTO-", SplitAfterMatch = false };
-            FileSplit id_7e9585fe244a4bde871b94fc9ad52e7b = new FileSplit() { InstanceName = "Default", Match = "// BEGIN AUTO-", SplitAfterMatch = true };
-            FileSplit id_ce5ad295709f4bb2a042b55aa7777258 = new FileSplit() { InstanceName = "Default", Match = "// END AUTO-", SplitAfterMatch = false };
+            var id_50a2021cb090489f9baf57992f68be19 = new FileSplit() {InstanceName="Default",Match="// BEGIN AUTO-GENERATED INSTANTIATIONS",SplitAfterMatch=true};
+            var id_57594e708e264e5f95ac4ac289b4eac5 = new FileSplit() {InstanceName="Default",Match="// END AUTO-GENERATED WIRING",SplitAfterMatch=false};
+            var id_7e9585fe244a4bde871b94fc9ad52e7b = new FileSplit() {InstanceName="Default",Match="// BEGIN AUTO-GENERATED WIRING",SplitAfterMatch=true};
+            var id_ce5ad295709f4bb2a042b55aa7777258 = new FileSplit() {InstanceName="Default",Match="// END AUTO-GENERATED INSTANTIATIONS",SplitAfterMatch=false};
             // END AUTO-GENERATED INSTANTIATIONS
             
             // BEGIN AUTO-GENERATED WIRING

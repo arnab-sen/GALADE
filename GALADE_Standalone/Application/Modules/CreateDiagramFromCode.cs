@@ -18,7 +18,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace TestApplication
+namespace Application
 {
     public class CreateDiagramFromCode : IDataFlow<string>
     {
