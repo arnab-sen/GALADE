@@ -41,8 +41,12 @@ namespace DomainAbstractions
             set
             {
                 _rootDirectory = value;
-                _root = CreateNodeFromDirectory(_rootDirectory);
-                _treeView.ItemsSource = new[] {_root};
+
+                if (!string.IsNullOrWhiteSpace(_rootDirectory))
+                {
+                    _root = CreateNodeFromDirectory(_rootDirectory);
+                    _treeView.ItemsSource = new[] { _root }; 
+                }
             }
         }
 

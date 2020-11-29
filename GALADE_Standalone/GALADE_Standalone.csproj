@@ -122,21 +122,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Application.cs" />
-    <Compile Include="Application\Modules\AddConnectionToGraph.cs" />
-    <Compile Include="Application\Modules\ConfigWindow.cs" />
-    <Compile Include="Application\Modules\CreateAbstraction.cs" />
-    <Compile Include="Application\Modules\CreateConnectionsFromJSON.cs" />
-    <Compile Include="Application\Modules\CreateVPGNsFromJSON.cs" />
-    <Compile Include="Application\Modules\DragRectMultiSelectNodes.cs" />
-    <Compile Include="Application\Modules\GenerateCode.cs" />
-    <Compile Include="Application\Modules\InsertFileCodeLines.cs" />
-    <Compile Include="Application\Modules\LoadGraphFromFile.cs" />
-    <Compile Include="Application\Modules\NewAbstractionTemplateTab.cs" />
-    <Compile Include="Application\Modules\NewVisualPortGraphNode.cs" />
-    <Compile Include="Application\Modules\OutputTab.cs" />
-    <Compile Include="Application\Modules\ParseProgrammingParadigmTemplates.cs" />
-    <Compile Include="Application\Modules\SaveGraphToFile.cs" />
-    <Compile Include="Application\Modules\VPGNContextMenu.cs" />
+    <Compile Include="Application\Modules\CreateDiagramFromCode.cs" />
+    <Compile Include="Application\Modules\Deprecated\AddConnectionToGraph.cs" />
+    <Compile Include="Application\Modules\Deprecated\ConfigWindow.cs" />
+    <Compile Include="Application\Modules\Deprecated\CreateAbstraction.cs" />
+    <Compile Include="Application\Modules\Deprecated\CreateConnectionsFromJSON.cs" />
+    <Compile Include="Application\Modules\Deprecated\CreateVPGNsFromJSON.cs" />
+    <Compile Include="Application\Modules\Deprecated\DragRectMultiSelectNodes.cs" />
+    <Compile Include="Application\Modules\Deprecated\GenerateCode.cs" />
+    <Compile Include="Application\Modules\Deprecated\InsertFileCodeLines.cs" />
+    <Compile Include="Application\Modules\Deprecated\LoadGraphFromFile.cs" />
+    <Compile Include="Application\Modules\Deprecated\NewAbstractionTemplateTab.cs" />
+    <Compile Include="Application\Modules\Deprecated\NewVisualPortGraphNode.cs" />
+    <Compile Include="Application\Modules\Deprecated\OutputTab.cs" />
+    <Compile Include="Application\Modules\Deprecated\ParseProgrammingParadigmTemplates.cs" />
+    <Compile Include="Application\Modules\Deprecated\SaveGraphToFile.cs" />
+    <Compile Include="Application\Modules\Deprecated\VPGNContextMenu.cs" />
+    <Compile Include="Application\Modules\GenerateALACode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -173,6 +175,7 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

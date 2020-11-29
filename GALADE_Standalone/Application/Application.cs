@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -10,13 +12,16 @@ using DomainAbstractions;
 using RequirementsAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
+using System.Text;
+using System.Threading;
 using System.Windows.Input;
+using System.Windows.Threading;
+using Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Path = System.IO.Path;
 
-namespace Application
+namespace TestApplication
 {
     /// <summary>
     /// This version of GALADE is standalone, i.e. it is a single executable.
@@ -26,10 +31,15 @@ namespace Application
         // Public fields and properties
 
         // Private fields
-        private MainWindow mainWindow = new MainWindow("GALADE");
-        private VisualPortGraph mainGraph = new VisualPortGraph() { InstanceName = "mainGraph", DebugOutputAll = false };
-        private DataFlowConnector<Dictionary<string, JToken>> abstractionTemplatesConnector = new DataFlowConnector<Dictionary<string, JToken>> { InstanceName = "abstractionTemplatesConnector" };
-        private Dictionary<string, string> nodeReferences = new Dictionary<string, string>();
+        private MainWindow _mainWindow = null;
+        private Dictionary<string, string> _startUpSettings = new Dictionary<string, string>()
+        {
+            {"DefaultFilePath", "" },
+            {"LatestDiagramFilePath", "" },
+            {"LatestCodeFilePath", "" },
+            {"ProjectFolderPath", "" },
+            {"ApplicationCodeFilePath", "" }
+        };
 
         // Methods
         private Application Initialize()
@@ -38,120 +48,48 @@ namespace Application
             return this;
         }
 
-        private void AddNewNode(VisualPortGraph graph, StateTransition<Enums.DiagramMode> stateTransition, UndoHistory undoHistory, VisualStyle nodeStyle, VisualStyle portStyle)
-        {
-            VisualPortGraphNode newNode = new VisualPortGraphNode()
-            {
-                Graph = graph,
-                StateTransition = stateTransition,
-                NodeStyle = nodeStyle,
-                PortStyle = portStyle,
-                Ports = new List<Port> { new Port() { Type = "Port", Name = "p0", IsInputPort = true } }
-            };
-
-            newNode.ActionPerformed += undoHistory.Push;
-            newNode.Initialise();
-
-            newNode.ContextMenu = (new VPGNContextMenu() as IUI).GetWPFElement();
-
-            if (graph.GetRoot() == null)
-            {
-                graph.AddNode(newNode);
-            }
-
-        }
-
-        private JObject GetTemplate(string type, Dictionary<string, JToken> templates)
-        {
-            if (templates.ContainsKey(type))
-            {
-                return templates[type] as JObject;
-            }
-            else
-            {
-                try
-                {
-                    var baseType = type.Split(new[] {"<"}, StringSplitOptions.None).First();
-                    var match = templates.Keys.First(key => key.StartsWith(baseType));
-
-                    return templates[match] as JObject;
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-
-            return default;
-        }
-
-        /// <summary>
-        /// Stores the id of a node so that it can be retreived later by just the variable name of the node.
-        /// </summary>
-        /// <param name="node"></param>
-        private void StoreNodeReference(VisualPortGraphNode node)
-        {
-            nodeReferences[node.Name] = node.Id;
-        }
-
-        private string GetNodeIdByName(string variableName)
-        {
-            if (nodeReferences.ContainsKey(variableName))
-            {
-                return nodeReferences[variableName];
-            }
-
-            return "";
-        }
-
-        private void ConvertWireCodeToConnection(string wireTo)
-        {
-            var inverseStringFormat = new InverseStringFormat()
-            {
-                Format = "{A}.WireTo({B}, \"{SourcePort}\");"
-            };
-
-            var dfc = new DataFlowConnector<Dictionary<string, string>>();
-
-            inverseStringFormat.WireTo(dfc);
-
-            (inverseStringFormat as IDataFlow<string>).Data = wireTo;
-
-            var parsed = dfc.Data;
-
-            var source = mainGraph.GetNode(GetNodeIdByName(parsed["A"])) as VisualPortGraphNode;
-            var destination = mainGraph.GetNode(GetNodeIdByName(parsed["B"])) as VisualPortGraphNode;
-            var sourcePort = (source as VisualPortGraphNode).GetPort(parsed["SourcePort"]);
-
-            (new AddConnectionToGraph()
-            {
-                Graph = mainGraph
-            }).AddToGraph(source, destination, sourcePort, null);
-        }
-
-        private void TestRoslyn(string path, string appDirectory)
-        {
-            try
-            {
-                var codeFileContents = File.ReadAllText(path);
-                var parser = new CodeParser();
-                parser.Test(codeFileContents, appDirectory);
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
-
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
+            Logging.Log(args.ToString());
+
             Application app = new Application();
-            app.Initialize().mainWindow.Run();
+            var mainWindow = app.Initialize()._mainWindow;
+            mainWindow.CreateUI();
+            var windowApp = mainWindow.CreateApp();
+            windowApp.Startup += (sender, eventArgs) =>
+            {
+                var filePath = "";
+                if (eventArgs.Args.Length > 0) filePath = eventArgs.Args[0];
+
+                app.ChangeSetting("DefaultFilePath", filePath);
+            };
+
+            mainWindow.Run(windowApp);
         }
 
-        private Application()
+        public string GetSetting(string name)
         {
+            var value = "";
+            if (_startUpSettings.ContainsKey(name)) value = _startUpSettings[name];
+            return value;
+        }
+
+        public bool ChangeSetting(string name, string value)
+        {
+            if (_startUpSettings.ContainsKey(name))
+            {
+                _startUpSettings[name] = value;
+                return true;
+            }
+
+            return false;
+        }
+
+        private void CreateWiring()
+        {
+            var VERSION_NUMBER = "1.0.0";
+
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
 
@@ -177,58 +115,16 @@ namespace Application
 
             if (!File.Exists(SETTINGS_FILEPATH))
             {
-                var obj = new JObject();
-                obj["LatestDiagramFilePath"] = "";
-                obj["LatestCodeFilePath"] = "";
-                obj["ProjectFolderPath"] = "";
-
-                File.WriteAllText(SETTINGS_FILEPATH, obj.ToString());
+                File.WriteAllText(SETTINGS_FILEPATH, JObject.FromObject(_startUpSettings).ToString());
             }
             #endregion
 
             #region Diagram constants and singletons
+
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
                 InstanceName = "stateTransition",
                 Matches = (flag, currentState) => (flag & currentState) != 0
-            };
-
-            UndoHistory undoHistory = new UndoHistory() { InstanceName = "graphHistory" };
-            mainGraph.ActionPerformed += source => undoHistory.Push(source);
-
-            var PRIMARY_UX_BG_COLOUR = new SolidColorBrush(Color.FromRgb(249, 249, 249));
-            var PRIMARY_UX_FG_COLOUR = Brushes.Black;
-
-            VisualStyle defaultStyle = new VisualStyle();
-
-            VisualStyle nodeStyle = new VisualStyle()
-            {
-                Background = Brushes.LightSkyBlue,
-                BackgroundHighlight = Brushes.Aquamarine,
-                Foreground = Brushes.Black,
-                Border = Brushes.Black,
-                BorderHighlight = Brushes.Orange,
-                BorderThickness = 3,
-                Width = 200,
-                Height = 50
-            };
-
-            VisualStyle portStyle = new VisualStyle()
-            {
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
-                Border = Brushes.Black,
-                BorderHighlight = Brushes.LightSkyBlue,
-                BorderThickness = 1,
-                Width = 50,
-                Height = 25
-            };
-
-            VisualStyle dragRectStyle = new VisualStyle()
-            {
-                Background = new SolidColorBrush(Color.FromArgb(100, 171, 233, 255)),
-                Border = Brushes.LightSkyBlue,
-                BorderThickness = 1,
             };
 
             #endregion
@@ -260,636 +156,582 @@ namespace Application
                 File.Copy(RUNTIME_LOG_FILEPATH, System.IO.Path.Combine(LOG_ARCHIVE_DIRECTORY, $"{Utilities.GetCurrentTime()}.log")); // Archive current log when app shuts down unexpectedly
 
                 // Save a timestamped backup of the current diagram
-                var diagramContents = mainGraph.Serialise();
-                File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
+                // var diagramContents = mainGraph.Serialise();
+                // File.WriteAllText(System.IO.Path.Combine(BACKUPS_DIRECTORY, $"{Utilities.GetCurrentTime()}.ala"), diagramContents);
             };
+
+            var globalMessages = new List<string>();
+
+            Logging.MessageOutput += message =>
+            {
+                globalMessages.Add(message);
+                Logging.Log(message);
+            };
+
             #endregion
 
-            TestRoslyn(@"C:\ProgramData\GALADE\TestRoslyn.cs", System.IO.Path.Combine(APP_DIRECTORY, "TestFiles"));
+            Graph mainGraph = new Graph();
+
+            WPFCanvas mainCanvas = new WPFCanvas();
+            AbstractionModelManager abstractionModelManager = new AbstractionModelManager();
+
+            List<string> availableAbstractions = null;
+            var nodeSearchResults = new List<ALANode>();
+            var nodeSearchTextResults = new ObservableCollection<string>();
+
+            // BEGIN AUTO-GENERATED INSTANTIATIONS
+            var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
+            var mainWindowVertical = new Vertical() {InstanceName="mainWindowVertical",Layouts=new[]{0, 2, 0}};
+            var mainCanvasDisplay = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas,InstanceName="mainCanvasDisplay"};
+            var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyUp") {InstanceName="Pressed the A key",Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.A};
+            var id_581015f073614919a33126efd44bf477 = new ContextMenu() {InstanceName="id_581015f073614919a33126efd44bf477"};
+            var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"};
+            var id_ad29db53c0d64d4b8be9e31474882158 = new EventConnector() {InstanceName="id_ad29db53c0d64d4b8be9e31474882158"};
+            var getFirstRoot = new Data<ALANode>() {InstanceName="getFirstRoot",Lambda=() => mainGraph.Roots.FirstOrDefault() as ALANode};
+            var id_54cdb3b62fb0433a996dc0dc58ddfa93 = new RightTreeLayout<ALANode>() {InstanceName="id_54cdb3b62fb0433a996dc0dc58ddfa93",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50};
+            var layoutDiagram = new EventConnector() {InstanceName="layoutDiagram"};
+            var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"};
+            var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R};
+            var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}};
+            var id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"};
+            var id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {InstanceName="File"};
+            var id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {InstanceName="Open Project"};
+            var id_463b31fe2ac04972b5055a3ff2f74fe3 = new FolderBrowser() {InstanceName="id_463b31fe2ac04972b5055a3ff2f74fe3",Description=""};
+            var id_63088b53f85b4e6bb564712c525e063c = new DirectorySearch(directoriesToFind:new string[] { "DomainAbstractions", "ProgrammingParadigms", "RequirementsAbstractions", "Modules" }) {InstanceName="id_63088b53f85b4e6bb564712c525e063c",FilenameFilter="*.cs"};
+            var id_a98457fc05fc4e84bfb827f480db93d3 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_a98457fc05fc4e84bfb827f480db93d3",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("DomainAbstractions"))    {        list = input["DomainAbstractions"];    }    return list;}};
+            var id_f5d3730393ab40d78baebcb9198808da = new ForEach<string>() {InstanceName="id_f5d3730393ab40d78baebcb9198808da"};
+            var id_6bc94d5f257847ff8a9a9c45e02333b4 = new ApplyAction<string>() {InstanceName="id_6bc94d5f257847ff8a9a9c45e02333b4",Lambda=input =>{    abstractionModelManager.CreateAbstractionModelFromPath(input);}};
+            var getProjectFolderPath = new GetSetting(name:"ProjectFolderPath") {InstanceName="getProjectFolderPath"};
+            var id_bbd9df1f15ea4926b97567d08b6835dd = new KeyEvent(eventName:"KeyDown") {InstanceName="Enter key pressed",Key=Key.Enter};
+            var id_6e249d6520104ca5a1a4d847a6c862a8 = new ApplyAction<object>() {InstanceName="Focus on backgroundCanvas",Lambda=input =>{    (input as WPFCanvas).Focus();}};
+            var id_08d455bfa9744704b21570d06c3c5389 = new MenuItem(header:"Debug") {InstanceName="Debug"};
+            var id_843593fbc341437bb7ade21d0c7f6729 = new MenuItem(header:"TextEditor test") {InstanceName="TextEditor test"};
+            var id_91726b8a13804a0994e27315b0213fe8 = new PopupWindow(title:"") {Height=720,Width=1280,Resize=SizeToContent.WidthAndHeight,InstanceName="id_91726b8a13804a0994e27315b0213fe8"};
+            var id_a2e6aa4f4d8e41b59616d63362768dde = new Box() {InstanceName="id_a2e6aa4f4d8e41b59616d63362768dde",Width=100,Height=100};
+            var id_826249b1b9d245709de6f3b24503be2d = new TextEditor() {InstanceName="id_826249b1b9d245709de6f3b24503be2d",Width=1280,Height=720};
+            var id_a1f87102954345b69de6841053fce813 = new DataFlowConnector<string>() {InstanceName="id_a1f87102954345b69de6841053fce813"};
+            var id_6d1f4415e8d849e19f5d432ea96d9abb = new MouseButtonEvent(eventName:"MouseRightButtonDown") {InstanceName="Right button down on canvas",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
+            var id_e7e60dd036af4a869e10a64b2c216104 = new ApplyAction<object>() {InstanceName="Update to Idle",Lambda=input =>{    Mouse.Capture(input as WPFCanvas);    stateTransition.Update(Enums.DiagramMode.Idle);}};
+            var id_44b41ddf67864f29ae9b59ed0bec2927 = new MouseButtonEvent(eventName:"MouseRightButtonUp") {InstanceName="Right button up on canvas",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),ExtractSender=null};
+            var id_da4f1dedd74549e283777b5f7259ad7f = new ApplyAction<object>() {InstanceName="Release capture and update to Idle",Lambda=input =>{    if (Mouse.Captured?.Equals(input) ?? false)        Mouse.Capture(null);    stateTransition.Update(Enums.DiagramMode.Idle);}};
+            var id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any,InstanceName="id_368a7dc77fe24060b5d4017152492c1e"};
+            var id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {InstanceName="id_2f4df1d9817246e5a9184857ec5a2bf8",Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}};
+            var id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {InstanceName="id_c80f46b08d894d4faa674408bf846b3f"};
+            var id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {InstanceName="id_642ae4874d1e4fd2a777715cc1996b49"};
+            var createAndPaintALAWire = new Apply<object, object>() {InstanceName="createAndPaintALAWire",Lambda=input =>{    var source = mainGraph.Get("SelectedNode") as ALANode;    var destination = input as ALANode;    var sourcePort = source.GetSelectedPort(inputPort: false);    var destinationPort = destination.GetSelectedPort(inputPort: true);    var wire = new ALAWire()    {Graph = mainGraph, Canvas = mainCanvas, Source = source, Destination = destination, SourcePort = sourcePort, DestinationPort = destinationPort, StateTransition = stateTransition};    mainGraph.AddEdge(wire);    wire.Paint();    return wire;}};
+            var id_1de443ed1108447199237a8c0c584fcf = new KeyEvent(eventName:"KeyDown") {InstanceName="Delete pressed",Key=Key.Delete};
+            var id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {InstanceName="id_46a4d6e6cfb940278eb27561c43cbf37",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}};
+            var id_83c3db6e4dfa46518991f706f8425177 = new MenuItem(header:"Refresh") {InstanceName="id_83c3db6e4dfa46518991f706f8425177"};
+            var createDummyAbstractionModel = new Data<AbstractionModel>() {InstanceName="createDummyAbstractionModel",Lambda=() =>{    var model = new AbstractionModel()    {Type = "NewNode", Name = ""};    model.AddImplementedPort("Port", "input");    model.AddAcceptedPort("Port", "output");    return model;},storedData=default};
+            var id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {InstanceName="id_5297a497d2de44e5bc0ea2c431cdcee6",Lambda=createDummyAbstractionModel.Lambda};
+            var id_9bd4555e80434a7b91b65e0b386593b0 = new Apply<AbstractionModel, object>() {InstanceName="id_9bd4555e80434a7b91b65e0b386593b0",Lambda=createNewALANode.Lambda};
+            var id_7fabbaae488340a59d940100d38e9447 = new ApplyAction<object>() {InstanceName="id_7fabbaae488340a59d940100d38e9447",Lambda=input =>{    var alaNode = input as ALANode;    var mousePos = Mouse.GetPosition(mainCanvas);    alaNode.PositionX = mousePos.X;    alaNode.PositionY = mousePos.Y;    mainGraph.Set("LatestNode", input);    if (mainGraph.Get("SelectedNode") == null)    {        mainGraph.Set("SelectedNode", input);    }    mainGraph.Roots.Add(input);}};
+            var id_bb687ee0b7dd4b86a38a3f81ddbab75f = new MenuItem(header:"Open Code File") {InstanceName="Open Code File"};
+            var id_14170585873a4fb6a7550bfb3ce8ecd4 = new FileBrowser() {InstanceName="id_14170585873a4fb6a7550bfb3ce8ecd4",Mode="Open"};
+            var id_2810e4e86da348b98b39c987e6ecd7b6 = new FileReader() {InstanceName="id_2810e4e86da348b98b39c987e6ecd7b6"};
+            var createDiagramFromCode = new CreateDiagramFromCode() {InstanceName="createDiagramFromCode",Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=false};
+            var id_f9b8e7f524a14884be753d19a351a285 = new EventConnector() {InstanceName="id_f9b8e7f524a14884be753d19a351a285"};
+            var id_8fc35564768b4a64a57dc321cc1f621f = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_8fc35564768b4a64a57dc321cc1f621f",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("ProgrammingParadigms"))    {        list = input["ProgrammingParadigms"];    }    return list;}};
+            var id_0fd49143884d4a6e86e6ed0ea2f1b5b4 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_0fd49143884d4a6e86e6ed0ea2f1b5b4",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("RequirementsAbstractions"))    {        list = input["RequirementsAbstractions"];    }    return list;}};
+            var id_35fceab68423425195096666f27475e9 = new DataFlowConnector<Dictionary<string, List<string>>>() {InstanceName="id_35fceab68423425195096666f27475e9"};
+            var id_643997d9890f41d7a3fcab722aa48f89 = new Data<UIElement>() {InstanceName="id_643997d9890f41d7a3fcab722aa48f89",Lambda=() => mainCanvas};
+            var mouseWheelArgs = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="mouseWheelArgs"};
+            var id_39850a5c8e0941b3bfe846cbc45ebc90 = new Scale() {InstanceName="Zoom in by 10%",WidthMultiplier=1.1,HeightMultiplier=1.1,GetAbsoluteCentre=() => mouseWheelArgs.Data.GetPosition(mainCanvas),GetScaleSensitiveCentre=() => Mouse.GetPosition(mainCanvas)};
+            var id_261d188e3ce64cc8a06f390ba51e092f = new Data<UIElement>() {InstanceName="id_261d188e3ce64cc8a06f390ba51e092f",Lambda=() => mainCanvas};
+            var id_607ebc3589a34e86a6eee0c0639f57cc = new Scale() {InstanceName="Zoom out by 10%",WidthMultiplier=0.9,HeightMultiplier=0.9,GetAbsoluteCentre=() => mouseWheelArgs.Data.GetPosition(mainCanvas),GetScaleSensitiveCentre=() => Mouse.GetPosition(mainCanvas)};
+            var id_843620b3a9ed45bea231b841b52e5621 = new DataFlowConnector<UIElement>() {InstanceName="id_843620b3a9ed45bea231b841b52e5621"};
+            var id_04c07393f532472792412d2a555510b9 = new DataFlowConnector<UIElement>() {InstanceName="id_04c07393f532472792412d2a555510b9"};
+            var id_841e8fee0e8a4f45819508b2086496cc = new ApplyAction<UIElement>() {InstanceName="id_841e8fee0e8a4f45819508b2086496cc",Lambda=input =>{    var transform = (input.RenderTransform as TransformGroup)?.Children.OfType<ScaleTransform>().FirstOrDefault();    if (transform == null)        return;    var minScale = 0.6; /*Logging.Log($"Scale: {transform.ScaleX}, {transform.ScaleX}");*/    bool nodeIsTooSmall = transform.ScaleX < minScale && transform.ScaleY < minScale;    var nodes = mainGraph.Nodes;    foreach (var node in nodes)    {        if (node is ALANode alaNode)            alaNode.ShowTypeTextMask(nodeIsTooSmall);    }}};
+            var id_2a7c8f3b6b5e4879ad5a35ff6d8538fd = new MouseWheelEvent(eventName:"MouseWheel") {InstanceName="id_2a7c8f3b6b5e4879ad5a35ff6d8538fd"};
+            var id_33990435606f4bbc9ba1786ed05672ab = new Apply<MouseWheelEventArgs, bool>() {InstanceName="Is scroll up?",Lambda=args =>{    return args.Delta > 0;}};
+            var id_6909a5f3b0e446d3bb0c1382dac1faa9 = new IfElse() {InstanceName="id_6909a5f3b0e446d3bb0c1382dac1faa9"};
+            var id_cf7df48ac3304a8894a7536261a3b474 = new DataFlowConnector<string>() {InstanceName="id_cf7df48ac3304a8894a7536261a3b474"};
+            var id_4a268943755348b68ee2cb6b71f73c40 = new DispatcherEvent() {InstanceName="id_4a268943755348b68ee2cb6b71f73c40",Priority=DispatcherPriority.ApplicationIdle};
+            var id_a34c047df9ae4235a08b037fd9e48ab8 = new MenuItem(header:"Generate Code") {InstanceName="Generate Code"};
+            var id_b5364bf1c9cd46a28e62bb2eb0e11692 = new GenerateALACode() {InstanceName="id_b5364bf1c9cd46a28e62bb2eb0e11692",Graph=mainGraph};
+            var id_a3efe072d6b44816a631d90ccef5b71e = new GetSetting(name:"ApplicationCodeFilePath") {InstanceName="id_a3efe072d6b44816a631d90ccef5b71e"};
+            var id_fcfcb5f0ae544c968dcbc734ac1db51b = new Data<string>() {InstanceName="id_fcfcb5f0ae544c968dcbc734ac1db51b",storedData=SETTINGS_FILEPATH};
+            var id_f928bf426b204bc89ba97219c97df162 = new EditSetting() {InstanceName="id_f928bf426b204bc89ba97219c97df162",JSONPath="$..ApplicationCodeFilePath"};
+            var id_c01710b47a2a4deb824311c4dc46222d = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
+            var id_f07ddae8b4ee431d8ede6c21e1fe01c5 = new Cast<string, object>() {InstanceName="id_f07ddae8b4ee431d8ede6c21e1fe01c5"};
+            var setting_currentDiagramCodeFilePath = new DataFlowConnector<string>() {InstanceName="setting_currentDiagramCodeFilePath"};
+            var id_460891130e9e499184b84a23c2e43c9f = new Cast<string, object>() {InstanceName="id_460891130e9e499184b84a23c2e43c9f"};
+            var id_ecfbf0b7599e4340b8b2f79b7d1e29cb = new Data<string>() {InstanceName="id_ecfbf0b7599e4340b8b2f79b7d1e29cb",storedData=SETTINGS_FILEPATH};
+            var id_92effea7b90745299826cd566a0f2b88 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_92effea7b90745299826cd566a0f2b88",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("Modules"))    {        list = input["Modules"];    }    return list;}};
+            var id_c5fdc10d2ceb4577bef01977ee8e9dd1 = new Data<string>() {InstanceName="Get setting_currentDiagramCodeFilePath",Lambda=() => setting_currentDiagramCodeFilePath.Data};
+            var id_72140c92ac4f4255abe9d149068fa16f = new FileReader() {InstanceName="id_72140c92ac4f4255abe9d149068fa16f"};
+            var id_1d55a1faa3dd4f78ad22ac73051f5d2d = new DataFlowConnector<string>() {InstanceName="id_1d55a1faa3dd4f78ad22ac73051f5d2d"};
+            var generateCode = new EventConnector() {InstanceName="generateCode"};
+            var id_60229af56d92436996d2ee8d919083a3 = new EditSetting() {InstanceName="id_60229af56d92436996d2ee8d919083a3",JSONPath="$..ProjectFolderPath"};
+            var id_58c03e4b18bb43de8106a4423ca54318 = new Data<string>() {InstanceName="id_58c03e4b18bb43de8106a4423ca54318",storedData=SETTINGS_FILEPATH};
+            var id_2b42bd6059334bfabc3df1d047751d7a = new FileWriter() {InstanceName="id_2b42bd6059334bfabc3df1d047751d7a"};
+            var id_b9865ebcd2864642a96573ced52bbb7f = new DataFlowConnector<string>() {InstanceName="id_b9865ebcd2864642a96573ced52bbb7f"};
+            var id_891aef13eb18444ea94b9e071c7966d7 = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED INSTANTIATIONS",EndLandmark="// END AUTO-GENERATED INSTANTIATIONS",Indent="            ",InstanceName="id_891aef13eb18444ea94b9e071c7966d7"};
+            var id_62ac925f4ee1421dbe7a781823d7876c = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED WIRING",EndLandmark="// END AUTO-GENERATED WIRING",Indent="            ",InstanceName="id_62ac925f4ee1421dbe7a781823d7876c"};
+            var id_0e563f77c5754bdb8a75b7f55607e9b0 = new EventConnector() {InstanceName="id_0e563f77c5754bdb8a75b7f55607e9b0"};
+            var id_96ab5fcf787a4e6d88af011f6e3daeae = new MenuItem(header:"Generics test") {InstanceName="Generics test"};
+            var id_026d2d87a422495aa46c8fc4bda7cdd7 = new EventLambda() {InstanceName="id_026d2d87a422495aa46c8fc4bda7cdd7",Lambda=() =>{    var node = mainGraph.Nodes.First() as ALANode;    node.Model.UpdateGeneric(0, "testType");}};
+            var statusBarHorizontal = new Horizontal() {Margin=new Thickness(5),InstanceName="statusBarHorizontal"};
+            var globalMessageTextDisplay = new Text(text:"") {Height=20,InstanceName="globalMessageTextDisplay"};
+            var id_c4f838d19a6b4af9ac320799ebe9791f = new EventLambda() {InstanceName="id_c4f838d19a6b4af9ac320799ebe9791f",Lambda=() =>{    Logging.MessageOutput += message => (globalMessageTextDisplay as IDataFlow<string>).Data = message;}};
+            var id_5e77c28f15294641bb881592d2cd7ac9 = new EventLambda() {InstanceName="id_5e77c28f15294641bb881592d2cd7ac9",Lambda=() =>{    Logging.Message("Beginning code generation...");}};
+            var id_3f30a573358d4fd08c4c556281737360 = new EventLambda() {InstanceName="Print code generation success message",Lambda=() =>{    Logging.Message($"[{DateTime.Now:h:mm:ss tt}] Completed code generation successfully!");}};
+            var extractALACode = new ExtractALACode() {InstanceName="extractALACode"};
+            var id_13061fa931bc49d599a3a2f0b1cab26c = new ConvertToEvent<string>() {InstanceName="id_13061fa931bc49d599a3a2f0b1cab26c"};
+            var id_a2d71044048840b0a69356270e6520ac = new Data<string>() {InstanceName="id_a2d71044048840b0a69356270e6520ac",Lambda=() =>{ /* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to use landmarks by default. */    var sb = new StringBuilder();    sb.AppendLine("class DummyClass {");    sb.AppendLine("void CreateWiring() {");    sb.AppendLine(extractALACode.Instantiations);    sb.AppendLine(extractALACode.Wiring);    sb.AppendLine("}");    sb.AppendLine("}");    return sb.ToString();}};
+            var id_a26b08b25184469db6f0c4987d4c68dd = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + S pressed",Key=Key.S,Modifiers=new Key[]{Key.LeftCtrl}};
+            var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {InstanceName="Pull from code"};
+            var id_9f411cfea16b45ed9066dd8f2006e1f1 = new FileReader() {InstanceName="id_9f411cfea16b45ed9066dd8f2006e1f1"};
+            var id_db598ad59e5542a0adc5df67ced27f73 = new EventConnector() {InstanceName="id_db598ad59e5542a0adc5df67ced27f73"};
+            var id_9b866e4112fd4347a2a3e81441401dea = new DataFlowConnector<string>() {InstanceName="id_9b866e4112fd4347a2a3e81441401dea"};
+            var id_5ddd02478c734777b9e6f1079b4b3d45 = new GetSetting(name:"ApplicationCodeFilePath") {InstanceName="id_5ddd02478c734777b9e6f1079b4b3d45"};
+            var id_d5d3af7a3c9a47bf9af3b1a1e1246267 = new Apply<string, bool>() {InstanceName="id_d5d3af7a3c9a47bf9af3b1a1e1246267",Lambda=s => !string.IsNullOrEmpty(s)};
+            var id_2ce385b32256413ab2489563287afaac = new IfElse() {InstanceName="id_2ce385b32256413ab2489563287afaac"};
+            var latestCodeFilePath = new DataFlowConnector<string>() {InstanceName="latestCodeFilePath"};
+            var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {InstanceName="id_dcd4c90552dc4d3fb579833da87cd829",Priority=DispatcherPriority.Loaded};
+            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {InstanceName="id_1e62a1e411c9464c94ee234dd9dd3fdc",Lambda=() =>{    stateTransition.Update(Enums.DiagramMode.Idle);    createDiagramFromCode.Update = false;}};
+            var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {InstanceName="id_0b4478e56d614ca091979014db65d076",Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
+            var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {InstanceName="id_d90fbf714f5f4fdc9b43cbe4d5cebf1c",Lambda=input =>{    (input as UIElement)?.Focus();    stateTransition.Update(Enums.DiagramMode.Idle);}};
+            var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3},InstanceName="mainHorizontal"};
+            var sidePanelHoriz = new Horizontal(visible:true) {InstanceName="sidePanelHoriz"};
+            var id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {InstanceName="id_987196dd20ab4721b0c193bb7a2064f4",Layouts=new int[]{2}};
+            var id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {InstanceName="id_7b250b222ca44ba2922547f03a4aef49"};
+            var directoryExplorerTab = new Tab(title:"Directory Explorer") {InstanceName="directoryExplorerTab"};
+            var id_4a42bbf671cd4dba8987bd656e5a2ced = new MenuItem(header:"View") {InstanceName="View"};
+            var id_b5985971664e42b3a5b0869fce7b0f9b = new MenuItem(header:"Show side panel") {InstanceName="Show side panel"};
+            var id_ba60beaed16c4e2f8ac431a8174ed12b = new MenuItem(header:"Hide side panel") {InstanceName="Hide side panel"};
+            var makeSidePanelVisible = new Data<bool>() {InstanceName="makeSidePanelVisible",storedData=true};
+            var id_e5ab69539a364aee809c668bc9d0e1a8 = new Data<bool>() {InstanceName="id_e5ab69539a364aee809c668bc9d0e1a8",storedData=false};
+            var canvasDisplayHoriz = new Horizontal() {InstanceName="canvasDisplayHoriz"};
+            var directoryTreeExplorer = new DirectoryTree() {InstanceName="directoryTreeExplorer",FilenameFilter="*.cs",Height=700};
+            var id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {InstanceName="id_e8a68acda2aa4d54add689bd669589d3",Layouts=new int[]{2, 0}};
+            var projectDirectoryTreeHoriz = new Horizontal() {InstanceName="projectDirectoryTreeHoriz"};
+            var projectDirectoryOptionsHoriz = new Horizontal() {VertAlignment=VerticalAlignment.Bottom,InstanceName="projectDirectoryOptionsHoriz"};
+            var id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {InstanceName="id_0d4d34a2cd6749759ac0c2708ddf0cbc"};
+            var id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Idle,InstanceName="id_08a51a5702e34a38af808db65a3a6eb3"};
+            var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {InstanceName="id_9d14914fdf0647bb8b4b20ea799e26c8"};
+            var unhighlightAllWires = new EventLambda() {InstanceName="unhighlightAllWires",Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
+            var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="id_6d789ff1a0bc4a2d8e88733adc266be8"};
+            var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {InstanceName="id_8ba0c38df0f041a3a7e75fb859376491",Lambda=node =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire).Refresh();    }}};
+            var id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {InstanceName="id_a236bd13c516401eb5a83a451a875dd0"};
+            var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="Change createDiagramFromCode.Update to true",Lambda=() => createDiagramFromCode.Update = true};
+            var latestAddedNode = new DataFlowConnector<object>() {InstanceName="latestAddedNode"};
+            var id_86a7f0259b204907a092da0503eb9873 = new MenuItem(header:"Test DirectoryTree") {InstanceName="Test DirectoryTree"};
+            var id_3710469340354a1bbb4b9d3371c9c012 = new FolderBrowser() {InstanceName="Choose test folder"};
+            var testDirectoryTree = new DirectoryTree() {InstanceName="testDirectoryTree"};
+            var testSimulateKeyboard = new MenuItem(header:"Test SimulateKeyboard") {InstanceName="testSimulateKeyboard"};
+            var id_5c31090d2c954aa7b4a10e753bdfc03a = new SimulateKeyboard() {InstanceName="Type 'HELLO'",Keys="HELLO".Select(c => c.ToString()).ToList(),Modifiers=new List<string>(){"SHIFT"}};
+            var id_52b8f2c28c2e40cabedbd531171c779a = new EventConnector() {InstanceName="id_52b8f2c28c2e40cabedbd531171c779a"};
+            var id_86ecd8f953324e34adc6238338f75db5 = new SimulateKeyboard() {InstanceName="Type comma and space",Keys=new List<string>(){"COMMA", "SPACE"}};
+            var id_63e463749abe41d28d05b877479070f8 = new SimulateKeyboard() {InstanceName="Type 'WORLD'",Keys="WORLD".Select(c => c.ToString()).ToList(),Modifiers=new List<string>(){"SHIFT"}};
+            var id_66e516b6027649e1995a531d03c0c518 = new SimulateKeyboard() {InstanceName="Type '!'",Keys=new List<string>(){"1"},Modifiers=new List<string>(){"SHIFT"}};
+            var id_8863f404bed34d47922654bd0190259c = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + C pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.C,Modifiers=new Key[]{Key.LeftCtrl}};
+            var cloneSelectedNodeModel = new Data<AbstractionModel>() {InstanceName="cloneSelectedNodeModel",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return null;    var baseModel = selectedNode.Model;    var clone = new AbstractionModel();    clone.CloneFrom(baseModel);    return clone;}};
+            var id_0f802a208aad42209777c13b2e61fe56 = new ApplyAction<AbstractionModel>() {InstanceName="id_0f802a208aad42209777c13b2e61fe56",Lambda=input =>{    if (input == null)    {        Logging.Message("Nothing was copied.", timestamp: true);    }    else    {        mainGraph.Set("ClonedModel", input);        Logging.Message($"Copied {input} successfully.", timestamp: true);    }}};
+            var id_7363c80d952e4246aba050e007287444 = new KeyEvent(eventName:"KeyUp") {InstanceName="CTRL + V pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.V,Modifiers=new Key[]{Key.LeftCtrl}};
+            var id_316a3befaa364f0186efabcf5efaa33f = new Data<AbstractionModel>() {InstanceName="Create empty model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var tempModel = new AbstractionModel();    var clonedModelType = abstractionModelManager.GetAbstractionModel(clonedModel?.Type ?? "Apply");    return clonedModelType;}};
+            var id_8647cbf4ac4049a99204b0e3aa70c326 = new ConvertToEvent<object>() {InstanceName="id_8647cbf4ac4049a99204b0e3aa70c326"};
+            var id_5a22e32e96e641d49c6fb4bdf6fcd94b = new EventConnector() {InstanceName="id_5a22e32e96e641d49c6fb4bdf6fcd94b"};
+            var id_36c5f05380b04b378de94534411f3f88 = new EventLambda() {InstanceName="Overwrite with cloned model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var latestNode = latestAddedNode.Data as ALANode;    var model = latestNode?.Model;    if (model == null)        return;    model.CloneFrom(clonedModel);    latestNode?.UpdateUI();    latestNode.RefreshParameterRows(removeEmptyRows: true);}};
+            var id_0945b34f58a146ff983962f595f57fb2 = new DispatcherEvent() {InstanceName="id_0945b34f58a146ff983962f595f57fb2"};
+            var id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {InstanceName="id_4341066281bc4015a668a3bbbcb7256b",Lambda=args => args.Handled = true};
+            var id_024b1810c2d24db3b9fac1ccce2fad9e = new DataFlowConnector<AbstractionModel>() {InstanceName="id_024b1810c2d24db3b9fac1ccce2fad9e"};
+            var id_2c933997055b4122bdb77945f1abb560 = new MenuItem(header:"Test reset canvas on root") {InstanceName="Test reset canvas on root"};
+            var id_0eea701e0bc84c42a9f17ccc200ef2ef = new Data<ALANode>() {InstanceName="id_0eea701e0bc84c42a9f17ccc200ef2ef",Lambda=() => mainGraph?.Roots.FirstOrDefault() as ALANode};
+            var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
+            var id_29ed401eb9c240d98bf5c6d1f00c5c76 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
+            var id_fa857dd7432e406c8c6c642152b37730 = new Data<ALANode>() {InstanceName="id_fa857dd7432e406c8c6c642152b37730",Lambda=() => mainGraph.Get("SelectedNode") as ALANode};
+            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherData<ALANode>() {InstanceName="id_61b3caf63ee84893babc3972f0887b44",Priority=DispatcherPriority.ApplicationIdle};
+            var id_40ca2809cd8744c780b0c99165e6a7bd = new DataFlowConnector<ALANode>() {InstanceName="id_40ca2809cd8744c780b0c99165e6a7bd"};
+            var id_42c7f12c13804ec7b111291739be78f5 = new DataFlowConnector<string>() {InstanceName="id_42c7f12c13804ec7b111291739be78f5"};
+            var id_409be365df274cc6a7a124e8a80316a5 = new ConvertToEvent<string>() {InstanceName="id_409be365df274cc6a7a124e8a80316a5"};
+            var id_5e2f0621c62142c1b5972961c93cb725 = new Data<UIElement>() {InstanceName="id_5e2f0621c62142c1b5972961c93cb725",Lambda=() => mainCanvas};
+            var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1,Reset=true};
+            var id_82b26eeaba664ee7b2a2c0682e25ce08 = new EventConnector() {InstanceName="id_82b26eeaba664ee7b2a2c0682e25ce08"};
+            var id_57e7dd98a0874e83bbd5014f7e9c9ef5 = new DataFlowConnector<UIElement>() {InstanceName="id_57e7dd98a0874e83bbd5014f7e9c9ef5"};
+            var id_e1e6cf54f73d4f439c6f18b668a73f1a = new ApplyAction<UIElement>() {InstanceName="Reset mainCanvas position",Lambda=canvas =>{    WPFCanvas.SetLeft(canvas, 0);    WPFCanvas.SetTop(canvas, 0);}};
+            var searchTab = new Tab(title:"Search") {InstanceName="searchTab"};
+            var id_fed56a4aef6748178fa7078388643323 = new Horizontal() {InstanceName="id_fed56a4aef6748178fa7078388643323"};
+            var searchTextBox = new TextBox() {InstanceName="searchTextBox"};
+            var startSearchButton = new Button(title:"Search") {InstanceName="startSearchButton"};
+            var id_00b0ca72bbce4ef4ba5cf395c666a26e = new DataFlowConnector<string>() {InstanceName="id_00b0ca72bbce4ef4ba5cf395c666a26e"};
+            var id_5da1d2f5b13746f29802078592e59346 = new Data<string>() {InstanceName="id_5da1d2f5b13746f29802078592e59346"};
+            var id_cc0c82a2157f4b0291c812236a6e45ba = new Vertical() {InstanceName="id_cc0c82a2157f4b0291c812236a6e45ba"};
+            var id_3622556a1b37410691b51b83c004a315 = new ListDisplay() {InstanceName="id_3622556a1b37410691b51b83c004a315",ItemList=nodeSearchTextResults};
+            var id_73274d9ce8d5414899772715a1d0f266 = new Apply<int, ALANode>() {InstanceName="id_73274d9ce8d5414899772715a1d0f266",Lambda=index =>{    var results = nodeSearchResults;    if (results.Count > index)    {        return results[index];    }    else    {        return null;    }}};
+            var id_fff8d82dbdd04da18793108f9b8dd5cf = new DataFlowConnector<ALANode>() {InstanceName="id_fff8d82dbdd04da18793108f9b8dd5cf"};
+            var id_75ecf8c2602c41829602707be8a8a481 = new ConvertToEvent<ALANode>() {InstanceName="id_75ecf8c2602c41829602707be8a8a481"};
+            var id_23a625377ea745ee8253482ee1f0d437 = new ApplyAction<ALANode>() {InstanceName="id_23a625377ea745ee8253482ee1f0d437",Lambda=selectedNode =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();        node.ShowTypeTextMask(show: false);    }    selectedNode.Select();}};
+            var id_5f1c0f0187eb4dc99f15254fd36fa9b6 = new Apply<string, IEnumerable<ALANode>>() {InstanceName="findNodesMatchingSearchQuery",Lambda=searchQuery =>{    nodeSearchResults.Clear();    nodeSearchTextResults.Clear();    return mainGraph.Nodes.OfType<ALANode>();}};
+            var id_8e347b7f5f3b4aa6b1c8f1966d0280a3 = new ForEach<ALANode>() {InstanceName="id_8e347b7f5f3b4aa6b1c8f1966d0280a3"};
+            var id_282744d2590b4d3e8b337d73c05e0823 = new DataFlowConnector<ALANode>() {InstanceName="id_282744d2590b4d3e8b337d73c05e0823"};
+            var currentSearchResultIndex = new DataFlowConnector<int>() {InstanceName="currentSearchResultIndex"};
+            var id_2c9472651f984aa8ab763f327bcfa45e = new ApplyAction<ALANode>() {InstanceName="id_2c9472651f984aa8ab763f327bcfa45e",Lambda=node =>{    var i = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    Logging.Message($"Searching node {i + 1}/{total}...");}};
+            var currentSearchQuery = new DataFlowConnector<string>() {InstanceName="currentSearchQuery"};
+            var id_1c95fb3a139b4602bba7b10201112546 = new DispatcherData<ALANode>() {InstanceName="id_1c95fb3a139b4602bba7b10201112546"};
+            var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {InstanceName="id_01bdd051f2034331bd9f121029b0e2e8"};
+            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {InstanceName="id_67bc4eb50bb04d9694a1a0d5ce65c9d9",Lambda=node =>{    var query = currentSearchQuery.Data;    if (node.IsMatch(query))    {        nodeSearchResults.Add(node);        nodeSearchTextResults.Add($"{node.Model.FullType} {node.Model.Name}");    }    var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1))        Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}};
+            var id_f526f560b3504a0b8115879e5d5354ff = new MenuItem(header:"Test ContextMenu") {InstanceName="Test ContextMenu"};
+            var id_dea56e5fd7174cd7983e8f2c837a941b = new ContextMenu() {InstanceName="id_dea56e5fd7174cd7983e8f2c837a941b"};
+            var directoryExplorerConfig = new UIConfig() {InstanceName="directoryExplorerConfig"};
+            var currentSelectedDirectoryTreeFilePath = new DataFlowConnector<string>() {InstanceName="currentSelectedDirectoryTreeFilePath"};
+            var id_8b908f2be6094d5b8cd3dce5c5fc2b8b = new MenuItem(header:"Open code file") {InstanceName="Open file through directory tree"};
+            var id_692716a735e44e948a8d14cd550c1276 = new Data<string>() {InstanceName="id_692716a735e44e948a8d14cd550c1276"};
+            var id_f77e477a71954e20a587ec6fb4d006ce = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + F pressed",Key=Key.F,Modifiers=new Key[]{Key.LeftCtrl}};
+            var id_87a897a783884990bf10e4d7a9e276b9 = new EventConnector() {InstanceName="id_87a897a783884990bf10e4d7a9e276b9"};
+            var id_9e6a74b0dbea488cba6027ee5187ad0f = new DispatcherEvent() {InstanceName="id_9e6a74b0dbea488cba6027ee5187ad0f",Priority=DispatcherPriority.Loaded};
+            var id_b55e77a5d78243bf9612ecb7cb20c2c7 = new DispatcherEvent() {InstanceName="id_b55e77a5d78243bf9612ecb7cb20c2c7",Priority=DispatcherPriority.Loaded};
+            var id_45593aeb91a145aa9d84d8b77a8d4d8e = new DispatcherEvent() {InstanceName="id_45593aeb91a145aa9d84d8b77a8d4d8e",Priority=DispatcherPriority.Loaded};
+            var UIConfig_searchTab = new UIConfig() {InstanceName="UIConfig_searchTab"};
+            var UIConfig_searchTextBox = new UIConfig() {InstanceName="UIConfig_searchTextBox"};
+            var id_ab5c789d2d72413d90b6bbc63302322c = new EventLambda() {InstanceName="id_ab5c789d2d72413d90b6bbc63302322c",Lambda=() =>{    (makeSidePanelVisible as IEvent)?.Execute();}};
+            var id_a690d6dd37ba4c98b5506777df6dc9db = new EventLambda() {InstanceName="id_a690d6dd37ba4c98b5506777df6dc9db",Lambda=() =>{    UIConfig_searchTab.Focus();}};
+            var id_63db7722e48a4c5aabd905f75b0519b2 = new EventLambda() {InstanceName="id_63db7722e48a4c5aabd905f75b0519b2",Lambda=() =>{    UIConfig_searchTextBox.Focus();}};
+            var id_006b07cc90c64e398b945bb43fdd4de9 = new EventConnector() {InstanceName="id_006b07cc90c64e398b945bb43fdd4de9"};
+            var id_e7da19475fcc44bdaf4a64d05f92b771 = new Data<string>() {InstanceName="id_e7da19475fcc44bdaf4a64d05f92b771"};
+            var id_68cfe1cc12f948cab25289d853300813 = new PopupWindow(title:"Open diagram?") {Height=100,Resize=SizeToContent.WidthAndHeight,InstanceName="id_68cfe1cc12f948cab25289d853300813"};
+            var id_95ddd89b36d54db298eaa05165284569 = new Vertical() {InstanceName="id_95ddd89b36d54db298eaa05165284569"};
+            var id_939726bef757459b914412aead1bb5f9 = new Text(text:"") {InstanceName="id_939726bef757459b914412aead1bb5f9"};
+            var id_c7dc32a5f12b41ad94a910a74de38827 = new Horizontal() {InstanceName="id_c7dc32a5f12b41ad94a910a74de38827"};
+            var id_89ab09564cea4a8b93d8925e8234e44c = new UIConfig() {InstanceName="id_89ab09564cea4a8b93d8925e8234e44c",Width=50,HorizAlignment="right",RightMargin=5,BottomMargin=5};
+            var id_c180a82fd3a6495a885e9dde61aaaef3 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",Width=50,HorizAlignment="left",RightMargin=5,BottomMargin=5};
+            var id_add742a4683f4dd0b34d8d0eebbe3f07 = new Button(title:"Yes") {InstanceName="id_add742a4683f4dd0b34d8d0eebbe3f07"};
+            var id_e82c1f80e1884a57b79c681462efd65d = new Button(title:"No") {InstanceName="id_e82c1f80e1884a57b79c681462efd65d"};
+            var id_5fbec6b061cc428a8c00e5c2a652b89e = new EventConnector() {InstanceName="id_5fbec6b061cc428a8c00e5c2a652b89e"};
+            var id_b0d86bb898944ded83ec7f58b9f4a1b8 = new EventConnector() {InstanceName="id_b0d86bb898944ded83ec7f58b9f4a1b8"};
+            var id_721b5692fa5a4ba39f509fd7e4a6291b = new Data<string>() {InstanceName="id_721b5692fa5a4ba39f509fd7e4a6291b"};
+            var id_1928c515b2414f6690c6924a76461081 = new EditSetting() {InstanceName="id_1928c515b2414f6690c6924a76461081",JSONPath="$..ApplicationCodeFilePath"};
+            var id_1a403a85264c4074bc7ce5a71262c6c0 = new Data<object>() {InstanceName="id_1a403a85264c4074bc7ce5a71262c6c0",storedData=""};
+            var id_de49d2fafc2140e996eb38fbf1e62103 = new Horizontal() {InstanceName="id_de49d2fafc2140e996eb38fbf1e62103"};
+            var id_d890df432c1f4e60a62b8913a5069b34 = new Horizontal() {InstanceName="id_d890df432c1f4e60a62b8913a5069b34"};
+            var id_e4c9f92bbd6643a286683c9ff5f9fb3a = new Apply<string, string>() {InstanceName="id_e4c9f92bbd6643a286683c9ff5f9fb3a",Lambda=path => $"Default code file path is set to \"{path}\".\nOpen a diagram from this path?"};
+            var id_5b134e68e31b40f4b3e95eb007a020dc = new UIConfig() {InstanceName="id_5b134e68e31b40f4b3e95eb007a020dc",HorizAlignment="middle",UniformMargin=5};
+            var id_0fafdba1ad834904ac7330f95dffd966 = new UIConfig() {InstanceName="id_c180a82fd3a6495a885e9dde61aaaef3",HorizAlignment="left",BottomMargin=5};
+            var id_2bfcbb47c2c745578829e1b0f8287f42 = new Button(title:" No, and clear the setting ") {InstanceName="id_2bfcbb47c2c745578829e1b0f8287f42"};
+            var id_1139c3821d834efc947d5c4e949cd1ba = new EventConnector() {InstanceName="id_1139c3821d834efc947d5c4e949cd1ba"};
+            var id_4686253b1d7d4cd9a4d5bf03d6b7e380 = new Horizontal() {InstanceName="id_4686253b1d7d4cd9a4d5bf03d6b7e380"};
+            var id_f140e9e4ef3f4c07898073fde207da99 = new Data<string>() {InstanceName="id_c01710b47a2a4deb824311c4dc46222d",storedData=SETTINGS_FILEPATH};
+            var id_25a53022f6ab4e9284fd321e9535801b = new UIConfig() {InstanceName="id_25a53022f6ab4e9284fd321e9535801b",MaxHeight=700};
+            var id_de10db4d6b8a426ba76b02959a58cb88 = new UIConfig() {InstanceName="id_de10db4d6b8a426ba76b02959a58cb88",HorizAlignment="middle",UniformMargin=5};
+            var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="Code to Diagram"};
+            var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="Diagram to Code"};
+            var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
+            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
+            var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
+            var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
+            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
+            var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {HorizAlignment="left"};
+            var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {HorizAlignment="right"};
+            var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20};
+            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for updates") {};
+            var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() => {    Process.Start("https://github.com/arnab-sen/GALADE/releases");}};
+            // END AUTO-GENERATED INSTANTIATIONS
+
+            // BEGIN AUTO-GENERATED WIRING
+            mainWindow.WireTo(mainWindowVertical, "iuiStructure");
+            mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart");
+            mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children");
+            mainCanvasDisplay.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_ed16dd83790542f4bce1db7c9f2b928f, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_bbd9df1f15ea4926b97567d08b6835dd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_6d1f4415e8d849e19f5d432ea96d9abb, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_44b41ddf67864f29ae9b59ed0bec2927, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_1de443ed1108447199237a8c0c584fcf, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_2a7c8f3b6b5e4879ad5a35ff6d8538fd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_a26b08b25184469db6f0c4987d4c68dd, "eventHandlers");
+            mainCanvasDisplay.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu");
+            id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children");
+            id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children");
+            id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent");
+            id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(layoutDiagram, "eventOutput");
+            getFirstRoot.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "dataOutput");
+            layoutDiagram.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList");
+            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_54cdb3b62fb0433a996dc0dc58ddfa93, "fanoutList");
+            id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(layoutDiagram, "eventHappened");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_f19494c1e76f460a9189c172ac98de60, "children");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_08d455bfa9744704b21570d06c3c5389, "children");
+            id_f19494c1e76f460a9189c172ac98de60.WireTo(id_d59c0c09aeaf46c186317b9aeaf95e2e, "children");
+            id_f19494c1e76f460a9189c172ac98de60.WireTo(id_bb687ee0b7dd4b86a38a3f81ddbab75f, "children");
+            id_d59c0c09aeaf46c186317b9aeaf95e2e.WireTo(id_463b31fe2ac04972b5055a3ff2f74fe3, "clickedEvent");
+            id_463b31fe2ac04972b5055a3ff2f74fe3.WireTo(id_a1f87102954345b69de6841053fce813, "selectedFolderPathOutput");
+            id_63088b53f85b4e6bb564712c525e063c.WireTo(id_35fceab68423425195096666f27475e9, "foundFiles");
+            id_a98457fc05fc4e84bfb827f480db93d3.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
+            id_f5d3730393ab40d78baebcb9198808da.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "elementOutput");
+            getProjectFolderPath.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
+            getProjectFolderPath.WireTo(id_a1f87102954345b69de6841053fce813, "settingJsonOutput");
+            id_bbd9df1f15ea4926b97567d08b6835dd.WireTo(id_6e249d6520104ca5a1a4d847a6c862a8, "senderOutput");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_843593fbc341437bb7ade21d0c7f6729, "children");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_a34c047df9ae4235a08b037fd9e48ab8, "children");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_96ab5fcf787a4e6d88af011f6e3daeae, "children");
+            id_843593fbc341437bb7ade21d0c7f6729.WireTo(id_91726b8a13804a0994e27315b0213fe8, "clickedEvent");
+            id_91726b8a13804a0994e27315b0213fe8.WireTo(id_a2e6aa4f4d8e41b59616d63362768dde, "children");
+            id_a2e6aa4f4d8e41b59616d63362768dde.WireTo(id_826249b1b9d245709de6f3b24503be2d, "uiLayout");
+            id_a1f87102954345b69de6841053fce813.WireTo(id_63088b53f85b4e6bb564712c525e063c, "fanoutList");
+            id_a1f87102954345b69de6841053fce813.WireTo(id_460891130e9e499184b84a23c2e43c9f, "fanoutList");
+            id_6d1f4415e8d849e19f5d432ea96d9abb.WireTo(id_e7e60dd036af4a869e10a64b2c216104, "argsOutput");
+            id_44b41ddf67864f29ae9b59ed0bec2927.WireTo(id_da4f1dedd74549e283777b5f7259ad7f, "argsOutput");
+            id_368a7dc77fe24060b5d4017152492c1e.WireTo(id_2f4df1d9817246e5a9184857ec5a2bf8, "transitionOutput");
+            id_2f4df1d9817246e5a9184857ec5a2bf8.WireTo(id_c80f46b08d894d4faa674408bf846b3f, "output");
+            id_c80f46b08d894d4faa674408bf846b3f.WireTo(layoutDiagram, "ifOutput");
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(getProjectFolderPath, "fanoutList");
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList");
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete");
+            id_1de443ed1108447199237a8c0c584fcf.WireTo(id_46a4d6e6cfb940278eb27561c43cbf37, "eventHappened");
+            id_83c3db6e4dfa46518991f706f8425177.WireTo(layoutDiagram, "clickedEvent");
+            id_5297a497d2de44e5bc0ea2c431cdcee6.WireTo(id_9bd4555e80434a7b91b65e0b386593b0, "dataOutput");
+            id_9bd4555e80434a7b91b65e0b386593b0.WireTo(id_7fabbaae488340a59d940100d38e9447, "output");
+            id_2810e4e86da348b98b39c987e6ecd7b6.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
+            id_f9b8e7f524a14884be753d19a351a285.WireTo(id_c4f838d19a6b4af9ac320799ebe9791f, "fanoutList");
+            id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
+            id_0fd49143884d4a6e86e6ed0ea2f1b5b4.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
+            id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
+            id_35fceab68423425195096666f27475e9.WireTo(id_8fc35564768b4a64a57dc321cc1f621f, "fanoutList");
+            id_35fceab68423425195096666f27475e9.WireTo(id_0fd49143884d4a6e86e6ed0ea2f1b5b4, "fanoutList");
+            id_35fceab68423425195096666f27475e9.WireTo(id_92effea7b90745299826cd566a0f2b88, "fanoutList");
+            id_643997d9890f41d7a3fcab722aa48f89.WireTo(id_843620b3a9ed45bea231b841b52e5621, "dataOutput");
+            id_261d188e3ce64cc8a06f390ba51e092f.WireTo(id_04c07393f532472792412d2a555510b9, "dataOutput");
+            id_843620b3a9ed45bea231b841b52e5621.WireTo(id_39850a5c8e0941b3bfe846cbc45ebc90, "fanoutList");
+            id_843620b3a9ed45bea231b841b52e5621.WireTo(id_841e8fee0e8a4f45819508b2086496cc, "fanoutList");
+            id_04c07393f532472792412d2a555510b9.WireTo(id_607ebc3589a34e86a6eee0c0639f57cc, "fanoutList");
+            id_04c07393f532472792412d2a555510b9.WireTo(id_841e8fee0e8a4f45819508b2086496cc, "fanoutList");
+            id_33990435606f4bbc9ba1786ed05672ab.WireTo(id_6909a5f3b0e446d3bb0c1382dac1faa9, "output");
+            id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput");
+            id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput");
+            id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList");
+            id_cf7df48ac3304a8894a7536261a3b474.WireTo(id_13061fa931bc49d599a3a2f0b1cab26c, "fanoutList");
+            id_4a268943755348b68ee2cb6b71f73c40.WireTo(getFirstRoot, "delayedEvent");
+            id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent");
+            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "instantiations");
+            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "wireTos");
+            id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_fcfcb5f0ae544c968dcbc734ac1db51b, "filePathInput");
+            id_f928bf426b204bc89ba97219c97df162.WireTo(id_c01710b47a2a4deb824311c4dc46222d, "filePathInput");
+            id_f07ddae8b4ee431d8ede6c21e1fe01c5.WireTo(id_f928bf426b204bc89ba97219c97df162, "output");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_f07ddae8b4ee431d8ede6c21e1fe01c5, "fanoutList");
+            id_460891130e9e499184b84a23c2e43c9f.WireTo(id_60229af56d92436996d2ee8d919083a3, "output");
+            id_92effea7b90745299826cd566a0f2b88.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
+            id_c5fdc10d2ceb4577bef01977ee8e9dd1.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "dataOutput");
+            id_72140c92ac4f4255abe9d149068fa16f.WireTo(id_1d55a1faa3dd4f78ad22ac73051f5d2d, "fileContentOutput");
+            id_1d55a1faa3dd4f78ad22ac73051f5d2d.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "fanoutList");
+            id_a26b08b25184469db6f0c4987d4c68dd.WireTo(generateCode, "eventHappened");
+            generateCode.WireTo(id_c5fdc10d2ceb4577bef01977ee8e9dd1, "fanoutList");
+            generateCode.WireTo(id_5e77c28f15294641bb881592d2cd7ac9, "fanoutList");
+            generateCode.WireTo(id_b5364bf1c9cd46a28e62bb2eb0e11692, "fanoutList");
+            generateCode.WireTo(id_0e563f77c5754bdb8a75b7f55607e9b0, "complete");
+            id_60229af56d92436996d2ee8d919083a3.WireTo(id_58c03e4b18bb43de8106a4423ca54318, "filePathInput");
+            id_2b42bd6059334bfabc3df1d047751d7a.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "filePathInput");
+            id_b9865ebcd2864642a96573ced52bbb7f.WireTo(id_72140c92ac4f4255abe9d149068fa16f, "fanoutList");
+            id_891aef13eb18444ea94b9e071c7966d7.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "newFileContentsOutput");
+            id_62ac925f4ee1421dbe7a781823d7876c.WireTo(id_2b42bd6059334bfabc3df1d047751d7a, "newFileContentsOutput");
+            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "fanoutList");
+            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "fanoutList");
+            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_3f30a573358d4fd08c4c556281737360, "complete");
+            id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
+            id_e3837af93b584ca9874336851ff0cd31.WireTo(globalMessageTextDisplay, "child");
+            id_42c7f12c13804ec7b111291739be78f5.WireTo(createDiagramFromCode, "fanoutList");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_6f93680658e04f8a9ab15337cee1eca3, "children");
+            id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_9f411cfea16b45ed9066dd8f2006e1f1, "settingJsonOutput");
+            id_bb687ee0b7dd4b86a38a3f81ddbab75f.WireTo(id_db598ad59e5542a0adc5df67ced27f73, "clickedEvent");
+            id_db598ad59e5542a0adc5df67ced27f73.WireTo(id_14170585873a4fb6a7550bfb3ce8ecd4, "fanoutList");
+            id_14170585873a4fb6a7550bfb3ce8ecd4.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "selectedFilePathOutput");
+            id_9b866e4112fd4347a2a3e81441401dea.WireTo(setting_currentDiagramCodeFilePath, "fanoutList");
+            id_9f411cfea16b45ed9066dd8f2006e1f1.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
+            id_dcd4c90552dc4d3fb579833da87cd829.WireTo(id_5ddd02478c734777b9e6f1079b4b3d45, "delayedEvent");
+            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput");
+            latestCodeFilePath.WireTo(id_d5d3af7a3c9a47bf9af3b1a1e1246267, "fanoutList");
+            id_d5d3af7a3c9a47bf9af3b1a1e1246267.WireTo(id_2ce385b32256413ab2489563287afaac, "output");
+            id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(latestCodeFilePath, "settingJsonOutput");
+            id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
+            layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
+            mainCanvasDisplay.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
+            id_0b4478e56d614ca091979014db65d076.WireTo(id_d90fbf714f5f4fdc9b43cbe4d5cebf1c, "senderOutput");
+            mainWindowVertical.WireTo(mainHorizontal, "children");
+            mainWindowVertical.WireTo(statusBarHorizontal, "children");
+            mainHorizontal.WireTo(sidePanelHoriz, "children");
+            canvasDisplayHoriz.WireTo(mainCanvasDisplay, "children");
+            sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children");
+            id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(directoryExplorerTab, "childrenTabs");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4a42bbf671cd4dba8987bd656e5a2ced, "children");
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_b5985971664e42b3a5b0869fce7b0f9b, "children");
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_ba60beaed16c4e2f8ac431a8174ed12b, "children");
+            id_b5985971664e42b3a5b0869fce7b0f9b.WireTo(makeSidePanelVisible, "clickedEvent");
+            id_ba60beaed16c4e2f8ac431a8174ed12b.WireTo(id_e5ab69539a364aee809c668bc9d0e1a8, "clickedEvent");
+            makeSidePanelVisible.WireTo(sidePanelHoriz, "dataOutput");
+            id_e5ab69539a364aee809c668bc9d0e1a8.WireTo(sidePanelHoriz, "dataOutput");
+            mainHorizontal.WireTo(canvasDisplayHoriz, "children");
+            id_a1f87102954345b69de6841053fce813.WireTo(directoryTreeExplorer, "fanoutList");
+            directoryExplorerTab.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children");
+            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children");
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList");
+            id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged");
+            id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList");
+            id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_6d789ff1a0bc4a2d8e88733adc266be8, "argsOutput");
+            id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(mouseWheelArgs, "fanoutList");
+            id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "fanoutList");
+            id_6f93680658e04f8a9ab15337cee1eca3.WireTo(id_a236bd13c516401eb5a83a451a875dd0, "clickedEvent");
+            id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_6fdaaf997d974e30bbb7c106c40e997c, "fanoutList");
+            id_a236bd13c516401eb5a83a451a875dd0.WireTo(id_a3efe072d6b44816a631d90ccef5b71e, "fanoutList");
+            createNewALANode.WireTo(latestAddedNode, "output");
+            latestAddedNode.WireTo(createAndPaintALAWire, "fanoutList");
+            id_855f86954b3e4776909cde23cd96d071.WireTo(id_ad29db53c0d64d4b8be9e31474882158, "eventHappened");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_86a7f0259b204907a092da0503eb9873, "children");
+            id_86a7f0259b204907a092da0503eb9873.WireTo(id_3710469340354a1bbb4b9d3371c9c012, "clickedEvent");
+            id_3710469340354a1bbb4b9d3371c9c012.WireTo(testDirectoryTree, "selectedFolderPathOutput");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(testSimulateKeyboard, "children");
+            testSimulateKeyboard.WireTo(id_52b8f2c28c2e40cabedbd531171c779a, "clickedEvent");
+            id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_5c31090d2c954aa7b4a10e753bdfc03a, "fanoutList");
+            id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_86ecd8f953324e34adc6238338f75db5, "fanoutList");
+            id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_63e463749abe41d28d05b877479070f8, "fanoutList");
+            id_52b8f2c28c2e40cabedbd531171c779a.WireTo(id_66e516b6027649e1995a531d03c0c518, "fanoutList");
+            mainCanvasDisplay.WireTo(id_8863f404bed34d47922654bd0190259c, "eventHandlers");
+            id_8863f404bed34d47922654bd0190259c.WireTo(cloneSelectedNodeModel, "eventHappened");
+            id_024b1810c2d24db3b9fac1ccce2fad9e.WireTo(id_0f802a208aad42209777c13b2e61fe56, "fanoutList");
+            mainCanvasDisplay.WireTo(id_7363c80d952e4246aba050e007287444, "eventHandlers");
+            id_316a3befaa364f0186efabcf5efaa33f.WireTo(createNewALANode, "dataOutput");
+            createAndPaintALAWire.WireTo(id_8647cbf4ac4049a99204b0e3aa70c326, "output");
+            id_7363c80d952e4246aba050e007287444.WireTo(id_5a22e32e96e641d49c6fb4bdf6fcd94b, "eventHappened");
+            id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(id_316a3befaa364f0186efabcf5efaa33f, "fanoutList");
+            id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(id_0945b34f58a146ff983962f595f57fb2, "complete");
+            id_0945b34f58a146ff983962f595f57fb2.WireTo(id_36c5f05380b04b378de94534411f3f88, "delayedEvent");
+            id_7363c80d952e4246aba050e007287444.WireTo(id_4341066281bc4015a668a3bbbcb7256b, "argsOutput");
+            cloneSelectedNodeModel.WireTo(id_024b1810c2d24db3b9fac1ccce2fad9e, "dataOutput");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_2c933997055b4122bdb77945f1abb560, "children");
+            id_2c933997055b4122bdb77945f1abb560.WireTo(id_0eea701e0bc84c42a9f17ccc200ef2ef, "clickedEvent");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_29ed401eb9c240d98bf5c6d1f00c5c76, "children");
+            id_29ed401eb9c240d98bf5c6d1f00c5c76.WireTo(id_fa857dd7432e406c8c6c642152b37730, "clickedEvent");
+            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_61b3caf63ee84893babc3972f0887b44, "fanoutList");
+            id_61b3caf63ee84893babc3972f0887b44.WireTo(id_40ca2809cd8744c780b0c99165e6a7bd, "delayedData");
+            id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
+            id_a2d71044048840b0a69356270e6520ac.WireTo(id_42c7f12c13804ec7b111291739be78f5, "dataOutput");
+            id_42c7f12c13804ec7b111291739be78f5.WireTo(id_409be365df274cc6a7a124e8a80316a5, "fanoutList");
+            id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(resetScale, "fanoutList");
+            id_409be365df274cc6a7a124e8a80316a5.WireTo(id_82b26eeaba664ee7b2a2c0682e25ce08, "eventOutput");
+            id_82b26eeaba664ee7b2a2c0682e25ce08.WireTo(id_5e2f0621c62142c1b5972961c93cb725, "fanoutList");
+            id_0eea701e0bc84c42a9f17ccc200ef2ef.WireTo(resetViewOnNode, "dataOutput");
+            id_fa857dd7432e406c8c6c642152b37730.WireTo(resetViewOnNode, "dataOutput");
+            id_5e2f0621c62142c1b5972961c93cb725.WireTo(id_57e7dd98a0874e83bbd5014f7e9c9ef5, "dataOutput");
+            id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(id_e1e6cf54f73d4f439c6f18b668a73f1a, "fanoutList");
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_fed56a4aef6748178fa7078388643323, "children");
+            searchTextBox.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "textOutput");
+            startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB");
+            id_ad29db53c0d64d4b8be9e31474882158.WireTo(createDummyAbstractionModel, "fanoutList");
+            createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput");
+            id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children");
+            searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed");
+            searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children");
+            id_3622556a1b37410691b51b83c004a315.WireTo(id_73274d9ce8d5414899772715a1d0f266, "selectedIndex");
+            id_73274d9ce8d5414899772715a1d0f266.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "output");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_75ecf8c2602c41829602707be8a8a481, "fanoutList");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(id_23a625377ea745ee8253482ee1f0d437, "fanoutList");
+            id_75ecf8c2602c41829602707be8a8a481.WireTo(id_5e2f0621c62142c1b5972961c93cb725, "eventOutput");
+            id_fff8d82dbdd04da18793108f9b8dd5cf.WireTo(resetViewOnNode, "fanoutList");
+            currentSearchQuery.WireTo(id_5f1c0f0187eb4dc99f15254fd36fa9b6, "fanoutList");
+            id_5f1c0f0187eb4dc99f15254fd36fa9b6.WireTo(id_8e347b7f5f3b4aa6b1c8f1966d0280a3, "output");
+            id_8e347b7f5f3b4aa6b1c8f1966d0280a3.WireTo(id_282744d2590b4d3e8b337d73c05e0823, "elementOutput");
+            id_1c95fb3a139b4602bba7b10201112546.WireTo(id_2c9472651f984aa8ab763f327bcfa45e, "delayedData");
+            id_8e347b7f5f3b4aa6b1c8f1966d0280a3.WireTo(currentSearchResultIndex, "indexOutput");
+            id_5da1d2f5b13746f29802078592e59346.WireTo(currentSearchQuery, "dataOutput");
+            id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_1c95fb3a139b4602bba7b10201112546, "fanoutList");
+            id_282744d2590b4d3e8b337d73c05e0823.WireTo(id_01bdd051f2034331bd9f121029b0e2e8, "fanoutList");
+            id_01bdd051f2034331bd9f121029b0e2e8.WireTo(id_67bc4eb50bb04d9694a1a0d5ce65c9d9, "delayedData");
+            id_08d455bfa9744704b21570d06c3c5389.WireTo(id_f526f560b3504a0b8115879e5d5354ff, "children");
+            id_f526f560b3504a0b8115879e5d5354ff.WireTo(id_dea56e5fd7174cd7983e8f2c837a941b, "clickedEvent");
+            projectDirectoryTreeHoriz.WireTo(directoryExplorerConfig, "children");
+            directoryExplorerConfig.WireTo(directoryTreeExplorer, "child");
+            directoryTreeExplorer.WireTo(currentSelectedDirectoryTreeFilePath, "selectedFullPath");
+            directoryExplorerConfig.WireTo(id_8b908f2be6094d5b8cd3dce5c5fc2b8b, "contextMenuChildren");
+            id_8b908f2be6094d5b8cd3dce5c5fc2b8b.WireTo(id_692716a735e44e948a8d14cd550c1276, "clickedEvent");
+            id_692716a735e44e948a8d14cd550c1276.WireTo(currentSelectedDirectoryTreeFilePath, "inputDataB");
+            id_692716a735e44e948a8d14cd550c1276.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "dataOutput");
+            id_0d4d34a2cd6749759ac0c2708ddf0cbc.WireTo(id_692716a735e44e948a8d14cd550c1276, "eventButtonClicked");
+            mainCanvasDisplay.WireTo(id_f77e477a71954e20a587ec6fb4d006ce, "eventHandlers");
+            id_f77e477a71954e20a587ec6fb4d006ce.WireTo(id_87a897a783884990bf10e4d7a9e276b9, "eventHappened");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_9e6a74b0dbea488cba6027ee5187ad0f, "fanoutList");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_b55e77a5d78243bf9612ecb7cb20c2c7, "fanoutList");
+            id_87a897a783884990bf10e4d7a9e276b9.WireTo(id_45593aeb91a145aa9d84d8b77a8d4d8e, "fanoutList");
+            id_9e6a74b0dbea488cba6027ee5187ad0f.WireTo(id_ab5c789d2d72413d90b6bbc63302322c, "delayedEvent");
+            id_b55e77a5d78243bf9612ecb7cb20c2c7.WireTo(id_a690d6dd37ba4c98b5506777df6dc9db, "delayedEvent");
+            id_45593aeb91a145aa9d84d8b77a8d4d8e.WireTo(id_63db7722e48a4c5aabd905f75b0519b2, "delayedEvent");
+            id_2ce385b32256413ab2489563287afaac.WireTo(id_006b07cc90c64e398b945bb43fdd4de9, "ifOutput");
+            id_006b07cc90c64e398b945bb43fdd4de9.WireTo(id_e7da19475fcc44bdaf4a64d05f92b771, "fanoutList");
+            id_006b07cc90c64e398b945bb43fdd4de9.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_68cfe1cc12f948cab25289d853300813.WireTo(id_95ddd89b36d54db298eaa05165284569, "children");
+            id_e7da19475fcc44bdaf4a64d05f92b771.WireTo(latestCodeFilePath, "inputDataB");
+            id_89ab09564cea4a8b93d8925e8234e44c.WireTo(id_add742a4683f4dd0b34d8d0eebbe3f07, "child");
+            id_c180a82fd3a6495a885e9dde61aaaef3.WireTo(id_e82c1f80e1884a57b79c681462efd65d, "child");
+            id_add742a4683f4dd0b34d8d0eebbe3f07.WireTo(id_5fbec6b061cc428a8c00e5c2a652b89e, "eventButtonClicked");
+            id_2bfcbb47c2c745578829e1b0f8287f42.WireTo(id_b0d86bb898944ded83ec7f58b9f4a1b8, "eventButtonClicked");
+            id_5fbec6b061cc428a8c00e5c2a652b89e.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_5fbec6b061cc428a8c00e5c2a652b89e.WireTo(id_721b5692fa5a4ba39f509fd7e4a6291b, "fanoutList");
+            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(latestCodeFilePath, "inputDataB");
+            id_721b5692fa5a4ba39f509fd7e4a6291b.WireTo(id_9b866e4112fd4347a2a3e81441401dea, "dataOutput");
+            id_b0d86bb898944ded83ec7f58b9f4a1b8.WireTo(id_1a403a85264c4074bc7ce5a71262c6c0, "fanoutList");
+            id_1a403a85264c4074bc7ce5a71262c6c0.WireTo(id_1928c515b2414f6690c6924a76461081, "dataOutput");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_d890df432c1f4e60a62b8913a5069b34, "children");
+            id_e7da19475fcc44bdaf4a64d05f92b771.WireTo(id_e4c9f92bbd6643a286683c9ff5f9fb3a, "dataOutput");
+            id_e4c9f92bbd6643a286683c9ff5f9fb3a.WireTo(id_939726bef757459b914412aead1bb5f9, "output");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_89ab09564cea4a8b93d8925e8234e44c, "children");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_c180a82fd3a6495a885e9dde61aaaef3, "children");
+            id_95ddd89b36d54db298eaa05165284569.WireTo(id_5b134e68e31b40f4b3e95eb007a020dc, "children");
+            id_5b134e68e31b40f4b3e95eb007a020dc.WireTo(id_939726bef757459b914412aead1bb5f9, "child");
+            id_95ddd89b36d54db298eaa05165284569.WireTo(id_c7dc32a5f12b41ad94a910a74de38827, "children");
+            id_de49d2fafc2140e996eb38fbf1e62103.WireTo(id_0fafdba1ad834904ac7330f95dffd966, "children");
+            id_0fafdba1ad834904ac7330f95dffd966.WireTo(id_2bfcbb47c2c745578829e1b0f8287f42, "child");
+            id_e82c1f80e1884a57b79c681462efd65d.WireTo(id_1139c3821d834efc947d5c4e949cd1ba, "eventButtonClicked");
+            id_1139c3821d834efc947d5c4e949cd1ba.WireTo(id_68cfe1cc12f948cab25289d853300813, "fanoutList");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_de49d2fafc2140e996eb38fbf1e62103, "children");
+            id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_4686253b1d7d4cd9a4d5bf03d6b7e380, "children");
+            id_1928c515b2414f6690c6924a76461081.WireTo(id_f140e9e4ef3f4c07898073fde207da99, "filePathInput");
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_25a53022f6ab4e9284fd321e9535801b, "children");
+            id_25a53022f6ab4e9284fd321e9535801b.WireTo(id_3622556a1b37410691b51b83c004a315, "child");
+            projectDirectoryOptionsHoriz.WireTo(id_de10db4d6b8a426ba76b02959a58cb88, "children");
+            id_de10db4d6b8a426ba76b02959a58cb88.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "child");
+            id_7b250b222ca44ba2922547f03a4aef49.WireTo(UIConfig_searchTab, "childrenTabs");
+            UIConfig_searchTab.WireTo(searchTab, "child");
+            id_fed56a4aef6748178fa7078388643323.WireTo(UIConfig_searchTextBox, "children");
+            UIConfig_searchTextBox.WireTo(searchTextBox, "child");
+            id_fed56a4aef6748178fa7078388643323.WireTo(startSearchButton, "children");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_a9db513fb0e749bda7f42b03964e5dce, "children");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_efeb87ef1b3c4f9e8ed2f8193e6b78b1, "children");
+            id_efeb87ef1b3c4f9e8ed2f8193e6b78b1.WireTo(generateCode, "clickedEvent");
+            id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(startDiagramCreationProcess, "eventOutput");
+            startDiagramCreationProcess.WireTo(id_db77c286e64241c48de4fad0dde80024, "fanoutList");
+            startDiagramCreationProcess.WireTo(id_a2d71044048840b0a69356270e6520ac, "fanoutList");
+            startDiagramCreationProcess.WireTo(layoutDiagram, "fanoutList");
+            id_a9db513fb0e749bda7f42b03964e5dce.WireTo(id_c9dbe185989e48c0869f984dd8e979f2, "clickedEvent");
+            setting_currentDiagramCodeFilePath.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "fanoutList");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "fanoutList");
+            id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "dataOutput");
+            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "fanoutList");
+            id_e778c13b2c894113a7aff7ecfffe48f7.WireTo(mainWindow, "output");
+            statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children");
+            statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children");
+            id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child");
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children");
+            id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent");
+            // END AUTO-GENERATED WIRING
+
+            _mainWindow = mainWindow;
 
             // BEGIN MANUAL INSTANTIATIONS
+            // var AMM = new AbstractionModelManager();
+            // // AMM.OpenFile();
+            // var code = File.ReadAllText(
+            //     // "F:\\Projects\\GALADE\\ALACore\\DomainAbstractions\\CodeParser.cs");
+            //     "D:\\Coding\\C#\\Projects\\GALADE\\ALACore\\DomainAbstractions\\ExampleDomainAbstraction.cs");
+            // var model = AMM.CreateAbstractionModel(code);
             // END MANUAL INSTANTIATIONS
 
             // BEGIN MANUAL WIRING
             // END MANUAL WIRING
 
-            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
-            AddConnectionToGraph addPastedConnections = new AddConnectionToGraph() { InstanceName = "addPastedConnections", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory };
-            AddConnectionToGraph id_1fda77ab37d34539ae1ad713cba306e9 = new AddConnectionToGraph() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory };
-            AddConnectionToGraph id_33d40c1315df4a329c8069455f07bf4c = new AddConnectionToGraph() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory };
-            AddConnectionToGraph id_9193d48caa854fdc953c8b4ada85fa0f = new AddConnectionToGraph() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory };
-            Apply<Dictionary<string,JToken>,List<string>> id_eb63936eb29948f9bef6b22f54b7abcd = new Apply<Dictionary<string,JToken>,List<string>>() { InstanceName = "Default", Lambda = d => d.Keys.OrderBy(s => s).ToList() };
-            Apply<IVisualPortGraphNode,string> id_a4edfc365ec64fd7b366d694cfc078f8 = new Apply<IVisualPortGraphNode,string>() { InstanceName = "Default", Lambda = node => mainGraph.GetNodeSubtree(node.Id) };
-            Apply<IVisualPortGraphNode,string> id_cd868960a86e4e578f0b936f7c309268 = new Apply<IVisualPortGraphNode,string>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).Type };
-            Apply<IVisualPortGraphNode,Tuple<string,JToken>> id_2a44ae50994a441b97eae994df2bb1d2 = new Apply<IVisualPortGraphNode,Tuple<string,JToken>>() { InstanceName = "Default", Lambda = n => Tuple.Create((n as VisualPortGraphNode).Type,JToken.Parse(n.Serialise(new HashSet<string>() {"Id","Name","TreeParent"}))) };
-            Apply<JToken,IVisualPortGraphNode> id_c1189041ac444838bf1b62f8dfa25929 = new Apply<JToken,IVisualPortGraphNode>() { InstanceName = "Default", Lambda = jt => mainGraph.GetNode(jt.ToString()) };
-            Apply<JToken,List<string>> createNewNodeIds = new Apply<JToken,List<string>>() { InstanceName = "createNewNodeIds", Lambda = jt => ((JArray)jt).Select(o => Utilities.GetUniqueId().ToString()).ToList() };
-            Apply<JToken,List<string>> getOriginalNodeIds = new Apply<JToken,List<string>>() { InstanceName = "getOriginalNodeIds", Lambda = jt => ((JArray)jt).Select(o => o.ToString()).ToList() };
-            Apply<List<string>,Dictionary<string,string>> id_5ada023340cc46bdbe9a1cc5668e14f9 = new Apply<List<string>,Dictionary<string,string>>() { InstanceName = "Default", Lambda = input => {var dict = new Dictionary<string,string>();foreach (var s in input) {var pair = s.Split(new []{'='},2);dict[pair[0].Trim()] = pair[1].Trim();}return dict;} };
-            Apply<List<string>,Dictionary<string,string>> id_bea8af68fc04408986c8dbad2cbf795e = new Apply<List<string>,Dictionary<string,string>>() { InstanceName = "Default", Lambda = input => {var dict = new Dictionary<string,string>();foreach (var s in input) {var pair = s.Split(new []{':'},2);dict[pair[0].Trim()] = pair[1].Trim();}return dict;} };
-            Apply<Point,string> id_f2277566d5da4570829eb23ba276ef28 = new Apply<Point,string>() { InstanceName = "Default", Lambda = point => $"({(int)point.X}," + " " + $"{(int)point.Y})" };
-            Apply<string,bool> id_bd9c43f53b5043c8b76e6f6912138554 = new Apply<string,bool>() { InstanceName = "Default", Lambda = s => !string.IsNullOrEmpty(s) };
-            Apply<string,Dictionary<string,JToken>> getTemplatesFromJSON = new Apply<string,Dictionary<string,JToken>>() { InstanceName = "getTemplatesFromJSON", Lambda = json => JsonConvert.DeserializeObject<Dictionary<string,JToken>>(json) };
-            Apply<string,IEnumerable<string>> id_439d102714d245929de8b14c55d40c1d = new Apply<string,IEnumerable<string>>() { InstanceName = "Default", Lambda = input => {return input.Split(new [] { Environment.NewLine},StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim());} };
-            Apply<string,IEnumerable<string>> id_7af338faa6bb48c29d1b583377d6d0f0 = new Apply<string,IEnumerable<string>>() { InstanceName = "Default", Lambda = input => {return input.Split(new [] { Environment.NewLine},StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim());} };
-            Apply<Tuple<string,Dictionary<string,string>>,List<string>> id_0dc66c5de4cc4f639a4f8a4e68ca8a32 = new Apply<Tuple<string,Dictionary<string,string>>,List<string>>() { InstanceName = "Default", Lambda = t => t.Item2["ProvidedPorts"].Split(new[] {";"},StringSplitOptions.RemoveEmptyEntries).ToList() };
-            Apply<Tuple<string,Dictionary<string,string>>,List<string>> id_a6b69c879e5c4be3b0b65df90c5f2aa3 = new Apply<Tuple<string,Dictionary<string,string>>,List<string>>() { InstanceName = "Default", Lambda = t => t.Item2["ImplementedPorts"].Split(new[] {";"},StringSplitOptions.RemoveEmptyEntries).ToList() };
-            Apply<Tuple<string,Dictionary<string,string>>,string> id_94bc4bb4b0eb4992b073d93e6e62df61 = new Apply<Tuple<string,Dictionary<string,string>>,string>() { InstanceName = "Default", Lambda = t => t.Item2["AbstractionType"] };
-            ApplyAction<IPortConnection> id_f42e25cc193c489aa8f52222148e000e = new ApplyAction<IPortConnection>() { InstanceName = "Default", Lambda = cxn => {var pgc = (cxn as PortGraphConnection); pgc.Opacity = pgc.Opacity < 1 ? 1.0 : 0.1;} };
-            ApplyAction<IVisualPortGraphNode> id_19025a1dc84447a2a4487d854e4b3c09 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = true };
-            ApplyAction<IVisualPortGraphNode> id_2c7a7667a1a441a09259e9878a9d8319 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = input => {var node = input as VisualPortGraphNode;node.Deserialise(GetTemplate(node.Type,abstractionTemplatesConnector.Data)); node.RecreateUI(); StoreNodeReference(node);} };
-            ApplyAction<IVisualPortGraphNode> id_54d29674558c4b2ab6340b22704eadff = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = node => {mainGraph.SelectNode(node.Id); (node as VisualPortGraphNode)?.GetTypeTextBoxFocus();} };
-            ApplyAction<IVisualPortGraphNode> id_a59158c8c97545dea21d401b8dbf77d4 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => { if (!mainGraph.NodeTypes.Contains((n as VisualPortGraphNode).Type)) { mainGraph.NodeTypes.Add((n as VisualPortGraphNode).Type); } } };
-            ApplyAction<IVisualPortGraphNode> id_fc4da39a45c14a299cf156681769ddd1 = new ApplyAction<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = n => (n as VisualPortGraphNode).PortsAreEditable = false };
-            ApplyAction<JToken> loadNewAbstractionTypeTemplate = new ApplyAction<JToken>() { InstanceName = "loadNewAbstractionTypeTemplate", Lambda = jt => {var obj = jt as JObject; var node = mainGraph.GetSelectedNode() as VisualPortGraphNode; node?.Deserialise(obj); node?.RecreateUI();} };
-            ApplyAction<KeyEventArgs> id_841df8fb3e4145e4845a4b87fb425b8e = new ApplyAction<KeyEventArgs>() { InstanceName = "Default", Lambda = args => args.Handled = true };
-            ApplyAction<List<string>> id_47e785e85e8f4706a2cd54676ddeee07 = new ApplyAction<List<string>>() { InstanceName = "Default", Lambda = input => { mainGraph.NodeTypes = input; } };
-            ApplyAction<string> id_10d10f38b39240fc90cf66bf0c7cddfe = new ApplyAction<string>() { InstanceName = "Default", Lambda = input => ConvertWireCodeToConnection(input) };
-            ApplyAction<string> id_f9a70bf4ccf346ec94c389aa45151170 = new ApplyAction<string>() { InstanceName = "Default", Lambda = input => {var cxn = mainGraph.GetConnection(input) as PortGraphConnection; cxn.SelectHandle(selectSourceHandle: false);} };
-            ApplyAction<WPFCanvas> id_0b17dda4de874253b7ac486bd5f63d04 = new ApplyAction<WPFCanvas>() { InstanceName = "Default", Lambda = c => mainGraph.MainCanvas = c };
-            Button id_2f3f5348a9f44aad90e115c61bde205a = new Button("Browse" ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Button id_4f49dc59a4974186ad62a7a7079019db = new Button("Browse" ) { InstanceName = "Default", Margin = new Thickness(5) };
-            CanvasDisplay mainCanvas = new CanvasDisplay() { InstanceName = "mainCanvas", Width = 1920, Height = 600, Background = Brushes.White, StateTransition = stateTransition };
-            Cast<List<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>,IEnumerable<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>> id_f16d8476ee2a49aeb64af180bfcc0fa7 = new Cast<List<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>,IEnumerable<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>>() { InstanceName = "Default" };
-            Cast<string,object> id_03c7d3d4376a45b0b3d0369fd6196e73 = new Cast<string,object>() { InstanceName = "Default" };
-            Cast<string,object> id_422e47c9692441a1a594dfe3aed6bd12 = new Cast<string,object>() { InstanceName = "Default" };
-            Cast<string,object> id_ad62adfa4ea847359d1bd31e9cafde75 = new Cast<string,object>() { InstanceName = "Default" };
-            ConvertToEvent<string> id_4b94ac7fd4434b4ea6751f501b8eaa9d = new ConvertToEvent<string>() { InstanceName = "Default" };
-            ConvertToEvent<string> id_a0cf9e8153f24235b8672e8f2c5aef4d = new ConvertToEvent<string>() { InstanceName = "Default" };
-            ConvertToEvent<string> id_bdc7b5211833463ba5ddde6249b71158 = new ConvertToEvent<string>() { InstanceName = "Default" };
-            CreateAbstraction id_48f2e14b737742969006e5a067fde8da = new CreateAbstraction() { InstanceName = "Default", Layer = Enums.ALALayer.DomainAbstractions, WriteFile = true, FilePath = APP_DIRECTORY };
-            CreateAbstraction id_7839777c9d57437f84412e1b498e1427 = new CreateAbstraction() { InstanceName = "Default", Layer = Enums.ALALayer.Application, WriteFile = true, FilePath = APP_DIRECTORY };
-            CreateConnectionsFromJSON id_bd14b7b56e5b43d48292bb6ee2706f3f = new CreateConnectionsFromJSON() { InstanceName = "Default", Graph = mainGraph };
-            CreateVPGNsFromJSON id_67ce70e081f94919b8ee47d4eb305b1f = new CreateVPGNsFromJSON() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory, NodeStyle = nodeStyle, PortStyle = portStyle };
-            Data<Dictionary<string,string>> id_d6a4e708014943de868c7290bd160681 = new Data<Dictionary<string,string>>() { InstanceName = "Default", storedData = new Dictionary<string,string>() {{"A","a"},{"B","b"}} };
-            Data<IEnumerable<IPortConnection>> id_c81886b79d344934921bf9b69b8b3af9 = new Data<IEnumerable<IPortConnection>>() { InstanceName = "Default", Lambda = mainGraph.GetConnections };
-            Data<IVisualPortGraphNode> id_23a5fe2b3587408e9df5e94256ead20a = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_3784b9acfef8499795834a495d6f83a2 = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetLatestNode };
-            Data<IVisualPortGraphNode> id_5095928ff3f54c39aa0417b1cca9c969 = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_63ed925f29684c5db385cefefb6b6dfa = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_88a2f062f80d44cf82959f689ec9d48d = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_8fcd9c561a954d528282d3b561f4fe9a = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_a37f529cebeb4579833301089489c93b = new Data<IVisualPortGraphNode>() { InstanceName = "Default" };
-            Data<IVisualPortGraphNode> id_ad282ca7505348ffa6e1580db6073003 = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_d8af30a5ec074a94a9cbd052a5194f91 = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> id_f243d49f78914970beda200fca69a288 = new Data<IVisualPortGraphNode>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedNode };
-            Data<IVisualPortGraphNode> refreshDiagramLayout = new Data<IVisualPortGraphNode>() { InstanceName = "refreshDiagramLayout", Lambda = mainGraph.GetRoot };
-            Data<Port> id_4df5565e5cc74d80a2a2a85ae35373e6 = new Data<Port>() { InstanceName = "Default" };
-            Data<Port> id_c4d15148a1e44f94b2c224e4ac006f2c = new Data<Port>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedPort };
-            Data<Port> id_ec235ee670574ba3a3c1b7882df3005b = new Data<Port>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedPort };
-            Data<Port> id_ff149259cafe456d9d100e67375dfa01 = new Data<Port>() { InstanceName = "Default", Lambda = mainGraph.GetSelectedPort };
-            Data<string> id_20b52d9c5ffd4a40b0ec89ad945997c5 = new Data<string>() { InstanceName = "Default" };
-            Data<string> id_28ff30e197fe4cb9b40ff44efcc0f3dd = new Data<string>() { InstanceName = "Default", storedData = "ConstructorArgs" };
-            Data<string> id_307980ece0d34a65b2b69e58b0400ad7 = new Data<string>() { InstanceName = "Default", storedData = "Name" };
-            Data<string> id_50e48187384540708c950df8cbd511e2 = new Data<string>() { InstanceName = "Default" };
-            Data<string> id_52831ca26eb34f88867bc54a4011bc55 = new Data<string>() { InstanceName = "Default", storedData = "Properties" };
-            Data<string> id_5db913688cf343229b5b022d9d9eef4d = new Data<string>() { InstanceName = "Default", storedData = "Type" };
-            Data<string> id_b0c2ff43748f4ee4aabc3e9bed58b99d = new Data<string>() { InstanceName = "Default" };
-            Data<string> setDomainAbstractionTemplatesFileLocation = new Data<string>() { InstanceName = "setDomainAbstractionTemplatesFileLocation", storedData = System.IO.Path.Combine(APP_DIRECTORY,"abstractionTemplates.json") };
-            DataFlowConnector<Dictionary<string,string>> id_3ab6567c18b44f8698401afb8ba7b0c7 = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
-            DataFlowConnector<Dictionary<string,string>> id_41c01831f2c548eea710bc7766db0ee2 = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
-            DataFlowConnector<Dictionary<string,string>> id_e471de7bcb1845a1a60f0b824230a00f = new DataFlowConnector<Dictionary<string,string>>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_44388caa4a964fb588bbb8632f7b5fae = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_4bfcbdfaa7514af7ad35513cc6be635c = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_512b7d0231ac4dc59a1a9a22bcc6e650 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_57f1e5bdd918406e849d9f0eb5c6f848 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_5e6e3fe1f77d40f0ac8320a38a5ca32f = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_706acb0a3ea545b59bd8d3d022a1ddb5 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_a5ae3d0cd5ea4f89a79279b161b0f8ef = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<IVisualPortGraphNode> id_d64d68f5fbe74192b82d38c9318dc4b6 = new DataFlowConnector<IVisualPortGraphNode>() { InstanceName = "Default" };
-            DataFlowConnector<JToken> currentAbstractionTemplate = new DataFlowConnector<JToken>() { InstanceName = "currentAbstractionTemplate" };
-            DataFlowConnector<List<Port>> id_7cfec3ed54d04f169a715c147700ed47 = new DataFlowConnector<List<Port>>() { InstanceName = "Default", Data = new List<Port>() { new Port() { Type = "Port",Name = "p0",IsInputPort = true },new Port() { Type = "Port",Name = "p1",IsInputPort = false},new Port() { Type = "IEvent",Name = "p2",IsInputPort = false}} };
-            DataFlowConnector<List<Port>> id_c16ca284660f45679a81fd52607fec03 = new DataFlowConnector<List<Port>>() { InstanceName = "Default", Data = new List<Port>() { new Port() { Type = "Port",Name = "p0",IsInputPort = true },new Port() { Type = "Port",Name = "p1",IsInputPort = false},new Port() { Type = "IEvent",Name = "p2",IsInputPort = false}} };
-            DataFlowConnector<List<string>> abstractionTemplateTypes = new DataFlowConnector<List<string>>() { InstanceName = "abstractionTemplateTypes" };
-            DataFlowConnector<List<string>> id_2eb695817eb44bbf910abb5acae18e75 = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_651b4ab985874aa6abf6b8354322b0f1 = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_80fbb5a0a57a477f8cff681489fb2a1d = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_9438bab06adc4284b29a52063c06269b = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_98e6fe348eda4c089f1b1ecda4470d38 = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_b15fe1bfb8ea4c56a5332ac4cd16d89c = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<List<string>> id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2 = new DataFlowConnector<List<string>>() { InstanceName = "Default" };
-            DataFlowConnector<Point> id_e0cf4df5b331452cbf15f0806c93cae3 = new DataFlowConnector<Point>() { InstanceName = "Default" };
-            DataFlowConnector<Port> id_1bd1df9769a64645a11efd76789e261e = new DataFlowConnector<Port>() { InstanceName = "Default" };
-            DataFlowConnector<Port> id_4b90f593b4f54d7895e5c027e1fe045a = new DataFlowConnector<Port>() { InstanceName = "Default" };
-            DataFlowConnector<Port> id_6573107860ca42e1acd2edb39e4af23f = new DataFlowConnector<Port>() { InstanceName = "Default" };
-            DataFlowConnector<Port> id_a961ea5c67684cd9be8db19e5508d6bc = new DataFlowConnector<Port>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_00be3421cb494a9d98415a4f0c5cf240 = new DataFlowConnector<string>() { InstanceName = "Default", Data = "NewNode" };
-            DataFlowConnector<string> id_1fbd51c85a7a4f5d9861b9059f95d9bc = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_3c796a63d81949719a85f4c8dd1cfe8c = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_411e043c0dc6455cbd5c8b5a5aaa4408 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_4124e1350f3d437cb9379eaf22b6a892 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_4cc2810d4424461d885779ea461524e8 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_75b23a2bca964cc3855a25fdfdda253d = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_76e6991c29e74f6cb3c9dd8eeea60553 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_7c025bf582ea4cd59e16fbe05696259d = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_821a0f8e8c8149608e068ef40bd35d5c = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_911eb68dba704c12bd5afcf7eba7a357 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_ad5bca6c08de488e8825baa888f69bbb = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_b687a2136e6d4e88b5dba06d359c3147 = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_edb0165c192041dc860e4b959d9ce45a = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> id_f92ce910e32c48928f518addb5063e8d = new DataFlowConnector<string>() { InstanceName = "Default" };
-            DataFlowConnector<string> settingsFilePath = new DataFlowConnector<string>() { InstanceName = "settingsFilePath", Data = SETTINGS_FILEPATH };
-            DataFlowConnector<string> unparsedConstructorArgsString = new DataFlowConnector<string>() { InstanceName = "unparsedConstructorArgsString" };
-            DataFlowConnector<string> unparsedPropertiesString = new DataFlowConnector<string>() { InstanceName = "unparsedPropertiesString" };
-            DataFlowConnector<Tuple<string,Dictionary<string,string>>> newlyCreatedAbstractionTemplate = new DataFlowConnector<Tuple<string,Dictionary<string,string>>>() { InstanceName = "newlyCreatedAbstractionTemplate" };
-            DragRectMultiSelectNodes id_8ef091fb77c74638ad9f8c015cba207c = new DragRectMultiSelectNodes() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, DragRectStyle = dragRectStyle };
-            EditSetting id_126e7667e7d74d7f97e953ef306d1d63 = new EditSetting() { InstanceName = "Default", JSONPath = "$..LatestDiagramFilePath" };
-            EditSetting id_d6354c421bca48b2895e2426104ac94d = new EditSetting() { InstanceName = "Default", JSONPath = "$..ProjectFolderPath" };
-            EditSetting id_fb91efad04524a7e8807ac7796be254b = new EditSetting() { InstanceName = "Default", JSONPath = "$..LatestCodeFilePath" };
-            EventConnector addNewNodeConnector = new EventConnector() { InstanceName = "addNewNodeConnector" };
-            EventConnector addSubtreeToSelectedNode = new EventConnector() { InstanceName = "addSubtreeToSelectedNode" };
-            EventConnector id_0b7120e1a1e8497cbccd23143c37962c = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_193ac08eecfb4a4a912c611682eacf5b = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_1d31f5078cad49d5b7702910eeaa20a4 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_217c6c13105f4f9fbd9c5fa37762fba1 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_725d235d635a4146a1742630192b5698 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_9249e199685e42e99523221b2694bc43 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_af3e2fd88447433ab5460ed5879032bd = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_ba5fd8dd21b747cbb764d0c37b1ccd40 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_c2b411781c464b86880201607a2e1ee5 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_c5e2618f94d34279a81f129aaf56e02d = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_d3aaec237ab54dab8a28f57baba6aadf = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_e85579ffff934a2a8374894973464fc9 = new EventConnector() { InstanceName = "Default" };
-            EventConnector id_eb50e52083104a169d8c9fc12c4d0b9e = new EventConnector() { InstanceName = "Default" };
-            EventConnector initialiseApp = new EventConnector() { InstanceName = "initialiseApp" };
-            EventLambda id_13065e5e0bbd4f1aaee9ebd376f9c726 = new EventLambda() { InstanceName = "Default", Lambda = mainGraph.Clear };
-            EventLambda id_a4f7336dc7fb48ba908eb0f07315e72d = new EventLambda() { InstanceName = "Default", Lambda = undoHistory.Redo };
-            EventLambda id_b1ee7ebeff8944faab0eab9002064540 = new EventLambda() { InstanceName = "Default", Lambda = undoHistory.Undo };
-            EventLambda id_ce3ff0883b504c88be21e246df7d4a54 = new EventLambda() { InstanceName = "Default", Lambda = mainGraph.DeleteSelectedNodes };
-            EventLambda id_f964e6db04b84104bf69e4384732530b = new EventLambda() { InstanceName = "Default", Lambda = mainGraph.DeleteSelectedConnection };
-            ExtractALACode id_9547a5e7fd764ad0a1b3fc636f24e2d9 = new ExtractALACode() { InstanceName = "Default" };
-            FileBrowser id_0ca4e9a278fd45ddbb1083cea911253e = new FileBrowser() { InstanceName = "Default", Mode = "Open", Filter = "C# Files (*.cs)|*.cs;*.CS" };
-            FileBrowser id_a7ec7a9c75474eee8ccee5b9e0c0e94e = new FileBrowser() { InstanceName = "Default", Mode = "Open", Filter = "ALA Files (*.ala)|*.ala;*.ALA" };
-            FileBrowser id_b149f20f56d3445bba240173d3cc6b3e = new FileBrowser() { InstanceName = "Default", Mode = "Open", Filter = "C# Files (*.cs)|*.cs;*.CS" };
-            FileBrowser id_d2cd88ea57e04aae8cc57bdd1466b4d6 = new FileBrowser() { InstanceName = "Default", Mode = "Save", Filter = "ALA Files (*.ala)|*.ala;*.ALA", DefaultPath = Utilities.GetApplicationDirectory() };
-            FileReader id_22684335cf894258a07346efb51fed98 = new FileReader() { InstanceName = "Default" };
-            FileReader id_76741d199f48475cbaec774c4ffcd806 = new FileReader() { InstanceName = "Default" };
-            FileReader id_cdcf16842f164e89b234c1591cebf5d3 = new FileReader() { InstanceName = "Default" };
-            FileReader id_f034fbe6dce3465cbe6edada65c8d263 = new FileReader() { InstanceName = "Default" };
-            FileWriter id_c5d2d42c1be6413e92c567f58ebbe0a8 = new FileWriter() { InstanceName = "Default" };
-            FolderBrowser id_2c5c5676ebf643a88ea4568bbee5c460 = new FolderBrowser() { InstanceName = "Default" };
-            ForEach<IPortConnection> id_d18001b76b824b4eaadcd206701a2be4 = new ForEach<IPortConnection>() { InstanceName = "Default" };
-            ForEach<string> id_e0fbfce24b1d4c78b1b521515e82f020 = new ForEach<string>() { InstanceName = "Default" };
-            ForEach<string> id_e6fc28cbe37d4bdd86378e9e54b500ba = new ForEach<string>() { InstanceName = "Default" };
-            ForEach<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>> id_fe4cfcee326e43bbb5231a5de0115973 = new ForEach<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>() { InstanceName = "Default" };
-            GenerateCode id_5e0e0964797245f7a9ebaec14901ccac = new GenerateCode() { InstanceName = "Default", Graph = mainGraph };
-            GetSetting id_2ac88ef7fe0b47bbba634a8a45702a81 = new GetSetting("LatestDiagramFilePath" ) { InstanceName = "Default" };
-            GetSetting id_d048bf2542914af29725a1a0074bd773 = new GetSetting("LatestDiagramFilePath" ) { InstanceName = "Default" };
-            GetSetting id_e70bef52836e40a2a17c333a392b0548 = new GetSetting("LatestCodeFilePath" ) { InstanceName = "Default" };
-            Horizontal currentDiagramModeHoriz = new Horizontal() { InstanceName = "currentDiagramModeHoriz", Margin = new Thickness(10) };
-            Horizontal id_5f4945f32824499da007be8fd7deb435 = new Horizontal() { InstanceName = "Default", Ratios = new[] {15,75,10} };
-            Horizontal id_be7144a9493b458693681f9773618056 = new Horizontal() { InstanceName = "Default", Ratios = new[] {15,75,10} };
-            Horizontal mousePositionHoriz = new Horizontal() { InstanceName = "mousePositionHoriz", Margin = new Thickness(10) };
-            IfElse id_1d2a4e1acf8b444aad9365ee81c1ac88 = new IfElse() { InstanceName = "Default" };
-            InsertFileCodeLines id_7ca8d59d03ab4f06aad5827b56b26610 = new InsertFileCodeLines() { InstanceName = "Default", StartLandmark = "// BEGIN AUTO-GENERATED INSTANTIATIONS", EndLandmark = "// END AUTO-GENERATED INSTANTIATIONS", Indent = "            " };
-            InsertFileCodeLines id_9722e72251f54855b744639c5b96fda1 = new InsertFileCodeLines() { InstanceName = "Default", StartLandmark = "// BEGIN AUTO-GENERATED WIRING", EndLandmark = "// END AUTO-GENERATED WIRING", Indent = "            " };
-            InverseStringFormat id_f4f07ea01bf5480397359bf8f7e24704 = new InverseStringFormat() { InstanceName = "Default", Format = "{TypeOrVar} {Name} = new {Type}({ConstructorArgs}) {{Properties}};" };
-            JSONParser id_18191d3fb86d460ab709451888c40955 = new JSONParser() { InstanceName = "Default", JSONPath = "$..NodeIds" };
-            JSONParser id_2fa52c0f925d4df9b693810373f63348 = new JSONParser() { InstanceName = "Default", JSONPath = "$..Nodes" };
-            JSONParser id_80d1de4e1ca94967b085e895f3d25443 = new JSONParser() { InstanceName = "Default", JSONPath = "$..Connections" };
-            JSONParser id_8bed896c1b3c4a79b772d859c847c22b = new JSONParser() { InstanceName = "Default", JSONPath = "$..SubtreeRoot.Id" };
-            JSONParser id_e366cba16d6443b6b36846f86aeff130 = new JSONParser() { InstanceName = "Default", JSONPath = "$..NodeIds" };
-            JSONWriter<Dictionary<string,JToken>> saveAbstractionTemplatesToFile = new JSONWriter<Dictionary<string,JToken>>(System.IO.Path.Combine(APP_DIRECTORY,"abstractionTemplates.json") ) { InstanceName = "saveAbstractionTemplatesToFile" };
-            KeyEvent addChildNodeEvent = new KeyEvent("KeyDown" ) { InstanceName = "addChildNodeEvent", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && args.Key == Key.A };
-            KeyEvent id_15f9d7690a2942668ecc583d0f914b20 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)  &&  args.Key == Key.Delete };
-            KeyEvent id_1a0f4097208c4ab284b189bf20d13144 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftShift) && args.Key == Key.S };
-            KeyEvent id_2a57f9b0cbaf44228172791960b2f4f6 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.Z };
-            KeyEvent id_50f3007aa7044fc8a9ba73e553e01adc = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.C };
-            KeyEvent id_6301a2d8482d418190d1b0f9eacf940e = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && args.Key == Key.R };
-            KeyEvent id_651e418cd9c84bf5aecfa67eb3b2d83c = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.P };
-            KeyEvent id_6d5a4532a2ab493687cf1364d4cca9c4 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.Y };
-            KeyEvent id_8185a5f1ad134ede825c7013a1b8c332 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) && Keyboard.IsKeyDown(Key.Space) };
-            KeyEvent id_b17e9b350e4147329b84bc4454d7a891 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.Q };
-            KeyEvent id_c33489f097484f1f931e138bf8196f7d = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && args.Key == Key.O };
-            KeyEvent id_c8dcb3fa42e947ccb3bb5b4a51e497e7 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.G };
-            KeyEvent id_ed2e008e8c7e45efb12a33509d8b4cc4 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && args.Key == Key.V };
-            KeyEvent id_f375aad6e9224e4ba28ef0bb07ec6bf2 = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected)  && Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.LeftShift) && args.Key == Key.S };
-            KeyEvent id_fe700e3f70184783940459fc19ee659c = new KeyEvent("KeyDown" ) { InstanceName = "Default", Condition = args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected) && Keyboard.IsKeyDown(Key.E) };
-            LookupTable<string,Dictionary<string,string>> id_e04a847325bc4703b8de92a10b2e75ed = new LookupTable<string,Dictionary<string,string>>() { InstanceName = "Default" };
-            LookupTable<string,JToken> abstractionTemplates = new LookupTable<string,JToken>() { InstanceName = "abstractionTemplates" };
-            LookupTable<string,string> id_129243f50531479fb817c9ca866f24eb = new LookupTable<string,string>() { InstanceName = "Default" };
-            LookupTable<string,string> id_736e067094ca4479b4d51484d4979aa4 = new LookupTable<string,string>() { InstanceName = "Default" };
-            LookupTable<string,string> id_d6c3ad8f1ec642959f21ad5e67528a26 = new LookupTable<string,string>() { InstanceName = "Default" };
-            LookupTable<string,string> id_fe380a323be94bc0a4611cae9211790a = new LookupTable<string,string>() { InstanceName = "Default" };
-            MenuBar id_326cdabb659f4c37b66daa7ad3ed6155 = new MenuBar() { InstanceName = "Default", Background = PRIMARY_UX_BG_COLOUR, Foreground = PRIMARY_UX_FG_COLOUR };
-            MenuItem id_2a5fb749c9dc4f6880f55c124261246e = new MenuItem("Open Project Folder" ) { InstanceName = "Default" };
-            MenuItem id_53bd59ce7e5243a297da6f78fc494e2f = new MenuItem("Help" ) { InstanceName = "Default" };
-            MenuItem id_564ed95481054589ab6059b110b8af7a = new MenuItem("Open Debug Info" ) { InstanceName = "Default" };
-            MenuItem id_5a075d3abdd94340bf112c17d9d3738f = new MenuItem("Preferences" ) { InstanceName = "Default" };
-            MenuItem id_5f6a7fde612d41749444eaab610a2a50 = new MenuItem("Edit" ) { InstanceName = "Default" };
-            MenuItem id_8ae7422b68a24f648234168550b7d7cf = new MenuItem("Save" ) { InstanceName = "Default" };
-            MenuItem id_8f20f68bb4ea4c0b8e33de077f32c35c = new MenuItem("Open Diagram" ) { InstanceName = "Default" };
-            MenuItem id_a3f53bfa6ea04ebdaa5816f9bf1273b2 = new MenuItem("Open Code File to Edit" ) { InstanceName = "Default" };
-            MenuItem id_a8bdd2ae821242a4a89607db601a8ecd = new MenuItem("File" ) { InstanceName = "Default" };
-            MenuItem id_ac9c725c30d94bc4aca3a74a8242f9ea = new MenuItem("New User Guide" ) { InstanceName = "Default" };
-            MenuItem id_d5b1d9d4f564496eac0ce8aa0242f37f = new MenuItem("Create Diagram From Code" ) { InstanceName = "Default" };
-            MenuItem id_d866e07dff2745f48dbcdf90d31f8f6f = new MenuItem("Save As" ) { InstanceName = "Default" };
-            MenuItem id_e9be6ad589cb41ada5f3dabdbf4dad20 = new MenuItem("Generate Code" ) { InstanceName = "Default" };
-            NewAbstractionTemplateTab id_b844b78ad0e54ca8b3ea6eb6bb831c2e = new NewAbstractionTemplateTab() { InstanceName = "Default" };
-            NewVisualPortGraphNode id_144ab8b860b6473db75b7ee5594a2f6e = new NewVisualPortGraphNode() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory, NodeStyle = nodeStyle, PortStyle = portStyle };
-            NewVisualPortGraphNode id_f9559f3d5d6b4bd09ab31db34d2a9444 = new NewVisualPortGraphNode() { InstanceName = "Default", Graph = mainGraph, StateTransition = stateTransition, UndoHistory = undoHistory, NodeStyle = nodeStyle, PortStyle = portStyle };
-            OutputTab id_66690e3d478746f485717c3de09d7e75 = new OutputTab() { InstanceName = "Default" };
-            PopupWindow id_4783415fded6420a83e0b214a3abf2e0 = new PopupWindow("New User Guide" ) { InstanceName = "Default", MinWidth = 720, Resize = SizeToContent.WidthAndHeight };
-            PopupWindow id_cef138236635424782b3dd215a86008f = new PopupWindow("Debug Info" ) { InstanceName = "Default", MinHeight = 600, MinWidth = 600 };
-            PopupWindow id_d4cff65ce0a24619b2f59178001f2041 = new PopupWindow("Preferences" ) { InstanceName = "Default", MinWidth = 720, Resize = SizeToContent.Height };
-            RightTreeLayout<IVisualPortGraphNode> id_5de5980d74a1467c8a9462e4427422bf = new RightTreeLayout<IVisualPortGraphNode>() { InstanceName = "Default", GetID = n => n.Id, GetWidth = n => (n as VisualPortGraphNode).Width, GetHeight = n => (n as VisualPortGraphNode).Height, SetX = (n,x) => n.PositionX = x, SetY = (n,y) => n.PositionY = y, GetChildren = n => n.Graph.GetChildren(n.Id), HorizontalGap = 100, VerticalGap = 20, InitialX = 50, InitialY = 50 };
-            SaveGraphToFile id_367efd63e1234a75b0c82f727bce73f9 = new SaveGraphToFile() { InstanceName = "Default", Graph = mainGraph };
-            SaveGraphToFile id_ad5da8fd9e5e45bf81184e4b54864a0c = new SaveGraphToFile() { InstanceName = "Default", Graph = mainGraph };
-            StateChangeListener checkToResetDiagramFocus = new StateChangeListener() { InstanceName = "checkToResetDiagramFocus", StateTransition = stateTransition, CurrentStateShouldMatch = Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected };
-            StateChangeListener id_2534923aff934248a5493e6d293ad205 = new StateChangeListener() { InstanceName = "Default", StateTransition = stateTransition };
-            StateTransitionEvent<Enums.DiagramMode> id_da10fa6481e2458fa526983b0036cb4d = new StateTransitionEvent<Enums.DiagramMode>(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected, Enums.DiagramMode.TextEditing ) { InstanceName = "Default" };
-            StringMap id_591aaec0820e498c85ae6898d47a7935 = new StringMap() { InstanceName = "Default" };
-            StringSequenceExtractor id_258247722bc042a3b68b6d628416a490 = new StringSequenceExtractor() { InstanceName = "Default", Separator = ',', ConsiderBracketBalance = true, StartingBrackets = "", TrimEntries = true };
-            StringSequenceExtractor id_6df96338c4fd4b2fa8f031b5a1126e73 = new StringSequenceExtractor() { InstanceName = "Default", Separator = ',', ConsiderBracketBalance = true, StartingBrackets = "", TrimEntries = true };
-            Tab id_53214f9414b6403aa7b5606c2fdcabc3 = new Tab(title: "Menu" ) { InstanceName = "Default" };
-            Tab id_9648955167cb40349ef63dd02441544b = new Tab(title: "Controls" ) { InstanceName = "Default" };
-            Tab id_9dd636737f044cc2a09a856a53d924fe = new Tab(title: "Functionality" ) { InstanceName = "Default" };
-            TabContainer id_0915024382b54ddc9024fa295cec6c6b = new TabContainer() { InstanceName = "Default" };
-            TabContainer id_86e0bcc1baa94327a0cb2cc59a9c84ad = new TabContainer() { InstanceName = "Default" };
-            Text currentMousePositionText = new Text("(0" + "," + " " + "0)" ) { InstanceName = "currentMousePositionText", Color = Brushes.Black };
-            Text id_0cffa533202d4848a0cef1107ee8bcce = new Text(text: Utilities.ReadFileSafely(userGuidePaths["Menu"],"Error: newUserGuide_Menu.txt not found") ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Text id_45319d735b1040419b709825dc1cf23a = new Text(text: Utilities.ReadFileSafely(userGuidePaths["Controls"],"Error: newUserGuide_Controls.txt not found") ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Text id_4d5c2d30a848480ea51139695f487d9e = new Text(text: Utilities.ReadFileSafely(userGuidePaths["Functionality"],"Error: newUserGuide_Functionality.txt not found") ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Text id_8bf217c805564f4fb5029c180ae5d85e = new Text(text: "Diagram location:" ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Text id_938e460d35b74b5c8ae7227f1f8b8cc0 = new Text("Current mouse position: " ) { InstanceName = "Default", Color = Brushes.Black };
-            Text id_b90ac39285c04875bdaae2919a522fed = new Text("Current diagram mode: " ) { InstanceName = "Default", Color = Brushes.Black };
-            Text id_c835aee22753415894840b4d3dd6582f = new Text(text: "Code file location:" ) { InstanceName = "Default", Margin = new Thickness(5) };
-            Text id_fd0e259a2e644bd8a5f548c225a5e2cd = new Text("None" ) { InstanceName = "Default", Color = Brushes.Black };
-            TextBox id_8de11133b1074cfe915e847951e130a8 = new TextBox() { InstanceName = "Default", Margin = new Thickness(5) };
-            TextBox id_9a2dda5813924951b284fc2b89e6b4bf = new TextBox() { InstanceName = "Default", Margin = new Thickness(5) };
-            TextClipboard id_5018f4c773a34ced85806dd175659e9a = new TextClipboard() { InstanceName = "Default" };
-            TextClipboard id_d65a994fdb9d450cba8cd914cad29f72 = new TextClipboard() { InstanceName = "Default" };
-            Vertical id_218f2d941be344289ee5dd3d54b3dedd = new Vertical() { InstanceName = "Default" };
-            Vertical id_731ccda5c9e244fb96a6007ea9455606 = new Vertical() { InstanceName = "Default", VerticalScrollBarVisible = true, HorizontalScrollBarVisible = true, Layouts = new[] {0,2} };
-            Vertical id_9d790bbf1430492a8e7b01d0633d5c0b = new Vertical() { InstanceName = "Default", Layouts = new[] {2,0} };
-            VPGNContextMenu id_c5563a5bfcc94cc781a29126f4fb2aab = new VPGNContextMenu() { InstanceName = "Default" };
-            // END AUTO-GENERATED INSTANTIATIONS FOR Application.xmind
+        }
 
-            // BEGIN AUTO-GENERATED WIRING FOR Application.xmind
-            mainWindow.WireTo(id_731ccda5c9e244fb96a6007ea9455606, "iuiStructure"); // (@MainWindow (mainWindow).iuiStructure) -- [IUI] --> (Vertical (id_731ccda5c9e244fb96a6007ea9455606).child)
-            mainWindow.WireTo(initialiseApp, "appStart"); // (@MainWindow (mainWindow).appStart) -- [IEvent] --> (EventConnector (initialiseApp).NEEDNAME)
-            id_731ccda5c9e244fb96a6007ea9455606.WireTo(id_326cdabb659f4c37b66daa7ad3ed6155, "children"); // (Vertical (id_731ccda5c9e244fb96a6007ea9455606).children) -- [List<IUI>] --> (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).child)
-            id_731ccda5c9e244fb96a6007ea9455606.WireTo(id_9d790bbf1430492a8e7b01d0633d5c0b, "children"); // (Vertical (id_731ccda5c9e244fb96a6007ea9455606).children) -- [List<IUI>] --> (Vertical (id_9d790bbf1430492a8e7b01d0633d5c0b).child)
-            id_326cdabb659f4c37b66daa7ad3ed6155.WireTo(id_a8bdd2ae821242a4a89607db601a8ecd, "children"); // (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).children) -- [IUI] --> (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).child)
-            id_326cdabb659f4c37b66daa7ad3ed6155.WireTo(id_5f6a7fde612d41749444eaab610a2a50, "children"); // (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).children) -- [IUI] --> (MenuItem (id_5f6a7fde612d41749444eaab610a2a50).child)
-            id_326cdabb659f4c37b66daa7ad3ed6155.WireTo(id_53bd59ce7e5243a297da6f78fc494e2f, "children"); // (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).children) -- [IUI] --> (MenuItem (id_53bd59ce7e5243a297da6f78fc494e2f).child)
-            id_326cdabb659f4c37b66daa7ad3ed6155.WireTo(id_e9be6ad589cb41ada5f3dabdbf4dad20, "children"); // (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).children) -- [IUI] --> (MenuItem (id_e9be6ad589cb41ada5f3dabdbf4dad20).child)
-            id_326cdabb659f4c37b66daa7ad3ed6155.WireTo(id_564ed95481054589ab6059b110b8af7a, "children"); // (MenuBar (id_326cdabb659f4c37b66daa7ad3ed6155).children) -- [IUI] --> (MenuItem (id_564ed95481054589ab6059b110b8af7a).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_2a5fb749c9dc4f6880f55c124261246e, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_2a5fb749c9dc4f6880f55c124261246e).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_8f20f68bb4ea4c0b8e33de077f32c35c, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_8f20f68bb4ea4c0b8e33de077f32c35c).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_a3f53bfa6ea04ebdaa5816f9bf1273b2, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_a3f53bfa6ea04ebdaa5816f9bf1273b2).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_8ae7422b68a24f648234168550b7d7cf, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_8ae7422b68a24f648234168550b7d7cf).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_d866e07dff2745f48dbcdf90d31f8f6f, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_d866e07dff2745f48dbcdf90d31f8f6f).child)
-            id_a8bdd2ae821242a4a89607db601a8ecd.WireTo(id_d5b1d9d4f564496eac0ce8aa0242f37f, "children"); // (MenuItem (id_a8bdd2ae821242a4a89607db601a8ecd).children) -- [IUI] --> (MenuItem (id_d5b1d9d4f564496eac0ce8aa0242f37f).child)
-            id_2a5fb749c9dc4f6880f55c124261246e.WireTo(id_2c5c5676ebf643a88ea4568bbee5c460, "clickedEvent"); // (MenuItem (id_2a5fb749c9dc4f6880f55c124261246e).clickedEvent) -- [IEvent] --> (FolderBrowser (id_2c5c5676ebf643a88ea4568bbee5c460).openBrowser)
-            id_2c5c5676ebf643a88ea4568bbee5c460.WireTo(id_b687a2136e6d4e88b5dba06d359c3147, "selectedFolderPathOutput"); // (FolderBrowser (id_2c5c5676ebf643a88ea4568bbee5c460).selectedFolderPathOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_b687a2136e6d4e88b5dba06d359c3147).dataInput)
-            id_b687a2136e6d4e88b5dba06d359c3147.WireTo(id_ad62adfa4ea847359d1bd31e9cafde75, "fanoutList"); // (DataFlowConnector<string> (id_b687a2136e6d4e88b5dba06d359c3147).fanoutList) -- [IDataFlow<string>] --> (Cast<string,object> (id_ad62adfa4ea847359d1bd31e9cafde75).input)
-            id_ad62adfa4ea847359d1bd31e9cafde75.WireTo(id_d6354c421bca48b2895e2426104ac94d, "output"); // (Cast<string,object> (id_ad62adfa4ea847359d1bd31e9cafde75).output) -- [IDataFlow<object>] --> (EditSetting (id_d6354c421bca48b2895e2426104ac94d).valueInput)
-            id_d6354c421bca48b2895e2426104ac94d.WireTo(settingsFilePath, "filePathInput"); // (EditSetting (id_d6354c421bca48b2895e2426104ac94d).filePathInput) -- [IDataFlowB<string>] --> (@DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_8f20f68bb4ea4c0b8e33de077f32c35c.WireTo(id_e85579ffff934a2a8374894973464fc9, "clickedEvent"); // (MenuItem (id_8f20f68bb4ea4c0b8e33de077f32c35c).clickedEvent) -- [IEvent] --> (EventConnector (id_e85579ffff934a2a8374894973464fc9).eventInput)
-            id_e85579ffff934a2a8374894973464fc9.WireTo(id_a7ec7a9c75474eee8ccee5b9e0c0e94e, "fanoutList"); // (EventConnector (id_e85579ffff934a2a8374894973464fc9).fanoutList) -- [IEvent] --> (FileBrowser (id_a7ec7a9c75474eee8ccee5b9e0c0e94e).openBrowser)
-            id_a7ec7a9c75474eee8ccee5b9e0c0e94e.WireTo(id_911eb68dba704c12bd5afcf7eba7a357, "selectedFilePathOutput"); // (FileBrowser (id_a7ec7a9c75474eee8ccee5b9e0c0e94e).selectedFilePathOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).dataInput)
-            id_911eb68dba704c12bd5afcf7eba7a357.WireTo(id_a0cf9e8153f24235b8672e8f2c5aef4d, "fanoutList"); // (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).fanoutList) -- [IDataFlow<string>] --> (ConvertToEvent<string> (id_a0cf9e8153f24235b8672e8f2c5aef4d).start)
-            id_911eb68dba704c12bd5afcf7eba7a357.WireTo(id_76741d199f48475cbaec774c4ffcd806, "fanoutList"); // (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).fanoutList) -- [IDataFlow<string>] --> (FileReader (id_76741d199f48475cbaec774c4ffcd806).filePathInput)
-            id_911eb68dba704c12bd5afcf7eba7a357.WireTo(id_03c7d3d4376a45b0b3d0369fd6196e73, "fanoutList"); // (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).fanoutList) -- [IDataFlow<string>] --> (Cast<string,object> (id_03c7d3d4376a45b0b3d0369fd6196e73).input)
-            id_911eb68dba704c12bd5afcf7eba7a357.WireTo(id_9a2dda5813924951b284fc2b89e6b4bf, "fanoutList"); // (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_9a2dda5813924951b284fc2b89e6b4bf).NEEDNAME)
-            id_a0cf9e8153f24235b8672e8f2c5aef4d.WireTo(id_13065e5e0bbd4f1aaee9ebd376f9c726, "eventOutput"); // (ConvertToEvent<string> (id_a0cf9e8153f24235b8672e8f2c5aef4d).eventOutput) -- [IEvent] --> (EventLambda (id_13065e5e0bbd4f1aaee9ebd376f9c726).start)
-            id_76741d199f48475cbaec774c4ffcd806.WireTo(id_4124e1350f3d437cb9379eaf22b6a892, "fileContentOutput"); // (FileReader (id_76741d199f48475cbaec774c4ffcd806).fileContentOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).dataInput)
-            id_03c7d3d4376a45b0b3d0369fd6196e73.WireTo(id_126e7667e7d74d7f97e953ef306d1d63, "output"); // (Cast<string,object> (id_03c7d3d4376a45b0b3d0369fd6196e73).output) -- [IDataFlow<object>] --> (EditSetting (id_126e7667e7d74d7f97e953ef306d1d63).valueInput)
-            id_126e7667e7d74d7f97e953ef306d1d63.WireTo(settingsFilePath, "filePathInput"); // (EditSetting (id_126e7667e7d74d7f97e953ef306d1d63).filePathInput) -- [IDataFlowB<string>] --> (@DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_a3f53bfa6ea04ebdaa5816f9bf1273b2.WireTo(id_217c6c13105f4f9fbd9c5fa37762fba1, "clickedEvent"); // (MenuItem (id_a3f53bfa6ea04ebdaa5816f9bf1273b2).clickedEvent) -- [IEvent] --> (EventConnector (id_217c6c13105f4f9fbd9c5fa37762fba1).eventInput)
-            id_217c6c13105f4f9fbd9c5fa37762fba1.WireTo(id_b149f20f56d3445bba240173d3cc6b3e, "fanoutList"); // (EventConnector (id_217c6c13105f4f9fbd9c5fa37762fba1).fanoutList) -- [IEvent] --> (FileBrowser (id_b149f20f56d3445bba240173d3cc6b3e).openBrowser)
-            id_b149f20f56d3445bba240173d3cc6b3e.WireTo(id_1fbd51c85a7a4f5d9861b9059f95d9bc, "selectedFilePathOutput"); // (FileBrowser (id_b149f20f56d3445bba240173d3cc6b3e).selectedFilePathOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).dataInput)
-            id_20b52d9c5ffd4a40b0ec89ad945997c5.WireTo(id_1fbd51c85a7a4f5d9861b9059f95d9bc, "inputDataB"); // (Data<string> (id_20b52d9c5ffd4a40b0ec89ad945997c5).inputDataB) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).NEEDNAME)
-            id_1fbd51c85a7a4f5d9861b9059f95d9bc.WireTo(id_22684335cf894258a07346efb51fed98, "fanoutList"); // (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).fanoutList) -- [IDataFlow<string>] --> (FileReader (id_22684335cf894258a07346efb51fed98).filePathInput)
-            id_1fbd51c85a7a4f5d9861b9059f95d9bc.WireTo(id_422e47c9692441a1a594dfe3aed6bd12, "fanoutList"); // (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).fanoutList) -- [IDataFlow<string>] --> (Cast<string,object> (id_422e47c9692441a1a594dfe3aed6bd12).input)
-            id_1fbd51c85a7a4f5d9861b9059f95d9bc.WireTo(id_8de11133b1074cfe915e847951e130a8, "fanoutList"); // (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_8de11133b1074cfe915e847951e130a8).textInput)
-            id_20b52d9c5ffd4a40b0ec89ad945997c5.WireTo(id_22684335cf894258a07346efb51fed98, "dataOutput"); // (Data<string> (id_20b52d9c5ffd4a40b0ec89ad945997c5).dataOutput) -- [IDataFlow<string>] --> (FileReader (id_22684335cf894258a07346efb51fed98).filePathInput)
-            id_22684335cf894258a07346efb51fed98.WireTo(id_7ca8d59d03ab4f06aad5827b56b26610, "fileContentOutput"); // (FileReader (id_22684335cf894258a07346efb51fed98).fileContentOutput) -- [IDataFlow<string>] --> (InsertFileCodeLines (id_7ca8d59d03ab4f06aad5827b56b26610).fileContentsInput)
-            id_422e47c9692441a1a594dfe3aed6bd12.WireTo(id_fb91efad04524a7e8807ac7796be254b, "output"); // (Cast<string,object> (id_422e47c9692441a1a594dfe3aed6bd12).output) -- [IDataFlow<object>] --> (EditSetting (id_fb91efad04524a7e8807ac7796be254b).valueInput)
-            id_fb91efad04524a7e8807ac7796be254b.WireTo(settingsFilePath, "filePathInput"); // (EditSetting (id_fb91efad04524a7e8807ac7796be254b).filePathInput) -- [IDataFlowB<string>] --> (@DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_8ae7422b68a24f648234168550b7d7cf.WireTo(id_d048bf2542914af29725a1a0074bd773, "clickedEvent"); // (MenuItem (id_8ae7422b68a24f648234168550b7d7cf).clickedEvent) -- [IEvent] --> (GetSetting (id_d048bf2542914af29725a1a0074bd773).start)
-            id_d048bf2542914af29725a1a0074bd773.WireTo(settingsFilePath, "filePathInput"); // (GetSetting (id_d048bf2542914af29725a1a0074bd773).filePathInput) -- [IDataFlowB<string>] --> (@DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_d048bf2542914af29725a1a0074bd773.WireTo(id_7c025bf582ea4cd59e16fbe05696259d, "settingJsonOutput"); // (GetSetting (id_d048bf2542914af29725a1a0074bd773).settingJsonOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_7c025bf582ea4cd59e16fbe05696259d).dataInput)
-            id_7c025bf582ea4cd59e16fbe05696259d.WireTo(id_bd9c43f53b5043c8b76e6f6912138554, "fanoutList"); // (DataFlowConnector<string> (id_7c025bf582ea4cd59e16fbe05696259d).fanoutList) -- [IDataFlow<string>] --> (Apply<string,bool> (id_bd9c43f53b5043c8b76e6f6912138554).input)
-            id_bd9c43f53b5043c8b76e6f6912138554.WireTo(id_1d2a4e1acf8b444aad9365ee81c1ac88, "output"); // (Apply<string,bool> (id_bd9c43f53b5043c8b76e6f6912138554).output) -- [IDataFlow<bool>] --> (IfElse (id_1d2a4e1acf8b444aad9365ee81c1ac88).condition)
-            id_1d2a4e1acf8b444aad9365ee81c1ac88.WireTo(id_b0c2ff43748f4ee4aabc3e9bed58b99d, "ifOutput"); // (IfElse (id_1d2a4e1acf8b444aad9365ee81c1ac88).ifOutput) -- [IEvent] --> (Data<string> (id_b0c2ff43748f4ee4aabc3e9bed58b99d).start)
-            id_1d2a4e1acf8b444aad9365ee81c1ac88.WireTo(id_d2cd88ea57e04aae8cc57bdd1466b4d6, "elseOutput"); // (IfElse (id_1d2a4e1acf8b444aad9365ee81c1ac88).elseOutput) -- [IEvent] --> (FileBrowser (id_d2cd88ea57e04aae8cc57bdd1466b4d6).openBrowser)
-            id_b0c2ff43748f4ee4aabc3e9bed58b99d.WireTo(id_7c025bf582ea4cd59e16fbe05696259d, "inputDataB"); // (Data<string> (id_b0c2ff43748f4ee4aabc3e9bed58b99d).inputDataB) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_7c025bf582ea4cd59e16fbe05696259d).dataOutputB)
-            id_b0c2ff43748f4ee4aabc3e9bed58b99d.WireTo(id_ad5da8fd9e5e45bf81184e4b54864a0c, "dataOutput"); // (Data<string> (id_b0c2ff43748f4ee4aabc3e9bed58b99d).dataOutput) -- [IDataFlow<string>] --> (SaveGraphToFile (id_ad5da8fd9e5e45bf81184e4b54864a0c).filePathInput)
-            id_ad5da8fd9e5e45bf81184e4b54864a0c.WireTo(id_9249e199685e42e99523221b2694bc43, "complete"); // (SaveGraphToFile (id_ad5da8fd9e5e45bf81184e4b54864a0c).complete) -- [IEvent] --> (EventConnector (id_9249e199685e42e99523221b2694bc43).eventInput)
-            id_d866e07dff2745f48dbcdf90d31f8f6f.WireTo(id_d2cd88ea57e04aae8cc57bdd1466b4d6, "clickedEvent"); // (MenuItem (id_d866e07dff2745f48dbcdf90d31f8f6f).clickedEvent) -- [IEvent] --> (FileBrowser (id_d2cd88ea57e04aae8cc57bdd1466b4d6).openBrowser)
-            id_d2cd88ea57e04aae8cc57bdd1466b4d6.WireTo(id_edb0165c192041dc860e4b959d9ce45a, "selectedFilePathOutput"); // (FileBrowser (id_d2cd88ea57e04aae8cc57bdd1466b4d6).selectedFilePathOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_edb0165c192041dc860e4b959d9ce45a).dataInput)
-            id_edb0165c192041dc860e4b959d9ce45a.WireTo(id_367efd63e1234a75b0c82f727bce73f9, "fanoutList"); // (DataFlowConnector<string> (id_edb0165c192041dc860e4b959d9ce45a).fanoutList) -- [IDataFlow<string>] --> (SaveGraphToFile (id_367efd63e1234a75b0c82f727bce73f9).filePathInput)
-            id_edb0165c192041dc860e4b959d9ce45a.WireTo(id_9a2dda5813924951b284fc2b89e6b4bf, "fanoutList"); // (DataFlowConnector<string> (id_edb0165c192041dc860e4b959d9ce45a).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_9a2dda5813924951b284fc2b89e6b4bf).textInput)
-            id_edb0165c192041dc860e4b959d9ce45a.WireTo(id_03c7d3d4376a45b0b3d0369fd6196e73, "fanoutList"); // (DataFlowConnector<string> (id_edb0165c192041dc860e4b959d9ce45a).fanoutList) -- [IDataFlow<string>] --> (Cast<string,object> (id_03c7d3d4376a45b0b3d0369fd6196e73).input)
-            id_367efd63e1234a75b0c82f727bce73f9.WireTo(id_9249e199685e42e99523221b2694bc43, "complete"); // (SaveGraphToFile (id_367efd63e1234a75b0c82f727bce73f9).complete) -- [IEvent] --> (EventConnector (id_9249e199685e42e99523221b2694bc43).eventInput)
-            id_d5b1d9d4f564496eac0ce8aa0242f37f.WireTo(id_0b7120e1a1e8497cbccd23143c37962c, "clickedEvent"); // (MenuItem (id_d5b1d9d4f564496eac0ce8aa0242f37f).clickedEvent) -- [IEvent] --> (EventConnector (id_0b7120e1a1e8497cbccd23143c37962c).eventInput)
-            id_0b7120e1a1e8497cbccd23143c37962c.WireTo(id_0ca4e9a278fd45ddbb1083cea911253e, "fanoutList"); // (EventConnector (id_0b7120e1a1e8497cbccd23143c37962c).fanoutList) -- [IEvent] --> (FileBrowser (id_0ca4e9a278fd45ddbb1083cea911253e).openBrowser)
-            id_0ca4e9a278fd45ddbb1083cea911253e.WireTo(id_75b23a2bca964cc3855a25fdfdda253d, "selectedFilePathOutput"); // (FileBrowser (id_0ca4e9a278fd45ddbb1083cea911253e).selectedFilePathOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_75b23a2bca964cc3855a25fdfdda253d).dataInput)
-            id_75b23a2bca964cc3855a25fdfdda253d.WireTo(id_cdcf16842f164e89b234c1591cebf5d3, "fanoutList"); // (DataFlowConnector<string> (id_75b23a2bca964cc3855a25fdfdda253d).fanoutList) -- [IDataFlow<string>] --> (FileReader (id_cdcf16842f164e89b234c1591cebf5d3).filePathInput)
-            id_cdcf16842f164e89b234c1591cebf5d3.WireTo(id_9547a5e7fd764ad0a1b3fc636f24e2d9, "fileContentOutput"); // (FileReader (id_cdcf16842f164e89b234c1591cebf5d3).fileContentOutput) -- [IDataFlow<string>] --> (ExtractALACode (id_9547a5e7fd764ad0a1b3fc636f24e2d9).codeInput)
-            id_9547a5e7fd764ad0a1b3fc636f24e2d9.WireTo(id_439d102714d245929de8b14c55d40c1d, "instantiationCodeOutput"); // (ExtractALACode (id_9547a5e7fd764ad0a1b3fc636f24e2d9).instantiationCodeOutput) -- [IDataFlow<string>] --> (Apply<string,IEnumerable<string>> (id_439d102714d245929de8b14c55d40c1d).input)
-            id_9547a5e7fd764ad0a1b3fc636f24e2d9.WireTo(id_7af338faa6bb48c29d1b583377d6d0f0, "wiringCodeOutput"); // (ExtractALACode (id_9547a5e7fd764ad0a1b3fc636f24e2d9).wiringCodeOutput) -- [IDataFlow<string>] --> (Apply<string,IEnumerable<string>> (id_7af338faa6bb48c29d1b583377d6d0f0).input)
-            id_439d102714d245929de8b14c55d40c1d.WireTo(id_e0fbfce24b1d4c78b1b521515e82f020, "output"); // (Apply<string,IEnumerable<string>> (id_439d102714d245929de8b14c55d40c1d).output) -- [IDataFlow<IEnumerable<string>>] --> (ForEach<string> (id_e0fbfce24b1d4c78b1b521515e82f020).collectionInput)
-            id_e0fbfce24b1d4c78b1b521515e82f020.WireTo(id_76e6991c29e74f6cb3c9dd8eeea60553, "elementOutput"); // (ForEach<string> (id_e0fbfce24b1d4c78b1b521515e82f020).elementOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_76e6991c29e74f6cb3c9dd8eeea60553).dataInput)
-            id_76e6991c29e74f6cb3c9dd8eeea60553.WireTo(id_f4f07ea01bf5480397359bf8f7e24704, "fanoutList"); // (DataFlowConnector<string> (id_76e6991c29e74f6cb3c9dd8eeea60553).fanoutList) -- [IDataFlow<string>] --> (InverseStringFormat (id_f4f07ea01bf5480397359bf8f7e24704).stringInput)
-            id_76e6991c29e74f6cb3c9dd8eeea60553.WireTo(id_4b94ac7fd4434b4ea6751f501b8eaa9d, "fanoutList"); // (DataFlowConnector<string> (id_76e6991c29e74f6cb3c9dd8eeea60553).fanoutList) -- [IDataFlow<string>] --> (ConvertToEvent<string> (id_4b94ac7fd4434b4ea6751f501b8eaa9d).start)
-            id_f4f07ea01bf5480397359bf8f7e24704.WireTo(id_3ab6567c18b44f8698401afb8ba7b0c7, "extractedParametersOutput"); // (InverseStringFormat (id_f4f07ea01bf5480397359bf8f7e24704).extractedParametersOutput) -- [IDataFlow<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_3ab6567c18b44f8698401afb8ba7b0c7).dataInput)
-            id_4b94ac7fd4434b4ea6751f501b8eaa9d.WireTo(id_c5e2618f94d34279a81f129aaf56e02d, "eventOutput"); // (ConvertToEvent<string> (id_4b94ac7fd4434b4ea6751f501b8eaa9d).eventOutput) -- [IEvent] --> (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).eventInput)
-            id_c5e2618f94d34279a81f129aaf56e02d.WireTo(id_5db913688cf343229b5b022d9d9eef4d, "fanoutList"); // (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).fanoutList) -- [IEvent] --> (Data<string> (id_5db913688cf343229b5b022d9d9eef4d).start)
-            id_c5e2618f94d34279a81f129aaf56e02d.WireTo(id_307980ece0d34a65b2b69e58b0400ad7, "fanoutList"); // (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).fanoutList) -- [IEvent] --> (Data<string> (id_307980ece0d34a65b2b69e58b0400ad7).start)
-            id_c5e2618f94d34279a81f129aaf56e02d.WireTo(id_28ff30e197fe4cb9b40ff44efcc0f3dd, "fanoutList"); // (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).fanoutList) -- [IEvent] --> (Data<string> (id_28ff30e197fe4cb9b40ff44efcc0f3dd).start)
-            id_c5e2618f94d34279a81f129aaf56e02d.WireTo(id_52831ca26eb34f88867bc54a4011bc55, "fanoutList"); // (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).fanoutList) -- [IEvent] --> (Data<string> (id_52831ca26eb34f88867bc54a4011bc55).start)
-            id_c5e2618f94d34279a81f129aaf56e02d.WireTo(id_144ab8b860b6473db75b7ee5594a2f6e, "complete"); // (EventConnector (id_c5e2618f94d34279a81f129aaf56e02d).complete) -- [IEvent] --> (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).create)
-            id_5db913688cf343229b5b022d9d9eef4d.WireTo(id_d6c3ad8f1ec642959f21ad5e67528a26, "dataOutput"); // (Data<string> (id_5db913688cf343229b5b022d9d9eef4d).dataOutput) -- [IDataFlow<string>] --> (LookupTable<string,string> (id_d6c3ad8f1ec642959f21ad5e67528a26).keyInput)
-            id_d6c3ad8f1ec642959f21ad5e67528a26.WireTo(id_3ab6567c18b44f8698401afb8ba7b0c7, "dictionaryInput"); // (LookupTable<string,string> (id_d6c3ad8f1ec642959f21ad5e67528a26).dictionaryInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_3ab6567c18b44f8698401afb8ba7b0c7).dataOutputB)
-            id_d6c3ad8f1ec642959f21ad5e67528a26.WireTo(id_3c796a63d81949719a85f4c8dd1cfe8c, "valueOutput"); // (LookupTable<string,string> (id_d6c3ad8f1ec642959f21ad5e67528a26).valueOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_3c796a63d81949719a85f4c8dd1cfe8c).dataInput)
-            id_307980ece0d34a65b2b69e58b0400ad7.WireTo(id_fe380a323be94bc0a4611cae9211790a, "dataOutput"); // (Data<string> (id_307980ece0d34a65b2b69e58b0400ad7).dataOutput) -- [IDataFlow<string>] --> (LookupTable<string,string> (id_fe380a323be94bc0a4611cae9211790a).keyInput)
-            id_fe380a323be94bc0a4611cae9211790a.WireTo(id_3ab6567c18b44f8698401afb8ba7b0c7, "dictionaryInput"); // (LookupTable<string,string> (id_fe380a323be94bc0a4611cae9211790a).dictionaryInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_3ab6567c18b44f8698401afb8ba7b0c7).dataOutputB)
-            id_fe380a323be94bc0a4611cae9211790a.WireTo(id_4cc2810d4424461d885779ea461524e8, "valueOutput"); // (LookupTable<string,string> (id_fe380a323be94bc0a4611cae9211790a).valueOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_4cc2810d4424461d885779ea461524e8).dataInput)
-            id_28ff30e197fe4cb9b40ff44efcc0f3dd.WireTo(id_736e067094ca4479b4d51484d4979aa4, "dataOutput"); // (Data<string> (id_28ff30e197fe4cb9b40ff44efcc0f3dd).dataOutput) -- [IDataFlow<string>] --> (LookupTable<string,string> (id_736e067094ca4479b4d51484d4979aa4).keyInput)
-            id_736e067094ca4479b4d51484d4979aa4.WireTo(id_3ab6567c18b44f8698401afb8ba7b0c7, "dictionaryInput"); // (LookupTable<string,string> (id_736e067094ca4479b4d51484d4979aa4).dictionaryInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_3ab6567c18b44f8698401afb8ba7b0c7).dataOutputB)
-            id_736e067094ca4479b4d51484d4979aa4.WireTo(unparsedConstructorArgsString, "valueOutput"); // (LookupTable<string,string> (id_736e067094ca4479b4d51484d4979aa4).valueOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (unparsedConstructorArgsString).dataInput)
-            unparsedConstructorArgsString.WireTo(id_6df96338c4fd4b2fa8f031b5a1126e73, "fanoutList"); // (DataFlowConnector<string> (unparsedConstructorArgsString).fanoutList) -- [IDataFlow<string>] --> (StringSequenceExtractor (id_6df96338c4fd4b2fa8f031b5a1126e73).unparsedInput)
-            id_6df96338c4fd4b2fa8f031b5a1126e73.WireTo(id_bea8af68fc04408986c8dbad2cbf795e, "sequenceOutput"); // (StringSequenceExtractor (id_6df96338c4fd4b2fa8f031b5a1126e73).sequenceOutput) -- [IDataFlow<List<string>>] --> (Apply<List<string>,Dictionary<string,string>> (id_bea8af68fc04408986c8dbad2cbf795e).input)
-            id_bea8af68fc04408986c8dbad2cbf795e.WireTo(id_e471de7bcb1845a1a60f0b824230a00f, "output"); // (Apply<List<string>,Dictionary<string,string>> (id_bea8af68fc04408986c8dbad2cbf795e).output) -- [IDataFlow<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_e471de7bcb1845a1a60f0b824230a00f).dataInput)
-            id_52831ca26eb34f88867bc54a4011bc55.WireTo(id_129243f50531479fb817c9ca866f24eb, "dataOutput"); // (Data<string> (id_52831ca26eb34f88867bc54a4011bc55).dataOutput) -- [IDataFlow<string>] --> (LookupTable<string,string> (id_129243f50531479fb817c9ca866f24eb).keyInput)
-            id_129243f50531479fb817c9ca866f24eb.WireTo(id_3ab6567c18b44f8698401afb8ba7b0c7, "dictionaryInput"); // (LookupTable<string,string> (id_129243f50531479fb817c9ca866f24eb).dictionaryInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_3ab6567c18b44f8698401afb8ba7b0c7).dataOutputB)
-            id_129243f50531479fb817c9ca866f24eb.WireTo(unparsedPropertiesString, "valueOutput"); // (LookupTable<string,string> (id_129243f50531479fb817c9ca866f24eb).valueOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (unparsedPropertiesString).dataInput)
-            unparsedPropertiesString.WireTo(id_258247722bc042a3b68b6d628416a490, "fanoutList"); // (DataFlowConnector<string> (unparsedPropertiesString).fanoutList) -- [IDataFlow<string>] --> (StringSequenceExtractor (id_258247722bc042a3b68b6d628416a490).unparsedInput)
-            id_258247722bc042a3b68b6d628416a490.WireTo(id_5ada023340cc46bdbe9a1cc5668e14f9, "sequenceOutput"); // (StringSequenceExtractor (id_258247722bc042a3b68b6d628416a490).sequenceOutput) -- [IDataFlow<List<string>>] --> (Apply<List<string>,Dictionary<string,string>> (id_5ada023340cc46bdbe9a1cc5668e14f9).input)
-            id_5ada023340cc46bdbe9a1cc5668e14f9.WireTo(id_41c01831f2c548eea710bc7766db0ee2, "output"); // (Apply<List<string>,Dictionary<string,string>> (id_5ada023340cc46bdbe9a1cc5668e14f9).output) -- [IDataFlow<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_41c01831f2c548eea710bc7766db0ee2).dataInput)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_3c796a63d81949719a85f4c8dd1cfe8c, "typeInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).typeInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_3c796a63d81949719a85f4c8dd1cfe8c).dataOutputB)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_4cc2810d4424461d885779ea461524e8, "nameInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).nameInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_4cc2810d4424461d885779ea461524e8).dataOutputB)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_c16ca284660f45679a81fd52607fec03, "portsInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).portsInput) -- [IDataFlowB<List<Port>>] --> (DataFlowConnector<List<Port>> (id_c16ca284660f45679a81fd52607fec03).returnDataB)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_e471de7bcb1845a1a60f0b824230a00f, "namedConstructorArgumentsInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).namedConstructorArgumentsInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_e471de7bcb1845a1a60f0b824230a00f).dataOutputB)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_41c01831f2c548eea710bc7766db0ee2, "nodePropertiesInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).nodePropertiesInput) -- [IDataFlowB<Dictionary<string,string>>] --> (DataFlowConnector<Dictionary<string,string>> (id_41c01831f2c548eea710bc7766db0ee2).dataOutputB)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_2c7a7667a1a441a09259e9878a9d8319, "nodeOutput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_2c7a7667a1a441a09259e9878a9d8319).input)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
-            id_144ab8b860b6473db75b7ee5594a2f6e.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_144ab8b860b6473db75b7ee5594a2f6e).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
-            id_7af338faa6bb48c29d1b583377d6d0f0.WireTo(id_e6fc28cbe37d4bdd86378e9e54b500ba, "output"); // (Apply<string,IEnumerable<string>> (id_7af338faa6bb48c29d1b583377d6d0f0).output) -- [IDataFlow<IEnumerable<string>>] --> (ForEach<string> (id_e6fc28cbe37d4bdd86378e9e54b500ba).collectionInput)
-            id_e6fc28cbe37d4bdd86378e9e54b500ba.WireTo(id_10d10f38b39240fc90cf66bf0c7cddfe, "elementOutput"); // (ForEach<string> (id_e6fc28cbe37d4bdd86378e9e54b500ba).elementOutput) -- [IDataFlow<string>] --> (ApplyAction<string> (id_10d10f38b39240fc90cf66bf0c7cddfe).input)
-            id_5f6a7fde612d41749444eaab610a2a50.WireTo(id_5a075d3abdd94340bf112c17d9d3738f, "children"); // (MenuItem (id_5f6a7fde612d41749444eaab610a2a50).children) -- [IUI] --> (MenuItem (id_5a075d3abdd94340bf112c17d9d3738f).child)
-            id_5a075d3abdd94340bf112c17d9d3738f.WireTo(id_d4cff65ce0a24619b2f59178001f2041, "clickedEvent"); // (MenuItem (id_5a075d3abdd94340bf112c17d9d3738f).clickedEvent) -- [IEvent] --> (PopupWindow (id_d4cff65ce0a24619b2f59178001f2041).open)
-            id_d4cff65ce0a24619b2f59178001f2041.WireTo(id_218f2d941be344289ee5dd3d54b3dedd, "children"); // (PopupWindow (id_d4cff65ce0a24619b2f59178001f2041).children) -- [IUI] --> (Vertical (id_218f2d941be344289ee5dd3d54b3dedd).child)
-            id_218f2d941be344289ee5dd3d54b3dedd.WireTo(id_be7144a9493b458693681f9773618056, "children"); // (Vertical (id_218f2d941be344289ee5dd3d54b3dedd).children) -- [List<IUI>] --> (Horizontal (id_be7144a9493b458693681f9773618056).child)
-            id_218f2d941be344289ee5dd3d54b3dedd.WireTo(id_5f4945f32824499da007be8fd7deb435, "children"); // (Vertical (id_218f2d941be344289ee5dd3d54b3dedd).children) -- [List<IUI>] --> (Horizontal (id_5f4945f32824499da007be8fd7deb435).child)
-            id_be7144a9493b458693681f9773618056.WireTo(id_8bf217c805564f4fb5029c180ae5d85e, "children"); // (Horizontal (id_be7144a9493b458693681f9773618056).children) -- [IUI] --> (Text (id_8bf217c805564f4fb5029c180ae5d85e).child)
-            id_be7144a9493b458693681f9773618056.WireTo(id_9a2dda5813924951b284fc2b89e6b4bf, "children"); // (Horizontal (id_be7144a9493b458693681f9773618056).children) -- [IUI] --> (TextBox (id_9a2dda5813924951b284fc2b89e6b4bf).child)
-            id_be7144a9493b458693681f9773618056.WireTo(id_4f49dc59a4974186ad62a7a7079019db, "children"); // (Horizontal (id_be7144a9493b458693681f9773618056).children) -- [IUI] --> (Button (id_4f49dc59a4974186ad62a7a7079019db).child)
-            id_4f49dc59a4974186ad62a7a7079019db.WireTo(id_e85579ffff934a2a8374894973464fc9, "eventButtonClicked"); // (Button (id_4f49dc59a4974186ad62a7a7079019db).eventButtonClicked) -- [IEvent] --> (EventConnector (id_e85579ffff934a2a8374894973464fc9).eventInput)
-            id_5f4945f32824499da007be8fd7deb435.WireTo(id_c835aee22753415894840b4d3dd6582f, "children"); // (Horizontal (id_5f4945f32824499da007be8fd7deb435).children) -- [IUI] --> (Text (id_c835aee22753415894840b4d3dd6582f).child)
-            id_5f4945f32824499da007be8fd7deb435.WireTo(id_8de11133b1074cfe915e847951e130a8, "children"); // (Horizontal (id_5f4945f32824499da007be8fd7deb435).children) -- [IUI] --> (TextBox (id_8de11133b1074cfe915e847951e130a8).child)
-            id_5f4945f32824499da007be8fd7deb435.WireTo(id_2f3f5348a9f44aad90e115c61bde205a, "children"); // (Horizontal (id_5f4945f32824499da007be8fd7deb435).children) -- [IUI] --> (Button (id_2f3f5348a9f44aad90e115c61bde205a).child)
-            id_2f3f5348a9f44aad90e115c61bde205a.WireTo(id_217c6c13105f4f9fbd9c5fa37762fba1, "eventButtonClicked"); // (Button (id_2f3f5348a9f44aad90e115c61bde205a).eventButtonClicked) -- [IEvent] --> (EventConnector (id_217c6c13105f4f9fbd9c5fa37762fba1).eventInput)
-            id_53bd59ce7e5243a297da6f78fc494e2f.WireTo(id_ac9c725c30d94bc4aca3a74a8242f9ea, "children"); // (MenuItem (id_53bd59ce7e5243a297da6f78fc494e2f).children) -- [IUI] --> (MenuItem (id_ac9c725c30d94bc4aca3a74a8242f9ea).child)
-            id_ac9c725c30d94bc4aca3a74a8242f9ea.WireTo(id_4783415fded6420a83e0b214a3abf2e0, "clickedEvent"); // (MenuItem (id_ac9c725c30d94bc4aca3a74a8242f9ea).clickedEvent) -- [IEvent] --> (PopupWindow (id_4783415fded6420a83e0b214a3abf2e0).open)
-            id_4783415fded6420a83e0b214a3abf2e0.WireTo(id_0915024382b54ddc9024fa295cec6c6b, "children"); // (PopupWindow (id_4783415fded6420a83e0b214a3abf2e0).children) -- [IUI] --> (TabContainer (id_0915024382b54ddc9024fa295cec6c6b).child)
-            id_0915024382b54ddc9024fa295cec6c6b.WireTo(id_9648955167cb40349ef63dd02441544b, "childrenTabs"); // (TabContainer (id_0915024382b54ddc9024fa295cec6c6b).childrenTabs) -- [List<IUI>] --> (Tab (id_9648955167cb40349ef63dd02441544b).child)
-            id_0915024382b54ddc9024fa295cec6c6b.WireTo(id_53214f9414b6403aa7b5606c2fdcabc3, "childrenTabs"); // (TabContainer (id_0915024382b54ddc9024fa295cec6c6b).childrenTabs) -- [List<IUI>] --> (Tab (id_53214f9414b6403aa7b5606c2fdcabc3).child)
-            id_0915024382b54ddc9024fa295cec6c6b.WireTo(id_9dd636737f044cc2a09a856a53d924fe, "childrenTabs"); // (TabContainer (id_0915024382b54ddc9024fa295cec6c6b).childrenTabs) -- [List<IUI>] --> (Tab (id_9dd636737f044cc2a09a856a53d924fe).child)
-            id_9648955167cb40349ef63dd02441544b.WireTo(id_45319d735b1040419b709825dc1cf23a, "tabItemList"); // (Tab (id_9648955167cb40349ef63dd02441544b).tabItemList) -- [List<IUI>] --> (Text (id_45319d735b1040419b709825dc1cf23a).child)
-            id_53214f9414b6403aa7b5606c2fdcabc3.WireTo(id_0cffa533202d4848a0cef1107ee8bcce, "tabItemList"); // (Tab (id_53214f9414b6403aa7b5606c2fdcabc3).tabItemList) -- [List<IUI>] --> (Text (id_0cffa533202d4848a0cef1107ee8bcce).child)
-            id_9dd636737f044cc2a09a856a53d924fe.WireTo(id_4d5c2d30a848480ea51139695f487d9e, "tabItemList"); // (Tab (id_9dd636737f044cc2a09a856a53d924fe).tabItemList) -- [List<IUI>] --> (Text (id_4d5c2d30a848480ea51139695f487d9e).child)
-            id_e9be6ad589cb41ada5f3dabdbf4dad20.WireTo(id_9249e199685e42e99523221b2694bc43, "clickedEvent"); // (MenuItem (id_e9be6ad589cb41ada5f3dabdbf4dad20).clickedEvent) -- [IEvent] --> (EventConnector (id_9249e199685e42e99523221b2694bc43).eventInput)
-            id_9249e199685e42e99523221b2694bc43.WireTo(id_c2b411781c464b86880201607a2e1ee5, "fanoutList"); // (EventConnector (id_9249e199685e42e99523221b2694bc43).fanoutList) -- [IEvent] --> (EventConnector (id_c2b411781c464b86880201607a2e1ee5).eventInput)
-            id_9249e199685e42e99523221b2694bc43.WireTo(id_5e0e0964797245f7a9ebaec14901ccac, "fanoutList"); // (EventConnector (id_9249e199685e42e99523221b2694bc43).fanoutList) -- [IEvent] --> (GenerateCode (id_5e0e0964797245f7a9ebaec14901ccac).start)
-            id_9249e199685e42e99523221b2694bc43.WireTo(id_7ca8d59d03ab4f06aad5827b56b26610, "fanoutList"); // (EventConnector (id_9249e199685e42e99523221b2694bc43).fanoutList) -- [IEvent] --> (InsertFileCodeLines (id_7ca8d59d03ab4f06aad5827b56b26610).start)
-            id_9249e199685e42e99523221b2694bc43.WireTo(id_9722e72251f54855b744639c5b96fda1, "fanoutList"); // (EventConnector (id_9249e199685e42e99523221b2694bc43).fanoutList) -- [IEvent] --> (InsertFileCodeLines (id_9722e72251f54855b744639c5b96fda1).start)
-            id_c2b411781c464b86880201607a2e1ee5.WireTo(id_66690e3d478746f485717c3de09d7e75, "fanoutList"); // (EventConnector (id_c2b411781c464b86880201607a2e1ee5).fanoutList) -- [IEvent] --> (OutputTab (id_66690e3d478746f485717c3de09d7e75).clear)
-            id_c2b411781c464b86880201607a2e1ee5.WireTo(id_20b52d9c5ffd4a40b0ec89ad945997c5, "fanoutList"); // (EventConnector (id_c2b411781c464b86880201607a2e1ee5).fanoutList) -- [IEvent] --> (Data<string> (id_20b52d9c5ffd4a40b0ec89ad945997c5).start)
-            id_5e0e0964797245f7a9ebaec14901ccac.WireTo(id_98e6fe348eda4c089f1b1ecda4470d38, "instantiationLinesOutput"); // (GenerateCode (id_5e0e0964797245f7a9ebaec14901ccac).instantiationLinesOutput) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_98e6fe348eda4c089f1b1ecda4470d38).dataInput)
-            id_5e0e0964797245f7a9ebaec14901ccac.WireTo(id_9438bab06adc4284b29a52063c06269b, "wiringLinesOutput"); // (GenerateCode (id_5e0e0964797245f7a9ebaec14901ccac).wiringLinesOutput) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_9438bab06adc4284b29a52063c06269b).dataInput)
-            id_98e6fe348eda4c089f1b1ecda4470d38.WireTo(id_7ca8d59d03ab4f06aad5827b56b26610, "fanoutList"); // (DataFlowConnector<List<string>> (id_98e6fe348eda4c089f1b1ecda4470d38).fanoutList) -- [IDataFlow<List<string>>] --> (InsertFileCodeLines (id_7ca8d59d03ab4f06aad5827b56b26610).linesInput)
-            id_98e6fe348eda4c089f1b1ecda4470d38.WireTo(id_66690e3d478746f485717c3de09d7e75, "fanoutList"); // (DataFlowConnector<List<string>> (id_98e6fe348eda4c089f1b1ecda4470d38).fanoutList) -- [IDataFlow<List<string>>] --> (OutputTab (id_66690e3d478746f485717c3de09d7e75).linesInput)
-            id_9438bab06adc4284b29a52063c06269b.WireTo(id_9722e72251f54855b744639c5b96fda1, "fanoutList"); // (DataFlowConnector<List<string>> (id_9438bab06adc4284b29a52063c06269b).fanoutList) -- [IDataFlow<List<string>>] --> (InsertFileCodeLines (id_9722e72251f54855b744639c5b96fda1).linesInput)
-            id_9438bab06adc4284b29a52063c06269b.WireTo(id_66690e3d478746f485717c3de09d7e75, "fanoutList"); // (DataFlowConnector<List<string>> (id_9438bab06adc4284b29a52063c06269b).fanoutList) -- [IDataFlow<List<string>>] --> (OutputTab (id_66690e3d478746f485717c3de09d7e75).linesInput)
-            id_7ca8d59d03ab4f06aad5827b56b26610.WireTo(id_9722e72251f54855b744639c5b96fda1, "newFileContentsOutput"); // (InsertFileCodeLines (id_7ca8d59d03ab4f06aad5827b56b26610).newFileContentsOutput) -- [IDataFlow<string>] --> (InsertFileCodeLines (id_9722e72251f54855b744639c5b96fda1).fileContentsInput)
-            id_9722e72251f54855b744639c5b96fda1.WireTo(id_c5d2d42c1be6413e92c567f58ebbe0a8, "newFileContentsOutput"); // (InsertFileCodeLines (id_9722e72251f54855b744639c5b96fda1).newFileContentsOutput) -- [IDataFlow<string>] --> (FileWriter (id_c5d2d42c1be6413e92c567f58ebbe0a8).fileContentInput)
-            id_c5d2d42c1be6413e92c567f58ebbe0a8.WireTo(id_1fbd51c85a7a4f5d9861b9059f95d9bc, "filePathInput"); // (FileWriter (id_c5d2d42c1be6413e92c567f58ebbe0a8).filePathInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).NEEDNAME)
-            id_564ed95481054589ab6059b110b8af7a.WireTo(id_cef138236635424782b3dd215a86008f, "clickedEvent"); // (MenuItem (id_564ed95481054589ab6059b110b8af7a).clickedEvent) -- [IEvent] --> (PopupWindow (id_cef138236635424782b3dd215a86008f).open)
-            id_cef138236635424782b3dd215a86008f.WireTo(mousePositionHoriz, "children"); // (PopupWindow (id_cef138236635424782b3dd215a86008f).children) -- [IUI] --> (Horizontal (mousePositionHoriz).NEEDNAME)
-            id_cef138236635424782b3dd215a86008f.WireTo(currentDiagramModeHoriz, "children"); // (PopupWindow (id_cef138236635424782b3dd215a86008f).children) -- [IUI] --> (Horizontal (currentDiagramModeHoriz).NEEDNAME)
-            mousePositionHoriz.WireTo(id_938e460d35b74b5c8ae7227f1f8b8cc0, "children"); // (Horizontal (mousePositionHoriz).children) -- [IUI] --> (Text (id_938e460d35b74b5c8ae7227f1f8b8cc0).NEEDNAME)
-            mousePositionHoriz.WireTo(currentMousePositionText, "children"); // (Horizontal (mousePositionHoriz).children) -- [IUI] --> (Text (currentMousePositionText).NEEDNAME)
-            currentDiagramModeHoriz.WireTo(id_b90ac39285c04875bdaae2919a522fed, "children"); // (Horizontal (currentDiagramModeHoriz).children) -- [IUI] --> (Text (id_b90ac39285c04875bdaae2919a522fed).NEEDNAME)
-            currentDiagramModeHoriz.WireTo(id_fd0e259a2e644bd8a5f548c225a5e2cd, "children"); // (Horizontal (currentDiagramModeHoriz).children) -- [IUI] --> (Text (id_fd0e259a2e644bd8a5f548c225a5e2cd).NEEDNAME)
-            id_2534923aff934248a5493e6d293ad205.WireTo(id_fd0e259a2e644bd8a5f548c225a5e2cd, "currentStateAsStringOutput"); // (StateChangeListener (id_2534923aff934248a5493e6d293ad205).currentStateAsStringOutput) -- [IDataFlow<string>] --> (Text (id_fd0e259a2e644bd8a5f548c225a5e2cd).NEEDNAME)
-            id_9d790bbf1430492a8e7b01d0633d5c0b.WireTo(mainCanvas, "children"); // (Vertical (id_9d790bbf1430492a8e7b01d0633d5c0b).children) -- [List<IUI>] --> (CanvasDisplay (mainCanvas).ui)
-            id_9d790bbf1430492a8e7b01d0633d5c0b.WireTo(id_86e0bcc1baa94327a0cb2cc59a9c84ad, "children"); // (Vertical (id_9d790bbf1430492a8e7b01d0633d5c0b).children) -- [List<IUI>] --> (TabContainer (id_86e0bcc1baa94327a0cb2cc59a9c84ad).child)
-            mainCanvas.WireTo(id_0b17dda4de874253b7ac486bd5f63d04, "canvasOutput"); // (CanvasDisplay (mainCanvas).canvasOutput) -- [IDataFlow<WPFCanvas>] --> (ApplyAction<WPFCanvas> (id_0b17dda4de874253b7ac486bd5f63d04).input)
-            mainCanvas.WireTo(id_e0cf4df5b331452cbf15f0806c93cae3, "currentMousePositionOutput"); // (CanvasDisplay (mainCanvas).currentMousePositionOutput) -- [IDataFlow<Point>] --> (DataFlowConnector<Point> (id_e0cf4df5b331452cbf15f0806c93cae3).NEEDNAME)
-            mainCanvas.WireTo(id_eb50e52083104a169d8c9fc12c4d0b9e, "resetFocus"); // (CanvasDisplay (mainCanvas).resetFocus) -- [IEventB] --> (EventConnector (id_eb50e52083104a169d8c9fc12c4d0b9e).eventOutputB)
-            mainCanvas.WireTo(addChildNodeEvent, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (addChildNodeEvent).handler)
-            mainCanvas.WireTo(id_8ef091fb77c74638ad9f8c015cba207c, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (DragRectMultiSelectNodes (id_8ef091fb77c74638ad9f8c015cba207c).eventHandler)
-            mainCanvas.WireTo(id_2a57f9b0cbaf44228172791960b2f4f6, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_2a57f9b0cbaf44228172791960b2f4f6).handler)
-            mainCanvas.WireTo(id_6301a2d8482d418190d1b0f9eacf940e, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_6301a2d8482d418190d1b0f9eacf940e).handler)
-            mainCanvas.WireTo(id_6d5a4532a2ab493687cf1364d4cca9c4, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_6d5a4532a2ab493687cf1364d4cca9c4).handler)
-            mainCanvas.WireTo(id_c33489f097484f1f931e138bf8196f7d, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_c33489f097484f1f931e138bf8196f7d).handler)
-            mainCanvas.WireTo(id_1a0f4097208c4ab284b189bf20d13144, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_1a0f4097208c4ab284b189bf20d13144).handler)
-            mainCanvas.WireTo(id_f375aad6e9224e4ba28ef0bb07ec6bf2, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_f375aad6e9224e4ba28ef0bb07ec6bf2).handler)
-            mainCanvas.WireTo(id_15f9d7690a2942668ecc583d0f914b20, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_15f9d7690a2942668ecc583d0f914b20).handler)
-            mainCanvas.WireTo(id_50f3007aa7044fc8a9ba73e553e01adc, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_50f3007aa7044fc8a9ba73e553e01adc).handler)
-            mainCanvas.WireTo(id_ed2e008e8c7e45efb12a33509d8b4cc4, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_ed2e008e8c7e45efb12a33509d8b4cc4).handler)
-            mainCanvas.WireTo(id_b17e9b350e4147329b84bc4454d7a891, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_b17e9b350e4147329b84bc4454d7a891).handler)
-            mainCanvas.WireTo(id_8185a5f1ad134ede825c7013a1b8c332, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_8185a5f1ad134ede825c7013a1b8c332).handler)
-            mainCanvas.WireTo(id_fe700e3f70184783940459fc19ee659c, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_fe700e3f70184783940459fc19ee659c).handler)
-            mainCanvas.WireTo(id_c8dcb3fa42e947ccb3bb5b4a51e497e7, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_c8dcb3fa42e947ccb3bb5b4a51e497e7).handler)
-            mainCanvas.WireTo(id_651e418cd9c84bf5aecfa67eb3b2d83c, "eventHandlers"); // (CanvasDisplay (mainCanvas).eventHandlers) -- [IEventHandler] --> (KeyEvent (id_651e418cd9c84bf5aecfa67eb3b2d83c).handler)
-            id_e0cf4df5b331452cbf15f0806c93cae3.WireTo(id_f2277566d5da4570829eb23ba276ef28, "fanoutList"); // (DataFlowConnector<Point> (id_e0cf4df5b331452cbf15f0806c93cae3).fanoutList) -- [IDataFlow<Point>] --> (Apply<Point,string> (id_f2277566d5da4570829eb23ba276ef28).input)
-            id_f2277566d5da4570829eb23ba276ef28.WireTo(currentMousePositionText, "output"); // (Apply<Point,string> (id_f2277566d5da4570829eb23ba276ef28).output) -- [IDataFlow<string>] --> (Text (currentMousePositionText).NEEDNAME)
-            checkToResetDiagramFocus.WireTo(id_eb50e52083104a169d8c9fc12c4d0b9e, "stateChanged"); // (StateChangeListener (checkToResetDiagramFocus).stateChanged) -- [IEvent] --> (EventConnector (id_eb50e52083104a169d8c9fc12c4d0b9e).eventInput)
-            addChildNodeEvent.WireTo(addNewNodeConnector, "eventHappened"); // (KeyEvent (addChildNodeEvent).eventHappened) -- [IEvent] --> (EventConnector (addNewNodeConnector).eventInput)
-            addNewNodeConnector.WireTo(id_f9559f3d5d6b4bd09ab31db34d2a9444, "fanoutList"); // (EventConnector (addNewNodeConnector).fanoutList) -- [IEvent] --> (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).create)
-            addNewNodeConnector.WireTo(id_88a2f062f80d44cf82959f689ec9d48d, "fanoutList"); // (EventConnector (addNewNodeConnector).fanoutList) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_88a2f062f80d44cf82959f689ec9d48d).start)
-            addNewNodeConnector.WireTo(id_ec235ee670574ba3a3c1b7882df3005b, "fanoutList"); // (EventConnector (addNewNodeConnector).fanoutList) -- [IEvent] --> (Data<Port> (id_ec235ee670574ba3a3c1b7882df3005b).start)
-            addNewNodeConnector.WireTo(id_1fda77ab37d34539ae1ad713cba306e9, "fanoutList"); // (EventConnector (addNewNodeConnector).fanoutList) -- [IEvent] --> (AddConnectionToGraph (id_1fda77ab37d34539ae1ad713cba306e9).create)
-            addNewNodeConnector.WireTo(refreshDiagramLayout, "complete"); // (EventConnector (addNewNodeConnector).complete) -- [IEvent] --> (Data<IVisualPortGraphNode> (refreshDiagramLayout).start)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_00be3421cb494a9d98415a4f0c5cf240, "typeInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).typeInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_00be3421cb494a9d98415a4f0c5cf240).returnDataB)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_7cfec3ed54d04f169a715c147700ed47, "portsInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).portsInput) -- [IDataFlowB<List<Port>>] --> (DataFlowConnector<List<Port>> (id_7cfec3ed54d04f169a715c147700ed47).returnDataB)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_57f1e5bdd918406e849d9f0eb5c6f848, "nodeOutput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).nodeOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).dataInput)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
-            id_f9559f3d5d6b4bd09ab31db34d2a9444.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (NewVisualPortGraphNode (id_f9559f3d5d6b4bd09ab31db34d2a9444).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
-            id_57f1e5bdd918406e849d9f0eb5c6f848.WireTo(id_512b7d0231ac4dc59a1a9a22bcc6e650, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_57f1e5bdd918406e849d9f0eb5c6f848).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_512b7d0231ac4dc59a1a9a22bcc6e650).dataInput)
-            id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_63ed925f29684c5db385cefefb6b6dfa, "saveTemplate"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).saveTemplate) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_63ed925f29684c5db385cefefb6b6dfa).start)
-            id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_23a5fe2b3587408e9df5e94256ead20a, "enablePortEditing"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).enablePortEditing) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_23a5fe2b3587408e9df5e94256ead20a).start)
-            id_c5563a5bfcc94cc781a29126f4fb2aab.WireTo(id_ad282ca7505348ffa6e1580db6073003, "disablePortEditing"); // (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).disablePortEditing) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_ad282ca7505348ffa6e1580db6073003).start)
-            id_63ed925f29684c5db385cefefb6b6dfa.WireTo(id_44388caa4a964fb588bbb8632f7b5fae, "dataOutput"); // (Data<IVisualPortGraphNode> (id_63ed925f29684c5db385cefefb6b6dfa).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_44388caa4a964fb588bbb8632f7b5fae).dataInput)
-            id_44388caa4a964fb588bbb8632f7b5fae.WireTo(id_2a44ae50994a441b97eae994df2bb1d2, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_44388caa4a964fb588bbb8632f7b5fae).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (Apply<IVisualPortGraphNode,Tuple<string,JToken>> (id_2a44ae50994a441b97eae994df2bb1d2).input)
-            id_44388caa4a964fb588bbb8632f7b5fae.WireTo(id_a59158c8c97545dea21d401b8dbf77d4, "fanoutList"); // (DataFlowConnector<IVisualPortGraphNode> (id_44388caa4a964fb588bbb8632f7b5fae).fanoutList) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_a59158c8c97545dea21d401b8dbf77d4).input)
-            id_2a44ae50994a441b97eae994df2bb1d2.WireTo(abstractionTemplates, "output"); // (Apply<IVisualPortGraphNode,Tuple<string,JToken>> (id_2a44ae50994a441b97eae994df2bb1d2).output) -- [IDataFlow<Tuple<string,JToken>>] --> (LookupTable<string,JToken> (abstractionTemplates).pairInput)
-            abstractionTemplates.WireTo(abstractionTemplatesConnector, "initialDictionaryInput"); // (LookupTable<string,JToken> (abstractionTemplates).initialDictionaryInput) -- [IDataFlowB<Dictionary<string,JToken>>] --> (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).NEEDNAME)
-            abstractionTemplates.WireTo(saveAbstractionTemplatesToFile, "dictionaryOutput"); // (LookupTable<string,JToken> (abstractionTemplates).dictionaryOutput) -- [IDataFlow<Dictionary<string,JToken>>] --> (JSONWriter<Dictionary<string,JToken>> (saveAbstractionTemplatesToFile).valueInput)
-            abstractionTemplates.WireTo(currentAbstractionTemplate, "valueOutput"); // (LookupTable<string,JToken> (abstractionTemplates).valueOutput) -- [IDataFlow<JToken>] --> (DataFlowConnector<JToken> (currentAbstractionTemplate).dataInput)
-            currentAbstractionTemplate.WireTo(loadNewAbstractionTypeTemplate, "fanoutList"); // (DataFlowConnector<JToken> (currentAbstractionTemplate).fanoutList) -- [IDataFlow<JToken>] --> (ApplyAction<JToken> (loadNewAbstractionTypeTemplate).input)
-            id_23a5fe2b3587408e9df5e94256ead20a.WireTo(id_19025a1dc84447a2a4487d854e4b3c09, "dataOutput"); // (Data<IVisualPortGraphNode> (id_23a5fe2b3587408e9df5e94256ead20a).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_19025a1dc84447a2a4487d854e4b3c09).input)
-            id_ad282ca7505348ffa6e1580db6073003.WireTo(id_fc4da39a45c14a299cf156681769ddd1, "dataOutput"); // (Data<IVisualPortGraphNode> (id_ad282ca7505348ffa6e1580db6073003).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_fc4da39a45c14a299cf156681769ddd1).input)
-            id_d8af30a5ec074a94a9cbd052a5194f91.WireTo(id_cd868960a86e4e578f0b936f7c309268, "dataOutput"); // (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (Apply<IVisualPortGraphNode,string> (id_cd868960a86e4e578f0b936f7c309268).input)
-            id_cd868960a86e4e578f0b936f7c309268.WireTo(abstractionTemplates, "output"); // (Apply<IVisualPortGraphNode,string> (id_cd868960a86e4e578f0b936f7c309268).output) -- [IDataFlow<strnig>] --> (LookupTable<string,JToken> (abstractionTemplates).keyInput)
-            id_88a2f062f80d44cf82959f689ec9d48d.WireTo(id_a5ae3d0cd5ea4f89a79279b161b0f8ef, "dataOutput"); // (Data<IVisualPortGraphNode> (id_88a2f062f80d44cf82959f689ec9d48d).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_a5ae3d0cd5ea4f89a79279b161b0f8ef).dataInput)
-            id_ec235ee670574ba3a3c1b7882df3005b.WireTo(id_6573107860ca42e1acd2edb39e4af23f, "dataOutput"); // (Data<Port> (id_ec235ee670574ba3a3c1b7882df3005b).dataOutput) -- [IDataFlow<Port>] --> (DataFlowConnector<Port> (id_6573107860ca42e1acd2edb39e4af23f).dataInput)
-            id_1fda77ab37d34539ae1ad713cba306e9.WireTo(id_a5ae3d0cd5ea4f89a79279b161b0f8ef, "sourceInput"); // (AddConnectionToGraph (id_1fda77ab37d34539ae1ad713cba306e9).sourceInput) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_a5ae3d0cd5ea4f89a79279b161b0f8ef).returnDataB)
-            id_1fda77ab37d34539ae1ad713cba306e9.WireTo(id_512b7d0231ac4dc59a1a9a22bcc6e650, "destinationInput"); // (AddConnectionToGraph (id_1fda77ab37d34539ae1ad713cba306e9).destinationInput) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_512b7d0231ac4dc59a1a9a22bcc6e650).returnDataB)
-            id_1fda77ab37d34539ae1ad713cba306e9.WireTo(id_6573107860ca42e1acd2edb39e4af23f, "sourcePortInput"); // (AddConnectionToGraph (id_1fda77ab37d34539ae1ad713cba306e9).sourcePortInput) -- [IDataFlowB<Port>] --> (DataFlowConnector<Port> (id_6573107860ca42e1acd2edb39e4af23f).returnDataB)
-            id_1fda77ab37d34539ae1ad713cba306e9.WireTo(id_da10fa6481e2458fa526983b0036cb4d, "transitionEventHandlers"); // (AddConnectionToGraph (id_1fda77ab37d34539ae1ad713cba306e9).transitionEventHandlers) -- [IEventHandler] --> (StateTransitionEvent<Enums.DiagramMode> (id_da10fa6481e2458fa526983b0036cb4d).handler)
-            refreshDiagramLayout.WireTo(id_5de5980d74a1467c8a9462e4427422bf, "dataOutput"); // (Data<IVisualPortGraphNode> (refreshDiagramLayout).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (RightTreeLayout<IVisualPortGraphNode> (id_5de5980d74a1467c8a9462e4427422bf).rootNodeInput)
-            id_2a57f9b0cbaf44228172791960b2f4f6.WireTo(id_b1ee7ebeff8944faab0eab9002064540, "eventHappened"); // (KeyEvent (id_2a57f9b0cbaf44228172791960b2f4f6).eventHappened) -- [IEvent] --> (EventLambda (id_b1ee7ebeff8944faab0eab9002064540).start)
-            id_6301a2d8482d418190d1b0f9eacf940e.WireTo(id_af3e2fd88447433ab5460ed5879032bd, "eventHappened"); // (KeyEvent (id_6301a2d8482d418190d1b0f9eacf940e).eventHappened) -- [IEvent] --> (EventConnector (id_af3e2fd88447433ab5460ed5879032bd).eventInput)
-            id_af3e2fd88447433ab5460ed5879032bd.WireTo(refreshDiagramLayout, "fanoutList"); // (EventConnector (id_af3e2fd88447433ab5460ed5879032bd).fanoutList) -- [IEvent] --> (Data<IVisualPortGraphNode> (refreshDiagramLayout).start)
-            id_af3e2fd88447433ab5460ed5879032bd.WireTo(id_8ef091fb77c74638ad9f8c015cba207c, "fanoutList"); // (EventConnector (id_af3e2fd88447433ab5460ed5879032bd).fanoutList) -- [IEvent] --> (DragRectMultiSelectNodes (id_8ef091fb77c74638ad9f8c015cba207c).clear)
-            id_6d5a4532a2ab493687cf1364d4cca9c4.WireTo(id_a4f7336dc7fb48ba908eb0f07315e72d, "eventHappened"); // (KeyEvent (id_6d5a4532a2ab493687cf1364d4cca9c4).eventHappened) -- [IEvent] --> (EventLambda (id_a4f7336dc7fb48ba908eb0f07315e72d).start)
-            id_c33489f097484f1f931e138bf8196f7d.WireTo(id_e85579ffff934a2a8374894973464fc9, "eventHappened"); // (KeyEvent (id_c33489f097484f1f931e138bf8196f7d).eventHappened) -- [IEvent] --> (EventConnector (id_e85579ffff934a2a8374894973464fc9).eventInput)
-            id_1a0f4097208c4ab284b189bf20d13144.WireTo(id_d2cd88ea57e04aae8cc57bdd1466b4d6, "eventHappened"); // (KeyEvent (id_1a0f4097208c4ab284b189bf20d13144).eventHappened) -- [IEvent] --> (FileBrowser (id_d2cd88ea57e04aae8cc57bdd1466b4d6).openBrowser)
-            id_f375aad6e9224e4ba28ef0bb07ec6bf2.WireTo(id_d048bf2542914af29725a1a0074bd773, "eventHappened"); // (KeyEvent (id_f375aad6e9224e4ba28ef0bb07ec6bf2).eventHappened) -- [IEvent] --> (GetSetting (id_d048bf2542914af29725a1a0074bd773).start)
-            id_15f9d7690a2942668ecc583d0f914b20.WireTo(id_1d31f5078cad49d5b7702910eeaa20a4, "eventHappened"); // (KeyEvent (id_15f9d7690a2942668ecc583d0f914b20).eventHappened) -- [IEvent] --> (EventConnector (id_1d31f5078cad49d5b7702910eeaa20a4).eventInput)
-            id_1d31f5078cad49d5b7702910eeaa20a4.WireTo(id_ce3ff0883b504c88be21e246df7d4a54, "fanoutList"); // (EventConnector (id_1d31f5078cad49d5b7702910eeaa20a4).fanoutList) -- [IEvent] --> (EventLambda (id_ce3ff0883b504c88be21e246df7d4a54).start)
-            id_1d31f5078cad49d5b7702910eeaa20a4.WireTo(id_f964e6db04b84104bf69e4384732530b, "fanoutList"); // (EventConnector (id_1d31f5078cad49d5b7702910eeaa20a4).fanoutList) -- [IEvent] --> (EventLambda (id_f964e6db04b84104bf69e4384732530b).start)
-            id_50f3007aa7044fc8a9ba73e553e01adc.WireTo(id_f243d49f78914970beda200fca69a288, "eventHappened"); // (KeyEvent (id_50f3007aa7044fc8a9ba73e553e01adc).eventHappened) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_f243d49f78914970beda200fca69a288).start)
-            id_f243d49f78914970beda200fca69a288.WireTo(id_a4edfc365ec64fd7b366d694cfc078f8, "dataOutput"); // (Data<IVisualPortGraphNode> (id_f243d49f78914970beda200fca69a288).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (Apply<IVisualPortGraphNode,string> (id_a4edfc365ec64fd7b366d694cfc078f8).input)
-            id_a4edfc365ec64fd7b366d694cfc078f8.WireTo(id_d65a994fdb9d450cba8cd914cad29f72, "output"); // (Apply<IVisualPortGraphNode,string> (id_a4edfc365ec64fd7b366d694cfc078f8).output) -- [IDataFlow<string>] --> (TextClipboard (id_d65a994fdb9d450cba8cd914cad29f72).contentInput)
-            id_ed2e008e8c7e45efb12a33509d8b4cc4.WireTo(id_193ac08eecfb4a4a912c611682eacf5b, "eventHappened"); // (KeyEvent (id_ed2e008e8c7e45efb12a33509d8b4cc4).eventHappened) -- [IEvent] --> (EventConnector (id_193ac08eecfb4a4a912c611682eacf5b).eventInput)
-            id_193ac08eecfb4a4a912c611682eacf5b.WireTo(id_5095928ff3f54c39aa0417b1cca9c969, "fanoutList"); // (EventConnector (id_193ac08eecfb4a4a912c611682eacf5b).fanoutList) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_5095928ff3f54c39aa0417b1cca9c969).start)
-            id_193ac08eecfb4a4a912c611682eacf5b.WireTo(id_ff149259cafe456d9d100e67375dfa01, "fanoutList"); // (EventConnector (id_193ac08eecfb4a4a912c611682eacf5b).fanoutList) -- [IEvent] --> (Data<Port> (id_ff149259cafe456d9d100e67375dfa01).start)
-            id_193ac08eecfb4a4a912c611682eacf5b.WireTo(id_5018f4c773a34ced85806dd175659e9a, "fanoutList"); // (EventConnector (id_193ac08eecfb4a4a912c611682eacf5b).fanoutList) -- [IEvent] --> (TextClipboard (id_5018f4c773a34ced85806dd175659e9a).sendOutput)
-            id_193ac08eecfb4a4a912c611682eacf5b.WireTo(addSubtreeToSelectedNode, "complete"); // (EventConnector (id_193ac08eecfb4a4a912c611682eacf5b).complete) -- [IEvent] --> (EventConnector (addSubtreeToSelectedNode).eventInput)
-            id_5095928ff3f54c39aa0417b1cca9c969.WireTo(id_d64d68f5fbe74192b82d38c9318dc4b6, "dataOutput"); // (Data<IVisualPortGraphNode> (id_5095928ff3f54c39aa0417b1cca9c969).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_d64d68f5fbe74192b82d38c9318dc4b6).dataInput)
-            id_ff149259cafe456d9d100e67375dfa01.WireTo(id_1bd1df9769a64645a11efd76789e261e, "dataOutput"); // (Data<Port> (id_ff149259cafe456d9d100e67375dfa01).dataOutput) -- [IDataFlow<Port>] --> (DataFlowConnector<Port> (id_1bd1df9769a64645a11efd76789e261e).dataInput)
-            id_5018f4c773a34ced85806dd175659e9a.WireTo(id_4124e1350f3d437cb9379eaf22b6a892, "contentOutput"); // (TextClipboard (id_5018f4c773a34ced85806dd175659e9a).contentOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).dataInput)
-            id_4124e1350f3d437cb9379eaf22b6a892.WireTo(id_18191d3fb86d460ab709451888c40955, "fanoutList"); // (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).fanoutList) -- [IDataFlow<string>] --> (JSONParser (id_18191d3fb86d460ab709451888c40955).jsonInput)
-            id_4124e1350f3d437cb9379eaf22b6a892.WireTo(id_e366cba16d6443b6b36846f86aeff130, "fanoutList"); // (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).fanoutList) -- [IDataFlow<string>] --> (JSONParser (id_e366cba16d6443b6b36846f86aeff130).jsonInput)
-            id_4124e1350f3d437cb9379eaf22b6a892.WireTo(id_bdc7b5211833463ba5ddde6249b71158, "fanoutList"); // (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).fanoutList) -- [IDataFlow<string>] --> (ConvertToEvent<string> (id_bdc7b5211833463ba5ddde6249b71158).start)
-            id_18191d3fb86d460ab709451888c40955.WireTo(getOriginalNodeIds, "jTokenOutput"); // (JSONParser (id_18191d3fb86d460ab709451888c40955).jTokenOutput) -- [IDataFlow<JToken>] --> (Apply<JToken,List<string>> (getOriginalNodeIds).input)
-            getOriginalNodeIds.WireTo(id_2eb695817eb44bbf910abb5acae18e75, "output"); // (Apply<JToken,List<string>> (getOriginalNodeIds).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_2eb695817eb44bbf910abb5acae18e75).dataInput)
-            id_e366cba16d6443b6b36846f86aeff130.WireTo(createNewNodeIds, "jTokenOutput"); // (JSONParser (id_e366cba16d6443b6b36846f86aeff130).jTokenOutput) -- [IDataFlow<JToken>] --> (Apply<JToken,List<string>> (createNewNodeIds).input)
-            createNewNodeIds.WireTo(id_651b4ab985874aa6abf6b8354322b0f1, "output"); // (Apply<JToken,List<string>> (createNewNodeIds).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_651b4ab985874aa6abf6b8354322b0f1).dataInput)
-            id_bdc7b5211833463ba5ddde6249b71158.WireTo(id_591aaec0820e498c85ae6898d47a7935, "eventOutput"); // (ConvertToEvent<string> (id_bdc7b5211833463ba5ddde6249b71158).eventOutput) -- [IEvent] --> (StringMap (id_591aaec0820e498c85ae6898d47a7935).start)
-            id_591aaec0820e498c85ae6898d47a7935.WireTo(id_4124e1350f3d437cb9379eaf22b6a892, "contentToEditInput"); // (StringMap (id_591aaec0820e498c85ae6898d47a7935).contentToEditInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_4124e1350f3d437cb9379eaf22b6a892).returnDataB)
-            id_591aaec0820e498c85ae6898d47a7935.WireTo(id_2eb695817eb44bbf910abb5acae18e75, "oldListInput"); // (StringMap (id_591aaec0820e498c85ae6898d47a7935).oldListInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_2eb695817eb44bbf910abb5acae18e75).returnDataB)
-            id_591aaec0820e498c85ae6898d47a7935.WireTo(id_651b4ab985874aa6abf6b8354322b0f1, "newListInput"); // (StringMap (id_591aaec0820e498c85ae6898d47a7935).newListInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_651b4ab985874aa6abf6b8354322b0f1).returnDataB)
-            id_591aaec0820e498c85ae6898d47a7935.WireTo(id_ad5bca6c08de488e8825baa888f69bbb, "newStringOutput"); // (StringMap (id_591aaec0820e498c85ae6898d47a7935).newStringOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_ad5bca6c08de488e8825baa888f69bbb).dataInput)
-            id_ad5bca6c08de488e8825baa888f69bbb.WireTo(id_2fa52c0f925d4df9b693810373f63348, "fanoutList"); // (DataFlowConnector<string> (id_ad5bca6c08de488e8825baa888f69bbb).fanoutList) -- [IDataFlow<string>] --> (JSONParser (id_2fa52c0f925d4df9b693810373f63348).jsonInput)
-            id_ad5bca6c08de488e8825baa888f69bbb.WireTo(id_80d1de4e1ca94967b085e895f3d25443, "fanoutList"); // (DataFlowConnector<string> (id_ad5bca6c08de488e8825baa888f69bbb).fanoutList) -- [IDataFlow<string>] --> (JSONParser (id_80d1de4e1ca94967b085e895f3d25443).jsonInput)
-            id_2fa52c0f925d4df9b693810373f63348.WireTo(id_67ce70e081f94919b8ee47d4eb305b1f, "jsonOutput"); // (JSONParser (id_2fa52c0f925d4df9b693810373f63348).jsonOutput) -- [IDataFlow<string>] --> (CreateVPGNsFromJSON (id_67ce70e081f94919b8ee47d4eb305b1f).jsonInput)
-            id_67ce70e081f94919b8ee47d4eb305b1f.WireTo(id_c5563a5bfcc94cc781a29126f4fb2aab, "contextMenuInput"); // (CreateVPGNsFromJSON (id_67ce70e081f94919b8ee47d4eb305b1f).contextMenuInput) -- [IUI] --> (VPGNContextMenu (id_c5563a5bfcc94cc781a29126f4fb2aab).child)
-            id_67ce70e081f94919b8ee47d4eb305b1f.WireTo(id_d8af30a5ec074a94a9cbd052a5194f91, "typeChanged"); // (CreateVPGNsFromJSON (id_67ce70e081f94919b8ee47d4eb305b1f).typeChanged) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_d8af30a5ec074a94a9cbd052a5194f91).start)
-            id_80d1de4e1ca94967b085e895f3d25443.WireTo(id_bd14b7b56e5b43d48292bb6ee2706f3f, "jsonOutput"); // (JSONParser (id_80d1de4e1ca94967b085e895f3d25443).jsonOutput) -- [IDataFlow<string>] --> (CreateConnectionsFromJSON (id_bd14b7b56e5b43d48292bb6ee2706f3f).jsonInput)
-            id_bd14b7b56e5b43d48292bb6ee2706f3f.WireTo(id_f16d8476ee2a49aeb64af180bfcc0fa7, "portConnectionTuplesOutput"); // (CreateConnectionsFromJSON (id_bd14b7b56e5b43d48292bb6ee2706f3f).portConnectionTuplesOutput) -- [IDataFlow<List<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>>] --> (Cast<List<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>,IEnumerable<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>> (id_f16d8476ee2a49aeb64af180bfcc0fa7).input)
-            id_f16d8476ee2a49aeb64af180bfcc0fa7.WireTo(id_fe4cfcee326e43bbb5231a5de0115973, "output"); // (Cast<List<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>,IEnumerable<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>> (id_f16d8476ee2a49aeb64af180bfcc0fa7).output) -- [IDataFlow<IEnumerable<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>>] --> (ForEach<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>> (id_fe4cfcee326e43bbb5231a5de0115973).collectionInput)
-            id_fe4cfcee326e43bbb5231a5de0115973.WireTo(addPastedConnections, "elementOutput"); // (ForEach<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>> (id_fe4cfcee326e43bbb5231a5de0115973).elementOutput) -- [IDataFlow<Tuple<VisualPortGraphNode,VisualPortGraphNode,Port,Port>>] --> (AddConnectionToGraph (addPastedConnections).connectionTupleInput)
-            addPastedConnections.WireTo(refreshDiagramLayout, "renderLoaded"); // (AddConnectionToGraph (addPastedConnections).renderLoaded) -- [IEvent] --> (Data<IVisualPortGraphNode> (refreshDiagramLayout).start)
-            addSubtreeToSelectedNode.WireTo(id_a37f529cebeb4579833301089489c93b, "fanoutList"); // (EventConnector (addSubtreeToSelectedNode).fanoutList) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_a37f529cebeb4579833301089489c93b).start)
-            addSubtreeToSelectedNode.WireTo(id_4df5565e5cc74d80a2a2a85ae35373e6, "fanoutList"); // (EventConnector (addSubtreeToSelectedNode).fanoutList) -- [IEvent] --> (Data<Port> (id_4df5565e5cc74d80a2a2a85ae35373e6).start)
-            addSubtreeToSelectedNode.WireTo(id_50e48187384540708c950df8cbd511e2, "fanoutList"); // (EventConnector (addSubtreeToSelectedNode).fanoutList) -- [IEvent] --> (Data<string> (id_50e48187384540708c950df8cbd511e2).start)
-            addSubtreeToSelectedNode.WireTo(id_33d40c1315df4a329c8069455f07bf4c, "fanoutList"); // (EventConnector (addSubtreeToSelectedNode).fanoutList) -- [IEvent] --> (AddConnectionToGraph (id_33d40c1315df4a329c8069455f07bf4c).create)
-            id_a37f529cebeb4579833301089489c93b.WireTo(id_d64d68f5fbe74192b82d38c9318dc4b6, "inputDataB"); // (Data<IVisualPortGraphNode> (id_a37f529cebeb4579833301089489c93b).inputDataB) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_d64d68f5fbe74192b82d38c9318dc4b6).dataOutputB)
-            id_a37f529cebeb4579833301089489c93b.WireTo(id_4bfcbdfaa7514af7ad35513cc6be635c, "dataOutput"); // (Data<IVisualPortGraphNode> (id_a37f529cebeb4579833301089489c93b).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_4bfcbdfaa7514af7ad35513cc6be635c).dataInput)
-            id_4df5565e5cc74d80a2a2a85ae35373e6.WireTo(id_1bd1df9769a64645a11efd76789e261e, "inputDataB"); // (Data<Port> (id_4df5565e5cc74d80a2a2a85ae35373e6).inputDataB) -- [IDataFlowB<Port>] --> (DataFlowConnector<Port> (id_1bd1df9769a64645a11efd76789e261e).dataOutputB)
-            id_4df5565e5cc74d80a2a2a85ae35373e6.WireTo(id_4b90f593b4f54d7895e5c027e1fe045a, "dataOutput"); // (Data<Port> (id_4df5565e5cc74d80a2a2a85ae35373e6).dataOutput) -- [IDataFlow<Port>] --> (DataFlowConnector<Port> (id_4b90f593b4f54d7895e5c027e1fe045a).dataInput)
-            id_50e48187384540708c950df8cbd511e2.WireTo(id_ad5bca6c08de488e8825baa888f69bbb, "inputDataB"); // (Data<string> (id_50e48187384540708c950df8cbd511e2).inputDataB) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_ad5bca6c08de488e8825baa888f69bbb).returnDataB)
-            id_50e48187384540708c950df8cbd511e2.WireTo(id_8bed896c1b3c4a79b772d859c847c22b, "dataOutput"); // (Data<string> (id_50e48187384540708c950df8cbd511e2).dataOutput) -- [IDataFlow<string>] --> (JSONParser (id_8bed896c1b3c4a79b772d859c847c22b).jsonInput)
-            id_8bed896c1b3c4a79b772d859c847c22b.WireTo(id_c1189041ac444838bf1b62f8dfa25929, "jTokenOutput"); // (JSONParser (id_8bed896c1b3c4a79b772d859c847c22b).jTokenOutput) -- [IDataFlow<JToken>] --> (Apply<JToken,IVisualPortGraphNode> (id_c1189041ac444838bf1b62f8dfa25929).input)
-            id_c1189041ac444838bf1b62f8dfa25929.WireTo(id_5e6e3fe1f77d40f0ac8320a38a5ca32f, "output"); // (Apply<JToken,IVisualPortGraphNode> (id_c1189041ac444838bf1b62f8dfa25929).output) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_5e6e3fe1f77d40f0ac8320a38a5ca32f).dataInput)
-            id_33d40c1315df4a329c8069455f07bf4c.WireTo(id_4bfcbdfaa7514af7ad35513cc6be635c, "sourceInput"); // (AddConnectionToGraph (id_33d40c1315df4a329c8069455f07bf4c).sourceInput) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_4bfcbdfaa7514af7ad35513cc6be635c).returnDataB)
-            id_33d40c1315df4a329c8069455f07bf4c.WireTo(id_5e6e3fe1f77d40f0ac8320a38a5ca32f, "destinationInput"); // (AddConnectionToGraph (id_33d40c1315df4a329c8069455f07bf4c).destinationInput) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_5e6e3fe1f77d40f0ac8320a38a5ca32f).returnDataB)
-            id_33d40c1315df4a329c8069455f07bf4c.WireTo(id_4b90f593b4f54d7895e5c027e1fe045a, "sourcePortInput"); // (AddConnectionToGraph (id_33d40c1315df4a329c8069455f07bf4c).sourcePortInput) -- [IDataFlowB<Port>] --> (DataFlowConnector<Port> (id_4b90f593b4f54d7895e5c027e1fe045a).returnDataB)
-            id_33d40c1315df4a329c8069455f07bf4c.WireTo(refreshDiagramLayout, "renderLoaded"); // (AddConnectionToGraph (id_33d40c1315df4a329c8069455f07bf4c).renderLoaded) -- [IEvent] --> (Data<IVisualPortGraphNode> (refreshDiagramLayout).start)
-            id_b17e9b350e4147329b84bc4454d7a891.WireTo(id_d3aaec237ab54dab8a28f57baba6aadf, "eventHappened"); // (KeyEvent (id_b17e9b350e4147329b84bc4454d7a891).eventHappened) -- [IEvent] --> (EventConnector (id_d3aaec237ab54dab8a28f57baba6aadf).eventInput)
-            id_d3aaec237ab54dab8a28f57baba6aadf.WireTo(id_8fcd9c561a954d528282d3b561f4fe9a, "fanoutList"); // (EventConnector (id_d3aaec237ab54dab8a28f57baba6aadf).fanoutList) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_8fcd9c561a954d528282d3b561f4fe9a).start)
-            id_d3aaec237ab54dab8a28f57baba6aadf.WireTo(id_c4d15148a1e44f94b2c224e4ac006f2c, "fanoutList"); // (EventConnector (id_d3aaec237ab54dab8a28f57baba6aadf).fanoutList) -- [IEvent] --> (Data<Port> (id_c4d15148a1e44f94b2c224e4ac006f2c).start)
-            id_d3aaec237ab54dab8a28f57baba6aadf.WireTo(id_9193d48caa854fdc953c8b4ada85fa0f, "fanoutList"); // (EventConnector (id_d3aaec237ab54dab8a28f57baba6aadf).fanoutList) -- [IEvent] --> (AddConnectionToGraph (id_9193d48caa854fdc953c8b4ada85fa0f).create)
-            id_8fcd9c561a954d528282d3b561f4fe9a.WireTo(id_706acb0a3ea545b59bd8d3d022a1ddb5, "dataOutput"); // (Data<IVisualPortGraphNode> (id_8fcd9c561a954d528282d3b561f4fe9a).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_706acb0a3ea545b59bd8d3d022a1ddb5).dataInput)
-            id_c4d15148a1e44f94b2c224e4ac006f2c.WireTo(id_a961ea5c67684cd9be8db19e5508d6bc, "dataOutput"); // (Data<Port> (id_c4d15148a1e44f94b2c224e4ac006f2c).dataOutput) -- [IDataFlow<Port>] --> (DataFlowConnector<Port> (id_a961ea5c67684cd9be8db19e5508d6bc).dataInput)
-            id_9193d48caa854fdc953c8b4ada85fa0f.WireTo(id_706acb0a3ea545b59bd8d3d022a1ddb5, "sourceInput"); // (AddConnectionToGraph (id_9193d48caa854fdc953c8b4ada85fa0f).sourceInput) -- [IDataFlowB<IVisualPortGraphNode>] --> (DataFlowConnector<IVisualPortGraphNode> (id_706acb0a3ea545b59bd8d3d022a1ddb5).returnDataB)
-            id_9193d48caa854fdc953c8b4ada85fa0f.WireTo(id_a961ea5c67684cd9be8db19e5508d6bc, "sourcePortInput"); // (AddConnectionToGraph (id_9193d48caa854fdc953c8b4ada85fa0f).sourcePortInput) -- [IDataFlowB<Port>] --> (DataFlowConnector<Port> (id_a961ea5c67684cd9be8db19e5508d6bc).returnDataB)
-            id_9193d48caa854fdc953c8b4ada85fa0f.WireTo(id_f9a70bf4ccf346ec94c389aa45151170, "connectionIdOutput"); // (AddConnectionToGraph (id_9193d48caa854fdc953c8b4ada85fa0f).connectionIdOutput) -- [IDataFlow<string>] --> (ApplyAction<string> (id_f9a70bf4ccf346ec94c389aa45151170).input)
-            id_8185a5f1ad134ede825c7013a1b8c332.WireTo(id_841df8fb3e4145e4845a4b87fb425b8e, "argsOutput"); // (KeyEvent (id_8185a5f1ad134ede825c7013a1b8c332).argsOutput) -- [IDataFlow<KeyEventArgs>] --> (ApplyAction<KeyEventArgs> (id_841df8fb3e4145e4845a4b87fb425b8e).input)
-            id_8185a5f1ad134ede825c7013a1b8c332.WireTo(id_3784b9acfef8499795834a495d6f83a2, "eventHappened"); // (KeyEvent (id_8185a5f1ad134ede825c7013a1b8c332).eventHappened) -- [IEvent] --> (Data<IVisualPortGraphNode> (id_3784b9acfef8499795834a495d6f83a2).start)
-            id_3784b9acfef8499795834a495d6f83a2.WireTo(id_54d29674558c4b2ab6340b22704eadff, "dataOutput"); // (Data<IVisualPortGraphNode> (id_3784b9acfef8499795834a495d6f83a2).dataOutput) -- [IDataFlow<IVisualPortGraphNode>] --> (ApplyAction<IVisualPortGraphNode> (id_54d29674558c4b2ab6340b22704eadff).input)
-            id_fe700e3f70184783940459fc19ee659c.WireTo(id_c81886b79d344934921bf9b69b8b3af9, "eventHappened"); // (KeyEvent (id_fe700e3f70184783940459fc19ee659c).eventHappened) -- [IEvent] --> (Data<IEnumerable<IPortConnection>> (id_c81886b79d344934921bf9b69b8b3af9).start)
-            id_c81886b79d344934921bf9b69b8b3af9.WireTo(id_d18001b76b824b4eaadcd206701a2be4, "dataOutput"); // (Data<IEnumerable<IPortConnection>> (id_c81886b79d344934921bf9b69b8b3af9).dataOutput) -- [IDataFlow<IEnumerable<IPortConnection>>] --> (ForEach<IPortConnection> (id_d18001b76b824b4eaadcd206701a2be4).collectionInput)
-            id_d18001b76b824b4eaadcd206701a2be4.WireTo(id_f42e25cc193c489aa8f52222148e000e, "elementOutput"); // (ForEach<IPortConnection> (id_d18001b76b824b4eaadcd206701a2be4).elementOutput) -- [IDataFlow<IPortConnection>] --> (ApplyAction<IPortConnection> (id_f42e25cc193c489aa8f52222148e000e).input)
-            id_c8dcb3fa42e947ccb3bb5b4a51e497e7.WireTo(id_9249e199685e42e99523221b2694bc43, "eventHappened"); // (KeyEvent (id_c8dcb3fa42e947ccb3bb5b4a51e497e7).eventHappened) -- [IEvent] --> (EventConnector (id_9249e199685e42e99523221b2694bc43).eventInput)
-            id_651e418cd9c84bf5aecfa67eb3b2d83c.WireTo(id_d4cff65ce0a24619b2f59178001f2041, "eventHappened"); // (KeyEvent (id_651e418cd9c84bf5aecfa67eb3b2d83c).eventHappened) -- [IEvent] --> (PopupWindow (id_d4cff65ce0a24619b2f59178001f2041).open)
-            id_86e0bcc1baa94327a0cb2cc59a9c84ad.WireTo(id_66690e3d478746f485717c3de09d7e75, "childrenTabs"); // (TabContainer (id_86e0bcc1baa94327a0cb2cc59a9c84ad).childrenTabs) -- [List<IUI>] --> (OutputTab (id_66690e3d478746f485717c3de09d7e75).child)
-            id_86e0bcc1baa94327a0cb2cc59a9c84ad.WireTo(id_b844b78ad0e54ca8b3ea6eb6bb831c2e, "childrenTabs"); // (TabContainer (id_86e0bcc1baa94327a0cb2cc59a9c84ad).childrenTabs) -- [List<IUI>] --> (NewAbstractionTemplateTab (id_b844b78ad0e54ca8b3ea6eb6bb831c2e).child)
-            id_b844b78ad0e54ca8b3ea6eb6bb831c2e.WireTo(id_b15fe1bfb8ea4c56a5332ac4cd16d89c, "programmingParadigmsDropDownListInput"); // (NewAbstractionTemplateTab (id_b844b78ad0e54ca8b3ea6eb6bb831c2e).programmingParadigmsDropDownListInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_b15fe1bfb8ea4c56a5332ac4cd16d89c).NEEDNAME)
-            id_b844b78ad0e54ca8b3ea6eb6bb831c2e.WireTo(newlyCreatedAbstractionTemplate, "newTemplateOutput"); // (NewAbstractionTemplateTab (id_b844b78ad0e54ca8b3ea6eb6bb831c2e).newTemplateOutput) -- [IDataFlow<Tuple<string,Dictionary<string,string>>>] --> (DataFlowConnector<Tuple<string,Dictionary<string,string>>> (newlyCreatedAbstractionTemplate).dataInput)
-            id_b844b78ad0e54ca8b3ea6eb6bb831c2e.WireTo(id_48f2e14b737742969006e5a067fde8da, "createDomainAbstraction"); // (NewAbstractionTemplateTab (id_b844b78ad0e54ca8b3ea6eb6bb831c2e).createDomainAbstraction) -- [IEvent] --> (CreateAbstraction (id_48f2e14b737742969006e5a067fde8da).create)
-            id_b844b78ad0e54ca8b3ea6eb6bb831c2e.WireTo(id_ba5fd8dd21b747cbb764d0c37b1ccd40, "createStoryAbstraction"); // (NewAbstractionTemplateTab (id_b844b78ad0e54ca8b3ea6eb6bb831c2e).createStoryAbstraction) -- [IEvent] --> (EventConnector (id_ba5fd8dd21b747cbb764d0c37b1ccd40).NEEDNAME)
-            newlyCreatedAbstractionTemplate.WireTo(id_94bc4bb4b0eb4992b073d93e6e62df61, "fanoutList"); // (DataFlowConnector<Tuple<string,Dictionary<string,string>>> (newlyCreatedAbstractionTemplate).fanoutList) -- [IDataFlow<Tuple<string,Dictionary<string,string>>>] --> (Apply<Tuple<string,Dictionary<string,string>>,string> (id_94bc4bb4b0eb4992b073d93e6e62df61).input)
-            newlyCreatedAbstractionTemplate.WireTo(id_a6b69c879e5c4be3b0b65df90c5f2aa3, "fanoutList"); // (DataFlowConnector<Tuple<string,Dictionary<string,string>>> (newlyCreatedAbstractionTemplate).fanoutList) -- [IDataFlow<Tuple<string,Dictionary<string,string>>>] --> (Apply<Tuple<string,Dictionary<string,string>>,List<string>> (id_a6b69c879e5c4be3b0b65df90c5f2aa3).input)
-            newlyCreatedAbstractionTemplate.WireTo(id_0dc66c5de4cc4f639a4f8a4e68ca8a32, "fanoutList"); // (DataFlowConnector<Tuple<string,Dictionary<string,string>>> (newlyCreatedAbstractionTemplate).fanoutList) -- [IDataFlow<Tuple<string,Dictionary<string,string>>>] --> (Apply<Tuple<string,Dictionary<string,string>>,List<string>> (id_0dc66c5de4cc4f639a4f8a4e68ca8a32).input)
-            newlyCreatedAbstractionTemplate.WireTo(id_e04a847325bc4703b8de92a10b2e75ed, "fanoutList"); // (DataFlowConnector<Tuple<string,Dictionary<string,string>>> (newlyCreatedAbstractionTemplate).fanoutList) -- [IDataFlow<Tuple<string,Dictionary<string,string>>>] --> (LookupTable<string,Dictionary<string,string>> (id_e04a847325bc4703b8de92a10b2e75ed).pairInput)
-            id_94bc4bb4b0eb4992b073d93e6e62df61.WireTo(id_821a0f8e8c8149608e068ef40bd35d5c, "output"); // (Apply<Tuple<string,Dictionary<string,string>>,string> (id_94bc4bb4b0eb4992b073d93e6e62df61).output) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_821a0f8e8c8149608e068ef40bd35d5c).dataInput)
-            id_a6b69c879e5c4be3b0b65df90c5f2aa3.WireTo(id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2, "output"); // (Apply<Tuple<string,Dictionary<string,string>>,List<string>> (id_a6b69c879e5c4be3b0b65df90c5f2aa3).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2).dataInput)
-            id_0dc66c5de4cc4f639a4f8a4e68ca8a32.WireTo(id_80fbb5a0a57a477f8cff681489fb2a1d, "output"); // (Apply<Tuple<string,Dictionary<string,string>>,List<string>> (id_0dc66c5de4cc4f639a4f8a4e68ca8a32).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (id_80fbb5a0a57a477f8cff681489fb2a1d).dataInput)
-            id_48f2e14b737742969006e5a067fde8da.WireTo(id_821a0f8e8c8149608e068ef40bd35d5c, "classNameInput"); // (CreateAbstraction (id_48f2e14b737742969006e5a067fde8da).classNameInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_821a0f8e8c8149608e068ef40bd35d5c).NEEDNAME)
-            id_48f2e14b737742969006e5a067fde8da.WireTo(id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2, "implementedPortsInput"); // (CreateAbstraction (id_48f2e14b737742969006e5a067fde8da).implementedPortsInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2).NEEDNAME)
-            id_48f2e14b737742969006e5a067fde8da.WireTo(id_80fbb5a0a57a477f8cff681489fb2a1d, "providedPortsInput"); // (CreateAbstraction (id_48f2e14b737742969006e5a067fde8da).providedPortsInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_80fbb5a0a57a477f8cff681489fb2a1d).NEEDNAME)
-            id_ba5fd8dd21b747cbb764d0c37b1ccd40.WireTo(id_d6a4e708014943de868c7290bd160681, "fanoutList"); // (EventConnector (id_ba5fd8dd21b747cbb764d0c37b1ccd40).fanoutList) -- [IEvent] --> (Data<Dictionary<string,string>> (id_d6a4e708014943de868c7290bd160681).start)
-            id_ba5fd8dd21b747cbb764d0c37b1ccd40.WireTo(id_7839777c9d57437f84412e1b498e1427, "complete"); // (EventConnector (id_ba5fd8dd21b747cbb764d0c37b1ccd40).complete) -- [IEvent] --> (CreateAbstraction (id_7839777c9d57437f84412e1b498e1427).create)
-            id_7839777c9d57437f84412e1b498e1427.WireTo(id_821a0f8e8c8149608e068ef40bd35d5c, "classNameInput"); // (CreateAbstraction (id_7839777c9d57437f84412e1b498e1427).classNameInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (id_821a0f8e8c8149608e068ef40bd35d5c).NEEDNAME)
-            id_7839777c9d57437f84412e1b498e1427.WireTo(id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2, "implementedPortsInput"); // (CreateAbstraction (id_7839777c9d57437f84412e1b498e1427).implementedPortsInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_fc9f7e6aa6f74a25ba5b80e7adfe9ab2).NEEDNAME)
-            id_7839777c9d57437f84412e1b498e1427.WireTo(id_80fbb5a0a57a477f8cff681489fb2a1d, "providedPortsInput"); // (CreateAbstraction (id_7839777c9d57437f84412e1b498e1427).providedPortsInput) -- [IDataFlowB<List<string>>] --> (DataFlowConnector<List<string>> (id_80fbb5a0a57a477f8cff681489fb2a1d).NEEDNAME)
-            initialiseApp.WireTo(id_725d235d635a4146a1742630192b5698, "fanoutList"); // (EventConnector (initialiseApp).fanoutList) -- [IEvent] --> (EventConnector (id_725d235d635a4146a1742630192b5698).NEEDNAME)
-            initialiseApp.WireTo(id_2ac88ef7fe0b47bbba634a8a45702a81, "fanoutList"); // (EventConnector (initialiseApp).fanoutList) -- [IEvent] --> (GetSetting (id_2ac88ef7fe0b47bbba634a8a45702a81).start)
-            initialiseApp.WireTo(id_e70bef52836e40a2a17c333a392b0548, "fanoutList"); // (EventConnector (initialiseApp).fanoutList) -- [IEvent] --> (GetSetting (id_e70bef52836e40a2a17c333a392b0548).start)
-            id_725d235d635a4146a1742630192b5698.WireTo(setDomainAbstractionTemplatesFileLocation, "fanoutList"); // (EventConnector (id_725d235d635a4146a1742630192b5698).fanoutList) -- [IEvent] --> (Data<string> (setDomainAbstractionTemplatesFileLocation).start)
-            setDomainAbstractionTemplatesFileLocation.WireTo(id_f034fbe6dce3465cbe6edada65c8d263, "dataOutput"); // (Data<string> (setDomainAbstractionTemplatesFileLocation).dataOutput) -- [IDataFlow<string>] --> (FileReader (id_f034fbe6dce3465cbe6edada65c8d263).filePathInput)
-            id_f034fbe6dce3465cbe6edada65c8d263.WireTo(getTemplatesFromJSON, "fileContentOutput"); // (FileReader (id_f034fbe6dce3465cbe6edada65c8d263).fileContentOutput) -- [IDataFlow<string>] --> (Apply<string,Dictionary<string,JToken>> (getTemplatesFromJSON).input)
-            getTemplatesFromJSON.WireTo(abstractionTemplatesConnector, "output"); // (Apply<string,Dictionary<string,JToken>> (getTemplatesFromJSON).output) -- [IDataFlow<Dictionary<string,JToken>>] --> (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).dataInput)
-            abstractionTemplatesConnector.WireTo(id_eb63936eb29948f9bef6b22f54b7abcd, "fanoutList"); // (@DataFlowConnector<Dictionary<string,JToken>> (abstractionTemplatesConnector).fanoutList) -- [IDataFlow<Dictionary<string,JToken>>] --> (Apply<Dictionary<string,JToken>,List<string>> (id_eb63936eb29948f9bef6b22f54b7abcd).input)
-            id_eb63936eb29948f9bef6b22f54b7abcd.WireTo(abstractionTemplateTypes, "output"); // (Apply<Dictionary<string,JToken>,List<string>> (id_eb63936eb29948f9bef6b22f54b7abcd).output) -- [IDataFlow<List<string>>] --> (DataFlowConnector<List<string>> (abstractionTemplateTypes).dataInput)
-            abstractionTemplateTypes.WireTo(id_47e785e85e8f4706a2cd54676ddeee07, "fanoutList"); // (DataFlowConnector<List<string>> (abstractionTemplateTypes).fanoutList) -- [IDataFlow<List<string>>] --> (ApplyAction<List<string>> (id_47e785e85e8f4706a2cd54676ddeee07).input)
-            id_2ac88ef7fe0b47bbba634a8a45702a81.WireTo(settingsFilePath, "filePathInput"); // (GetSetting (id_2ac88ef7fe0b47bbba634a8a45702a81).filePathInput) -- [IDataFlowB<string>] --> (DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_2ac88ef7fe0b47bbba634a8a45702a81.WireTo(id_411e043c0dc6455cbd5c8b5a5aaa4408, "settingJsonOutput"); // (GetSetting (id_2ac88ef7fe0b47bbba634a8a45702a81).settingJsonOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_411e043c0dc6455cbd5c8b5a5aaa4408).dataInput)
-            id_411e043c0dc6455cbd5c8b5a5aaa4408.WireTo(id_9a2dda5813924951b284fc2b89e6b4bf, "fanoutList"); // (DataFlowConnector<string> (id_411e043c0dc6455cbd5c8b5a5aaa4408).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_9a2dda5813924951b284fc2b89e6b4bf).NEEDNAME)
-            id_411e043c0dc6455cbd5c8b5a5aaa4408.WireTo(id_911eb68dba704c12bd5afcf7eba7a357, "fanoutList"); // (DataFlowConnector<string> (id_411e043c0dc6455cbd5c8b5a5aaa4408).fanoutList) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_911eb68dba704c12bd5afcf7eba7a357).dataInput)
-            id_e70bef52836e40a2a17c333a392b0548.WireTo(settingsFilePath, "filePathInput"); // (GetSetting (id_e70bef52836e40a2a17c333a392b0548).filePathInput) -- [IDataFlowB<string>] --> (@DataFlowConnector<string> (settingsFilePath).returnDataB)
-            id_e70bef52836e40a2a17c333a392b0548.WireTo(id_f92ce910e32c48928f518addb5063e8d, "settingJsonOutput"); // (GetSetting (id_e70bef52836e40a2a17c333a392b0548).settingJsonOutput) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_f92ce910e32c48928f518addb5063e8d).dataInput)
-            id_f92ce910e32c48928f518addb5063e8d.WireTo(id_1fbd51c85a7a4f5d9861b9059f95d9bc, "fanoutList"); // (DataFlowConnector<string> (id_f92ce910e32c48928f518addb5063e8d).fanoutList) -- [IDataFlow<string>] --> (DataFlowConnector<string> (id_1fbd51c85a7a4f5d9861b9059f95d9bc).dataInput)
-            id_f92ce910e32c48928f518addb5063e8d.WireTo(id_8de11133b1074cfe915e847951e130a8, "fanoutList"); // (DataFlowConnector<string> (id_f92ce910e32c48928f518addb5063e8d).fanoutList) -- [IDataFlow<string>] --> (TextBox (id_8de11133b1074cfe915e847951e130a8).textInput)
-            // END AUTO-GENERATED WIRING FOR Application.xmind
-
+        private Application()
+        {
+            CreateWiring();
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
