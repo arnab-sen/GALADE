@@ -8,7 +8,7 @@ using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
 
-namespace Application
+namespace RequirementsAbstractions
 {
     /// <summary>
     /// <para>Extracts code between code generation landmarks.</para>
