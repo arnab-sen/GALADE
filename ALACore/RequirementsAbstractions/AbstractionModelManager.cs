@@ -24,7 +24,7 @@ namespace RequirementsAbstractions
         private FileBrowser _fileBrowser;
         private FolderBrowser _folderBrowser;
         private FileReader _fileReader;
-        private List<string> _programmingParadigms = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler" };
+        private List<string> _programmingParadigms = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler", "ITableDataFlow" };
         private Dictionary<string, AbstractionModel> _abstractionModels = new Dictionary<string, AbstractionModel>();
 
         // Ports
