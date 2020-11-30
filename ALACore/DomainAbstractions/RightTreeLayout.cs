@@ -32,6 +32,7 @@ namespace DomainAbstractions
         private double _maxHeight = 0;
 
         // Ports
+        private IDataFlow<HashSet<string>> visitedNodes;
 
         /// <summary>
         /// Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.
@@ -120,6 +121,8 @@ namespace DomainAbstractions
                 visited.Clear();
 
                 if (ParametersInstantiated()) SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
+
+                if (visitedNodes != null) visitedNodes.Data = visited.Select(n => n).ToHashSet();
             }
         }
     }

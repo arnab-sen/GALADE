@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -88,7 +87,7 @@ namespace Application
 
         private void CreateWiring()
         {
-            var VERSION_NUMBER = "1.0.0";
+            var VERSION_NUMBER = "1.0.1";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -177,7 +176,7 @@ namespace Application
 
             List<string> availableAbstractions = null;
             var nodeSearchResults = new List<ALANode>();
-            var nodeSearchTextResults = new ObservableCollection<string>();
+            var nodeSearchTextResults = new System.Collections.ObjectModel.ObservableCollection<string>();
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS
             var mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"};
@@ -420,11 +419,21 @@ namespace Application
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
             var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
             var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
-            var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {HorizAlignment="left"};
-            var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {HorizAlignment="right"};
-            var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20};
-            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for updates") {};
-            var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() => {    Process.Start("https://github.com/arnab-sen/GALADE/releases");}};
+            var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {InstanceName="id_e3837af93b584ca9874336851ff0cd31",HorizAlignment="left"};
+            var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {InstanceName="id_5c857c3a1a474ec19c0c3b054627c0a9",HorizAlignment="right"};
+            var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20,InstanceName="globalVersionNumberDisplay"};
+            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for updates") {InstanceName="id_053e6b41724c4dcaad0b79b8924d647d"};
+            var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/releases");}};
+            var getUnvisitedNodes = new Apply<HashSet<string>, List<ALANode>>() {InstanceName="getUnvisitedNodes",Lambda=visitedNodes =>{    var allNodes = mainGraph.Nodes.OfType<ALANode>();    var notVisitedNodes = allNodes.Where(n => !visitedNodes.Contains(n.Id)).ToList();    return notVisitedNodes;}};
+            var id_20566090f5054429aebed4d371c2a613 = new ForEach<string>() {InstanceName="id_20566090f5054429aebed4d371c2a613"};
+            var id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"};
+            var id_cad49d55268145ab87788c650c6c5473 = new CodeParser() {InstanceName="id_cad49d55268145ab87788c650c6c5473"};
+            var id_84cf83e5511c4bcb8f83ad289d20b08d = new ForEach<string>() {InstanceName="id_84cf83e5511c4bcb8f83ad289d20b08d"};
+            var availableProgrammingParadigms = new Collection<string>() {InstanceName="availableProgrammingParadigms",OutputLength=-2,OutputOnEvent=true};
+            var id_16d8fb2a48ea4eef8839fc7aba053476 = new ApplyAction<List<string>>() {InstanceName="id_16d8fb2a48ea4eef8839fc7aba053476",Lambda=input => abstractionModelManager.ProgrammingParadigms = input};
+            var id_6625f976171c480ebd8b750aeaf4fab1 = new Cast<List<string>, IEnumerable<string>>() {InstanceName="id_6625f976171c480ebd8b750aeaf4fab1"};
+            var id_4577a8f0f63b4772bdc4eb4cb8581070 = new FileReader() {InstanceName="id_4577a8f0f63b4772bdc4eb4cb8581070"};
+            var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -482,7 +491,6 @@ namespace Application
             id_9bd4555e80434a7b91b65e0b386593b0.WireTo(id_7fabbaae488340a59d940100d38e9447, "output");
             id_2810e4e86da348b98b39c987e6ecd7b6.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_c4f838d19a6b4af9ac320799ebe9791f, "fanoutList");
-            id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_0fd49143884d4a6e86e6ed0ea2f1b5b4.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
             id_35fceab68423425195096666f27475e9.WireTo(id_8fc35564768b4a64a57dc321cc1f621f, "fanoutList");
@@ -711,17 +719,23 @@ namespace Application
             id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children");
             id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent");
+            id_54cdb3b62fb0433a996dc0dc58ddfa93.WireTo(getUnvisitedNodes, "visitedNodes");
+            id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_20566090f5054429aebed4d371c2a613, "output");
+            id_4577a8f0f63b4772bdc4eb4cb8581070.WireTo(id_97b81fc9cc04423192a12822a5a5a32e, "fileContentOutput");
+            id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "fanoutList");
+            id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_cad49d55268145ab87788c650c6c5473, "fanoutList");
+            id_6625f976171c480ebd8b750aeaf4fab1.WireTo(id_84cf83e5511c4bcb8f83ad289d20b08d, "output");
+            id_20566090f5054429aebed4d371c2a613.WireTo(availableProgrammingParadigms, "complete");
+            availableProgrammingParadigms.WireTo(id_16d8fb2a48ea4eef8839fc7aba053476, "listOutput");
+            id_cad49d55268145ab87788c650c6c5473.WireTo(id_6625f976171c480ebd8b750aeaf4fab1, "interfaces");
+            id_20566090f5054429aebed4d371c2a613.WireTo(id_4577a8f0f63b4772bdc4eb4cb8581070, "elementOutput");
+            id_84cf83e5511c4bcb8f83ad289d20b08d.WireTo(id_d920e0f3fa2d4872af1ec6f3c058c233, "elementOutput");
+            id_d920e0f3fa2d4872af1ec6f3c058c233.WireTo(availableProgrammingParadigms, "name");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
 
             // BEGIN MANUAL INSTANTIATIONS
-            // var AMM = new AbstractionModelManager();
-            // // AMM.OpenFile();
-            // var code = File.ReadAllText(
-            //     // "F:\\Projects\\GALADE\\ALACore\\DomainAbstractions\\CodeParser.cs");
-            //     "D:\\Coding\\C#\\Projects\\GALADE\\ALACore\\DomainAbstractions\\ExampleDomainAbstraction.cs");
-            // var model = AMM.CreateAbstractionModel(code);
             // END MANUAL INSTANTIATIONS
 
             // BEGIN MANUAL WIRING
@@ -735,3 +749,27 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

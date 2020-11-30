@@ -19,9 +19,9 @@ namespace DomainAbstractions
     {
         // Properties
         public string InstanceName = "Default";
-        public int OutputLength = -2; // Output when the list reaches this length, -1 for output at any length, -2 to disable auto-output
-        public bool OutputOnEvent = false;
-        public bool ClearOnOutput = false;
+        public int OutputLength { get; set;} = -2; // Output when the list reaches this length, -1 for output at any length, -2 to disable auto-output
+        public bool OutputOnEvent { get; set;} = true;
+        public bool ClearOnOutput { get; set;} = false;
 
         // Private fields
         private List<T> list = new List<T>();

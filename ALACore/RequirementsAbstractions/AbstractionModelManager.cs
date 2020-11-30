@@ -19,12 +19,12 @@ namespace RequirementsAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public List<string> ProgrammingParadigms { get; set; } = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler", "ITableDataFlow" };
 
         // Private fields
         private FileBrowser _fileBrowser;
         private FolderBrowser _folderBrowser;
         private FileReader _fileReader;
-        private List<string> _programmingParadigms = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler", "ITableDataFlow" };
         private Dictionary<string, AbstractionModel> _abstractionModels = new Dictionary<string, AbstractionModel>();
 
         // Ports
@@ -149,7 +149,7 @@ namespace RequirementsAbstractions
 
                     var portNodeList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
 
-                    var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), _programmingParadigms));
+                    var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), ProgrammingParadigms));
 
                     var modelGenerics = model.GetGenerics();
                     foreach (var portSyntaxNode in portSyntaxNodes)
@@ -192,8 +192,8 @@ namespace RequirementsAbstractions
                     var privateFields = parser.GetFields(classNode);
                     var portSyntaxNodes = privateFields.Where(n =>
                             n is FieldDeclarationSyntax field && 
-                            (MatchStartOfString(field.Declaration.Type.ToString(), _programmingParadigms) ||
-                             MatchStartOfString(field.Declaration.Type.ToString(), _programmingParadigms, prefix:"List<")))
+                            (MatchStartOfString(field.Declaration.Type.ToString(), ProgrammingParadigms) ||
+                             MatchStartOfString(field.Declaration.Type.ToString(), ProgrammingParadigms, prefix:"List<")))
                         .Select(s => s as FieldDeclarationSyntax);
 
 

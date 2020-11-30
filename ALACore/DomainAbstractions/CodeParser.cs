@@ -60,6 +60,7 @@ namespace DomainAbstractions
         private string _accessLevel = "any";
 
         // Ports
+        private IDataFlow<string> name;
         private IDataFlow<List<string>> members;
         private IDataFlow<List<string>> classes;
         private IDataFlow<List<string>> interfaces;
@@ -213,6 +214,12 @@ namespace DomainAbstractions
 
                 try
                 {
+                    if (name != null && _root is CompilationUnitSyntax comp)
+                    {
+                        string extractedName = comp.Members.FirstOrDefault()?.GetProperty<SyntaxToken>("Identifier").ToString();
+                        if (!string.IsNullOrEmpty(extractedName)) name.Data = extractedName;
+                    }
+
                     if (members != null) members.Data = GenerateOutput(_root, GetMembers);
                     if (classes != null) classes.Data = GenerateOutput(_root, GetClasses);
                     if (interfaces != null) interfaces.Data = GenerateOutput(_root, GetInterfaces);
