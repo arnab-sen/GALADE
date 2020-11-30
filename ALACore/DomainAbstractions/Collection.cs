@@ -19,7 +19,11 @@ namespace DomainAbstractions
     {
         // Properties
         public string InstanceName = "Default";
-        public int OutputLength { get; set;} = -2; // Output when the list reaches this length, -1 for output at any length, -2 to disable auto-output
+
+        /// <summary>
+        /// Output when the list reaches this length, -1 for output at any length, -2 to disable auto-output
+        /// </summary>
+        public int OutputLength { get; set;} = -2;
         public bool OutputOnEvent { get; set;} = true;
         public bool ClearOnOutput { get; set;} = false;
 

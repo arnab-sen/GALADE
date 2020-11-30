@@ -431,7 +431,17 @@ namespace RequirementsAbstractions
 	        
 	        var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
 	        dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
-	        dropDownUI.MouseEnter += (sender, args) => toolTipLabel.Content = Model.GetType(dropDownUI.Text);
+
+            dropDownUI.MouseEnter += (sender, args) =>
+            {
+                var memberDocumentation = Model.GetMemberDocumentation(dropDownUI.Text);
+                var tooltipDoc = "";
+
+                if (!string.IsNullOrEmpty(memberDocumentation)) tooltipDoc += memberDocumentation + "\n";
+                tooltipDoc += "Type: " + Model.GetType(dropDownUI.Text);
+
+                toolTipLabel.Content = tooltipDoc;
+            };
 	        
 	        dropDownUI.SelectionChanged += (sender, args) =>
             {

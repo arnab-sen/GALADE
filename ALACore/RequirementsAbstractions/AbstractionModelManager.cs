@@ -251,7 +251,17 @@ namespace RequirementsAbstractions
 
                 foreach (var property in properties)
                 {
-                    model.AddProperty(property.Identifier.ValueText, property.Initializer?.Value.ToString() ?? "default", type: property.Type.ToString());
+                    if (property == null) continue;
+
+                    var propertyName = property.Identifier.ValueText;
+
+                    model.AddProperty(propertyName, property.Initializer?.Value.ToString() ?? "default", type: property.Type.ToString());
+
+                    if (property.HasLeadingTrivia)
+                    {
+                        var parsedDocumentation = GetDocumentation(property);
+                        model.AddDocumentation(propertyName, parsedDocumentation);
+                    }
                 }
             }
             catch (Exception e)
@@ -280,6 +290,12 @@ namespace RequirementsAbstractions
                     var type = field.Type.ToString();
 
                     model.AddField(fieldName, fieldValue, type);
+
+                    if (field.HasLeadingTrivia)
+                    {
+                        var parsedDocumentation = GetDocumentation(field);
+                        model.AddDocumentation(fieldName, parsedDocumentation);
+                    }
                 }
             }
             catch (Exception e)
@@ -292,38 +308,43 @@ namespace RequirementsAbstractions
         {
             try
             {
-                var parser = new CodeParser();
-
-                var rawText = classNode.GetLeadingTrivia().ToString();
-
-                var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
-
-                var sb = new StringBuilder();
-
-                foreach (var line in lines)
-                {
-                    var cleanedLine = line
-                        .Replace("&lt;", "<")
-                        .Replace("&gt;", ">")
-                        .Replace("<summary>", "")
-                        .Replace("</summary>", "")
-                        .Replace("<para>", "")
-                        .Replace("</para>", "")
-                        .Replace("<code>", "")
-                        .Replace("</code>", "")
-                        .Replace("<remarks>", "")
-                        .Replace("</remarks>", "");
-
-                    if (!string.IsNullOrWhiteSpace(cleanedLine)) sb.AppendLine(cleanedLine);
-                }
-
-                var documentation = sb.ToString().Trim('\r', '\n');
+                var documentation = GetDocumentation(classNode);
                 model.AddDocumentation(documentation);
             }
             catch (Exception e)
             {
                 Logging.Log($"Failed to set documentation in AbstractionModelManager.\nError: {e}");
             }
+        }
+
+        public string GetDocumentation(SyntaxNode node)
+        {
+            var rawText = node.GetLeadingTrivia().ToString();
+
+            var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
+
+            var sb = new StringBuilder();
+
+            foreach (var line in lines)
+            {
+                var cleanedLine = line
+                    .Replace("&lt;", "<")
+                    .Replace("&gt;", ">")
+                    .Replace("<summary>", "")
+                    .Replace("</summary>", "")
+                    .Replace("<para>", "")
+                    .Replace("</para>", "")
+                    .Replace("<code>", "")
+                    .Replace("</code>", "")
+                    .Replace("<remarks>", "")
+                    .Replace("</remarks>", "");
+
+                if (!string.IsNullOrWhiteSpace(cleanedLine)) sb.AppendLine(cleanedLine);
+            }
+
+            var documentation = sb.ToString().Trim('\r', '\n');
+
+            return documentation;
         }
 
         public void SetConstructorArgs(ClassDeclarationSyntax classNode, AbstractionModel model)

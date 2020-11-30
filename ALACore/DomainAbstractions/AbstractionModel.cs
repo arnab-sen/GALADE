@@ -45,6 +45,7 @@ namespace DomainAbstractions
         private Dictionary<string, List<int>> _portGenericIndices = new Dictionary<string, List<int>>(); // name : list of used abstraction's generic indices
         private Dictionary<string, string> _portBaseTypes = new Dictionary<string, string>(); // name : original port type (e.g. IDataFlow<T>)
         private Dictionary<string, Port> _portsById = new Dictionary<string, Port>(); // Port.Id : Port
+        private Dictionary<string, string> _memberDocumentation = new Dictionary<string, string>(); // name : documentation
 
         // Ports
 
@@ -75,6 +76,8 @@ namespace DomainAbstractions
         public List<int> GetPortGenericIndices(string portName) => _portGenericIndices.ContainsKey(portName) ? _portGenericIndices[portName].ToList() : new List<int>();
         public string GetType(string type) => _types.ContainsKey(type) ? _types[type] : "undefined";
         public string GetDocumentation() => _documentation;
+
+        public string GetMemberDocumentation(string memberName) => _memberDocumentation.ContainsKey(memberName) ? _memberDocumentation[memberName] : "";
         public string GetCodeFilePath() => CodeFilePath;
         public HashSet<string> GetInitialisedVariables() => _initialised.Select(s => s).ToHashSet();
         public string GetPortBaseType(string portName) => _portBaseTypes.ContainsKey(portName) ? _portBaseTypes[portName] : "undefined";
@@ -132,6 +135,11 @@ namespace DomainAbstractions
         public void AddDocumentation(string documentation)
         {
             _documentation = documentation;
+        }
+
+        public void AddDocumentation(string memberName, string documentation)
+        {
+            _memberDocumentation[memberName] = documentation;
         }
 
         public void AddGeneric(string generic) => _generics.Add(generic);
@@ -252,39 +260,24 @@ namespace DomainAbstractions
                 AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 
-            _fields.Clear();
-            foreach (var pair in source._fields)
-            {
-                _fields[pair.Key] = pair.Value;
-            }
-
-            _constructorArgs.Clear();
-            foreach (var pair in source._constructorArgs)
-            {
-                _constructorArgs[pair.Key] = pair.Value;
-            }
-
-            _fields.Clear();
-            foreach (var pair in source._fields)
-            {
-                _fields[pair.Key] = pair.Value;
-            }
-
-            _properties.Clear();
-            foreach (var pair in source._properties)
-            {
-                _properties[pair.Key] = pair.Value;
-            }
-
-            _types.Clear();
-            foreach (var pair in source._types)
-            {
-                _types[pair.Key] = pair.Value;
-            }
+            ReplaceDict(source._fields, _fields);
+            ReplaceDict(source._constructorArgs, _constructorArgs);
+            ReplaceDict(source._properties, _properties);
+            ReplaceDict(source._types, _types);
+            ReplaceDict(source._memberDocumentation, _memberDocumentation);
 
             _initialised = source._initialised.ToHashSet();
 
             SetGenerics(source.GetGenerics());
+        }
+
+        private void ReplaceDict(Dictionary<string, string> source, Dictionary<string, string> current)
+        {
+            current.Clear();
+            foreach (var pair in source)
+            {
+                current[pair.Key] = pair.Value;
+            }
         }
 
         /// <summary>
