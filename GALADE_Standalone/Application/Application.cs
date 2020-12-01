@@ -429,11 +429,12 @@ namespace Application
             var id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"};
             var id_cad49d55268145ab87788c650c6c5473 = new CodeParser() {InstanceName="id_cad49d55268145ab87788c650c6c5473"};
             var id_84cf83e5511c4bcb8f83ad289d20b08d = new ForEach<string>() {InstanceName="id_84cf83e5511c4bcb8f83ad289d20b08d"};
-            var availableProgrammingParadigms = new Collection<string>() {InstanceName="availableProgrammingParadigms",OutputLength=-2,OutputOnEvent=true};
+            var availableProgrammingParadigms = new Collection<string>() {OutputLength=-2,OutputOnEvent=true,InstanceName="availableProgrammingParadigms"};
             var id_16d8fb2a48ea4eef8839fc7aba053476 = new ApplyAction<List<string>>() {InstanceName="id_16d8fb2a48ea4eef8839fc7aba053476",Lambda=input => abstractionModelManager.ProgrammingParadigms = input};
             var id_6625f976171c480ebd8b750aeaf4fab1 = new Cast<List<string>, IEnumerable<string>>() {InstanceName="id_6625f976171c480ebd8b750aeaf4fab1"};
             var id_4577a8f0f63b4772bdc4eb4cb8581070 = new FileReader() {InstanceName="id_4577a8f0f63b4772bdc4eb4cb8581070"};
-            var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {};
+            var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {InstanceName="id_d920e0f3fa2d4872af1ec6f3c058c233"};
+            var id_670ce4df65564e07912ef2ce63c38e11 = new DataFlowConnector<IEnumerable<string>>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -720,7 +721,6 @@ namespace Application
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children");
             id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent");
             id_54cdb3b62fb0433a996dc0dc58ddfa93.WireTo(getUnvisitedNodes, "visitedNodes");
-            id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_20566090f5054429aebed4d371c2a613, "output");
             id_4577a8f0f63b4772bdc4eb4cb8581070.WireTo(id_97b81fc9cc04423192a12822a5a5a32e, "fileContentOutput");
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "fanoutList");
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_cad49d55268145ab87788c650c6c5473, "fanoutList");
@@ -731,6 +731,9 @@ namespace Application
             id_20566090f5054429aebed4d371c2a613.WireTo(id_4577a8f0f63b4772bdc4eb4cb8581070, "elementOutput");
             id_84cf83e5511c4bcb8f83ad289d20b08d.WireTo(id_d920e0f3fa2d4872af1ec6f3c058c233, "elementOutput");
             id_d920e0f3fa2d4872af1ec6f3c058c233.WireTo(availableProgrammingParadigms, "name");
+            id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_670ce4df65564e07912ef2ce63c38e11, "output");
+            id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
+            id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_20566090f5054429aebed4d371c2a613, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -749,6 +752,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
