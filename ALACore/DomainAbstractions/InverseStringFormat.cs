@@ -11,6 +11,12 @@ namespace DomainAbstractions
 {
     /// <summary>
     /// <para>Parses a string and outputs its parameters in a dictionary, given a format.</para>
+    /// <para>Example:</para>
+    /// <code>var input = "The weather on January 1st is sunny";</code>
+    /// <code>var format = "The weather on {date} is {weather}";</code>
+    /// <code>var extractedParams = InverseStringFormat.GetInverseStringFormat(input, format);</code>
+    /// <code>var date = extractedParams["date"]; // Gets "January 1st"</code>
+    /// <code>var weather = extractedParams["weather"]; // Gets "sunny"</code>
     /// </summary>
     public class InverseStringFormat : IDataFlow<string>
     {
