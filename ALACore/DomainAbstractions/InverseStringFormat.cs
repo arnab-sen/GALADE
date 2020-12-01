@@ -44,7 +44,7 @@ namespace DomainAbstractions
                 string before = format.Substring(0, format.IndexOf(currentParam));
                 string after = format.Substring(format.IndexOf(currentParam) + currentParam.Length);
                 string escapeRegex = @"(?=[\\\*\+\?\|\{\}\[\]\(\)\^\$\.\#])";
-                string regexFormat = $"(?<=({Regex.Replace(before, escapeRegex, "\\")})).*?(?=({Regex.Replace(after, escapeRegex, "\\")}))";
+                string regexFormat = $"(?<=({Regex.Replace(before, escapeRegex, "\\")})).*(?=({Regex.Replace(after, escapeRegex, "\\")}))";
                 string patternWithOtherParamsReplaced = Regex.Replace(regexFormat, @"\\{[\w\d_]+?\\}", ".*?");
                 var match = Regex.Match(input, patternWithOtherParamsReplaced);
                 values.Add(match.Value);
