@@ -17,7 +17,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
 
         // Configurations
-        public Func<T, string> GetID { get; set; }                // Required - returns the ID of the node render, used for cycle detection
+        public Func<T, string> GetID { get; set; }                // Required - returns the ID of the node render, and is used for cycle detection
         public Func<T, double> GetWidth { get; set; }             // Required - returns the width of the node render
         public Func<T, double> GetHeight { get; set; }            // Required - returns the height of the node render
         public Action<T, double> SetX { get; set; }               // Required - sets the x-coordinate of the node render
@@ -27,13 +27,14 @@ namespace DomainAbstractions
         public double VerticalGap { get; set; } = 100;            // Optional - sets the vertical distance between node renders in the same layer (the same depth from the root)
         public double InitialX { get; set; } = 0;                 // Optional - sets the x-coordinate of the root node render
         public double InitialY { get; set; } = 0;                 // Optional - sets the y-coordinate of the root node render
+        public Func<HashSet<string>> GetRoots { get; set; }       // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
 
         // Outputs for future runs
         public double LatestX => _latestX;
         public double LatestY => _latestY;
 
         // Private fields
-        private HashSet<string> visited = new HashSet<string>();
+        private HashSet<string> _visited = new HashSet<string>();
         private double _maxHeight = 0;
         private double _latestX = 0;
         private double _latestY = 0;
@@ -73,7 +74,7 @@ namespace DomainAbstractions
         {
             foreach (var child in children)
             {
-                if (!visited.Contains(GetID(child))) return false;
+                if (!_visited.Contains(GetID(child))) return false;
             }
 
             return true;
@@ -83,7 +84,7 @@ namespace DomainAbstractions
         {
             try
             {
-                visited.Add(GetID(node));
+                _visited.Add(GetID(node));
 
                 SetX(node, x);
                 SetY(node, y);
@@ -103,7 +104,7 @@ namespace DomainAbstractions
 
                     foreach (var child in children)
                     {
-                        if (!visited.Contains(GetID(child))) _latestY = SetRightTreeLayout(child, horizontalGap, verticalGap, _latestX, _latestY);
+                        if (!_visited.Contains(GetID(child))) _latestY = SetRightTreeLayout(child, horizontalGap, verticalGap, _latestX, _latestY);
                     }
                 }
 
@@ -125,11 +126,20 @@ namespace DomainAbstractions
             get => default;
             set
             {
-                visited.Clear();
+                _visited.Clear();
+                
+                if (GetRoots != null)
+                {
+                    var rootIds = GetRoots();
+                    foreach (var rootId in rootIds)
+                    {
+                        _visited.Add(rootId);
+                    }
+                }
 
                 if (ParametersInstantiated()) SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
 
-                if (visitedNodes != null) visitedNodes.Data = visited.Select(n => n).ToHashSet();
+                if (visitedNodes != null) visitedNodes.Data = _visited.Select(n => n).ToHashSet();
                 complete?.Execute();
             }
         }

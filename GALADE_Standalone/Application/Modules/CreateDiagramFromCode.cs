@@ -43,6 +43,8 @@ namespace Application
         private int _wireToCount = 0;
         private int _wireToTotal = 0;
         private HashSet<string> _nodesWithTreeParents = new HashSet<string>();
+        private HashSet<string> _nodesWithoutTreeParents = new HashSet<string>();
+        private string _firstRootVarName = "";
 
         // Global instances
         private DataFlowConnector<string> _startCreation;
@@ -66,6 +68,7 @@ namespace Application
             _nodesByName.Clear();
             _wiresById.Clear();
             _nodesWithTreeParents.Clear();
+            _nodesWithoutTreeParents.Clear();
         }
 
         public void Create(string code)
@@ -88,6 +91,7 @@ namespace Application
                     }
                 }
 
+                _firstRootVarName = "";
                 Graph.Edges.Clear();
 
                 // Logging.Message("Beginning diagram generation from code...");
@@ -291,8 +295,6 @@ namespace Application
                 CreateNode(dummyInstantiation);
             }
 
-            if (!_nodesWithTreeParents.Contains(destinationName)) _nodesWithTreeParents.Add(destinationName);
-
             var source = _nodesByName[sourceName];
             var destination = _nodesByName[destinationName];
             var sourcePort = !string.IsNullOrEmpty(sourcePortName) ? source.GetPortBox(sourcePortName) : source.GetSelectedPort(inputPort: false);
@@ -305,16 +307,26 @@ namespace Application
                 sb.AppendLine($"source: {source.Model.Type} {source.Name}");
                 sb.AppendLine($"destination: {destination.Model.Type} {destination.Name}");
                 sb.AppendLine($"sourcePort: {(sourcePort.Payload is Port port ? port.Type + " " + port.Name : "")}");
-                sb.AppendLine($"destinationPort: None found that match sourcePort in destination.");
+                sb.AppendLine("destinationPort: None found that match sourcePort in destination.");
 
                 Logging.Log(sb.ToString());
                 return;
             }
 
+            if (string.IsNullOrEmpty(_firstRootVarName)) _firstRootVarName = sourceName;
+
+            _nodesWithTreeParents.Add(destinationName);
+
             if (!_nodesWithTreeParents.Contains(sourceName))
             {
+                _nodesWithoutTreeParents.Add(sourceName);
                 Graph.Roots.Add(source);
-                Canvas.Children.Add(source.Render);
+            }
+
+            if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName)
+            {
+                _nodesWithoutTreeParents.Remove(destinationName);
+                Graph.Roots.Remove(destination);
             }
 
             var wire = CreateALAWire(source, destination, sourcePort, matchingPort);

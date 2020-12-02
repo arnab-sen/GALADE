@@ -186,8 +186,8 @@ namespace Application
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {InstanceName="id_581015f073614919a33126efd44bf477"};
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"};
             var id_ad29db53c0d64d4b8be9e31474882158 = new EventConnector() {InstanceName="id_ad29db53c0d64d4b8be9e31474882158"};
-            var getRoots = new Data<IEnumerable<ALANode>>() {Lambda=() => mainGraph.Roots.OfType<ALANode>()};
-            var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50};
+            var getRoots = new Data<IEnumerable<ALANode>>() {InstanceName="getRoots",Lambda=() =>{    var roots = mainGraph.Roots.OfType<ALANode>();    roots.Reverse();    return roots;}};
+            var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50,GetRoots=() => mainGraph.Roots.OfType<ALANode>().Select(n => n.Id).ToHashSet()};
             var startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R};
@@ -431,9 +431,9 @@ namespace Application
             var id_4577a8f0f63b4772bdc4eb4cb8581070 = new FileReader() {InstanceName="id_4577a8f0f63b4772bdc4eb4cb8581070"};
             var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {InstanceName="id_d920e0f3fa2d4872af1ec6f3c058c233"};
             var id_670ce4df65564e07912ef2ce63c38e11 = new DataFlowConnector<IEnumerable<string>>() {InstanceName="id_670ce4df65564e07912ef2ce63c38e11"};
-            var id_9240933e26ea4cfdb07e6e7252bf7576 = new EventLambda() {Lambda=() => {    layoutDiagram.InitialY = layoutDiagram.LatestY;}};
-            var id_2efd4f283c7b4df49b82383e24773e7d = new ForEach<ALANode>() {};
-            var id_afc4400ecf8b4f3e9aa1a57c346c80b2 = new EventLambda() {Lambda=() => {    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire)?.Refresh();    }}};
+            var id_9240933e26ea4cfdb07e6e7252bf7576 = new EventLambda() {InstanceName="id_9240933e26ea4cfdb07e6e7252bf7576",Lambda=() =>{    layoutDiagram.InitialY = layoutDiagram.LatestY;}};
+            var id_2efd4f283c7b4df49b82383e24773e7d = new ForEach<ALANode>() {InstanceName="id_2efd4f283c7b4df49b82383e24773e7d"};
+            var id_afc4400ecf8b4f3e9aa1a57c346c80b2 = new EventLambda() {InstanceName="id_afc4400ecf8b4f3e9aa1a57c346c80b2",Lambda=() =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire)?.Refresh();    }}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -750,6 +750,10 @@ namespace Application
         }
     }
 }
+
+
+
+
 
 
 
