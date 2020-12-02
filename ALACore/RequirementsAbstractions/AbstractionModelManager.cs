@@ -19,7 +19,7 @@ namespace RequirementsAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public List<string> ProgrammingParadigms { get; set; } = new List<string>() { "IDataFlow", "IEvent", "IUI", "IEventHandler", "ITableDataFlow" };
+        public List<string> ProgrammingParadigms { get; set; }
 
         // Private fields
         private FileBrowser _fileBrowser;
@@ -158,10 +158,21 @@ namespace RequirementsAbstractions
                         {
                             Type = portSyntaxNode.Type.ToString(), 
                             Name = "?" + portSyntaxNode.Type.ToString(), 
-                            IsInputPort = isInputPort
                         };
 
-                        model.AddImplementedPort(port.Type, port.Name);
+                        // Handle reverse ports (IDataFlowB and IEventB)
+                        port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
+
+                        if (port.IsReversePort)
+                        {
+                            port.IsInputPort = false;
+                            model.AddAcceptedPort(port.Type, port.Name);
+                        }
+                        else
+                        {
+                            port.IsInputPort = true;
+                            model.AddImplementedPort(port.Type, port.Name); 
+                        }
 
                         var indexList = new List<int>();
 
@@ -207,7 +218,19 @@ namespace RequirementsAbstractions
                             IsInputPort = false
                         };
 
-                        model.AddAcceptedPort(port.Type, port.Name);
+                        // Handle reverse ports (IDataFlowB and IEventB)
+                        port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
+
+                        if (port.IsReversePort)
+                        {
+                            port.IsInputPort = true;
+                            model.AddImplementedPort(port.Type, port.Name); 
+                        }
+                        else
+                        {
+                            port.IsInputPort = false;
+                            model.AddAcceptedPort(port.Type, port.Name);
+                        }
 
                         var indexList = new List<int>();
 

@@ -69,20 +69,23 @@ namespace Application
                 var wire = edge as ALAWire;
                 if (wire == null) continue;
 
-                var portName = (wire.SourcePort.Payload as Port)?.Name ?? "";
-                if (string.IsNullOrWhiteSpace(portName))
-                {
-                    _wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name});");
-                }
-                else
-                {
-                    _wireTos.Add($"{wire.Source.Name}.WireTo({wire.Destination.Name}, \"{(wire.SourcePort.Payload as Port)?.Name}\");");
-                }
+                var source = wire.Source;
+                var destination = wire.Destination;
+                var sourcePort = wire.SourcePort.Payload as Port;
+                var destinationPort = wire.DestinationPort.Payload as Port;
+
+                _wireTos.Add(sourcePort.IsReversePort
+                    ? CreateWireToString(destination.Name, source.Name, destinationPort.Name)
+                    : CreateWireToString(source.Name, destination.Name, sourcePort.Name));
             }
 
             return _wireTos;
         }
 
+        private string CreateWireToString(string A, string B, string portName = "")
+        {
+            return string.IsNullOrWhiteSpace(portName) ? $"{A}.WireTo({B});" : $"{A}.WireTo({B}, \"{portName}\");";
+        }
 
         public GenerateALACode()
         {

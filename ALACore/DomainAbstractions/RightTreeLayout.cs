@@ -17,17 +17,39 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
 
         // Configurations
-        public Func<T, string> GetID { get; set; }                // Required - returns the ID of the node render, and is used for cycle detection
-        public Func<T, double> GetWidth { get; set; }             // Required - returns the width of the node render
-        public Func<T, double> GetHeight { get; set; }            // Required - returns the height of the node render
-        public Action<T, double> SetX { get; set; }               // Required - sets the x-coordinate of the node render
-        public Action<T, double> SetY { get; set; }               // Required - sets the y-coordinate of the node render
-        public Func<T, IEnumerable<T>> GetChildren { get; set; }  // Required - returns a collection of the node's children
-        public double HorizontalGap { get; set; } = 100;          // Optional - sets the horizontal distance between every parent and child node render
-        public double VerticalGap { get; set; } = 100;            // Optional - sets the vertical distance between node renders in the same layer (the same depth from the root)
-        public double InitialX { get; set; } = 0;                 // Optional - sets the x-coordinate of the root node render
-        public double InitialY { get; set; } = 0;                 // Optional - sets the y-coordinate of the root node render
-        public Func<HashSet<string>> GetRoots { get; set; }       // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
+
+        // Required - returns the ID of the node render, and is used for cycle detection
+        public Func<T, string> GetID { get; set; }
+        
+        // Required - returns the width of the node render
+        public Func<T, double> GetWidth { get; set; }
+        
+        // Required - returns the height of the node render
+        public Func<T, double> GetHeight { get; set; }    
+        
+        // Required - sets the x-coordinate of the node render
+        public Action<T, double> SetX { get; set; }   
+        
+        // Required - sets the y-coordinate of the node render
+        public Action<T, double> SetY { get; set; }    
+        
+        // Required - returns a collection of the node's children
+        public Func<T, IEnumerable<T>> GetChildren { get; set; }  
+
+        // Optional - sets the horizontal distance between every parent and child node render
+        public double HorizontalGap { get; set; } = 100;    
+        
+        // Optional - sets the vertical distance between node renders in the same layer (the same depth from the root)
+        public double VerticalGap { get; set; } = 100;          
+        
+        // Optional - sets the x-coordinate of the root node render
+        public double InitialX { get; set; } = 0;       
+        
+        // Optional - sets the y-coordinate of the root node render
+        public double InitialY { get; set; } = 0;       
+        
+        // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
+        public Func<HashSet<string>> GetRoots { get; set; }       
 
         // Outputs for future runs
         public double LatestX => _latestX;

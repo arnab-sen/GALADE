@@ -20,6 +20,7 @@ namespace ProgrammingParadigms
         public bool IsInputPort { get; set; }
         public int Index { get; set; } = 0;
         public List<string> ConnectionIds = new List<string>();
+        public bool IsReversePort { get; set; }
 
         public override string ToString()
         {

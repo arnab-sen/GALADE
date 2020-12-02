@@ -187,7 +187,7 @@ namespace Application
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"};
             var id_ad29db53c0d64d4b8be9e31474882158 = new EventConnector() {InstanceName="id_ad29db53c0d64d4b8be9e31474882158"};
             var getRoots = new Data<IEnumerable<ALANode>>() {InstanceName="getRoots",Lambda=() =>{    var roots = mainGraph.Roots.OfType<ALANode>();    roots.Reverse();    return roots;}};
-            var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50,GetRoots=() => mainGraph.Roots.OfType<ALANode>().Select(n => n.Id).ToHashSet()};
+            var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => {    var GetParent = new Func<ALAWire, ALANode>(wire => (wire.SourcePort.Payload as Port).IsReversePort ? wire.Destination : wire.Source);    var GetChild = new Func<ALAWire, ALANode>(wire => (wire.SourcePort.Payload as Port).IsReversePort ? wire.Source : wire.Destination);    var children = mainGraph.Edges.OfType<ALAWire>().Where(wire => GetParent(wire)?.Equals(n) ?? false).Select(GetChild);        return children;},HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50,GetRoots=() => mainGraph.Roots.OfType<ALANode>().Select(n => n.Id).ToHashSet()};
             var startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R};
@@ -491,7 +491,6 @@ namespace Application
             id_2810e4e86da348b98b39c987e6ecd7b6.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_c4f838d19a6b4af9ac320799ebe9791f, "fanoutList");
             id_0fd49143884d4a6e86e6ed0ea2f1b5b4.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
-            id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
             id_35fceab68423425195096666f27475e9.WireTo(id_8fc35564768b4a64a57dc321cc1f621f, "fanoutList");
             id_35fceab68423425195096666f27475e9.WireTo(id_0fd49143884d4a6e86e6ed0ea2f1b5b4, "fanoutList");
             id_35fceab68423425195096666f27475e9.WireTo(id_92effea7b90745299826cd566a0f2b88, "fanoutList");
@@ -724,7 +723,6 @@ namespace Application
             id_84cf83e5511c4bcb8f83ad289d20b08d.WireTo(id_d920e0f3fa2d4872af1ec6f3c058c233, "elementOutput");
             id_d920e0f3fa2d4872af1ec6f3c058c233.WireTo(availableProgrammingParadigms, "name");
             id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_670ce4df65564e07912ef2ce63c38e11, "output");
-            id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_20566090f5054429aebed4d371c2a613, "fanoutList");
             extractALACode.WireTo(startDiagramCreationProcess, "diagramSelected");
             layoutDiagram.WireTo(id_9240933e26ea4cfdb07e6e7252bf7576, "complete");
@@ -732,6 +730,8 @@ namespace Application
             id_2efd4f283c7b4df49b82383e24773e7d.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "elementOutput");
             id_61b3caf63ee84893babc3972f0887b44.WireTo(id_afc4400ecf8b4f3e9aa1a57c346c80b2, "delayedEvent");
             id_2efd4f283c7b4df49b82383e24773e7d.WireTo(id_61b3caf63ee84893babc3972f0887b44, "complete");
+            id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
+            id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -750,6 +750,18 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -320,7 +320,7 @@ namespace Application
             if (!_nodesWithTreeParents.Contains(sourceName))
             {
                 _nodesWithoutTreeParents.Add(sourceName);
-                Graph.Roots.Add(source);
+                Graph.Roots.Add(source); 
             }
 
             if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName)
