@@ -50,7 +50,7 @@ namespace Application
             foreach (var node in nodes)
             {
                 var alaNode = node as ALANode;
-                if (alaNode == null) continue;
+                if (alaNode == null || alaNode.Model.Type == "UNDEFINED") continue;
 
                 _instantiations.Add(alaNode.ToInstantiation());
             }
