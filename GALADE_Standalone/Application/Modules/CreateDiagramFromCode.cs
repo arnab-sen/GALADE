@@ -393,6 +393,8 @@ namespace Application
 
             node.TypeChanged += newType =>
             {
+                node.NodeBackground = Utilities.BrushFromHex("#d2ecf9");
+
                 node.Model.CloneFrom(ModelManager.GetAbstractionModel(newType));
 
                 node.UpdateUI();
