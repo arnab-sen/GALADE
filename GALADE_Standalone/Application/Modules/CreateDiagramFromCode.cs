@@ -368,7 +368,7 @@ namespace Application
 
             if (model.Type == "UNDEFINED")
             {
-                node.NodeBackground = Brushes.Red;
+                node.NodeBackground = Brushes.Orange;
                 var sb = new StringBuilder();
 
                 sb.AppendLine("Error: No instantiation for this instance was found in the source code. Please add one in the code, and then regenerate this diagram.");
