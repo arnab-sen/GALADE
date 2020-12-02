@@ -14,25 +14,33 @@ namespace DomainAbstractions
     public class RightTreeLayout<T> : IDataFlow<T>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
-        public Func<T, string> GetID;               // Required - returns the ID of the node render, used for cycle detection
-        public Func<T, double> GetWidth;            // Required - returns the width of the node render
-        public Func<T, double> GetHeight;           // Required - returns the height of the node render
-        public Action<T, double> SetX;              // Required - sets the x-coordinate of the node render
-        public Action<T, double> SetY;              // Required - sets the y-coordinate of the node render
-        public Func<T, IEnumerable<T>> GetChildren; // Required - returns a collection of the node's children
-        public double HorizontalGap = 100;          // Optional - sets the horizontal distance between every parent and child node render
-        public double VerticalGap = 100;            // Optional - sets the vertical distance between node renders in the same layer (the same depth from the root)
-        public double InitialX = 0;                 // Optional - sets the x-coordinate of the root node render
-        public double InitialY = 0;                 // Optional - sets the y-coordinate of the root node render
+        // Configurations
+        public Func<T, string> GetID { get; set; }                // Required - returns the ID of the node render, used for cycle detection
+        public Func<T, double> GetWidth { get; set; }             // Required - returns the width of the node render
+        public Func<T, double> GetHeight { get; set; }            // Required - returns the height of the node render
+        public Action<T, double> SetX { get; set; }               // Required - sets the x-coordinate of the node render
+        public Action<T, double> SetY { get; set; }               // Required - sets the y-coordinate of the node render
+        public Func<T, IEnumerable<T>> GetChildren { get; set; }  // Required - returns a collection of the node's children
+        public double HorizontalGap { get; set; } = 100;          // Optional - sets the horizontal distance between every parent and child node render
+        public double VerticalGap { get; set; } = 100;            // Optional - sets the vertical distance between node renders in the same layer (the same depth from the root)
+        public double InitialX { get; set; } = 0;                 // Optional - sets the x-coordinate of the root node render
+        public double InitialY { get; set; } = 0;                 // Optional - sets the y-coordinate of the root node render
+
+        // Outputs for future runs
+        public double LatestX => _latestX;
+        public double LatestY => _latestY;
 
         // Private fields
         private HashSet<string> visited = new HashSet<string>();
         private double _maxHeight = 0;
+        private double _latestX = 0;
+        private double _latestY = 0;
 
         // Ports
         private IDataFlow<HashSet<string>> visitedNodes;
+        private IEvent complete;
 
         /// <summary>
         /// Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.
@@ -77,9 +85,6 @@ namespace DomainAbstractions
             {
                 visited.Add(GetID(node));
 
-                double nextX;
-                double nextY;
-
                 SetX(node, x);
                 SetY(node, y);
 
@@ -89,26 +94,28 @@ namespace DomainAbstractions
 
                 if (IsSaturated(node, children)) // if all of the node's children have been visited
                 {
-                    nextY = y + height + verticalGap;
+                    _latestY = y + height + verticalGap;
                 }
                 else
                 {
-                    nextX = x + GetWidth(node) + horizontalGap;
-                    nextY = y;
+                    _latestX = x + GetWidth(node) + horizontalGap;
+                    _latestY = y;
 
                     foreach (var child in children)
                     {
-                        if (!visited.Contains(GetID(child))) nextY = SetRightTreeLayout(child, horizontalGap, verticalGap, nextX, nextY);
+                        if (!visited.Contains(GetID(child))) _latestY = SetRightTreeLayout(child, horizontalGap, verticalGap, _latestX, _latestY);
                     }
                 }
 
-                return Math.Max(nextY, y + height + verticalGap);
+                _latestY = Math.Max(_latestY, y + height + verticalGap);
+                return _latestY;
             }
             catch (Exception e)
             {
                 Logging.Log($"Failed to layout nodes in RightTreeLayout when visiting {node}.\nException: {e}");
 
-                return y;
+                _latestY = y;
+                return _latestY;
             }
         }
 
@@ -123,6 +130,7 @@ namespace DomainAbstractions
                 if (ParametersInstantiated()) SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
 
                 if (visitedNodes != null) visitedNodes.Data = visited.Select(n => n).ToHashSet();
+                complete?.Execute();
             }
         }
     }

@@ -87,7 +87,7 @@ namespace Application
 
         private void CreateWiring()
         {
-            var VERSION_NUMBER = "1.1.0";
+            var VERSION_NUMBER = "1.2.0";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -186,9 +186,9 @@ namespace Application
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {InstanceName="id_581015f073614919a33126efd44bf477"};
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"};
             var id_ad29db53c0d64d4b8be9e31474882158 = new EventConnector() {InstanceName="id_ad29db53c0d64d4b8be9e31474882158"};
-            var getFirstRoot = new Data<ALANode>() {InstanceName="getFirstRoot",Lambda=() => mainGraph.Roots.FirstOrDefault() as ALANode};
-            var id_54cdb3b62fb0433a996dc0dc58ddfa93 = new RightTreeLayout<ALANode>() {InstanceName="id_54cdb3b62fb0433a996dc0dc58ddfa93",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50};
-            var layoutDiagram = new EventConnector() {InstanceName="layoutDiagram"};
+            var getRoots = new Data<IEnumerable<ALANode>>() {Lambda=() => mainGraph.Roots.OfType<ALANode>()};
+            var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50};
+            var startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"};
             var id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"};
             var id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R};
             var createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.Model.CloneFrom(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}};
@@ -287,7 +287,7 @@ namespace Application
             var id_2ce385b32256413ab2489563287afaac = new IfElse() {InstanceName="id_2ce385b32256413ab2489563287afaac"};
             var latestCodeFilePath = new DataFlowConnector<string>() {InstanceName="latestCodeFilePath"};
             var id_dcd4c90552dc4d3fb579833da87cd829 = new DispatcherEvent() {InstanceName="id_dcd4c90552dc4d3fb579833da87cd829",Priority=DispatcherPriority.Loaded};
-            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {InstanceName="id_1e62a1e411c9464c94ee234dd9dd3fdc",Lambda=() =>{    stateTransition.Update(Enums.DiagramMode.Idle);    createDiagramFromCode.Update = false;}};
+            var id_1e62a1e411c9464c94ee234dd9dd3fdc = new EventLambda() {InstanceName="id_1e62a1e411c9464c94ee234dd9dd3fdc",Lambda=() =>{    stateTransition.Update(Enums.DiagramMode.Idle);    createDiagramFromCode.Update = false;    layoutDiagram.InitialY = 50;}};
             var id_0b4478e56d614ca091979014db65d076 = new MouseButtonEvent(eventName:"MouseDown") {InstanceName="id_0b4478e56d614ca091979014db65d076",Condition=args => args.ChangedButton == MouseButton.Middle && args.ButtonState == MouseButtonState.Pressed};
             var id_d90fbf714f5f4fdc9b43cbe4d5cebf1c = new ApplyAction<object>() {InstanceName="id_d90fbf714f5f4fdc9b43cbe4d5cebf1c",Lambda=input =>{    (input as UIElement)?.Focus();    stateTransition.Update(Enums.DiagramMode.Idle);}};
             var mainHorizontal = new Horizontal() {Ratios=new[]{1, 3},InstanceName="mainHorizontal"};
@@ -310,7 +310,6 @@ namespace Application
             var id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {InstanceName="id_9d14914fdf0647bb8b4b20ea799e26c8"};
             var unhighlightAllWires = new EventLambda() {InstanceName="unhighlightAllWires",Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}};
             var id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="id_6d789ff1a0bc4a2d8e88733adc266be8"};
-            var id_8ba0c38df0f041a3a7e75fb859376491 = new ApplyAction<ALANode>() {InstanceName="id_8ba0c38df0f041a3a7e75fb859376491",Lambda=node =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire).Refresh();    }}};
             var id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {InstanceName="id_a236bd13c516401eb5a83a451a875dd0"};
             var id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="Change createDiagramFromCode.Update to true",Lambda=() => createDiagramFromCode.Update = true};
             var latestAddedNode = new DataFlowConnector<object>() {InstanceName="latestAddedNode"};
@@ -339,8 +338,7 @@ namespace Application
             var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(WPFCanvas.GetLeft(render), WPFCanvas.GetTop(render));    WPFCanvas.SetLeft(mainCanvas, -renderPosition.X + 20);    WPFCanvas.SetTop(mainCanvas, -renderPosition.Y + 20);}};
             var id_29ed401eb9c240d98bf5c6d1f00c5c76 = new MenuItem(header:"Test reset canvas on selected node") {InstanceName="Test reset canvas on selected node"};
             var id_fa857dd7432e406c8c6c642152b37730 = new Data<ALANode>() {InstanceName="id_fa857dd7432e406c8c6c642152b37730",Lambda=() => mainGraph.Get("SelectedNode") as ALANode};
-            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherData<ALANode>() {InstanceName="id_61b3caf63ee84893babc3972f0887b44",Priority=DispatcherPriority.ApplicationIdle};
-            var id_40ca2809cd8744c780b0c99165e6a7bd = new DataFlowConnector<ALANode>() {InstanceName="id_40ca2809cd8744c780b0c99165e6a7bd"};
+            var id_61b3caf63ee84893babc3972f0887b44 = new DispatcherEvent() {InstanceName="Default"};
             var id_42c7f12c13804ec7b111291739be78f5 = new DataFlowConnector<string>() {InstanceName="id_42c7f12c13804ec7b111291739be78f5"};
             var id_409be365df274cc6a7a124e8a80316a5 = new ConvertToEvent<string>() {InstanceName="id_409be365df274cc6a7a124e8a80316a5"};
             var id_5e2f0621c62142c1b5972961c93cb725 = new Data<UIElement>() {InstanceName="id_5e2f0621c62142c1b5972961c93cb725",Lambda=() => mainCanvas};
@@ -423,7 +421,6 @@ namespace Application
             var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20,InstanceName="globalVersionNumberDisplay"};
             var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for Updates") {InstanceName="Check for Updates"};
             var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/releases");}};
-            var getUnvisitedNodes = new Apply<HashSet<string>, List<ALANode>>() {InstanceName="getUnvisitedNodes",Lambda=visitedNodes =>{    var allNodes = mainGraph.Nodes.OfType<ALANode>();    var notVisitedNodes = allNodes.Where(n => !visitedNodes.Contains(n.Id)).ToList();    return notVisitedNodes;}};
             var id_20566090f5054429aebed4d371c2a613 = new ForEach<string>() {InstanceName="id_20566090f5054429aebed4d371c2a613"};
             var id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"};
             var id_cad49d55268145ab87788c650c6c5473 = new CodeParser() {InstanceName="id_cad49d55268145ab87788c650c6c5473"};
@@ -434,6 +431,9 @@ namespace Application
             var id_4577a8f0f63b4772bdc4eb4cb8581070 = new FileReader() {InstanceName="id_4577a8f0f63b4772bdc4eb4cb8581070"};
             var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {InstanceName="id_d920e0f3fa2d4872af1ec6f3c058c233"};
             var id_670ce4df65564e07912ef2ce63c38e11 = new DataFlowConnector<IEnumerable<string>>() {InstanceName="id_670ce4df65564e07912ef2ce63c38e11"};
+            var id_9240933e26ea4cfdb07e6e7252bf7576 = new EventLambda() {Lambda=() => {    layoutDiagram.InitialY = layoutDiagram.LatestY;}};
+            var id_2efd4f283c7b4df49b82383e24773e7d = new ForEach<ALANode>() {};
+            var id_afc4400ecf8b4f3e9aa1a57c346c80b2 = new EventLambda() {Lambda=() => {    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire)?.Refresh();    }}};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -452,11 +452,10 @@ namespace Application
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children");
             id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children");
             id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent");
-            id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(layoutDiagram, "eventOutput");
-            getFirstRoot.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "dataOutput");
-            layoutDiagram.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList");
-            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_54cdb3b62fb0433a996dc0dc58ddfa93, "fanoutList");
-            id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(layoutDiagram, "eventHappened");
+            id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(startRightTreeLayoutProcess, "eventOutput");
+            startRightTreeLayoutProcess.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList");
+            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(layoutDiagram, "fanoutList");
+            id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(startRightTreeLayoutProcess, "eventHappened");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_f19494c1e76f460a9189c172ac98de60, "children");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_08d455bfa9744704b21570d06c3c5389, "children");
             id_f19494c1e76f460a9189c172ac98de60.WireTo(id_d59c0c09aeaf46c186317b9aeaf95e2e, "children");
@@ -481,12 +480,12 @@ namespace Application
             id_44b41ddf67864f29ae9b59ed0bec2927.WireTo(id_da4f1dedd74549e283777b5f7259ad7f, "argsOutput");
             id_368a7dc77fe24060b5d4017152492c1e.WireTo(id_2f4df1d9817246e5a9184857ec5a2bf8, "transitionOutput");
             id_2f4df1d9817246e5a9184857ec5a2bf8.WireTo(id_c80f46b08d894d4faa674408bf846b3f, "output");
-            id_c80f46b08d894d4faa674408bf846b3f.WireTo(layoutDiagram, "ifOutput");
+            id_c80f46b08d894d4faa674408bf846b3f.WireTo(startRightTreeLayoutProcess, "ifOutput");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(getProjectFolderPath, "fanoutList");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList");
             id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete");
             id_1de443ed1108447199237a8c0c584fcf.WireTo(id_46a4d6e6cfb940278eb27561c43cbf37, "eventHappened");
-            id_83c3db6e4dfa46518991f706f8425177.WireTo(layoutDiagram, "clickedEvent");
+            id_83c3db6e4dfa46518991f706f8425177.WireTo(startRightTreeLayoutProcess, "clickedEvent");
             id_5297a497d2de44e5bc0ea2c431cdcee6.WireTo(id_9bd4555e80434a7b91b65e0b386593b0, "dataOutput");
             id_9bd4555e80434a7b91b65e0b386593b0.WireTo(id_7fabbaae488340a59d940100d38e9447, "output");
             id_2810e4e86da348b98b39c987e6ecd7b6.WireTo(id_cf7df48ac3304a8894a7536261a3b474, "fileContentOutput");
@@ -506,7 +505,7 @@ namespace Application
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput");
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput");
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList");
-            id_4a268943755348b68ee2cb6b71f73c40.WireTo(getFirstRoot, "delayedEvent");
+            id_4a268943755348b68ee2cb6b71f73c40.WireTo(getRoots, "delayedEvent");
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent");
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "instantiations");
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "wireTos");
@@ -548,7 +547,7 @@ namespace Application
             id_d5d3af7a3c9a47bf9af3b1a1e1246267.WireTo(id_2ce385b32256413ab2489563287afaac, "output");
             id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(latestCodeFilePath, "settingJsonOutput");
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete");
-            layoutDiagram.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
+            startRightTreeLayoutProcess.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete");
             mainCanvasDisplay.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers");
             id_0b4478e56d614ca091979014db65d076.WireTo(id_d90fbf714f5f4fdc9b43cbe4d5cebf1c, "senderOutput");
             mainWindowVertical.WireTo(mainHorizontal, "children");
@@ -606,9 +605,6 @@ namespace Application
             id_2c933997055b4122bdb77945f1abb560.WireTo(id_0eea701e0bc84c42a9f17ccc200ef2ef, "clickedEvent");
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_29ed401eb9c240d98bf5c6d1f00c5c76, "children");
             id_29ed401eb9c240d98bf5c6d1f00c5c76.WireTo(id_fa857dd7432e406c8c6c642152b37730, "clickedEvent");
-            id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(id_61b3caf63ee84893babc3972f0887b44, "fanoutList");
-            id_61b3caf63ee84893babc3972f0887b44.WireTo(id_40ca2809cd8744c780b0c99165e6a7bd, "delayedData");
-            id_40ca2809cd8744c780b0c99165e6a7bd.WireTo(id_8ba0c38df0f041a3a7e75fb859376491, "fanoutList");
             id_a2d71044048840b0a69356270e6520ac.WireTo(id_42c7f12c13804ec7b111291739be78f5, "dataOutput");
             id_42c7f12c13804ec7b111291739be78f5.WireTo(id_409be365df274cc6a7a124e8a80316a5, "fanoutList");
             id_57e7dd98a0874e83bbd5014f7e9c9ef5.WireTo(resetScale, "fanoutList");
@@ -705,7 +701,7 @@ namespace Application
             id_efeb87ef1b3c4f9e8ed2f8193e6b78b1.WireTo(generateCode, "clickedEvent");
             startDiagramCreationProcess.WireTo(id_db77c286e64241c48de4fad0dde80024, "fanoutList");
             startDiagramCreationProcess.WireTo(id_a2d71044048840b0a69356270e6520ac, "fanoutList");
-            startDiagramCreationProcess.WireTo(layoutDiagram, "fanoutList");
+            startDiagramCreationProcess.WireTo(startRightTreeLayoutProcess, "fanoutList");
             id_a9db513fb0e749bda7f42b03964e5dce.WireTo(id_c9dbe185989e48c0869f984dd8e979f2, "clickedEvent");
             setting_currentDiagramCodeFilePath.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "fanoutList");
             id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "fanoutList");
@@ -717,7 +713,6 @@ namespace Application
             id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children");
             id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent");
-            id_54cdb3b62fb0433a996dc0dc58ddfa93.WireTo(getUnvisitedNodes, "visitedNodes");
             id_4577a8f0f63b4772bdc4eb4cb8581070.WireTo(id_97b81fc9cc04423192a12822a5a5a32e, "fileContentOutput");
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "fanoutList");
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_cad49d55268145ab87788c650c6c5473, "fanoutList");
@@ -732,6 +727,11 @@ namespace Application
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_20566090f5054429aebed4d371c2a613, "fanoutList");
             extractALACode.WireTo(startDiagramCreationProcess, "diagramSelected");
+            layoutDiagram.WireTo(id_9240933e26ea4cfdb07e6e7252bf7576, "complete");
+            getRoots.WireTo(id_2efd4f283c7b4df49b82383e24773e7d, "dataOutput");
+            id_2efd4f283c7b4df49b82383e24773e7d.WireTo(id_9f631ef9374f4ca3b7b106434fb0f49c, "elementOutput");
+            id_61b3caf63ee84893babc3972f0887b44.WireTo(id_afc4400ecf8b4f3e9aa1a57c346c80b2, "delayedEvent");
+            id_2efd4f283c7b4df49b82383e24773e7d.WireTo(id_61b3caf63ee84893babc3972f0887b44, "complete");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -750,6 +750,12 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
 
 
 

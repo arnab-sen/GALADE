@@ -38,11 +38,11 @@ namespace Application
         private string _code = "";
         private Dictionary<string, ALANode> _nodesByName = new Dictionary<string, ALANode>();
         private Dictionary<string, ALAWire> _wiresById = new Dictionary<string, ALAWire>();
-        private bool _rootCreated = false;
         private int _instCount = 0;
         private int _instTotal = 0;
         private int _wireToCount = 0;
         private int _wireToTotal = 0;
+        private HashSet<string> _nodesWithTreeParents = new HashSet<string>();
 
         // Global instances
         private DataFlowConnector<string> _startCreation;
@@ -65,7 +65,7 @@ namespace Application
         {
             _nodesByName.Clear();
             _wiresById.Clear();
-            _rootCreated = false;
+            _nodesWithTreeParents.Clear();
         }
 
         public void Create(string code)
@@ -291,6 +291,8 @@ namespace Application
                 CreateNode(dummyInstantiation);
             }
 
+            if (!_nodesWithTreeParents.Contains(destinationName)) _nodesWithTreeParents.Add(destinationName);
+
             var source = _nodesByName[sourceName];
             var destination = _nodesByName[destinationName];
             var sourcePort = !string.IsNullOrEmpty(sourcePortName) ? source.GetPortBox(sourcePortName) : source.GetSelectedPort(inputPort: false);
@@ -309,11 +311,10 @@ namespace Application
                 return;
             }
 
-            if (!_rootCreated)
+            if (!_nodesWithTreeParents.Contains(sourceName))
             {
                 Graph.Roots.Add(source);
                 Canvas.Children.Add(source.Render);
-                _rootCreated = true;
             }
 
             var wire = CreateALAWire(source, destination, sourcePort, matchingPort);
