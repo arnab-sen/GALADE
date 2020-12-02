@@ -98,13 +98,17 @@ namespace DomainAbstractions
             window.SizeToContent = SizeToContent.Height; // Resizes the popup window to match the height of its contained contents
         }
 
-
-        private void PostWiringInitialize()
+        public void InitialiseContent()
         {
             foreach (var c in children)
             {
                 backgroundPanel.Children.Add(c.GetWPFElement());
             }
+        }
+
+        private void PostWiringInitialize()
+        {
+            InitialiseContent();
         }
 
         // IEvent implementation --------------------------------------

@@ -276,7 +276,6 @@ namespace Application
             var id_5e77c28f15294641bb881592d2cd7ac9 = new EventLambda() {InstanceName="id_5e77c28f15294641bb881592d2cd7ac9",Lambda=() =>{    Logging.Message("Beginning code generation...");}};
             var id_3f30a573358d4fd08c4c556281737360 = new EventLambda() {InstanceName="Print code generation success message",Lambda=() =>{    Logging.Message($"[{DateTime.Now:h:mm:ss tt}] Completed code generation successfully!");}};
             var extractALACode = new ExtractALACode() {InstanceName="extractALACode"};
-            var id_13061fa931bc49d599a3a2f0b1cab26c = new ConvertToEvent<string>() {InstanceName="id_13061fa931bc49d599a3a2f0b1cab26c"};
             var id_a2d71044048840b0a69356270e6520ac = new Data<string>() {InstanceName="id_a2d71044048840b0a69356270e6520ac",Lambda=() =>{ /* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to use landmarks by default. */    var sb = new StringBuilder();    sb.AppendLine("class DummyClass {");    sb.AppendLine("void CreateWiring() {");    sb.AppendLine(extractALACode.Instantiations);    sb.AppendLine(extractALACode.Wiring);    sb.AppendLine("}");    sb.AppendLine("}");    return sb.ToString();}};
             var id_a26b08b25184469db6f0c4987d4c68dd = new KeyEvent(eventName:"KeyDown") {InstanceName="CTRL + S pressed",Key=Key.S,Modifiers=new Key[]{Key.LeftCtrl}};
             var id_6f93680658e04f8a9ab15337cee1eca3 = new MenuItem(header:"Pull from code") {InstanceName="Pull from code"};
@@ -434,7 +433,7 @@ namespace Application
             var id_6625f976171c480ebd8b750aeaf4fab1 = new Cast<List<string>, IEnumerable<string>>() {InstanceName="id_6625f976171c480ebd8b750aeaf4fab1"};
             var id_4577a8f0f63b4772bdc4eb4cb8581070 = new FileReader() {InstanceName="id_4577a8f0f63b4772bdc4eb4cb8581070"};
             var id_d920e0f3fa2d4872af1ec6f3c058c233 = new CodeParser() {InstanceName="id_d920e0f3fa2d4872af1ec6f3c058c233"};
-            var id_670ce4df65564e07912ef2ce63c38e11 = new DataFlowConnector<IEnumerable<string>>() {};
+            var id_670ce4df65564e07912ef2ce63c38e11 = new DataFlowConnector<IEnumerable<string>>() {InstanceName="id_670ce4df65564e07912ef2ce63c38e11"};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -507,7 +506,6 @@ namespace Application
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput");
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput");
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList");
-            id_cf7df48ac3304a8894a7536261a3b474.WireTo(id_13061fa931bc49d599a3a2f0b1cab26c, "fanoutList");
             id_4a268943755348b68ee2cb6b71f73c40.WireTo(getFirstRoot, "delayedEvent");
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent");
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "instantiations");
@@ -705,7 +703,6 @@ namespace Application
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_a9db513fb0e749bda7f42b03964e5dce, "children");
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_efeb87ef1b3c4f9e8ed2f8193e6b78b1, "children");
             id_efeb87ef1b3c4f9e8ed2f8193e6b78b1.WireTo(generateCode, "clickedEvent");
-            id_13061fa931bc49d599a3a2f0b1cab26c.WireTo(startDiagramCreationProcess, "eventOutput");
             startDiagramCreationProcess.WireTo(id_db77c286e64241c48de4fad0dde80024, "fanoutList");
             startDiagramCreationProcess.WireTo(id_a2d71044048840b0a69356270e6520ac, "fanoutList");
             startDiagramCreationProcess.WireTo(layoutDiagram, "fanoutList");
@@ -734,6 +731,7 @@ namespace Application
             id_8fc35564768b4a64a57dc321cc1f621f.WireTo(id_670ce4df65564e07912ef2ce63c38e11, "output");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_20566090f5054429aebed4d371c2a613, "fanoutList");
+            extractALACode.WireTo(startDiagramCreationProcess, "diagramSelected");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -752,6 +750,12 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
 
 
 
