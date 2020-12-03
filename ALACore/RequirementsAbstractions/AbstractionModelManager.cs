@@ -147,7 +147,8 @@ namespace RequirementsAbstractions
                 {
                     var parser = new CodeParser();
 
-                    var portNodeList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax).Types.ToList();
+                    var portNodeList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax)?.Types.ToList();
+                    if (portNodeList == null) return;
 
                     var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), ProgrammingParadigms));
 
@@ -166,7 +167,7 @@ namespace RequirementsAbstractions
                         if (port.IsReversePort)
                         {
                             port.IsInputPort = false;
-                            model.AddAcceptedPort(port.Type, port.Name);
+                            model.AddAcceptedPort(port.Type, port.Name, true);
                         }
                         else
                         {
@@ -214,8 +215,7 @@ namespace RequirementsAbstractions
                         var port = new Port()
                         {
                             Type = portSyntaxNode.Declaration.Type.ToString(),
-                            Name = portSyntaxNode.Declaration.Variables.First().Identifier.ToString(),
-                            IsInputPort = false
+                            Name = portSyntaxNode.Declaration.Variables.First().Identifier.ToString()
                         };
 
                         // Handle reverse ports (IDataFlowB and IEventB)
@@ -224,7 +224,7 @@ namespace RequirementsAbstractions
                         if (port.IsReversePort)
                         {
                             port.IsInputPort = true;
-                            model.AddImplementedPort(port.Type, port.Name); 
+                            model.AddImplementedPort(port.Type, port.Name, true); 
                         }
                         else
                         {

@@ -297,20 +297,42 @@ namespace Application
 
             var source = _nodesByName[sourceName];
             var destination = _nodesByName[destinationName];
-            var sourcePort = !string.IsNullOrEmpty(sourcePortName) ? source.GetPortBox(sourcePortName) : source.GetSelectedPort(inputPort: false);
-            var matchingPort = FindMatchingDestinationPortBox(sourcePort.Payload as Port, destination);
+            var sourcePortBox = !string.IsNullOrEmpty(sourcePortName) ? source.GetPortBox(sourcePortName) : source.GetSelectedPort(inputPort: false);
+            var sourcePort = (Port)sourcePortBox.Payload;
+            var destinationPortBox = FindMatchingPortBox(sourcePort, destination, !sourcePort.IsReversePort);
 
-            if (matchingPort == null)
+            if (destinationPortBox == null)
             {
                 var sb = new StringBuilder();
                 sb.AppendLine($"Failed to parse WireTo in CreateDiagramFromCode from line: {wireTo}");
                 sb.AppendLine($"source: {source.Model.Type} {source.Name}");
                 sb.AppendLine($"destination: {destination.Model.Type} {destination.Name}");
-                sb.AppendLine($"sourcePort: {(sourcePort.Payload is Port port ? port.Type + " " + port.Name : "")}");
+                sb.AppendLine($"sourcePort: {(sourcePortBox.Payload is Port port ? port.Type + " " + port.Name : "")}");
                 sb.AppendLine("destinationPort: None found that match sourcePort in destination.");
 
                 Logging.Log(sb.ToString());
                 return;
+            }
+
+            var destinationPort = (Port)destinationPortBox.Payload;
+
+            if (sourcePort.IsReversePort) // Swap source and destination variables
+            {
+                object temp = source;
+                source = destination;
+                destination = (ALANode)temp;
+
+                temp = sourceName;
+                sourceName = destinationName;
+                destinationName = (string)temp;
+
+                temp = sourcePort;
+                sourcePort = destinationPort;
+                destinationPort = (Port)temp;
+
+                temp = sourcePortBox;
+                sourcePortBox = destinationPortBox;
+                destinationPortBox = (Box)temp;
             }
 
             if (string.IsNullOrEmpty(_firstRootVarName)) _firstRootVarName = sourceName;
@@ -323,13 +345,16 @@ namespace Application
                 Graph.Roots.Add(source); 
             }
 
+            var a = Graph.Roots.Count(o => o is ALANode node && node.Model.Name == "connectorScpLifeDataToFileProgress");
+
             if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName)
             {
                 _nodesWithoutTreeParents.Remove(destinationName);
-                Graph.Roots.Remove(destination);
+                Graph.Roots.RemoveAll(o => o.Equals(destination)); 
             }
+            var b = Graph.Roots.Count(o => o is ALANode node && node.Model.Name == "connectorScpLifeDataToFileProgress");
 
-            var wire = CreateALAWire(source, destination, sourcePort, matchingPort);
+            var wire = CreateALAWire(source, destination, sourcePortBox, destinationPortBox);
 
             Graph.AddEdge(wire);
 
@@ -341,12 +366,12 @@ namespace Application
             wire.Paint();
         }
 
-        private Box FindMatchingDestinationPortBox(Port portToMatch, ALANode destination)
+        private Box FindMatchingPortBox(Port portToMatch, ALANode destination, bool getInputPort = true)
         {
-            var inputPorts = destination.GetImplementedPorts();
-            var matchingPort = inputPorts.FirstOrDefault(p => p.Type == portToMatch.Type);
-            if (matchingPort == null) matchingPort = inputPorts.FirstOrDefault(p => Regex.IsMatch(portToMatch.Type, $@"List<{p.Type}>"));
-            if (matchingPort == null) matchingPort = inputPorts.FirstOrDefault(p => p.IsInputPort);
+            var ports = getInputPort ? destination.GetImplementedPorts() : destination.GetAcceptedPorts();
+            var matchingPort = ports.FirstOrDefault(p => p.Type == portToMatch.Type);
+            if (matchingPort == null) matchingPort = ports.FirstOrDefault(p => Regex.IsMatch(portToMatch.Type, $@"List<{p.Type}>"));
+            if (matchingPort == null) matchingPort = ports.FirstOrDefault(p => p.IsInputPort == getInputPort);
 
             if (matchingPort == null) return null;
 
