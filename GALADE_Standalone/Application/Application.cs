@@ -734,6 +734,7 @@ namespace Application
             id_2efd4f283c7b4df49b82383e24773e7d.WireTo(id_61b3caf63ee84893babc3972f0887b44, "complete");
             id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
+            id_afc4400ecf8b4f3e9aa1a57c346c80b2.WireTo(layoutDiagram, "complete");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -752,6 +753,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 

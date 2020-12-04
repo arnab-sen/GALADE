@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.
     /// </summary>
-    public class RightTreeLayout<T> : IDataFlow<T>
+    public class RightTreeLayout<T> : IDataFlow<T>, IEvent
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -148,8 +148,6 @@ namespace DomainAbstractions
             get => default;
             set
             {
-                _visited.Clear();
-                
                 if (GetRoots != null)
                 {
                     var rootIds = GetRoots();
@@ -164,6 +162,12 @@ namespace DomainAbstractions
                 if (visitedNodes != null) visitedNodes.Data = _visited.Select(n => n).ToHashSet();
                 complete?.Execute();
             }
+        }
+
+        // IEvent implementation
+        void IEvent.Execute()
+        {
+            _visited.Clear();
         }
     }
 }
