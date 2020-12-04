@@ -45,6 +45,7 @@ namespace Application
         private HashSet<string> _nodesWithTreeParents = new HashSet<string>();
         private HashSet<string> _nodesWithoutTreeParents = new HashSet<string>();
         private string _firstRootVarName = "";
+        private HashSet<string> _roots = new HashSet<string>(); // Nodes that should always be roots, e.g. ones that have names starting with "root_"
 
         // Global instances
         private DataFlowConnector<string> _startCreation;
@@ -69,6 +70,7 @@ namespace Application
             _wiresById.Clear();
             _nodesWithTreeParents.Clear();
             _nodesWithoutTreeParents.Clear();
+            _roots.Clear();
         }
 
         public void Create(string code)
@@ -336,23 +338,28 @@ namespace Application
             }
 
             if (string.IsNullOrEmpty(_firstRootVarName)) _firstRootVarName = sourceName;
+            if (sourceName.StartsWith("root_") && !_roots.Contains(sourceName))
+            {
+                _roots.Add(sourceName);
+                Graph.Roots.Add(source);
+            }
 
             _nodesWithTreeParents.Add(destinationName);
 
             if (!_nodesWithTreeParents.Contains(sourceName))
             {
-                _nodesWithoutTreeParents.Add(sourceName);
-                Graph.Roots.Add(source); 
+                if (!_nodesWithoutTreeParents.Contains(sourceName) && !_roots.Contains(sourceName))
+                {
+                    Graph.Roots.Add(source);
+                    _nodesWithoutTreeParents.Add(sourceName); 
+                }
             }
 
-            var a = Graph.Roots.Count(o => o is ALANode node && node.Model.Name == "connectorScpLifeDataToFileProgress");
-
-            if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName)
+            if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName && !_roots.Contains(destinationName))
             {
                 _nodesWithoutTreeParents.Remove(destinationName);
                 Graph.Roots.RemoveAll(o => o.Equals(destination)); 
             }
-            var b = Graph.Roots.Count(o => o is ALANode node && node.Model.Name == "connectorScpLifeDataToFileProgress");
 
             var wire = CreateALAWire(source, destination, sourcePortBox, destinationPortBox);
 

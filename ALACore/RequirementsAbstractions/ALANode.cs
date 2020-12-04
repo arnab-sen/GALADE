@@ -147,9 +147,10 @@ namespace RequirementsAbstractions
         /// <summary>
         /// Finds the first port box that matches the input name.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The variable name of the port.</param>
+        /// <param name="useDefault">Whether to return a default port box if the desired port does not exist.</param>
         /// <returns></returns>
-        public Box GetPortBox(string name)
+        public Box GetPortBox(string name, bool useDefault = true)
         {
             foreach (var outputPortBox in _outputPortBoxes)
             {
@@ -161,11 +162,12 @@ namespace RequirementsAbstractions
                 if (inputPortBox.Payload is Port port && port.Name == name) return inputPortBox;
             }
 
-            // Return a default port if no matches are found
-            if (_outputPortBoxes.Any()) return _outputPortBoxes.First();
-            if (_inputPortBoxes.Any()) return _inputPortBoxes.First();
+            if (useDefault)
+            {
+                if (_outputPortBoxes.Any()) return _outputPortBoxes.First();
+                if (_inputPortBoxes.Any()) return _inputPortBoxes.First(); 
+            }
 
-            // Return null if the abstraction has no ports at all
             return null;
         }
 
@@ -1136,16 +1138,16 @@ namespace RequirementsAbstractions
         /// <returns></returns>
         public bool IsMatch(string query, bool matchCase = false)
         {
-            if (MatchString(Model.FullType, query, matchCase)) return true;
-            if (MatchString(Model.Name, query, matchCase)) return true;
-            if (MatchString(Model.GetValue("InstanceName"), query, matchCase)) return true;
-            if (MatchString(Model.GetValue("InstanceDescription"), query, matchCase)) return true;
-
-            return false;
+            return MatchString(Model.FullType, query, matchCase)
+                   || MatchString(Model.Name, query, matchCase)
+                   || MatchString(Model.GetValue("InstanceName"), query, matchCase)
+                   || MatchString(Model.GetValue("InstanceDescription"), query, matchCase);
         }
 
         private bool MatchString(string toMatch, string searchToken, bool matchCase = false)
         {
+            if (toMatch == null || searchToken == null) return false;
+
             try
             {
                 if (!matchCase)
