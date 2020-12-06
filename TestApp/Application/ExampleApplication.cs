@@ -38,17 +38,20 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var root0 = new DataFlowConnector<string>() {InstanceName="root0"};
-            var sf0 = new StringFormat() {InstanceName="sf0"};
+            var _0 = new Apply<string, string>() {InstanceName="_0"};
+            var id_fad4f4191b7344a09854e4d3cd7a1e43 = new Button() {};
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            sf0.WireTo(root0, "dataFlowBsList");
+            root0.WireTo(_0, "output");
+            _0.WireTo(id_fad4f4191b7344a09854e4d3cd7a1e43, "output");
 			// END AUTO-GENERATED WIRING FOR test
 		
         }
     }
 }
+
+
 
 
 

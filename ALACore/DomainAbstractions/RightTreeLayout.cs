@@ -135,7 +135,7 @@ namespace DomainAbstractions
             }
             catch (Exception e)
             {
-                Logging.Log($"Failed to layout nodes in RightTreeLayout when visiting {node}.\nException: {e}");
+                Logging.Log($"Failed to lay out nodes in RightTreeLayout when visiting {node}.\nException: {e}");
 
                 _latestY = y;
                 return _latestY;
