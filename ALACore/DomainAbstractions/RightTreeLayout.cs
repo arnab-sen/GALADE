@@ -57,7 +57,6 @@ namespace DomainAbstractions
 
         // Private fields
         private HashSet<string> _visited = new HashSet<string>();
-        private double _maxHeight = 0;
         private double _latestX = 0;
         private double _latestY = 0;
 
