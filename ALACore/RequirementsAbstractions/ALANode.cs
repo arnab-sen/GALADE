@@ -22,6 +22,7 @@ using ScintillaNET.WPF;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
+using Newtonsoft.Json.Linq;
 
 namespace RequirementsAbstractions
 {
@@ -40,6 +41,24 @@ namespace RequirementsAbstractions
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
         public List<string> AvailableAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
+
+        public JObject MetaData
+        {
+            get => _metaData;
+            set
+            {
+                _metaData = value;
+                SetMetaData(_metaData);
+            }
+        }
+
+        /// <summary>
+        /// Whether this instance is actually only a reference to a node defined elsewhere. Reference nodes will not generate instantiations, but can still be used in the wiring.
+        /// </summary>
+        public bool IsReferenceNode { get; set; } = false;
+
+        public bool IsRoot { get; set; } = false;
+
         public Graph Graph { get; set; }
         // public List<object> Edges { get; } = new List<object>();
         public Canvas Canvas { get; set; }
@@ -116,6 +135,7 @@ namespace RequirementsAbstractions
         private List<DropDownMenu> _genericDropDowns = new List<DropDownMenu>();
         private DropDownMenu _typeDropDown;
         private SimulateKeyboard _keyboardSim = new SimulateKeyboard();
+        private JObject _metaData = null;
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -186,8 +206,30 @@ namespace RequirementsAbstractions
             Render.Dispatcher.Invoke(() =>
             {
                 _textMaskRender = CreateTextMask();
+                if (IsSelected())
+                {
+                    HighlightNode();
+                }
+                else
+                {
+                    UnhighlightNode();
+                }
             }, DispatcherPriority.Loaded);
 
+        }
+
+        private void SetMetaData(JObject metaDataObj)
+        {
+            _metaData = metaDataObj;
+            if (_metaData != null)
+            {
+                if (_metaData.ContainsKey("IsRoot")) IsRoot = bool.Parse(_metaData.GetValue("IsRoot").ToString());
+            }
+        }
+
+        private bool IsSelected()
+        {
+            return _rootUI.Render.IsKeyboardFocusWithin;
         }
 
         /// <summary>
@@ -597,6 +639,10 @@ namespace RequirementsAbstractions
             sb.Append(Flatten(GetPropertySyntaxList(propertiesAndFields).ToString()));
             sb.Append("};");
 
+            sb.Append(" /* ");
+            sb.Append(MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
+            sb.Append(" */");
+
             instantiation = sb.ToString();
 
             return instantiation;
@@ -948,6 +994,11 @@ namespace RequirementsAbstractions
             return nodeIdRow;
         }
 
+        public void ChangeTypeInUI(string newType)
+        {
+            _typeDropDown.Text = newType;
+        }
+
         private IUI CreateParameterRowVert()
         {
             var parameterRowVert = new Vertical()
@@ -1107,7 +1158,7 @@ namespace RequirementsAbstractions
         {
             HighlightNode();
             Graph.Set("SelectedNode", this);
-            if (!_rootUI.Render.IsKeyboardFocusWithin) _rootUI.Render.Focus();
+            if (!IsSelected()) _rootUI.Render.Focus();
             StateTransition.Update(Enums.DiagramMode.IdleSelected);
         }
 

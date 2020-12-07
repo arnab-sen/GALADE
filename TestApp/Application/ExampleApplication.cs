@@ -38,17 +38,22 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var _0 = new Apply<string, string>() {InstanceName="_0"};
-            var root0 = new Apply<T1, T2>() {};
+            var _0 = new Apply<string, string>() {InstanceName="_0"}; /* {"IsRoot":true} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            root0.WireTo(_0, "output");
+            root0.WireTo(_0, "output"); /* {"SourceType":"Apply","DestinationType":"Apply","SourceIsReference":true,"DestinationIsReference":false} */
 			// END AUTO-GENERATED WIRING FOR test
 		
         }
     }
 }
+
+
+
+
+
+
 
 
 

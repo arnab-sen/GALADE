@@ -50,7 +50,7 @@ namespace Application
             foreach (var node in nodes)
             {
                 var alaNode = node as ALANode;
-                if (alaNode == null || alaNode.Model.Type == "UNDEFINED") continue;
+                if (alaNode == null || alaNode.Model.Type == "UNDEFINED" || alaNode.IsReferenceNode) continue;
 
                 _instantiations.Add(alaNode.ToInstantiation());
             }
@@ -61,6 +61,7 @@ namespace Application
         public List<string> GenerateWireTos()
         {
             _wireTos = new List<string>();
+            var wireToBuilder = new StringBuilder();
 
             var edges = Graph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null);
 
@@ -69,14 +70,23 @@ namespace Application
                 var wire = edge as ALAWire;
                 if (wire == null) continue;
 
+                wireToBuilder.Clear();
+
                 var source = wire.Source;
                 var destination = wire.Destination;
                 var sourcePort = wire.SourcePort.Payload as Port;
                 var destinationPort = wire.DestinationPort.Payload as Port;
 
-                _wireTos.Add(sourcePort.IsReversePort
+
+                wireToBuilder.Append(sourcePort.IsReversePort
                     ? CreateWireToString(destination.Name, source.Name, destinationPort.Name)
                     : CreateWireToString(source.Name, destination.Name, sourcePort.Name));
+
+                wireToBuilder.Append(" /* ");
+                wireToBuilder.Append(wire.MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
+                wireToBuilder.Append(" */");
+
+                _wireTos.Add(wireToBuilder.ToString());
             }
 
             return _wireTos;

@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Threading;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Newtonsoft.Json.Linq;
 
 namespace Application
 {
@@ -143,6 +144,20 @@ namespace Application
             return instantiation;
         }
 
+        private JObject ParseMetaData(string metaDataRaw)
+        {
+            JObject metaDataObj = null;
+            metaDataRaw = metaDataRaw.Trim();
+            if (!string.IsNullOrEmpty(metaDataRaw))
+            {
+                // Remove comment symbols //, /*, and */
+                metaDataRaw = metaDataRaw.TrimStart(new[] { '/', '*' }).TrimEnd(new[] { '/', '*' }).Trim();
+                metaDataObj = JObject.Parse(metaDataRaw);
+            }
+
+            return metaDataObj;
+        }
+
         public void CreateNode(LocalDeclarationStatementSyntax instantiation)
         {
             try
@@ -152,6 +167,18 @@ namespace Application
                 var fullType = (instantiation.Declaration.Variables.First().Initializer.Value as ObjectCreationExpressionSyntax)?.Type ?? null;
 
                 if (fullType == null) return;
+
+                var metaDataRaw = instantiation.GetTrailingTrivia().ToString();
+                JObject metaDataObj = null;
+                try
+                {
+                    metaDataObj = ParseMetaData(metaDataRaw);
+                }
+                catch (Exception e)
+                {
+                    Logging.Log($"Failed to parse the following metadata for node {variableName}: {metaDataRaw}");
+                }
+                
 
                 var isGeneric = fullType is GenericNameSyntax;
 
@@ -171,7 +198,7 @@ namespace Application
                 var modelTemplate = ModelManager.GetAbstractionModel(typeWithoutGenerics);
                 if (modelTemplate == null)
                 {
-                    modelTemplate = ModelManager.CreateDummyAbstractionModel("UNDEFINED"); 
+                    modelTemplate = ModelManager.CreateDummyAbstractionModel("UNDEFINED");
                 }
 
                 var model = new AbstractionModel();
@@ -235,6 +262,12 @@ namespace Application
                     node.Model.CloneFrom(model);
                 }
 
+                node.MetaData = metaDataObj;
+                if (node.Model.Type == "UNDEFINED")
+                {
+                    node.IsReferenceNode = true;
+                }
+
                 node.UpdateUI();
 
                 // if (!_rootCreated)
@@ -281,6 +314,17 @@ namespace Application
             var destinationName = arguments.Count > 0 ? arguments[0].ToString() : "";
             var sourcePortName = arguments.Count > 1 ? arguments[1].ToString().Trim('\\', '"') : "";
 
+            JObject metaDataObj = null;
+            var metaDataRaw = wireTo.GetTrailingTrivia().ToString();
+            try
+            {
+                metaDataObj = ParseMetaData(metaDataRaw);
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Failed to parse the following metadata for wire {sourceName} -> {destinationName}: {metaDataRaw}");
+            }
+
             if (!_nodesByName.ContainsKey(sourceName))
             {
                 Logging.Log($"Error: No instantiation for {sourceName} found. Creating a dummy one to use instead.");
@@ -299,6 +343,27 @@ namespace Application
 
             var source = _nodesByName[sourceName];
             var destination = _nodesByName[destinationName];
+
+            if (metaDataObj != null)
+            {
+                if (source.Model.Type == "UNDEFINED" && metaDataObj.ContainsKey("SourceType"))
+                {
+                    var newType = metaDataObj.GetValue("SourceType").ToString();
+                    source.ChangeTypeInUI(newType);
+                    source.TypeChanged?.Invoke(newType);
+                }
+
+                if (destination.Model.Type == "UNDEFINED" && metaDataObj.ContainsKey("DestinationType"))
+                {
+                    var newType = metaDataObj.GetValue("DestinationType").ToString();
+                    destination.ChangeTypeInUI(newType);
+                    destination.TypeChanged?.Invoke(newType);
+                }
+
+                if (metaDataObj.ContainsKey("SourceIsReference")) source.IsReferenceNode = bool.Parse(metaDataObj.GetValue("SourceIsReference").ToString());
+                if (metaDataObj.ContainsKey("DestinationIsReference")) destination.IsReferenceNode = bool.Parse(metaDataObj.GetValue("DestinationIsReference").ToString());
+            }
+
             var sourcePortBox = !string.IsNullOrEmpty(sourcePortName) ? source.GetPortBox(sourcePortName) : source.GetSelectedPort(inputPort: false);
             var sourcePort = (Port)sourcePortBox.Payload;
             var destinationPortBox = FindMatchingPortBox(sourcePort, destination, !sourcePort.IsReversePort);
@@ -338,7 +403,7 @@ namespace Application
             }
 
             if (string.IsNullOrEmpty(_firstRootVarName)) _firstRootVarName = sourceName;
-            if (sourceName.StartsWith("root_") && !_roots.Contains(sourceName))
+            if ((sourceName.StartsWith("root_") || source.IsRoot) && !_roots.Contains(sourceName))
             {
                 _roots.Add(sourceName);
                 Graph.Roots.Add(source);
@@ -362,6 +427,7 @@ namespace Application
             }
 
             var wire = CreateALAWire(source, destination, sourcePortBox, destinationPortBox);
+            if (metaDataObj != null) wire.MetaData = metaDataObj;
 
             Graph.AddEdge(wire);
 
@@ -437,7 +503,9 @@ namespace Application
 
             node.TypeChanged += newType =>
             {
-                node.NodeBackground = Utilities.BrushFromHex("#d2ecf9");
+                var regularNodeColour = Utilities.BrushFromHex("#d2ecf9");
+                var referenceNodeColour = Brushes.Orange;
+                node.NodeBackground = !node.IsReferenceNode ? regularNodeColour : referenceNodeColour; 
 
                 node.Model.CloneFrom(ModelManager.GetAbstractionModel(newType));
 

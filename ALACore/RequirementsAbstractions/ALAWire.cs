@@ -13,6 +13,7 @@ using ToolTip = DomainAbstractions.ToolTip;
 using System.Windows.Input;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
+using Newtonsoft.Json.Linq;
 
 namespace RequirementsAbstractions
 {
@@ -27,6 +28,7 @@ namespace RequirementsAbstractions
         public UIElement Render { get; set; }
         public bool MovingSource { get; set; } = false;
         public bool MovingDestination { get; set; } = false;
+        public JObject MetaData { get; set; }
 
         public ALANode Source
         {
