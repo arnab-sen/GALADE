@@ -22,6 +22,21 @@ namespace RequirementsAbstractions
         public string Instantiations => instantiationCodeOutputConnector.Data;
         public string Wiring => wiringCodeOutputConnector.Data;
 
+        /// <summary>
+        /// The landmarks are stored as follows:
+        /// <code>Landmarks[0] = "// BEGIN AUTO-GENERATED INSTANTIATIONS FOR (NAME)"</code>
+        /// <code>Landmarks[1] = "// END AUTO-GENERATED INSTANTIATIONS FOR (NAME)"</code>
+        /// <code>Landmarks[2] = "// BEGIN AUTO-GENERATED WIRING FOR (NAME)"</code>
+        /// <code>Landmarks[3] = "// END AUTO-GENERATED WIRING FOR (NAME)"</code>
+        /// </summary>
+        public string[] Landmarks { get; } = new[]
+        {
+            "// BEGIN AUTO-GENERATED INSTANTIATIONS",
+            "// END AUTO-GENERATED INSTANTIATIONS",
+            "// BEGIN AUTO-GENERATED WIRING",
+            "// END AUTO-GENERATED WIRING"
+        };
+
         // Private fields
         private string _sourceCode = "";
 
@@ -219,6 +234,11 @@ namespace RequirementsAbstractions
 
         private void Output(string diagramName, Dictionary<string, List<string>> instantiations, Dictionary<string, List<string>> wireTos)
         {
+            Landmarks[0] = $"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {diagramName}";
+            Landmarks[1] = $"// END AUTO-GENERATED INSTANTIATIONS FOR {diagramName}";
+            Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}";
+            Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {diagramName}";
+
             if (instantiationCodeOutputConnector != null) instantiationCodeOutputConnector.Data = ConnectLines(instantiations[diagramName]);
             if (wiringCodeOutputConnector != null) wiringCodeOutputConnector.Data = ConnectLines(wireTos[diagramName]);    
             diagramSelected?.Execute();

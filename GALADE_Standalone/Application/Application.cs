@@ -267,8 +267,8 @@ namespace Application
             var id_58c03e4b18bb43de8106a4423ca54318 = new Data<string>() {InstanceName="id_58c03e4b18bb43de8106a4423ca54318",storedData=SETTINGS_FILEPATH};
             var id_2b42bd6059334bfabc3df1d047751d7a = new FileWriter() {InstanceName="id_2b42bd6059334bfabc3df1d047751d7a"};
             var id_b9865ebcd2864642a96573ced52bbb7f = new DataFlowConnector<string>() {InstanceName="id_b9865ebcd2864642a96573ced52bbb7f"};
-            var id_891aef13eb18444ea94b9e071c7966d7 = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED INSTANTIATIONS",EndLandmark="// END AUTO-GENERATED INSTANTIATIONS",Indent="            ",InstanceName="id_891aef13eb18444ea94b9e071c7966d7"};
-            var id_62ac925f4ee1421dbe7a781823d7876c = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED WIRING",EndLandmark="// END AUTO-GENERATED WIRING",Indent="            ",InstanceName="id_62ac925f4ee1421dbe7a781823d7876c"};
+            var insertInstantiations = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED INSTANTIATIONS",EndLandmark="// END AUTO-GENERATED INSTANTIATIONS",Indent="            ",InstanceName="insertInstantiations"};
+            var insertWireTos = new InsertFileCodeLines() {StartLandmark="// BEGIN AUTO-GENERATED WIRING",EndLandmark="// END AUTO-GENERATED WIRING",Indent="            ",InstanceName="insertWireTos"};
             var id_0e563f77c5754bdb8a75b7f55607e9b0 = new EventConnector() {InstanceName="id_0e563f77c5754bdb8a75b7f55607e9b0"};
             var id_96ab5fcf787a4e6d88af011f6e3daeae = new MenuItem(header:"Generics test") {InstanceName="Generics test"};
             var id_026d2d87a422495aa46c8fc4bda7cdd7 = new EventLambda() {InstanceName="id_026d2d87a422495aa46c8fc4bda7cdd7",Lambda=() =>{    var node = mainGraph.Nodes.First() as ALANode;    node.Model.UpdateGeneric(0, "testType");}};
@@ -414,7 +414,7 @@ namespace Application
             var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="Code to Diagram"};
             var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="Diagram to Code"};
             var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
-            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();}};
+            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();        insertInstantiations.StartLandmark = extractALACode.Landmarks[0];    insertInstantiations.EndLandmark = extractALACode.Landmarks[1];        insertWireTos.StartLandmark = extractALACode.Landmarks[2];    insertWireTos.EndLandmark = extractALACode.Landmarks[3];}};
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
             var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
             var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
@@ -508,8 +508,8 @@ namespace Application
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList");
             id_4a268943755348b68ee2cb6b71f73c40.WireTo(getRoots, "delayedEvent");
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent");
-            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "instantiations");
-            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "wireTos");
+            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertInstantiations, "instantiations");
+            id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertWireTos, "wireTos");
             id_a3efe072d6b44816a631d90ccef5b71e.WireTo(id_fcfcb5f0ae544c968dcbc734ac1db51b, "filePathInput");
             id_f928bf426b204bc89ba97219c97df162.WireTo(id_c01710b47a2a4deb824311c4dc46222d, "filePathInput");
             id_f07ddae8b4ee431d8ede6c21e1fe01c5.WireTo(id_f928bf426b204bc89ba97219c97df162, "output");
@@ -518,7 +518,7 @@ namespace Application
             id_92effea7b90745299826cd566a0f2b88.WireTo(id_f5d3730393ab40d78baebcb9198808da, "output");
             id_c5fdc10d2ceb4577bef01977ee8e9dd1.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "dataOutput");
             id_72140c92ac4f4255abe9d149068fa16f.WireTo(id_1d55a1faa3dd4f78ad22ac73051f5d2d, "fileContentOutput");
-            id_1d55a1faa3dd4f78ad22ac73051f5d2d.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "fanoutList");
+            id_1d55a1faa3dd4f78ad22ac73051f5d2d.WireTo(insertInstantiations, "fanoutList");
             id_a26b08b25184469db6f0c4987d4c68dd.WireTo(generateCode, "eventHappened");
             generateCode.WireTo(id_c5fdc10d2ceb4577bef01977ee8e9dd1, "fanoutList");
             generateCode.WireTo(id_5e77c28f15294641bb881592d2cd7ac9, "fanoutList");
@@ -527,10 +527,10 @@ namespace Application
             id_60229af56d92436996d2ee8d919083a3.WireTo(id_58c03e4b18bb43de8106a4423ca54318, "filePathInput");
             id_2b42bd6059334bfabc3df1d047751d7a.WireTo(id_b9865ebcd2864642a96573ced52bbb7f, "filePathInput");
             id_b9865ebcd2864642a96573ced52bbb7f.WireTo(id_72140c92ac4f4255abe9d149068fa16f, "fanoutList");
-            id_891aef13eb18444ea94b9e071c7966d7.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "newFileContentsOutput");
-            id_62ac925f4ee1421dbe7a781823d7876c.WireTo(id_2b42bd6059334bfabc3df1d047751d7a, "newFileContentsOutput");
-            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_891aef13eb18444ea94b9e071c7966d7, "fanoutList");
-            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_62ac925f4ee1421dbe7a781823d7876c, "fanoutList");
+            insertInstantiations.WireTo(insertWireTos, "newFileContentsOutput");
+            insertWireTos.WireTo(id_2b42bd6059334bfabc3df1d047751d7a, "newFileContentsOutput");
+            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(insertInstantiations, "fanoutList");
+            id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(insertWireTos, "fanoutList");
             id_0e563f77c5754bdb8a75b7f55607e9b0.WireTo(id_3f30a573358d4fd08c4c556281737360, "complete");
             id_96ab5fcf787a4e6d88af011f6e3daeae.WireTo(id_026d2d87a422495aa46c8fc4bda7cdd7, "clickedEvent");
             id_e3837af93b584ca9874336851ff0cd31.WireTo(globalMessageTextDisplay, "child");
@@ -753,6 +753,10 @@ namespace Application
         }
     }
 }
+
+
+
+
 
 
 

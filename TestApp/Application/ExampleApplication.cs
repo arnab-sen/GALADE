@@ -38,15 +38,24 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var _0 = new Apply<string, string>() {InstanceName="_0"}; /* {"IsRoot":true} */
+            var test1 = new Apply<T1, T2>() {InstanceName="test1"}; /*  */
+            var test3 = new Apply<T1, T2>() {InstanceName="test3"}; /*  */
+            var id_a8054d7507df4d81b0fd638c12dc3d1b = new Object() {}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            root0.WireTo(_0, "output"); /* {"SourceType":"Apply","DestinationType":"Apply","SourceIsReference":true,"DestinationIsReference":false} */
-            _0.WireTo(referencedElsewhere, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true} */
-            _0.WireTo(globalInstance, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true} */
+            test3.WireTo(id_a8054d7507df4d81b0fd638c12dc3d1b, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"NewNode","DestinationIsReference":false} */
 			// END AUTO-GENERATED WIRING FOR test
 		
+		
+			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test1
+            var test2 = new Cast<T1, T2>() {InstanceName="test2"}; /*  */
+            var id_b4bd130aba3846979ce4f667cbf46c39 = new Object() {}; /*  */
+            // END AUTO-GENERATED INSTANTIATIONS FOR test1
+
+			// BEGIN AUTO-GENERATED WIRING FOR test1
+            test2.WireTo(id_b4bd130aba3846979ce4f667cbf46c39, "output"); /* {"SourceType":"Cast","SourceIsReference":false,"DestinationType":"NewNode","DestinationIsReference":false} */
+			// END AUTO-GENERATED WIRING FOR test1
         }
     }
 }
@@ -83,6 +92,93 @@ namespace Application
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var root = new Apply<T1, T2>() {InstanceName="root"}; /*  */
+            var _test = new Apply<T1, T2>() {InstanceName="_test"}; /*  */
+
+            root.WireTo(_test, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+			// END AUTO-GENERATED WIRING FOR test
+		
+		
+			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test1
+            
+            // END AUTO-GENERATED INSTANTIATIONS FOR test1
+
+			// BEGIN AUTO-GENERATED WIRING FOR test1
+            
+			// END AUTO-GENERATED WIRING FOR test1
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var root = new Apply<T1, T2>() {InstanceName="root"}; /*  */
+            var _test = new Apply<T1, T2>() {InstanceName="_test"}; /*  */
+
+
+            var root = new Apply<T1, T2>() {InstanceName="root"}; /*  */
 
 
 
