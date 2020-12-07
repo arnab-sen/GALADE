@@ -43,11 +43,19 @@ namespace Application
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
             root0.WireTo(_0, "output"); /* {"SourceType":"Apply","DestinationType":"Apply","SourceIsReference":true,"DestinationIsReference":false} */
+            _0.WireTo(referencedElsewhere, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true} */
+            _0.WireTo(globalInstance, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true} */
 			// END AUTO-GENERATED WIRING FOR test
 		
         }
     }
 }
+
+
+
+
+
+
 
 
 

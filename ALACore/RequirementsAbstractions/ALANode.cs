@@ -65,6 +65,7 @@ namespace RequirementsAbstractions
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UIElement Render { get; set; }
         public Brush NodeBackground { get; set; } = Utilities.BrushFromHex("#d2ecf9");
+        public Brush ReferenceNodeBackground { get; set; } = Brushes.Orange;
         public Brush NodeBorder { get; set; } = Brushes.Black;
         public Brush NodeHighlightedBackground { get; set; } = Utilities.BrushFromHex("#c6fce5");
         public Brush NodeHighlightedBorder { get; set; } = Brushes.Black;
@@ -134,6 +135,7 @@ namespace RequirementsAbstractions
         private Text _textMask;
         private List<DropDownMenu> _genericDropDowns = new List<DropDownMenu>();
         private DropDownMenu _typeDropDown;
+        private TextBox _nameTextBox;
         private SimulateKeyboard _keyboardSim = new SimulateKeyboard();
         private JObject _metaData = null;
 
@@ -214,6 +216,8 @@ namespace RequirementsAbstractions
                 {
                     UnhighlightNode();
                 }
+
+                if (IsReferenceNode) _nameTextBox.Text = "@" + Model.Name;
             }, DispatcherPriority.Loaded);
 
         }
@@ -973,10 +977,23 @@ namespace RequirementsAbstractions
                 Text = ShowName ? Model.Name : "",
                 Width = 50
             };
+
+            _nameTextBox = nodeNameTextBox;
             var typeChanged = new ApplyAction<string>() { Lambda = input => TypeChanged?.Invoke(input) };
             var nameChanged = new ApplyAction<string>() { Lambda = input =>
             {
+                if (input.StartsWith("@"))
+                {
+                    IsReferenceNode = true;
+                    input = input.TrimStart(new[] {'@'});
+                }
+                else
+                {
+                    IsReferenceNode = false;
+                }
+
                 Model.Name = input;
+
                 Model.SetValue("InstanceName", $"\"{input}\"");
             } };
 
@@ -997,6 +1014,11 @@ namespace RequirementsAbstractions
         public void ChangeTypeInUI(string newType)
         {
             _typeDropDown.Text = newType;
+        }
+
+        public void ChangeNameInUI(string newName)
+        {
+            _nameTextBox.Text = newName;
         }
 
         private IUI CreateParameterRowVert()
@@ -1151,7 +1173,7 @@ namespace RequirementsAbstractions
 
         private void UnhighlightNode()
         {
-            _rootUI.Background = NodeBackground;
+            _rootUI.Background = !IsReferenceNode ? NodeBackground : ReferenceNodeBackground;
         }
 
         public void Select()

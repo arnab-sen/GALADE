@@ -83,6 +83,12 @@ namespace Application
                     : CreateWireToString(source.Name, destination.Name, sourcePort.Name));
 
                 wireToBuilder.Append(" /* ");
+                if (wire.MetaData == null) wire.MetaData = new Newtonsoft.Json.Linq.JObject();
+                wire.MetaData["SourceType"] = source.Model.Type;
+                wire.MetaData["SourceIsReference"] = source.IsReferenceNode;
+
+                wire.MetaData["DestinationType"] = destination.Model.Type;
+                wire.MetaData["DestinationIsReference"] = destination.IsReferenceNode;
                 wireToBuilder.Append(wire.MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
                 wireToBuilder.Append(" */");
 
