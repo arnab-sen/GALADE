@@ -9,15 +9,13 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.
+    /// <para>Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.</para>
+    /// <para>The following properties must be defined for this abstraction to function correctly: GetID, GetWidth, GetHeight, SetX, SetY, and GetChildren.</para>
     /// </summary>
     public class RightTreeLayout<T> : IDataFlow<T>, IEvent
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-
-        // Configurations
-
 
         // Required - returns the ID of the node render, and is used for cycle detection
         public Func<T, string> GetID { get; set; }
@@ -51,9 +49,6 @@ namespace DomainAbstractions
         
         // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
         public Func<HashSet<string>> GetRoots { get; set; }       
-
-        // Outputs for future runs
-
 
         // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
