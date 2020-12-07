@@ -18,6 +18,7 @@ namespace DomainAbstractions
 
         // Configurations
 
+
         // Required - returns the ID of the node render, and is used for cycle detection
         public Func<T, string> GetID { get; set; }
         
@@ -52,12 +53,13 @@ namespace DomainAbstractions
         public Func<HashSet<string>> GetRoots { get; set; }       
 
         // Outputs for future runs
-        public double LatestX => _latestX;
+
+
+        // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
 
         // Private fields
         private HashSet<string> _visited = new HashSet<string>();
-        private double _latestX = 0;
         private double _latestY = 0;
 
         // Ports
@@ -120,12 +122,12 @@ namespace DomainAbstractions
                 }
                 else
                 {
-                    _latestX = x + GetWidth(node) + horizontalGap;
+                    var latestX = x + GetWidth(node) + horizontalGap;
                     _latestY = y;
 
                     foreach (var child in children)
                     {
-                        if (!_visited.Contains(GetID(child))) _latestY = SetRightTreeLayout(child, horizontalGap, verticalGap, _latestX, _latestY);
+                        if (!_visited.Contains(GetID(child))) _latestY = SetRightTreeLayout(child, horizontalGap, verticalGap, latestX, _latestY);
                     }
                 }
 
