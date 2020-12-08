@@ -43,6 +43,10 @@ namespace DomainAbstractions
         }
 
         // Ports
+
+        /// <summary>
+        /// The children to lay out vertically.
+        /// </summary>
         private List<IUI> children = new List<IUI>();
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
         private List<IUI> contextMenuChildren = new List<IUI>();

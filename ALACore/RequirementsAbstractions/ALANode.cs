@@ -138,6 +138,8 @@ namespace RequirementsAbstractions
         private TextBox _nameTextBox;
         private SimulateKeyboard _keyboardSim = new SimulateKeyboard();
         private JObject _metaData = null;
+        private string _noAcceptedPortDescriptionFound = "(none found in abstraction class - please add a description in a comment above the port declaration in the source file)";
+        private string _noImplementedPortDescriptionFound = "(none found in abstraction class - please add a description in the <summary> section in the class documentation)";
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -846,12 +848,27 @@ namespace RequirementsAbstractions
 
             foreach (var port in notUpdated)
             {
-                SetUpPortBox(port, inputPorts ? _inputPortsVert : _outputPortsVert);
+                CreatePortBox(port, inputPorts ? _inputPortsVert : _outputPortsVert);
             }
         }
 
 
-        private void SetUpPortBox(Port port, Vertical vert)
+        private string GetPortDocumentation(string portName)
+        {
+            var port = Model.GetPort(portName);
+            if (port == null) return "";
+
+            var sb = new StringBuilder();
+            sb.AppendLine($"Type: {port.Type}");
+            sb.AppendLine($"Name: {port.Name}");
+
+            var portIsAcceptedPort = !port.IsInputPort && !port.IsReversePort;
+            sb.AppendLine($"Description: {(!string.IsNullOrEmpty(port.Description) ? port.Description : portIsAcceptedPort ? _noAcceptedPortDescriptionFound : _noImplementedPortDescriptionFound)}");
+
+            return sb.ToString();
+        }
+
+        private void CreatePortBox(Port port, Vertical vert)
         {
             var box = new Box();
             box.Payload = port;
@@ -862,8 +879,7 @@ namespace RequirementsAbstractions
 
             var toolTipLabel = new System.Windows.Controls.Label()
             {
-                Content = port.ToString()
-
+                Content = GetPortDocumentation(port.Name)
             };
 
             box.Render.ToolTip = new System.Windows.Controls.ToolTip()
@@ -871,7 +887,7 @@ namespace RequirementsAbstractions
                 Content = toolTipLabel
             };
 
-            box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = port.ToString();
+            box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = GetPortDocumentation(port.Name);
 
             var text = new Text(text: port.Name);
             text.HorizAlignment = HorizontalAlignment.Center;

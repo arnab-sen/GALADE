@@ -21,6 +21,7 @@ namespace ProgrammingParadigms
         public int Index { get; set; } = 0;
         public List<string> ConnectionIds = new List<string>();
         public bool IsReversePort { get; set; }
+        public string Description { get; set; } = "";
 
         public override string ToString()
         {
@@ -80,6 +81,8 @@ namespace ProgrammingParadigms
                 Type = source.Type;
                 Name = source.Name;
                 IsInputPort = source.IsInputPort;
+                IsReversePort = source.IsReversePort;
+                Description = source.Description;
             }
 
             Id = Utilities.GetUniqueId();

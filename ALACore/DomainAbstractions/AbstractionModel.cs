@@ -100,12 +100,13 @@ namespace DomainAbstractions
             _types[name] = type;
         }
 
-        public void AddImplementedPort(string type, string name, bool isReversePort = false)
+        public void AddImplementedPort(string type, string name, bool isReversePort = false, string description = "")
         {
             var port = new Port()
             {
                 Type = type,
                 Name = name,
+                Description = description,
                 IsInputPort = true,
                 IsReversePort = isReversePort
             };
@@ -117,12 +118,13 @@ namespace DomainAbstractions
             _portBaseTypes[port.Id] = type;
         }
 
-        public void AddAcceptedPort(string type, string name, bool isReversePort = false)
+        public void AddAcceptedPort(string type, string name, bool isReversePort = false, string description = "")
         {
             var port = new Port()
             {
                 Type = type,
                 Name = name,
+                Description = description,
                 IsInputPort = false,
                 IsReversePort = isReversePort
             };
@@ -250,7 +252,7 @@ namespace DomainAbstractions
             foreach (var pair in source._implementedPorts)
             {
                 var port = pair.Value;
-                AddImplementedPort(port.Type, port.Name, port.IsReversePort);
+                AddImplementedPort(port.Type, port.Name,port.IsReversePort, port.Description);
                 AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 
@@ -258,7 +260,7 @@ namespace DomainAbstractions
             foreach (var pair in source._acceptedPorts)
             {
                 var port = pair.Value;
-                AddAcceptedPort(port.Type, port.Name, port.IsReversePort);
+                AddAcceptedPort(port.Type, port.Name, port.IsReversePort, port.Description);
                 AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 

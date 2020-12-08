@@ -139,6 +139,32 @@ namespace RequirementsAbstractions
             SetPorts(classNode, model, isInputPort: false);
         }
 
+        private string ParsePortDocumentation(string rawDoc)
+        {
+            var sb = new StringBuilder();
+            var rawLines = rawDoc.Split(new [] { Environment.NewLine }, StringSplitOptions.None);
+
+            var latestNewLineIndex = -1;
+            for (int i = 0; i < rawLines.Length; i++)
+            {
+                if (string.IsNullOrEmpty(rawLines[i])) latestNewLineIndex = i;
+            }
+
+            for (int i = latestNewLineIndex + 1; i < rawLines.Length; i++)
+            {
+                if (string.IsNullOrEmpty(rawLines[i])) continue;
+
+                var firstClean = rawLines[i];
+                firstClean = firstClean.Trim().Trim(new[] {'/', '*'});
+
+                sb.AppendLine(firstClean);
+            }
+
+            var parsedDoc = ParseDocumentation(sb.ToString());
+
+            return parsedDoc;
+        }
+
         private void SetPorts(ClassDeclarationSyntax classNode, AbstractionModel model, bool isInputPort = false)
         {
             try
@@ -215,8 +241,10 @@ namespace RequirementsAbstractions
                         var port = new Port()
                         {
                             Type = portSyntaxNode.Declaration.Type.ToString(),
-                            Name = portSyntaxNode.Declaration.Variables.First().Identifier.ToString()
+                            Name = portSyntaxNode.Declaration.Variables.First().Identifier.ToString(),
                         };
+
+                        port.Description = portSyntaxNode.HasLeadingTrivia ? ParsePortDocumentation(portSyntaxNode.GetLeadingTrivia().ToString()) : "";
 
                         // Handle reverse ports (IDataFlowB and IEventB)
                         port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
@@ -224,12 +252,12 @@ namespace RequirementsAbstractions
                         if (port.IsReversePort)
                         {
                             port.IsInputPort = true;
-                            model.AddImplementedPort(port.Type, port.Name, true); 
+                            model.AddImplementedPort(port.Type, port.Name, isReversePort: true, description: port.Description); 
                         }
                         else
                         {
                             port.IsInputPort = false;
-                            model.AddAcceptedPort(port.Type, port.Name);
+                            model.AddAcceptedPort(port.Type, port.Name, description: port.Description);
                         }
 
                         var indexList = new List<int>();
@@ -344,6 +372,13 @@ namespace RequirementsAbstractions
         {
             var rawText = node.GetLeadingTrivia().ToString();
 
+            var documentation = ParseDocumentation(rawText);
+
+            return documentation;
+        }
+
+        private string ParseDocumentation(string rawText)
+        {
             var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
 
             var sb = new StringBuilder();
