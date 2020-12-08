@@ -50,12 +50,17 @@ namespace Application
 		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test1
             var test2 = new Cast<T1, T2>() {InstanceName="test2"}; /*  */
-            var id_b4bd130aba3846979ce4f667cbf46c39 = new Object() {}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR test1
 
 			// BEGIN AUTO-GENERATED WIRING FOR test1
-            test2.WireTo(id_b4bd130aba3846979ce4f667cbf46c39, "output"); /* {"SourceType":"Cast","SourceIsReference":false,"DestinationType":"NewNode","DestinationIsReference":false} */
+            test2.WireTo(test, "output"); /* {"SourceType":"Cast","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true} */
 			// END AUTO-GENERATED WIRING FOR test1
         }
     }
 }
+
+
+
+
+
+
