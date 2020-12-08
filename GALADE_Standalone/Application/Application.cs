@@ -414,10 +414,11 @@ namespace Application
             var id_a9db513fb0e749bda7f42b03964e5dce = new MenuItem(header:"Code to Diagram") {InstanceName="Code to Diagram"};
             var id_efeb87ef1b3c4f9e8ed2f8193e6b78b1 = new MenuItem(header:"Diagram to Code") {InstanceName="Diagram to Code"};
             var startDiagramCreationProcess = new EventConnector() {InstanceName="startDiagramCreationProcess"};
-            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();        insertInstantiations.StartLandmark = extractALACode.Landmarks[0];    insertInstantiations.EndLandmark = extractALACode.Landmarks[1];        insertWireTos.StartLandmark = extractALACode.Landmarks[2];    insertWireTos.EndLandmark = extractALACode.Landmarks[3];}};
+            var id_db77c286e64241c48de4fad0dde80024 = new EventLambda() {InstanceName="id_f3bf83d06926453bb054330f899b605b",Lambda=() =>{    mainGraph.Clear();    mainCanvas.Children.Clear();    insertInstantiations.StartLandmark = extractALACode.Landmarks[0];    insertInstantiations.EndLandmark = extractALACode.Landmarks[1];    insertWireTos.StartLandmark = extractALACode.Landmarks[2];    insertWireTos.EndLandmark = extractALACode.Landmarks[3];}};
             var id_c9dbe185989e48c0869f984dd8e979f2 = new Data<string>() {InstanceName="id_c9dbe185989e48c0869f984dd8e979f2",Lambda=() =>{    if (!string.IsNullOrEmpty(setting_currentDiagramCodeFilePath.Data))    {        return setting_currentDiagramCodeFilePath.Data;    }    else    {        return latestCodeFilePath.Data;    }}};
             var id_17609c775b9c4dfcb1f01d427d2911ae = new DataFlowConnector<string>() {InstanceName="id_17609c775b9c4dfcb1f01d427d2911ae"};
-            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    return $"GALADE | {Path.GetFullPath(path)}";}};
+            var currentDiagramName = new DataFlowConnector<string>() {InstanceName="currentDiagramName"};
+            var id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    var sb = new StringBuilder();    if (!string.IsNullOrEmpty(currentDiagramName.Data))    {        sb.Append($"{currentDiagramName.Data}");    }    var fullPath = Path.GetFullPath(path);    if (!string.IsNullOrEmpty(fullPath))    {        sb.Append($" | {fullPath}");    }    return sb.ToString();}};
             var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {InstanceName="id_e3837af93b584ca9874336851ff0cd31",HorizAlignment="left"};
             var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {InstanceName="id_5c857c3a1a474ec19c0c3b054627c0a9",HorizAlignment="right"};
             var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20,InstanceName="globalVersionNumberDisplay"};
@@ -436,6 +437,9 @@ namespace Application
             var id_9240933e26ea4cfdb07e6e7252bf7576 = new EventLambda() {InstanceName="id_9240933e26ea4cfdb07e6e7252bf7576",Lambda=() =>{    layoutDiagram.InitialY = layoutDiagram.LatestY;}};
             var id_2efd4f283c7b4df49b82383e24773e7d = new ForEach<ALANode>() {InstanceName="id_2efd4f283c7b4df49b82383e24773e7d"};
             var id_afc4400ecf8b4f3e9aa1a57c346c80b2 = new EventLambda() {InstanceName="id_afc4400ecf8b4f3e9aa1a57c346c80b2",Lambda=() =>{    var edges = mainGraph.Edges;    foreach (var edge in edges)    {        (edge as ALAWire)?.Refresh();    }}};
+            var id_2996cb469c4442d08b7e5ca2051336b1 = new EventConnector() {InstanceName="id_2996cb469c4442d08b7e5ca2051336b1"};
+            var id_846c10ca3cc14138bea1d681b146865a = new Data<string>() {InstanceName="id_846c10ca3cc14138bea1d681b146865a",Lambda=() => extractALACode.CurrentDiagramName};
+            var id_b6f2ab59cd0642afaf0fc124e6f9f055 = new Data<string>() {};
             // END AUTO-GENERATED INSTANTIATIONS
 
             // BEGIN AUTO-GENERATED WIRING
@@ -707,7 +711,6 @@ namespace Application
             setting_currentDiagramCodeFilePath.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "fanoutList");
             id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_2810e4e86da348b98b39c987e6ecd7b6, "fanoutList");
             id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "dataOutput");
-            id_17609c775b9c4dfcb1f01d427d2911ae.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "fanoutList");
             id_e778c13b2c894113a7aff7ecfffe48f7.WireTo(mainWindow, "output");
             statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children");
             statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children");
@@ -735,6 +738,12 @@ namespace Application
             id_35fceab68423425195096666f27475e9.WireTo(id_a98457fc05fc4e84bfb827f480db93d3, "fanoutList");
             id_670ce4df65564e07912ef2ce63c38e11.WireTo(id_f5d3730393ab40d78baebcb9198808da, "fanoutList");
             id_afc4400ecf8b4f3e9aa1a57c346c80b2.WireTo(layoutDiagram, "complete");
+            id_db77c286e64241c48de4fad0dde80024.WireTo(id_2996cb469c4442d08b7e5ca2051336b1, "complete");
+            id_2996cb469c4442d08b7e5ca2051336b1.WireTo(id_846c10ca3cc14138bea1d681b146865a, "fanoutList");
+            id_846c10ca3cc14138bea1d681b146865a.WireTo(currentDiagramName, "dataOutput");
+            id_2996cb469c4442d08b7e5ca2051336b1.WireTo(id_b6f2ab59cd0642afaf0fc124e6f9f055, "complete");
+            id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "inputDataB");
+            id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "dataOutput");
             // END AUTO-GENERATED WIRING
 
             _mainWindow = mainWindow;
@@ -753,6 +762,18 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
