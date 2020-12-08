@@ -621,6 +621,7 @@ namespace RequirementsAbstractions
             var initialised = Model.GetInitialisedVariables();
             var constructorArgs = Model.GetConstructorArgs()
                 .Where(kvp => initialised.Contains(kvp.Key))
+                .OrderBy(kvp => kvp.Key)
                 .ToList();
 
             var propertiesAndFields = Model.GetProperties()
