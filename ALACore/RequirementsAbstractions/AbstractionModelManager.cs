@@ -205,8 +205,8 @@ namespace RequirementsAbstractions
                             port.Name = "?" + port.Type;
                         }
 
-                        // Handle reverse ports (IDataFlowB and IEventB)
-                        port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
+                        // Handle reverse ports (e.g. IDataFlowB and IEventB)
+                        port.IsReversePort = port.Type.EndsWith("B");
 
                         if (port.IsReversePort)
                         {
@@ -265,8 +265,8 @@ namespace RequirementsAbstractions
 
                         port.Description = portSyntaxNode.HasLeadingTrivia ? ParsePortDocumentation(portSyntaxNode.GetLeadingTrivia().ToString()) : "";
 
-                        // Handle reverse ports (IDataFlowB and IEventB)
-                        port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
+                        // Handle reverse ports (e.g. IDataFlowB and IEventB)
+                        port.IsReversePort = port.Type.EndsWith("B");
 
                         if (port.IsReversePort)
                         {
