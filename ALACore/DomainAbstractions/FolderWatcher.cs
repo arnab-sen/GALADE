@@ -17,7 +17,7 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;string&gt; rootPath: The folder path watch. The watcher starts when it receives this string.</para>
     /// <para>2. IDataFlow&lt;string&gt; changedFile: The filepath of the latest changed file.</para>
     /// </summary>
-    public class FolderWatcher : IDataFlow<string>
+    public class FolderWatcher : IDataFlow<string> // rootPath
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

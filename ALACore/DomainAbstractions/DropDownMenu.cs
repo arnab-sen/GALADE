@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace DomainAbstractions
 {
-    public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string>
+    public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string> // child, items, text
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

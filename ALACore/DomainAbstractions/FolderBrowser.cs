@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>1. IEvent open : Opens the browser.</para>
     /// <para>2. IDataFlow&lt;string&gt; selectedFolderPathOutput : The selected folder path.</para>
     /// </summary>
-    public class FolderBrowser : IEvent
+    public class FolderBrowser : IEvent // open
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

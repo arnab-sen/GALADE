@@ -18,7 +18,7 @@ namespace RequirementsAbstractions
     /// <summary>
     /// (In progress)
     /// </summary>
-    public class InsertStatements : IDataFlow<List<string>>
+    public class InsertStatements : IDataFlow<List<string>> // statementsInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

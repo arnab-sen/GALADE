@@ -15,7 +15,7 @@ namespace DomainAbstractions
     /// List<IUI> "childrenTabs": output list of all the children tabs within this tab container
     /// </summary>
 
-    public class TabContainer : IUI
+    public class TabContainer : IUI // child
     {
         //outputs
         private List<IUI> childrenTabs = new List<IUI>();

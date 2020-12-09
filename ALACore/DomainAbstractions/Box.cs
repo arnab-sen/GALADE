@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <summary>
     /// 
     /// </summary>
-    public class Box : IUI
+    public class Box : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

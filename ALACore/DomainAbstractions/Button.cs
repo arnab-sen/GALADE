@@ -7,12 +7,11 @@ namespace DomainAbstractions
     /// <summary>
     /// This abstraction is a general button which can be customized by it's Title, Width, Height, FontSize and Margin. 
     /// It is an interactive UI element which generates an IEvent when clicked.
-    /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
-    /// IUI "NEEDNAME": input IUI to get the WPF element
-    /// IEvent "eventButtonClicked": output event when button is clicked
+    /// 1. IUI child: input IUI to get the WPF element
+    /// 2. IEvent "eventButtonClicked": output event when button is clicked
     /// </summary>
-    public class Button : IUI
+    public class Button : IUI // chlid
     {
         // properties ------------------------------------------------------------
         public string InstanceName = "Default";

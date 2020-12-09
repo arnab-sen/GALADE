@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Executes a parameterless lambda when an IEvent is received. Sends an IEvent on completion.
     /// </summary>
-    public class EventLambda : IEvent
+    public class EventLambda : IEvent // start
     {
         // Public fields and properties
         public string InstanceName = "Default";

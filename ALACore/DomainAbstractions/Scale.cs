@@ -13,9 +13,9 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>Scales a UIElement by a given multiplicative factor.</para>
     /// <para>Ports:</para>
-    /// <para>IDataFlow&lt;UIElement&gt; input: The UIElement to scale.</para>
+    /// <para>IDataFlow&lt;UIElement&gt; uiElementInput: The UIElement to scale.</para>
     /// </summary>
-    public class Scale : IDataFlow<UIElement>
+    public class Scale : IDataFlow<UIElement> // uiElementInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

@@ -8,7 +8,11 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class ConditionalData<T> : IDataFlow<T>
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ConditionalData<T> : IDataFlow<T> // data
     {
         // Public fields and properties
         public string InstanceName = "Default";

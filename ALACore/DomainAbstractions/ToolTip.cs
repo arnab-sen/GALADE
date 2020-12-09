@@ -9,7 +9,7 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class ToolTip : IUI
+    public class ToolTip : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

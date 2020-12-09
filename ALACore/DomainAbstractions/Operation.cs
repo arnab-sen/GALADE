@@ -11,11 +11,11 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>Applies an operation (described by a lambda) on inputs of type T and returns an output of type T.</para>
     /// <para>Ports:</para>
-    /// <para>1. IEvent startOperation: The event that starts the operation.</para>
+    /// <para>1. IEvent start: The event that starts the operation.</para>
     /// <para>2. List&lt;IDataFlowB&lt;T&gt;&gt; operands: The input operands for the operation.</para>
     /// <para>3. IDataFlow&lt;T&gt; operationResultOutput: The output from the operation.</para>
     /// </summary>
-    public class Operation<T> : IEvent
+    public class Operation<T> : IEvent // start
     {
         // Properties
         public string InstanceName = "Default";

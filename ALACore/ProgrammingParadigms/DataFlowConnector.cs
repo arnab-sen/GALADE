@@ -36,7 +36,7 @@ namespace ProgrammingParadigms
     /// Moreover, any IDataFlow and IDataFlowB can be transferred bidirectionally.
     /// </summary>
     /// <typeparam name="T">Generic data type</typeparam>
-    public class DataFlowConnector<T> : IDataFlow<T>, IDataFlowB<T>
+    public class DataFlowConnector<T> : IDataFlow<T>, IDataFlowB<T> // input, returnDataB
     {
         // Properties
         public string InstanceName = "Default";

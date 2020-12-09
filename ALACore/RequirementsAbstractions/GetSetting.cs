@@ -17,7 +17,7 @@ namespace RequirementsAbstractions
     /// <para>2. IDataFlowB&lt;string&gt; filePathInput:</para>
     /// <para>3. IDataFlow&lt;string&gt; settingJsonOutput:</para>
     /// </summary>
-    public class GetSetting : IEvent
+    public class GetSetting : IEvent // start
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

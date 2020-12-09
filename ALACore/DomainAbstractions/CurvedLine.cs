@@ -20,7 +20,7 @@ namespace DomainAbstractions
     /// <summary>
     /// A line graphic that displays a Bezier curve.
     /// </summary>
-    public class CurvedLine : IUI
+    public class CurvedLine : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

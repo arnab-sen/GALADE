@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;T&gt; input: The object to be serialized.</para>
     /// <para>2. IDataFlow&lt;string&gt; stringOutput: The input object serialized to a string.</para>
     /// </summary>
-    public class JSONWriter<T> : IDataFlow<T>
+    public class JSONWriter<T> : IDataFlow<T> // input
     {
         // Properties
         public string InstanceName = "Default";

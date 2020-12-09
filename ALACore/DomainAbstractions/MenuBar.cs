@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace DomainAbstractions
 {
-    public class MenuBar : System.Windows.Controls.Menu, IUI
+    public class MenuBar : System.Windows.Controls.Menu, IUI // child
     {
         // Public fields and properties
         public string InstanceName = "Default";

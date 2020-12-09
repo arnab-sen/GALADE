@@ -14,9 +14,9 @@ namespace DomainAbstractions
     /// <para>1. IEvent getNextValue: The event to indicate that the next element of the list should be sent out.</para>
     /// <para>2. IDataFlow&lt;List&lt;T&gt;&gt; inputList: The list to loop through. Should only be sent once per loop.</para>
     /// <para>3. IDataFlow&lt;T&gt; nextValue: The element of the list being sent out.</para>
-    /// <para>5. IEvent loopComplete: Sends an output event to signal that the loop is complete. The pointer to the current element is reset to the beginning of the list.</para>
+    /// <para>4. IEvent loopComplete: Sends an output event to signal that the loop is complete. The pointer to the current element is reset to the beginning of the list.</para>
     /// </summary>
-    public class Loop<T> : IEvent, IDataFlow<List<T>>
+    public class Loop<T> : IEvent, IDataFlow<List<T>> // getNextValue, inputList
     {
         // Properties
         public string InstanceName = "Default";

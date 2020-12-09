@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// but heights to be shared according to the property Layouts of the contain elements fixed size.
     /// Using 2 to share the height in average, or 0 to auto size based on the sub-elements.
     /// </summary>
-    public class Vertical : IUI, IDataFlow<bool>, IEvent
+    public class Vertical : IUI, IDataFlow<bool>, IEvent // child, visible, clear
     {
         // properties
         public string InstanceName { get; set; } = "Default";

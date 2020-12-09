@@ -20,7 +20,7 @@ namespace DomainAbstractions
     /// <para>2. IDataFlowB&lt;string&gt; jsonInput:</para>
     /// <para>3. IDataFlow&lt;string&gt; newJsonOutput:</para>
     /// </summary>
-    public class JSONEditor : IDataFlow<object>
+    public class JSONEditor : IDataFlow<object> // newContentInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

@@ -15,7 +15,7 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;string&gt; filePathInput : The input path. If the file doesn't exist, nothing will happen.</para>
     /// <para>2. IDataFlow&lt;string&gt; fileContentOutput : The file contents as a string.</para>
     /// </summary>
-    public class FileReader : IDataFlow<string>
+    public class FileReader : IDataFlow<string> // filePathInput
     {
         // Public fields and properties
         public string InstanceName = "Default";

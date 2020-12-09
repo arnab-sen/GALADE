@@ -11,11 +11,11 @@ namespace DomainAbstractions
     /// <summary>
     /// <para>Adds elements to a list one by one, and outputs the entire list either on an IEvent or once the list reaches a certain output length.</para>
     /// <para>Ports:</para>
-    /// <para>1. IDataFlow&lt;T&gt; element: An element to be added to the end of the collection.</para>
-    /// <para>2. IEvent clearList: clears the list and (optionally) outputs the data.</para>
+    /// <para>1. IDataFlow&lt;T&gt; addItem: An element to be added to the end of the collection.</para>
+    /// <para>2. IEvent clear: clears the list and (optionally) outputs the data.</para>
     /// <para>3. IDataFlow&lt;List&lt;T&gt;&gt; listOutput: the collection as a List&lt;T&gt;.</para>
     /// </summary>
-    public class Collection<T> : IDataFlow<T>, IEvent
+    public class Collection<T> : IDataFlow<T>, IEvent // addItem, clear
     {
         // Properties
         public string InstanceName = "Default";

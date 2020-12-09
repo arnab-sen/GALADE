@@ -17,12 +17,13 @@ namespace DomainAbstractions
     /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
     /// 1. IEvent shutdown: input for close the window (exits the application)
-    /// 2. IDataFlow<bool> visible: to enable(true) or disable(false, grey out) the UI
-    /// 3. IUI iuiStructure: all the IUI contained within the MainWindow
-    /// 4. IEvent appStart: IEvent that is pushed out once window has been loaded
-    /// <summary>
+    /// 2. IDataFlow&lt;bool&gt; visible: to enable(true) or disable(false, grey out) the UI
+    /// 3. IDataFlow&lt;string&gt; title: the title of the window
+    /// 4. IUI iuiStructure: all the IUI contained within the MainWindow
+    /// 5. IEvent appStart: IEvent that is pushed out once window has been loaded
+    /// </summary>
 
-    public class MainWindow : IEvent, IDataFlow<bool>, IDataFlow<string>
+    public class MainWindow : IEvent, IDataFlow<bool>, IDataFlow<string> // shutdown, visible, title
     {
         // Properties -----------------------------------------------------------------
         public string InstanceName = "Default";

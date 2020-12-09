@@ -10,7 +10,7 @@ namespace DomainAbstractions
     /// if the Condition is true.</para>
     /// <para>The Lambda definition should follow the following format:<code>Lambda = (sender, args) => { ... }</code></para>
     /// </summary>
-    public class EventSubscriber : IEventHandler
+    public class EventSubscriber : IEventHandler // sender
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

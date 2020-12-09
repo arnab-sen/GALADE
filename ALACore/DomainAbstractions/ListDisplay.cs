@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Displays a vertical list of strings that can be selected. 
     /// </summary>
-    public class ListDisplay : IUI, IDataFlow<ObservableCollection<string>>
+    public class ListDisplay : IUI, IDataFlow<ObservableCollection<string>> // child, items
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

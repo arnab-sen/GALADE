@@ -21,7 +21,7 @@ namespace DomainAbstractions
     /// <para>2. IDataFlow&lt;Enums.DiagramMode&gt; currentStateOutput: The StateTransition.CurrentState.</para>
     /// <para>2. IDataFlow&lt;string&gt; currentStateAsStringOutput: The string representation of the StateTransition.CurrentState.</para>
     /// </summary>
-    public class StateChangeListener : IEvent
+    public class StateChangeListener : IEvent // start
     {
         // Public fields and properties
         public string InstanceName = "Default";

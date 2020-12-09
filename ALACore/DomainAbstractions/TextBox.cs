@@ -23,7 +23,7 @@ namespace DomainAbstractions
     /// <para>4. IEvent clear: clears the text content inside the TextBox</para>
     /// <para>5. IDataFlow&lt;string&gt; textOutput: outputs the string contained in the TextBox</para>
     /// </summary>
-    public class TextBox : IUI, IDataFlow<string>, IEvent
+    public class TextBox : IUI, IDataFlow<string>, IEvent // child, textInput, clear
     {
         // properties
         public string InstanceName { get; set; } = "Default";

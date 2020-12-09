@@ -29,7 +29,7 @@ namespace ProgrammingParadigms
     /// It fans out IEvent by creating a list and assign the event to the element in the list.
     /// Moreover, any IEvent and IEventB can be transferred bidirectionally.
     /// </summary>
-    public class EventConnector : IEvent, IEventB
+    public class EventConnector : IEvent, IEventB // input, eventHappenedB
     {
         // Properties
         public string InstanceName;

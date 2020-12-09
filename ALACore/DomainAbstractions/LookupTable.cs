@@ -8,7 +8,7 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class LookupTable<T1, T2> : IDataFlow<Tuple<T1, T2>>, IDataFlow<T1>
+    public class LookupTable<T1, T2> : IDataFlow<Tuple<T1, T2>>, IDataFlow<T1> // pair, key
     {
         // Public fields and properties
         public string InstanceName = "Default";

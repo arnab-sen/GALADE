@@ -15,7 +15,7 @@ namespace RequirementsAbstractions
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;string&gt; codeInput:</para>
     /// </summary>
-    public class ExtractALACode : IDataFlow<string>
+    public class ExtractALACode : IDataFlow<string> // codeInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

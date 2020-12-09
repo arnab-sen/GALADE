@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <para>IEvent create: The event to start the creation and output process.</para>
     /// <para>IDataFlow&lt;object&gt; objectOutput: The output port where the created object is sent.</para>
     /// </summary>
-    public class ObjectFactory : IEvent
+    public class ObjectFactory : IEvent // create
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

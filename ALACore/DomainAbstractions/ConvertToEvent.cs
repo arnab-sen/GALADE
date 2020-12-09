@@ -5,12 +5,11 @@ namespace DomainAbstractions
     /// <summary>
     /// Converts any kind of IDataFlow to an IEvent. 
     /// The Generic Type 'T' should be assigned when it is instantiated.
-    /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
     /// 1. IDataFlow<T> input: input data
     /// 2. IEvent eventOutput: output event
     /// </summary>
-    public class ConvertToEvent<T> : IDataFlow<T>
+    public class ConvertToEvent<T> : IDataFlow<T> // input
     {
         // Properties
         public string InstanceName = "Default";

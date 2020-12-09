@@ -48,7 +48,7 @@ namespace DomainAbstractions
     /// <para>3. IDataFlow&lt;JToken&gt; jTokenOutput : A single JToken found at the given JSONPath.</para>
     /// <para>4. IDataFlow&lt;string&gt; jsonOutput : The JSON substring found using the JSONPath.</para>
     /// </summary>
-    public class JSONParser : IDataFlow<string>
+    public class JSONParser : IDataFlow<string> // jsonInput
     {
         // Properties
         public string InstanceName { get; set; } = "Default";

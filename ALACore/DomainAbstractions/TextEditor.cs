@@ -13,7 +13,7 @@ using Style = ScintillaNET.Style;
 
 namespace DomainAbstractions
 {
-    public class TextEditor : IUI
+    public class TextEditor : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

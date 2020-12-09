@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;string&gt; filePathInput : The input path. If the file doesn't exist, nothing will happen.</para>
     /// </summary>
-    public class FileWriter : IDataFlow<string>
+    public class FileWriter : IDataFlow<string> // filePathInput
     {
         // Public fields and properties
         public string InstanceName = "Default";

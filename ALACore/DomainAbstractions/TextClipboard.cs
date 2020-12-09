@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>2. IEvent sendOutput:</para>
     /// <para>3. IDataFlow&lt;string&gt; contentOutput:</para>
     /// </summary>
-    public class TextClipboard : IDataFlow<string>, IEvent
+    public class TextClipboard : IDataFlow<string>, IEvent // contentInput, sendOutput
     {
         // Public fields and properties
         public string InstanceName = "Default";

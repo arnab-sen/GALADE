@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// <summary>
     /// A stopwatch that can be started and stopped (and reset) through an IEvent. The time in elapsed seconds will be output when this is stopped.
     /// </summary>
-    public class Stopwatch : IEvent
+    public class Stopwatch : IEvent // start
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

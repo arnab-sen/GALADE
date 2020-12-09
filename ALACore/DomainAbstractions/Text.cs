@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// 1. IUI for getting the WPF element.
     /// 2. IDataFlow<string> for inputting the text.
     /// </summary>
-    public class Text : IUI, IDataFlow<string>, IDataFlow<bool>
+    public class Text : IUI, IDataFlow<string>, IDataFlow<bool> // child, textInput, visible
     {
         // properties
         public string InstanceName = "Default";

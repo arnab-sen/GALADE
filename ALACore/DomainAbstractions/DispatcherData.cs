@@ -15,7 +15,7 @@ namespace DomainAbstractions
     /// <para>IDataFlow&lt;T&gt;&gt; input: The data to propagate.</para>
     /// <para>IDataFlow&lt;T&gt;&gt; delayedData: The delayed output data.</para>
     /// </summary>
-    public class DispatcherData<T> : IDataFlow<T>
+    public class DispatcherData<T> : IDataFlow<T> // input
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

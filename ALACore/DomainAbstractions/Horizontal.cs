@@ -13,11 +13,11 @@ namespace DomainAbstractions
     /// The layout can sized with the Ratio property.
     /// ------------------------------------------------------------------------------------------------------------------
     /// Ports:
-    /// 1. IUI "inputIUI": input IUI to get the WPF element
-    /// 2. IDataFlow<bool> "NEEDNAME": input boolean value that the visibility (visible or collapsed)
-    /// 3. List<IUI> "childrenTabs": output list of IU elements contained in this Horizontal
+    /// 1. IUI child: input IUI to get the WPF element
+    /// 2. IDataFlow&lt;bool&gt; visible: input boolean value that the visibility (visible or collapsed)
+    /// 3. List&lt;IUI&gt; childrenTabs: output list of IU elements contained in this Horizontal
     /// </summary>
-    public class Horizontal : IUI, IDataFlow<bool>, IEvent
+    public class Horizontal : IUI, IDataFlow<bool>, IEvent // child, visible, clear
     {
         // properties ---------------------------------------------------------------------
         public string InstanceName = "Default";

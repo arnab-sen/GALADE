@@ -12,7 +12,7 @@ namespace DomainAbstractions
     /// <para>Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.</para>
     /// <para>The following properties must be defined for this abstraction to function correctly: GetID, GetWidth, GetHeight, SetX, SetY, and GetChildren.</para>
     /// </summary>
-    public class RightTreeLayout<T> : IDataFlow<T>, IEvent
+    public class RightTreeLayout<T> : IDataFlow<T>, IEvent // rootInput, clearVisited
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

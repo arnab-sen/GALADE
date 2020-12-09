@@ -18,7 +18,7 @@ namespace DomainAbstractions
     /// <code>var date = extractedParams["date"]; // Gets "January 1st"</code>
     /// <code>var weather = extractedParams["weather"]; // Gets "sunny"</code>
     /// </summary>
-    public class InverseStringFormat : IDataFlow<string>
+    public class InverseStringFormat : IDataFlow<string> // inputToParse
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

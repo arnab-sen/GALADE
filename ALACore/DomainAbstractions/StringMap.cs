@@ -18,7 +18,7 @@ namespace DomainAbstractions
     /// <para>4. IDataFlowB&lt;List&lt;string&gt;&gt; newSetInput:</para>
     /// <para>4. IDataFlow&lt;string&gt; newStringOutput;:</para>
     /// </summary>
-    public class StringMap : IEvent
+    public class StringMap : IEvent // start
     {
         // Public fields and properties
         public string InstanceName = "Default";

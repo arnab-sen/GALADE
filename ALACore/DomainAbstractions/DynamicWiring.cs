@@ -19,7 +19,7 @@ namespace DomainAbstractions
     /// <para>4. IDataFlow&lt;object&gt; objectOutput: The port that propagates the instance.</para>
     /// </summary>
     /// <typeparam name="T">The type of the port to wire.</typeparam>
-    public class DynamicWiring<T> : IDataFlow<object>, IEvent
+    public class DynamicWiring<T> : IDataFlow<object>, IEvent // objectInput, delete
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

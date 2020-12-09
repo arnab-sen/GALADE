@@ -15,7 +15,7 @@ namespace DomainAbstractions
     /// <para>3. IEvent ifOutput: The IEvent destination if the condition is true.</para>
     /// <para>4. IEvent elseOutput: The IEvent destination if the condition is false.</para>
     /// </summary>
-    public class IfElse : IEvent, IDataFlow<bool>
+    public class IfElse : IEvent, IDataFlow<bool> // start, condition
     {
         // Properties
         public string InstanceName = "Default";

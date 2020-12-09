@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <summary>
     /// 
     /// </summary>
-    public class DirectoryTree : IUI, IDataFlow<string>
+    public class DirectoryTree : IUI, IDataFlow<string> // child, rootDirectory
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

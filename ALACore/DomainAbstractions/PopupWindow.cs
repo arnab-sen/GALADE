@@ -19,7 +19,7 @@ namespace DomainAbstractions
     // Height, Title, Resize (SizeToContent), and show the maximum, minimum, close or not by sending parameters in constructor. It has two inputs:
     // 1. Close input port, IEvent for closing the window(if it's active) or open the window(if it's not active);
     // 2. The IDataFlow<bool> to enable(true) or disable(false, grey out) the UI;
-    public class PopupWindow : IEvent, IDataFlow<bool>
+    public class PopupWindow : IEvent, IDataFlow<bool> // open, visible
     {
         // properties
         public string InstanceName = "Default";

@@ -18,7 +18,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Contains a WPF Canvas, as well as defining several interaction events such as moving the mouse to pan and scrolling the mouse wheel up/down to zoom in/out.
     /// </summary>
-    public class CanvasDisplay : IUI, IDataFlow<UIElement>, IEvent
+    public class CanvasDisplay : IUI, IDataFlow<UIElement>, IEvent // child, addItem, clearAndOutput
     {
         // Properties
         public string InstanceName = "Default";

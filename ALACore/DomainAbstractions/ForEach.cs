@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>2. IDataFlow&lt;T&gt; elementOutput:</para>
     /// <para>3. IEvent complete:</para>
     /// </summary>
-    public class ForEach<T> : IDataFlow<IEnumerable<T>>
+    public class ForEach<T> : IDataFlow<IEnumerable<T>> // collectionInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

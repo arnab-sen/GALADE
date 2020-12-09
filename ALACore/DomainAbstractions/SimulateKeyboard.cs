@@ -24,7 +24,7 @@ namespace DomainAbstractions
     /// <code>Either ctrl = CONTROL, left/right ctrl = LCONTROL/RCONTROL</code>
     /// <code>Either alt = ALT, left/right alt = LALT/RALT</code>
     /// </summary>
-    public class SimulateKeyboard : IEvent
+    public class SimulateKeyboard : IEvent // start
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

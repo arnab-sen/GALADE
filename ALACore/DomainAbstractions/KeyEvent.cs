@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// <para>The Keys[] array represents the key combination that should be considered based on the event, e.g. if the event name is "KeyDown", then Keys[] represents
     /// the combination of keys that should be pressed.</para>
     /// </summary>
-    public class KeyEvent : IEventHandler
+    public class KeyEvent : IEventHandler // sender
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

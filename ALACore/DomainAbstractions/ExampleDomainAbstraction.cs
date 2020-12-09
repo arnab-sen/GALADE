@@ -14,7 +14,7 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IEvent start: Start</para>
     /// </summary>
-    public class ExampleDomainAbstraction : UIElement, IEvent, IDataFlow<string>
+    public class ExampleDomainAbstraction : UIElement, IEvent, IDataFlow<string> // child, start, data
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

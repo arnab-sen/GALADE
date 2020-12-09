@@ -17,7 +17,7 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;IEnumerable&lt;T&gt;&gt; collectionInput: The input collection.</para>
     /// <para>2. IDataFlow&lt;IEnumerable&lt;T&gt;&gt; collectionOutput: The output collection. Will only be sent out if the operation is successful.</para>
     /// </summary>
-    public class Where<T> : IDataFlow<IEnumerable<T>>
+    public class Where<T> : IDataFlow<IEnumerable<T>> // collectionInput
     {
         // Public fields and properties
         public string InstanceName = "Default";

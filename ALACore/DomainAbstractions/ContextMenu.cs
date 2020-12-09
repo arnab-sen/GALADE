@@ -12,7 +12,7 @@ namespace DomainAbstractions
     /// <summary>
     /// A UI container than can hold interactive items in a context menu.
     /// </summary>
-    public class ContextMenu : IUI, IEvent
+    public class ContextMenu : IUI, IEvent // child, open
     {
         // Public fields and properties
         public string InstanceName = "Default";

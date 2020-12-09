@@ -15,7 +15,7 @@ namespace DomainAbstractions
     /// <para>IEvent input: The event to propagate.</para>
     /// <para>IEvent delayedEvent: The delayed output event.</para>
     /// </summary>
-    public class DispatcherEvent : IEvent
+    public class DispatcherEvent : IEvent // inputEvent
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

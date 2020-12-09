@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>1. IDataFlow&lt;string&gt; unparsedInput:</para>
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; sequenceOutput:</para>
     /// </summary>
-    public class StringSequenceExtractor : IDataFlow<string>
+    public class StringSequenceExtractor : IDataFlow<string> // unparsedInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

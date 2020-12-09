@@ -18,7 +18,7 @@ namespace DomainAbstractions
     /// <para>3. IDataFlow&lt;string&gt; upperHalfOutput:</para>
     /// <para>4. IDataFlow&lt;string&gt; lowerHalfOutput:</para>
     /// </summary>
-    public class FileSplit : IDataFlow<string>
+    public class FileSplit : IDataFlow<string> // fileContentsInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

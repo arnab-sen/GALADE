@@ -17,7 +17,7 @@ namespace RequirementsAbstractions
     /// <para>2. IDataFlowB&lt;string&gt; filePathInput:</para>
     /// <para>3. IEvent complete:</para>
     /// </summary>
-    public class EditSetting : IDataFlow<object>
+    public class EditSetting : IDataFlow<object> // valueInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

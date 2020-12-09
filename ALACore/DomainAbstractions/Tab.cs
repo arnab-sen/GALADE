@@ -13,7 +13,7 @@ namespace DomainAbstractions
     /// IUI "inputIUI": input IUI to get the WPF element
     /// List<IUI> "tabItemList": input IUI to get the WPF element
     /// </summary>
-    public class Tab : IUI
+    public class Tab : IUI // child
     {
         // properties
         public string InstanceName = "Default";

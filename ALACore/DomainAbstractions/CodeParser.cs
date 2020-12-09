@@ -38,7 +38,7 @@ namespace DomainAbstractions
     /// <para>9. IDataFlow&lt;List&lt;string&gt;&gt; parameters: A list of the full text representation of every parameter declared in the input code.</para>
     /// <para>10. IDataFlow&lt;List&lt;string&gt;&gt; documentationBlocks: A list of the full text representation of every document block (between &lt;summary&gt; tags) written in the input code.</para>
     /// </summary>
-    public class CodeParser : IDataFlow<string>
+    public class CodeParser : IDataFlow<string> // codeInput
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

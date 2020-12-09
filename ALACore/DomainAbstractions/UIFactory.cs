@@ -10,7 +10,7 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class UIFactory : IUI
+    public class UIFactory : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

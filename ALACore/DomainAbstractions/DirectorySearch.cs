@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>2. IDataFlow&lt;Dictionary&lt;string, List&lt;string&gt;&gt;&gt; foundDirectoriesOutput:</para>
     /// <para>3. IDataFlow&lt;Dictionary&lt;string, List&lt;string&gt;&gt;&gt; foundFilesOutput:</para>
     /// </summary>
-    public class DirectorySearch : IDataFlow<string>
+    public class DirectorySearch : IDataFlow<string> // rootFilePath
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";

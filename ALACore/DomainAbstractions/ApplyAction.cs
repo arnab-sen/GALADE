@@ -13,7 +13,7 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;T&gt; input: The input to the lambda.</para>
     /// </summary>
-    public class ApplyAction<T> : IDataFlow<T>
+    public class ApplyAction<T> : IDataFlow<T> // input
     {
         // Properties
         public string InstanceName = "Default";

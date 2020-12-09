@@ -9,7 +9,7 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
-    public class MenuItem : IUI
+    public class MenuItem : IUI // child
     {
         // Public fields and properties
         public string InstanceName = "Default";

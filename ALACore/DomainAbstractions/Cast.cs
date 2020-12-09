@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// <summary>
     /// Casts an input instance of type T1 to an output instance of type T2. No output will be sent if the cast fails.
     /// </summary>
-    public class Cast<T1, T2> : IDataFlow<T1>
+    public class Cast<T1, T2> : IDataFlow<T1> // input
     {
         // Public fields and properties
         public string InstanceName = "Default";

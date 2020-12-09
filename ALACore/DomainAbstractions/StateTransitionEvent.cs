@@ -16,7 +16,7 @@ namespace DomainAbstractions
     /// <para>2. IDataFlow&lt;object&gt; transitionOutput:</para>
     /// <para>3. IEvent eventHappened:</para>
     /// </summary>
-    public class StateTransitionEvent<T> : IEventHandler where T : Enum
+    public class StateTransitionEvent<T> : IEventHandler where T : Enum // sender
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
