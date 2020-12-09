@@ -440,6 +440,8 @@ namespace Application
             var id_2996cb469c4442d08b7e5ca2051336b1 = new EventConnector() {InstanceName="id_2996cb469c4442d08b7e5ca2051336b1"}; /*  */
             var id_846c10ca3cc14138bea1d681b146865a = new Data<string>() {InstanceName="id_846c10ca3cc14138bea1d681b146865a",Lambda=() => extractALACode.CurrentDiagramName}; /*  */
             var id_b6f2ab59cd0642afaf0fc124e6f9f055 = new Data<string>() {InstanceName="id_b6f2ab59cd0642afaf0fc124e6f9f055"}; /*  */
+            var id_4aff82900db2498e8b46be4a18b9fa8e = new MenuItem(header:"Open User Guide") {InstanceName="Open User Guide"}; /*  */
+            var id_322828528d644ff883d8787c8fb63e56 = new EventLambda() {InstanceName="Open Wiki page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/wiki");}}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -744,6 +746,8 @@ namespace Application
             id_2996cb469c4442d08b7e5ca2051336b1.WireTo(id_b6f2ab59cd0642afaf0fc124e6f9f055, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "inputDataB"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_4aff82900db2498e8b46be4a18b9fa8e.WireTo(id_322828528d644ff883d8787c8fb63e56, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -762,6 +766,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
