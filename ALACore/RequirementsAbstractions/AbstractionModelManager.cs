@@ -202,7 +202,7 @@ namespace RequirementsAbstractions
                         }
                         else
                         {
-                            port.Name = "?";
+                            port.Name = "?" + port.Type;
                         }
 
                         // Handle reverse ports (IDataFlowB and IEventB)

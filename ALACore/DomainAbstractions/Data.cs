@@ -13,11 +13,11 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IEvent start: Starts the process of sending out the currently stored data.</para>
     /// <para>2. IDataFlow&lt;T&gt; inputData: The data to store.</para>
-    /// <para>2. IDataFlowB&lt;T&gt; returnData: Returns the currently stored data.</para>
-    /// <para>2. IDataFlowB&lt;T&gt; dataOutputB: A source to pull data from. This data replaces the currently stored data before the data output occurs.</para>
-    /// <para>2. IDataFlow&lt;T&gt; dataOutput: The destination to send the currently stored data.</para>
+    /// <para>3. IDataFlowB&lt;T&gt; returnData: Returns the currently stored data.</para>
+    /// <para>4. IDataFlowB&lt;T&gt; dataOutputB: A source to pull data from. This data replaces the currently stored data before the data output occurs.</para>
+    /// <para>5. IDataFlow&lt;T&gt; dataOutput: The destination to send the currently stored data.</para>
     /// </summary>
-    public class Data<T> : IEvent,  IDataFlow<T>, IDataFlowB<T>
+    public class Data<T> : IEvent,  IDataFlow<T>, IDataFlowB<T> // start, inputData, returnData
     {
         // Properties
         public string InstanceName = "Default";
