@@ -442,6 +442,7 @@ namespace Application
             var id_b6f2ab59cd0642afaf0fc124e6f9f055 = new Data<string>() {InstanceName="id_b6f2ab59cd0642afaf0fc124e6f9f055"}; /*  */
             var id_4aff82900db2498e8b46be4a18b9fa8e = new MenuItem(header:"Open User Guide") {InstanceName="Open User Guide"}; /*  */
             var id_322828528d644ff883d8787c8fb63e56 = new EventLambda() {InstanceName="Open Wiki page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/wiki");}}; /*  */
+            var UIConfig_debugMainMenuItem = new UIConfig() {InstanceName="UIConfig_debugMainMenuItem",Visible=false}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -465,7 +466,6 @@ namespace Application
             id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(layoutDiagram, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"RightTreeLayout","DestinationIsReference":false} */
             id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(startRightTreeLayoutProcess, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_f19494c1e76f460a9189c172ac98de60, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_08d455bfa9744704b21570d06c3c5389, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f19494c1e76f460a9189c172ac98de60.WireTo(id_d59c0c09aeaf46c186317b9aeaf95e2e, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f19494c1e76f460a9189c172ac98de60.WireTo(id_bb687ee0b7dd4b86a38a3f81ddbab75f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_d59c0c09aeaf46c186317b9aeaf95e2e.WireTo(id_463b31fe2ac04972b5055a3ff2f74fe3, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"FolderBrowser","DestinationIsReference":false} */
@@ -748,6 +748,8 @@ namespace Application
             id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_4aff82900db2498e8b46be4a18b9fa8e.WireTo(id_322828528d644ff883d8787c8fb63e56, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(UIConfig_debugMainMenuItem, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            UIConfig_debugMainMenuItem.WireTo(id_08d455bfa9744704b21570d06c3c5389, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -766,6 +768,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
