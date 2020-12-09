@@ -20,6 +20,7 @@ namespace DomainAbstractions
         // Ports
         private List<IUI> children = new List<IUI>();
         private IEvent clickedEvent;
+        private IUI icon;
 
         public MenuItem(string header = "")
         {
@@ -36,6 +37,8 @@ namespace DomainAbstractions
             }
 
             _menuItem.Click += (sender, args) => clickedEvent?.Execute();
+
+            if (icon != null) _menuItem.Icon = icon.GetWPFElement();
 
             return _menuItem;
         }

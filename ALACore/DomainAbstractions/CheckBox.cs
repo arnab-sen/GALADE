@@ -29,6 +29,8 @@ namespace DomainAbstractions
         // Ports
         private IUI content;
         private IDataFlow<bool> isChecked;
+        private IEventB check;
+        private IEventB uncheck;
 
         // Methods
 
@@ -45,8 +47,16 @@ namespace DomainAbstractions
             _checkBox.IsChecked = !_checkBox.IsChecked;
         }
 
-        public CheckBox()
+        private void PostWiringInitialize()
         {
+            if (check != null) check.EventHappened += () => _checkBox.IsChecked = true;
+            if (uncheck != null) uncheck.EventHappened += () => _checkBox.IsChecked = false;
+        }
+
+        public CheckBox(bool check = false)
+        {
+            _checkBox.IsChecked = check;
+
             _checkBox.Checked += (sender, args) =>
             {
                 if (isChecked != null) isChecked.Data = true;
