@@ -132,6 +132,7 @@
     <Compile Include="DomainAbstractions\Button.cs" />
     <Compile Include="DomainAbstractions\CanvasDisplay.cs" />
     <Compile Include="DomainAbstractions\Cast.cs" />
+    <Compile Include="DomainAbstractions\CheckBox.cs" />
     <Compile Include="DomainAbstractions\ClassFileGenerator.cs" />
     <Compile Include="DomainAbstractions\CodeParser.cs" />
     <Compile Include="DomainAbstractions\Collection.cs" />
