@@ -165,6 +165,19 @@ namespace RequirementsAbstractions
             return parsedDoc;
         }
 
+        private string TypeWithoutGenerics(string type)
+        {
+            if (type.Contains("<"))
+            {
+                var split = type.Split(new[] {'<'});
+                return split.FirstOrDefault();
+            }
+            else
+            {
+                return type;
+            }
+        }
+
         private void SetPorts(ClassDeclarationSyntax classNode, AbstractionModel model, bool isInputPort = false)
         {
             try
@@ -206,7 +219,8 @@ namespace RequirementsAbstractions
                         }
 
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
-                        port.IsReversePort = port.Type.EndsWith("B");
+                        var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
+                        port.IsReversePort = typeWithoutGenerics.EndsWith("B");
 
                         if (port.IsReversePort)
                         {
@@ -266,7 +280,8 @@ namespace RequirementsAbstractions
                         port.Description = portSyntaxNode.HasLeadingTrivia ? ParsePortDocumentation(portSyntaxNode.GetLeadingTrivia().ToString()) : "";
 
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
-                        port.IsReversePort = port.Type.EndsWith("B");
+                        var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
+                        port.IsReversePort = typeWithoutGenerics.EndsWith("B");
 
                         if (port.IsReversePort)
                         {
