@@ -13,8 +13,9 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;T1&gt; input: The input to the lambda.</para>
     /// <para>2. IDataFlow&lt;T2&gt; output: The output from the lambda.</para>
+    /// <para>3. IDataFlowB&lt;Func&lt;T1,T2&gt;&gt; lambdaInput: A lambda can be pulled from an external source through this port.</para>
     /// </summary>
-    public class Apply<T1, T2> : IDataFlow<T1>
+    public class Apply<T1, T2> : IDataFlow<T1> // input
     {
         // Properties
         public string InstanceName = "Default";

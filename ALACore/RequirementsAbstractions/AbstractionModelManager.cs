@@ -173,19 +173,37 @@ namespace RequirementsAbstractions
                 {
                     var parser = new CodeParser();
 
-                    var portNodeList = (parser.GetBaseObjects(classNode).First() as BaseListSyntax)?.Types.ToList();
+                    var baseList = (parser.GetBaseObjects(classNode));
+                    var portNodeList = (baseList.First() as BaseListSyntax)?.Types.ToList();
+                    string implementedPortsInlineComment = baseList.LastOrDefault()?.GetTrailingTrivia().ToString().Trim(new []{' ', '/', '\r', '\n'}) ?? "";
+
                     if (portNodeList == null) return;
 
                     var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), ProgrammingParadigms));
+                    var implementedPortNames = new List<string>();
+                    if (!string.IsNullOrEmpty(implementedPortsInlineComment))
+                    {
+                        implementedPortNames = implementedPortsInlineComment.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                    }
 
                     var modelGenerics = model.GetGenerics();
+
+                    var implementedPortCount = 0;
                     foreach (var portSyntaxNode in portSyntaxNodes)
                     {
                         var port = new Port()
                         {
-                            Type = portSyntaxNode.Type.ToString(), 
-                            Name = "?" + portSyntaxNode.Type.ToString(), 
+                            Type = portSyntaxNode.Type.ToString()
                         };
+
+                        if (implementedPortCount < implementedPortNames.Count)
+                        {
+                            port.Name = implementedPortNames[implementedPortCount];
+                        }
+                        else
+                        {
+                            port.Name = "?";
+                        }
 
                         // Handle reverse ports (IDataFlowB and IEventB)
                         port.IsReversePort = port.Type.Contains("IDataFlowB") || model.Type.Contains("IEventB");
@@ -218,6 +236,7 @@ namespace RequirementsAbstractions
                         }
 
                         model.AddPortGenericIndices(port.Name, indexList);
+                        implementedPortCount++;
                     }
                 }
                 else
@@ -360,6 +379,24 @@ namespace RequirementsAbstractions
             try
             {
                 var documentation = GetDocumentation(classNode);
+
+                // Get port documentation
+                var portDocs = new Dictionary<string, string>();
+                var lines = documentation.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    var candidate = line.Trim();
+                    if (Regex.IsMatch(candidate, @"^[0-9]"))
+                    {
+                        var inv = InverseStringFormat.GetInverseStringFormat(candidate, @"{portIndex}. {portType} {portName}: {portDescription}");
+                        if (inv.ContainsKey("portName") && inv.ContainsKey("portDescription") && !string.IsNullOrEmpty(inv["portName"]) && !string.IsNullOrEmpty(inv["portDescription"]))
+                        {
+                            var port = model.GetPort(inv["portName"].Trim());
+                            if (port != null) port.Description = inv["portDescription"].Trim();
+                        }
+                    }
+                }
+
                 model.AddDocumentation(documentation);
             }
             catch (Exception e)
