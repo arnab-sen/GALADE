@@ -958,6 +958,8 @@ namespace RequirementsAbstractions
             {
                 portBox.Background = PortHighlightedBackground;
                 portBox.BorderColour = PortHighlightedBorder;
+                _selectedPort = portBox;
+                StateTransition.Update(Enums.DiagramMode.IdleSelected);
             };
 
             render.LostFocus += (sender, args) =>
