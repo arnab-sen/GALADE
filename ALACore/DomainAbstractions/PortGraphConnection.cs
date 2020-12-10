@@ -290,14 +290,14 @@ namespace DomainAbstractions
             SourceId = obj.GetValue("SourceId")?.ToString() ?? SourceId;
             DestinationId = obj.GetValue("DestinationId")?.ToString() ?? DestinationId;
 
-            if (obj.ContainsKey("SourcePort"))
+            if (obj.ContainsKey("SourcePortBox"))
             {
-                SourcePort = new Port(obj.GetValue("SourcePort").ToString());
+                SourcePort = new Port(obj.GetValue("SourcePortBox").ToString());
             }
 
-            if (obj.ContainsKey("DestinationPort"))
+            if (obj.ContainsKey("DestinationPortBox"))
             {
-                DestinationPort = new Port(obj.GetValue("DestinationPort").ToString());
+                DestinationPort = new Port(obj.GetValue("DestinationPortBox").ToString());
             }
 
             if (obj.ContainsKey("Visible"))
@@ -506,7 +506,7 @@ namespace DomainAbstractions
         {
             if (SourcePort != null && DestinationPort != null)
             {
-                // if (SourcePort.Type != DestinationPort.Type)
+                // if (SourcePortBox.Type != DestinationPortBox.Type)
                 // {
                 //     Stroke = Brushes.Red;
                 //     Render.Stroke = Brushes.Red;

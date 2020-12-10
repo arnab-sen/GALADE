@@ -459,8 +459,8 @@ namespace Application
                 Canvas = Canvas,
                 Source = source,
                 Destination = destination,
-                SourcePort = sourcePort,
-                DestinationPort = destinationPort,
+                SourcePortBox = sourcePort,
+                DestinationPortBox = destinationPort,
                 StateTransition = StateTransition
             };
 

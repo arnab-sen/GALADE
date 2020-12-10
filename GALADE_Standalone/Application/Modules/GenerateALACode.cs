@@ -74,8 +74,8 @@ namespace Application
 
                 var source = wire.Source;
                 var destination = wire.Destination;
-                var sourcePort = wire.SourcePort.Payload as Port;
-                var destinationPort = wire.DestinationPort.Payload as Port;
+                var sourcePort = wire.SourcePortBox.Payload as Port;
+                var destinationPort = wire.DestinationPortBox.Payload as Port;
 
 
                 wireToBuilder.Append(sourcePort.IsReversePort

@@ -931,12 +931,12 @@ namespace RequirementsAbstractions
                     if (wire.Source == null)
                     {
                         wire.Source = this;
-                        wire.SourcePort = portBox;
+                        wire.SourcePortBox = portBox;
                     }
                     else if (wire.Destination == null)
                     {
                         wire.Destination = this;
-                        wire.DestinationPort = portBox;
+                        wire.DestinationPortBox = portBox;
                     }
 
                     StateTransition.Update(Enums.DiagramMode.Idle);
@@ -1178,8 +1178,8 @@ namespace RequirementsAbstractions
                         Canvas = Canvas, 
                         Source = source, 
                         Destination = null, 
-                        SourcePort = sourcePort, 
-                        DestinationPort = null, 
+                        SourcePortBox = sourcePort, 
+                        DestinationPortBox = null, 
                         StateTransition = StateTransition
                     };
 

@@ -49,8 +49,10 @@ namespace RequirementsAbstractions
                 _destination = value;
             }
         }
-        public Box SourcePort { get; set; }
-        public Box DestinationPort { get; set; }
+        public Box SourcePortBox { get; set; }
+        public Port SourcePort => (Port) SourcePortBox.Payload;
+        public Box DestinationPortBox { get; set; }
+        public Port DestinationPort => (Port)DestinationPortBox.Payload;
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public bool Selected { get; set; } = false;
 
@@ -95,21 +97,21 @@ namespace RequirementsAbstractions
 
             if (inputPort)
             {
-                if (DestinationPort != null)
+                if (DestinationPortBox != null)
                 {
                     var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
-                                                                         (wire.DestinationPort == DestinationPort)).ToList();
+                                                                         (wire.DestinationPortBox == DestinationPortBox)).ToList();
 
                     var index = portConnections.IndexOf(this);
 
-                    var pos = GetCanvasPosition(DestinationPort.Render);
+                    var pos = GetCanvasPosition(DestinationPortBox.Render);
 
                     point.X = pos.X;
 
                     var vertDisplacement = index * 5 + 5;
                     point.Y = pos.Y + vertDisplacement;
 
-                    if (vertDisplacement > DestinationPort.Height) DestinationPort.Height += 10; 
+                    if (vertDisplacement > DestinationPortBox.Height) DestinationPortBox.Height += 10; 
                 }
                 else
                 {
@@ -119,21 +121,21 @@ namespace RequirementsAbstractions
             }
             else
             {
-                if (SourcePort != null)
+                if (SourcePortBox != null)
                 {
                     var portConnections = Graph.Edges.Where(e => e is ALAWire wire &&
-                                                                         (wire.SourcePort == SourcePort)).ToList();
+                                                                         (wire.SourcePortBox == SourcePortBox)).ToList();
 
                     var index = portConnections.IndexOf(this);
 
-                    var pos = GetCanvasPosition(SourcePort.Render);
+                    var pos = GetCanvasPosition(SourcePortBox.Render);
 
-                    point.X = pos.X + SourcePort.Width;
+                    point.X = pos.X + SourcePortBox.Width;
 
                     var vertDisplacement = index * 5 + 5;
                     point.Y = pos.Y + vertDisplacement;
 
-                    if (vertDisplacement > SourcePort.Height) SourcePort.Height += 10; 
+                    if (vertDisplacement > SourcePortBox.Height) SourcePortBox.Height += 10; 
                 }
                 else
                 {
@@ -150,11 +152,11 @@ namespace RequirementsAbstractions
         public void Refresh()
         {
             // Start point
-            // _bezier.Point0 = GetCanvasPosition(SourcePort.Render);
+            // _bezier.Point0 = GetCanvasPosition(SourcePortBox.Render);
             _bezier.Point0 = GetAttachmentPoint(inputPort: false);
 
             // End point
-            // _bezier.Point3 = GetCanvasPosition(DestinationPort.Render); 
+            // _bezier.Point3 = GetCanvasPosition(DestinationPortBox.Render); 
             _bezier.Point3 = GetAttachmentPoint(inputPort: true);
 
             var midX = (_bezier.Point0.X + _bezier.Point3.X) / 2;
@@ -191,7 +193,7 @@ namespace RequirementsAbstractions
 
         public void Validate()
         {
-            // if (SourcePort.Payload is Port port &&
+            // if (SourcePortBox.Payload is Port port &&
             //     (port.Type.StartsWith("IUI") || port.Type.StartsWith("IEventHandler")))
             // {
             //     _bezier.Colour = Brushes.Green;
@@ -256,7 +258,7 @@ namespace RequirementsAbstractions
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
             var curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /*  */
-            var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} -> {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /*  */
+            var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort.Type} {SourcePort.Name}] -> [{DestinationPort.Type} {DestinationPort.Name}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /*  */
             var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /*  */
             var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /*  */
             var wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /*  */
@@ -276,13 +278,13 @@ namespace RequirementsAbstractions
             var id_4eee8f4c6dcf494390d967d38f666ae1 = new MenuItem(header:"Jump to destination") {InstanceName="id_4eee8f4c6dcf494390d967d38f666ae1"}; /*  */
             var id_93676128a34b482ca50032da80d079b1 = new Data<ALANode>() {InstanceName="id_93676128a34b482ca50032da80d079b1",Lambda=() => _source}; /*  */
             var id_1b37f4b1d09140518d4f29439d2593f7 = new Data<ALANode>() {InstanceName="id_1b37f4b1d09140518d4f29439d2593f7",Lambda=() => _destination}; /*  */
-            var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));    Canvas.SetLeft(Canvas, -renderPosition.X + 20);    Canvas.SetTop(Canvas, -renderPosition.Y + 20);    }}; /*  */
-            var id_f502a4f68b644f1c88640c48b8f035ab = new DataFlowConnector<ALANode>() {}; /*  */
-            var id_c85165155952410fa63c353657c52afe = new Apply<ALANode, UIElement>() {Lambda=node => node.Canvas}; /*  */
-            var id_0f71a57c88584eed9db2c4c22170558f = new DataFlowConnector<UIElement>() {}; /*  */
+            var resetViewOnNode = new ApplyAction<ALANode>() {InstanceName="resetViewOnNode",Lambda=node =>{    if (node == null)        return;    var render = node.Render;    var renderPosition = new Point(Canvas.GetLeft(render), Canvas.GetTop(render));    Canvas.SetLeft(Canvas, -renderPosition.X + 20);    Canvas.SetTop(Canvas, -renderPosition.Y + 20);}}; /*  */
+            var id_f502a4f68b644f1c88640c48b8f035ab = new DataFlowConnector<ALANode>() {InstanceName="id_f502a4f68b644f1c88640c48b8f035ab"}; /*  */
+            var id_c85165155952410fa63c353657c52afe = new Apply<ALANode, UIElement>() {InstanceName="id_c85165155952410fa63c353657c52afe",Lambda=node => node.Canvas}; /*  */
+            var id_0f71a57c88584eed9db2c4c22170558f = new DataFlowConnector<UIElement>() {InstanceName="id_0f71a57c88584eed9db2c4c22170558f"}; /*  */
             var resetScale = new Scale() {InstanceName="resetScale",AbsoluteScale=1,Reset=true}; /*  */
-            var resetCanvasPosition = new ApplyAction<UIElement>() {InstanceName="resetCanvasPosition",Lambda=canvas => {    Canvas.SetLeft(canvas, 0);    Canvas.SetTop(canvas, 0);}}; /*  */
-            var id_70652e969ce04990b2bb63dd259c9aeb = new ApplyAction<ALANode>() {Lambda=alaNode => {    var nodes = Graph.Nodes.OfType<ALANode>();    foreach (var node in nodes)     {        node.Deselect();        node.ShowTypeTextMask(show: false);    }        alaNode.Select();}}; /*  */
+            var resetCanvasPosition = new ApplyAction<UIElement>() {InstanceName="resetCanvasPosition",Lambda=canvas =>{    Canvas.SetLeft(canvas, 0);    Canvas.SetTop(canvas, 0);}}; /*  */
+            var id_70652e969ce04990b2bb63dd259c9aeb = new ApplyAction<ALANode>() {InstanceName="id_70652e969ce04990b2bb63dd259c9aeb",Lambda=alaNode =>{    var nodes = Graph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();        node.ShowTypeTextMask(show: false);    }    alaNode.Select();}}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
@@ -327,6 +329,10 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
 
 
 

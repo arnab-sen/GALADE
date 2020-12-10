@@ -75,8 +75,8 @@ namespace Application
 
                 if (source != null && dest != null)
                 {
-                    var sourcePort = source.GetPort(connDump["SourcePort"]["Name"].ToString());
-                    var destPort = dest.GetPort(connDump["DestinationPort"]["Name"].ToString());
+                    var sourcePort = source.GetPort(connDump["SourcePortBox"]["Name"].ToString());
+                    var destPort = dest.GetPort(connDump["DestinationPortBox"]["Name"].ToString());
 
                     portConnectionTuples.Add(Tuple.Create(source, dest, sourcePort, destPort));
                 }
