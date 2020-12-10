@@ -389,7 +389,12 @@ namespace RequirementsAbstractions
             {
                 "int",
                 "string",
-                "object"
+                "bool",
+                "object",
+                "double",
+                "float",
+                "char",
+                "DateTime"
             };
 
             Model.RefreshGenerics();
