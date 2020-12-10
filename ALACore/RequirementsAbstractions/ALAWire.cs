@@ -50,9 +50,9 @@ namespace RequirementsAbstractions
             }
         }
         public Box SourcePortBox { get; set; }
-        public Port SourcePort => (Port) SourcePortBox.Payload;
+        public Port SourcePort => SourcePortBox?.Payload as Port;
         public Box DestinationPortBox { get; set; }
-        public Port DestinationPort => (Port)DestinationPortBox.Payload;
+        public Port DestinationPort => DestinationPortBox?.Payload as Port;
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public bool Selected { get; set; } = false;
 
@@ -258,7 +258,7 @@ namespace RequirementsAbstractions
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
             var curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /*  */
-            var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort.Type} {SourcePort.Name}] -> [{DestinationPort.Type} {DestinationPort.Name}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /*  */
+            var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /*  */
             var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /*  */
             var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /*  */
             var wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /*  */

@@ -38,13 +38,15 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var test1 = new Apply<T1, T2>() {InstanceName="test1"}; /*  */
-            var test3 = new Apply<T1, T2>() {InstanceName="test3"}; /*  */
-            var id_a8054d7507df4d81b0fd638c12dc3d1b = new Object() {}; /*  */
+            var root = new MainWindow() {InstanceName="root"}; /*  */
+            var _0 = new Apply<T1, T2>() {InstanceName="_0"}; /*  */
+            var _1 = new Apply<T1, T2>() {InstanceName="_1"}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            test3.WireTo(id_a8054d7507df4d81b0fd638c12dc3d1b, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"NewNode","DestinationIsReference":false} */
+            root.WireTo(_0, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            _1.WireTo(_0, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            root.WireTo(_1, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
 			// END AUTO-GENERATED WIRING FOR test
 		
 		
@@ -58,6 +60,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 

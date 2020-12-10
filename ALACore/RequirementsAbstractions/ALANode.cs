@@ -58,16 +58,19 @@ namespace RequirementsAbstractions
             get => _isRoot;
             set
             {
-                _isRoot = value;
-                _nodeIsRootCheckBox.Change(_isRoot);
+                if (value != _isRoot)
+                {
+                    _isRoot = value;
+                    _nodeIsRootCheckBox.Change(_isRoot);
 
-                if (_isRoot)
-                {
-                    if (!Graph.Roots.Contains(this)) Graph.Roots.Add(this);
-                }
-                else
-                {
-                    Graph.Roots.RemoveAll(o => o.Equals(this));
+                    if (_isRoot)
+                    {
+                        if (!Graph.Roots.Contains(this)) Graph.Roots.Add(this);
+                    }
+                    else
+                    {
+                        Graph.Roots.RemoveAll(o => o.Equals(this));
+                    } 
                 }
             }
         }

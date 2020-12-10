@@ -406,7 +406,7 @@ namespace Application
             if ((sourceName.StartsWith("root_") || source.IsRoot) && !_roots.Contains(sourceName))
             {
                 _roots.Add(sourceName);
-                Graph.Roots.Add(source);
+                if (!Graph.Roots.Contains(source)) Graph.Roots.Add(source);
                 source.IsRoot = true;
             }
 
@@ -416,7 +416,7 @@ namespace Application
             {
                 if (!_nodesWithoutTreeParents.Contains(sourceName) && !_roots.Contains(sourceName))
                 {
-                    Graph.Roots.Add(source);
+                    if (!Graph.Roots.Contains(source)) Graph.Roots.Add(source);
                     _nodesWithoutTreeParents.Add(sourceName);
                     source.IsRoot = true;
                 }
