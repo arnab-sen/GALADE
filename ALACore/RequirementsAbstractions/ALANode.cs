@@ -229,7 +229,7 @@ namespace RequirementsAbstractions
             _metaData = metaDataObj;
             if (_metaData != null)
             {
-                if (_metaData.ContainsKey("IsRoot")) IsRoot = bool.Parse(_metaData.GetValue("IsRoot").ToString());
+                if (_metaData.ContainsKey("IsRoot")) IsRoot = bool.Parse(_metaData.GetValue("IsRoot")?.ToString() ?? "false");
             }
         }
 
@@ -1217,8 +1217,8 @@ namespace RequirementsAbstractions
                 return;
             }
 
-            dropDown.Focus();
-            _keyboardSim.SimulateKey("Tab");
+            // Get focus on inner TextBox, must use the dispatcher to ensure that the internal TextBox is loaded and ready to be focused
+            dropDown.Dispatcher.Invoke(() => dropDown.Focus(), DispatcherPriority.Loaded);
         }
 
         /// <summary>
