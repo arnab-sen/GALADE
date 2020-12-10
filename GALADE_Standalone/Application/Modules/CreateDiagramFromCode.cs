@@ -407,6 +407,7 @@ namespace Application
             {
                 _roots.Add(sourceName);
                 Graph.Roots.Add(source);
+                source.IsRoot = true;
             }
 
             _nodesWithTreeParents.Add(destinationName);
@@ -416,14 +417,16 @@ namespace Application
                 if (!_nodesWithoutTreeParents.Contains(sourceName) && !_roots.Contains(sourceName))
                 {
                     Graph.Roots.Add(source);
-                    _nodesWithoutTreeParents.Add(sourceName); 
+                    _nodesWithoutTreeParents.Add(sourceName);
+                    source.IsRoot = true;
                 }
             }
 
             if (_nodesWithoutTreeParents.Contains(destinationName) && destinationName != _firstRootVarName && !_roots.Contains(destinationName))
             {
                 _nodesWithoutTreeParents.Remove(destinationName);
-                Graph.Roots.RemoveAll(o => o.Equals(destination)); 
+                Graph.Roots.RemoveAll(o => o.Equals(destination));
+                destination.IsRoot = false;
             }
 
             var wire = CreateALAWire(source, destination, sourcePortBox, destinationPortBox);

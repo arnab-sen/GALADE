@@ -214,7 +214,7 @@ namespace DomainAbstractions
 
             // backgroundCanvas.MouseWheel += (sender, args) =>
             // {
-            //     // Check if zoom has been changed externally, in which case reset the internal zoom level
+            //     // Change if zoom has been changed externally, in which case reset the internal zoom level
             //     if (!foregroundCanvas.RenderTransform.Value.Equals(zoomMatrix))
             //     {
             //         currentZoomLevel = 1;

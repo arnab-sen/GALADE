@@ -23,6 +23,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
 using Newtonsoft.Json.Linq;
+using CheckBox = DomainAbstractions.CheckBox;
 
 namespace RequirementsAbstractions
 {
@@ -52,12 +53,60 @@ namespace RequirementsAbstractions
             }
         }
 
+        public bool IsRoot
+        {
+            get => _isRoot;
+            set
+            {
+                _isRoot = value;
+                _nodeIsRootCheckBox.Change(_isRoot);
+
+                if (_isRoot)
+                {
+                    if (!Graph.Roots.Contains(this)) Graph.Roots.Add(this);
+                }
+                else
+                {
+                    Graph.Roots.RemoveAll(o => o.Equals(this));
+                }
+            }
+        }
+
         /// <summary>
         /// Whether this instance is actually only a reference to a node defined elsewhere. Reference nodes will not generate instantiations, but can still be used in the wiring.
         /// </summary>
-        public bool IsReferenceNode { get; set; } = false;
+        public bool IsReferenceNode
+        {
+            get => _isReference;
+            set
+            {
+                _isReference = value;
+                _nodeIsReferenceNodeCheckBox.Change(_isReference);
 
-        public bool IsRoot { get; set; } = false;
+                if (_nameTextBox != null)
+                {
+                    var currentText = _nameTextBox.Text;
+                    if (_isReference)
+                    {
+                        if (!currentText.StartsWith("@")) _nameTextBox.Text = "@" + currentText;
+                    }
+                    else
+                    {
+                        _nameTextBox.Text = currentText.TrimStart('@');
+                    }
+                }
+
+                // Update node colour
+                if (_isHighlighted)
+                {
+                    HighlightNode();
+                }
+                else
+                {
+                    UnhighlightNode();
+                }
+            }
+        }
 
         public Graph Graph { get; set; }
         // public List<object> Edges { get; } = new List<object>();
@@ -68,6 +117,7 @@ namespace RequirementsAbstractions
         public Brush ReferenceNodeBackground { get; set; } = Brushes.Orange;
         public Brush NodeBorder { get; set; } = Brushes.Black;
         public Brush NodeHighlightedBackground { get; set; } = Utilities.BrushFromHex("#c6fce5");
+        public Brush ReferenceNodeHighlightedBackground { get; set; } = Brushes.LightPink;
         public Brush NodeHighlightedBorder { get; set; } = Brushes.Black;
         public Brush PortBackground { get; set; } = Utilities.BrushFromHex("#f4f4f2");
         public Brush PortBorder { get; set; } = Brushes.Black;
@@ -140,12 +190,18 @@ namespace RequirementsAbstractions
         private JObject _metaData = null;
         private string _noAcceptedPortDescriptionFound = "(none found in abstraction class - please add a description in a comment above the port declaration in the source file)";
         private string _noImplementedPortDescriptionFound = "(none found in abstraction class - please add a description in the <summary> section in the class documentation)";
+        private bool _isRoot = false;
+        private bool _isReference = false;
+        private bool _isHighlighted = false;
 
         // Global instances
         public Vertical _inputPortsVert;
         public Vertical _outputPortsVert;
         public StackPanel _parameterRowsPanel = new StackPanel();
         private IUI _nodeIdRow;
+        private CheckBox _nodeIsRootCheckBox;
+        private CheckBox _nodeIsReferenceNodeCheckBox;
+
 
         // Ports
 
@@ -1009,12 +1065,11 @@ namespace RequirementsAbstractions
             {
                 if (input.StartsWith("@"))
                 {
-                    IsReferenceNode = true;
-                    input = input.TrimStart(new[] {'@'});
+                    if (!IsReferenceNode) IsReferenceNode = true;
                 }
                 else
                 {
-                    IsReferenceNode = false;
+                    if (IsReferenceNode) IsReferenceNode = false;
                 }
 
                 Model.Name = input;
@@ -1193,12 +1248,14 @@ namespace RequirementsAbstractions
 
         public void HighlightNode()
         {
-            _rootUI.Background = NodeHighlightedBackground;
+            _rootUI.Background = !IsReferenceNode ? NodeHighlightedBackground : ReferenceNodeHighlightedBackground;
+            _isHighlighted = true;
         }
 
         public void UnhighlightNode()
         {
             _rootUI.Background = !IsReferenceNode ? NodeBackground : ReferenceNodeBackground;
+            _isHighlighted = false;
         }
 
         public void Select()
@@ -1268,51 +1325,67 @@ namespace RequirementsAbstractions
             Vertical inputPortsVert = null;
             Vertical outputPortsVert = null;
 
-            // BEGIN AUTO-GENERATED INSTANTIATIONS
-            var rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground};
-            var id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {};
-            var createInputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: true)};
-            var createNodeMiddleVertical = new UIFactory() {GetUIContainer=CreateNodeMiddleVertical};
-            var createOutputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: false)};
-            var id_71829b744cf145a0a934a55f7768c7bf = new ContextMenu() {};
-            var id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code...") {};
-            var id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}};
-            var id_9c912c6b764641d592796b0d3753424b = new MenuItem(header:"Through your default external editor") {};
-            var id_736f961d1ae84d80bfa4570d41685828 = new MenuItem(header:"Through the GALADE text editor") {};
-            var id_a09b14f6afef41e59fac3fd10dd6ce00 = new Data<string>() {Lambda=Model.GetCodeFilePath};
-            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {};
-            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => Name};
-            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {};
-            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {};
-            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {Lambda=() => Delete(deleteChildren: false)};
-            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {};
-            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {Lambda=() => Delete(deleteChildren: true)};
-            // END AUTO-GENERATED INSTANTIATIONS
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
+            var rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /*  */
+            var id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /*  */
+            var createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /*  */
+            var createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /*  */
+            var createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /*  */
+            var id_71829b744cf145a0a934a55f7768c7bf = new ContextMenu() {InstanceName="id_71829b744cf145a0a934a55f7768c7bf"}; /*  */
+            var id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code...") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /*  */
+            var id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /*  */
+            var id_9c912c6b764641d592796b0d3753424b = new MenuItem(header:"Through your default external editor") {InstanceName="id_9c912c6b764641d592796b0d3753424b"}; /*  */
+            var id_736f961d1ae84d80bfa4570d41685828 = new MenuItem(header:"Through the GALADE text editor") {InstanceName="id_736f961d1ae84d80bfa4570d41685828"}; /*  */
+            var id_a09b14f6afef41e59fac3fd10dd6ce00 = new Data<string>() {InstanceName="id_a09b14f6afef41e59fac3fd10dd6ce00",Lambda=Model.GetCodeFilePath}; /*  */
+            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /*  */
+            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /*  */
+            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /*  */
+            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /*  */
+            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /*  */
+            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /*  */
+            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /*  */
+            var id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /*  */
+            var nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /*  */
+            var id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /*  */
+            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReference") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /*  */
+            var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /*  */
+            var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /*  */
+            // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
-            // BEGIN AUTO-GENERATED WIRING
-            rootUI.WireTo(id_a38c965bdcac4123bb22c40a31b04de5, "uiLayout");
-            rootUI.WireTo(id_71829b744cf145a0a934a55f7768c7bf, "contextMenu");
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createInputPortsVertical, "children");
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createNodeMiddleVertical, "children");
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children");
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_403baaf79a824981af02ae135627767f, "children");
-            id_403baaf79a824981af02ae135627767f.WireTo(id_9c912c6b764641d592796b0d3753424b, "children");
-            id_403baaf79a824981af02ae135627767f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "children");
-            id_9c912c6b764641d592796b0d3753424b.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent");
-            id_736f961d1ae84d80bfa4570d41685828.WireTo(id_a09b14f6afef41e59fac3fd10dd6ce00, "clickedEvent");
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children");
-            id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent");
-            id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput");
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children");
-            id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent");
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children");
-            id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent");
-            // END AUTO-GENERATED WIRING
+            // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
+            rootUI.WireTo(id_a38c965bdcac4123bb22c40a31b04de5, "uiLayout"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
+            rootUI.WireTo(id_71829b744cf145a0a934a55f7768c7bf, "contextMenu"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createInputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createNodeMiddleVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_403baaf79a824981af02ae135627767f.WireTo(id_9c912c6b764641d592796b0d3753424b, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_403baaf79a824981af02ae135627767f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_9c912c6b764641d592796b0d3753424b.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_736f961d1ae84d80bfa4570d41685828.WireTo(id_a09b14f6afef41e59fac3fd10dd6ce00, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_4c03930a6877421eb54a5397acb93135, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            nodeIsRootCheckBox.WireTo(id_fc8dfeb357454d458f8bd67f185de174, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_692340f2d88d4d0d80cff9daaff7350d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            // END AUTO-GENERATED WIRING FOR ALANodeUI
 
             Render = _nodeMask;
             _nodeMask.Children.Clear();
             _detailedRender.Child = (rootUI as IUI).GetWPFElement();
             _nodeMask.Children.Add(_detailedRender);
+            _nodeIsRootCheckBox = nodeIsRootCheckBox;
+            _nodeIsReferenceNodeCheckBox = nodeIsReferenceNodeCheckBox;
 
             AddUIEventsToNode(rootUI);
 
@@ -1326,6 +1399,23 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
+
+
+
+            
+
+            
+
+
+
+
+
+
+
+
+
 
 
 

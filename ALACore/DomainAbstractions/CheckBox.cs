@@ -44,13 +44,23 @@ namespace DomainAbstractions
         // IEvent implementation
         void IEvent.Execute()
         {
-            _checkBox.IsChecked = !_checkBox.IsChecked;
+            Toggle();
         }
 
         private void PostWiringInitialize()
         {
-            if (check != null) check.EventHappened += () => _checkBox.IsChecked = true;
-            if (uncheck != null) uncheck.EventHappened += () => _checkBox.IsChecked = false;
+            if (check != null) check.EventHappened += () => Change(true);
+            if (uncheck != null) uncheck.EventHappened += () => Change(false);
+        }
+
+        public void Change(bool state)
+        {
+            _checkBox.IsChecked = state;
+        }
+
+        public void Toggle()
+        {
+            Change(!_checkBox.IsChecked ?? false);
         }
 
         public CheckBox(bool check = false)

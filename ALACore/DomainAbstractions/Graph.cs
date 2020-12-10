@@ -45,6 +45,7 @@ namespace DomainAbstractions
                 Nodes.Remove(node);
                 NodeDeleted?.Invoke(node);
             }
+
             if (Roots.Contains(node))
             {
                 Roots.Remove(node);
