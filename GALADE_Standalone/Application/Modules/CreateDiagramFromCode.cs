@@ -403,7 +403,7 @@ namespace Application
             }
 
             if (string.IsNullOrEmpty(_firstRootVarName)) _firstRootVarName = sourceName;
-            if ((sourceName.StartsWith("root_") || source.IsRoot) && !_roots.Contains(sourceName))
+            if (sourceName.StartsWith("root_") && !_roots.Contains(sourceName))
             {
                 _roots.Add(sourceName);
                 if (!Graph.Roots.Contains(source)) Graph.Roots.Add(source);
