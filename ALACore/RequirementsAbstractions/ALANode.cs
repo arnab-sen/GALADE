@@ -1347,7 +1347,7 @@ namespace RequirementsAbstractions
             var id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /*  */
             var nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /*  */
             var id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /*  */
-            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReference") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /*  */
+            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /*  */
             var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /*  */
             var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
@@ -1407,6 +1407,8 @@ namespace RequirementsAbstractions
             
 
             
+
+
 
 
 
