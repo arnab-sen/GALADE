@@ -1353,6 +1353,7 @@ namespace RequirementsAbstractions
             var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /*  */
             var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /*  */
             var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /*  */
+            var id_33b36ce0ed4e401eaef2d9033d863e1f = new UIConfig() {Visible=false}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
@@ -1363,7 +1364,6 @@ namespace RequirementsAbstractions
             id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
             id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_403baaf79a824981af02ae135627767f.WireTo(id_9c912c6b764641d592796b0d3753424b, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_403baaf79a824981af02ae135627767f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_9c912c6b764641d592796b0d3753424b.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_736f961d1ae84d80bfa4570d41685828.WireTo(id_a09b14f6afef41e59fac3fd10dd6ce00, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
@@ -1381,6 +1381,8 @@ namespace RequirementsAbstractions
             nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_403baaf79a824981af02ae135627767f.WireTo(id_33b36ce0ed4e401eaef2d9033d863e1f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_33b36ce0ed4e401eaef2d9033d863e1f.WireTo(id_736f961d1ae84d80bfa4570d41685828, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALANodeUI
 
             Render = _nodeMask;
@@ -1410,6 +1412,8 @@ namespace RequirementsAbstractions
             
 
             
+
+
 
 
 

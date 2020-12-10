@@ -441,10 +441,11 @@ namespace Application
             var id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check:true) {InstanceName="id_cc3adf40cb654337b01f77ade1881b44"}; /*  */
             var id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {InstanceName="id_a61fc923019942cea819e1b8d1b10384"}; /*  */
             var id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="id_09133302b430472dbe3cf9576d72bb3a"}; /*  */
+            var id_e85c982b7d0c4d9db2543f91798a4dd4 = new UIConfig() {}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
-            mainWindow.WireTo(mainWindowVertical, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */
+            mainWindow.WireTo(id_e85c982b7d0c4d9db2543f91798a4dd4, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"MenuBar","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
@@ -747,6 +748,7 @@ namespace Application
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_09133302b430472dbe3cf9576d72bb3a, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_09133302b430472dbe3cf9576d72bb3a.WireTo(id_cc3adf40cb654337b01f77ade1881b44, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_09133302b430472dbe3cf9576d72bb3a.WireTo(id_cc3adf40cb654337b01f77ade1881b44, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_e85c982b7d0c4d9db2543f91798a4dd4.WireTo(mainWindowVertical, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -765,6 +767,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
