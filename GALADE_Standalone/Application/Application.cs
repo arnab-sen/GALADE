@@ -438,7 +438,7 @@ namespace Application
             var id_4aff82900db2498e8b46be4a18b9fa8e = new MenuItem(header:"Open User Guide") {InstanceName="Open User Guide"}; /*  */
             var id_322828528d644ff883d8787c8fb63e56 = new EventLambda() {InstanceName="Open Wiki page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/wiki");}}; /*  */
             var UIConfig_debugMainMenuItem = new UIConfig() {InstanceName="UIConfig_debugMainMenuItem",Visible=false}; /*  */
-            var id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check: true) {InstanceName="id_cc3adf40cb654337b01f77ade1881b44"}; /*  */
+            var id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check:true) {InstanceName="id_cc3adf40cb654337b01f77ade1881b44"}; /*  */
             var id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {InstanceName="id_a61fc923019942cea819e1b8d1b10384"}; /*  */
             var id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="id_09133302b430472dbe3cf9576d72bb3a"}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
@@ -742,7 +742,7 @@ namespace Application
             id_42967d39c2334aab9c23697d04177f8a.WireTo(UIConfig_debugMainMenuItem, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             UIConfig_debugMainMenuItem.WireTo(id_08d455bfa9744704b21570d06c3c5389, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_cc3adf40cb654337b01f77ade1881b44.WireTo(sidePanelHoriz, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
-            id_cc3adf40cb654337b01f77ade1881b44.WireTo(id_a61fc923019942cea819e1b8d1b10384, "check"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_cc3adf40cb654337b01f77ade1881b44.WireTo(id_a61fc923019942cea819e1b8d1b10384, "check"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_9e6a74b0dbea488cba6027ee5187ad0f.WireTo(id_a61fc923019942cea819e1b8d1b10384, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_09133302b430472dbe3cf9576d72bb3a, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_09133302b430472dbe3cf9576d72bb3a.WireTo(id_cc3adf40cb654337b01f77ade1881b44, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
@@ -765,6 +765,14 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 

@@ -997,7 +997,8 @@ namespace RequirementsAbstractions
             var nodeNameTextBox = new TextBox()
             {
                 Text = ShowName ? Model.Name : "",
-                Width = 50
+                Width = 50,
+                AcceptsTab = false
             };
 
             _nameTextBox = nodeNameTextBox;
@@ -1188,12 +1189,12 @@ namespace RequirementsAbstractions
 
         }
 
-        private void HighlightNode()
+        public void HighlightNode()
         {
             _rootUI.Background = NodeHighlightedBackground;
         }
 
-        private void UnhighlightNode()
+        public void UnhighlightNode()
         {
             _rootUI.Background = !IsReferenceNode ? NodeBackground : ReferenceNodeBackground;
         }

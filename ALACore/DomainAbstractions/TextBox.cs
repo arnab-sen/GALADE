@@ -139,7 +139,7 @@ namespace DomainAbstractions
 
                     args.Handled = true; // Handle enter press here rather than externally
                 }
-                else if (args.Key == Key.Tab)
+                else if (_textBox.AcceptsTab && args.Key == Key.Tab)
                 {
                     var text = Text;
                     var preText = text.Substring(0, _textBox.CaretIndex);
