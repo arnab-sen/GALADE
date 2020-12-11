@@ -29,7 +29,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Text
         {
-            get => _textBox.Dispatcher.Invoke(() => _textBox.Text);
+            get => _textBox.Text;
             set
             {
                 _textBox.Dispatcher.Invoke(() => _textBox.Text = value);

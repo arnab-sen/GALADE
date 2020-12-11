@@ -38,7 +38,7 @@ namespace RequirementsAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Id { get; set; }
         public string Type { get; set; } = "?";
-        public string Name => !string.IsNullOrWhiteSpace(Model?.Name) ? Model.Name : "id_" + Id;
+        public string Name => !string.IsNullOrWhiteSpace(Model?.Name) ? Model.Name.Trim('@', ' ') : "id_" + Id;
         public List<string> AvailableProgrammingParadigms { get; } = new List<string>();
         public List<string> AvailableAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
@@ -278,7 +278,7 @@ namespace RequirementsAbstractions
                     UnhighlightNode();
                 }
 
-                if (IsReferenceNode) _nameTextBox.Text = "@" + Model.Name;
+                if (IsReferenceNode && !_nameTextBox.Text.StartsWith("@")) _nameTextBox.Text = "@" + Model.Name;
             }, DispatcherPriority.Loaded);
 
         }
@@ -699,7 +699,7 @@ namespace RequirementsAbstractions
             var sb = new StringBuilder();
 
             sb.Append("var ");
-            sb.Append(Name);
+            sb.Append(Name.Trim('@', ' '));
             sb.Append(" = new ");
             sb.Append(Model.FullType);
             sb.Append("(");
