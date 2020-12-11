@@ -13,7 +13,7 @@ namespace DomainAbstractions
     /// <summary>
     /// An IUI decorator that applies a configuration onto a child IUI, and then propagates that child up to the parent IUI of this class.
     /// </summary>
-    public class UIConfig : IUI // child
+    public class UIConfig : IUI // propagatedChild
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
