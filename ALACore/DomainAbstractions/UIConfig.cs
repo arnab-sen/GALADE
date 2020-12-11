@@ -27,6 +27,8 @@ namespace DomainAbstractions
         public double MaxWidth { get; set; } = double.NaN;
         public double MaxHeight { get; set; } = double.NaN;
         public bool Visible { get; set; } = true;
+        public double ActualHeight => (_uiElement as FrameworkElement)?.ActualHeight ?? 0;
+        public double ActualWidth => (_uiElement as FrameworkElement)?.ActualWidth ?? 0;
 
         /// <summary>
         /// Choose from left, right, or middle.
