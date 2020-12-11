@@ -38,16 +38,13 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var root = new MainWindow() {InstanceName="root"}; /*  */
-            var _0 = new Apply<T1, T2>() {InstanceName="_0"}; /*  */
-            var _1 = new Apply<T1, T2>() {InstanceName="_1"}; /*  */
+            var id_e656de1eb2fd4ef0a1ab850070b3e1eb = new TextBox() {}; /*  */
+            var id_cbeeb043b13841338c69cf6e3a8d1a02 = new Add() {}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            root.WireTo(_0, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            _1.WireTo(_0, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            root.WireTo(_1, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-			// END AUTO-GENERATED WIRING FOR test
+            id_cbeeb043b13841338c69cf6e3a8d1a02.WireTo(id_e656de1eb2fd4ef0a1ab850070b3e1eb, "inputOne"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"Add","DestinationIsReference":false} */
+            // END AUTO-GENERATED WIRING FOR test
 		
 		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test1
@@ -60,6 +57,24 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

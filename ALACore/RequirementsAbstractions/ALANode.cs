@@ -319,10 +319,9 @@ namespace RequirementsAbstractions
                         var box = _inputPortBoxes[inputIndex];
                         box.Render.Visibility = Visibility.Visible;
 
-                        var oldPort = box.Payload as Port;
+                        var oldPort = (Port)box.Payload;
 
-                        oldPort.Type = newPort.Type;
-                        oldPort.Name = newPort.Name;
+                        oldPort.CloneFrom(newPort);
 
                         var newText = new Text(newPort.Name)
                         {
@@ -345,10 +344,9 @@ namespace RequirementsAbstractions
                         var box = _outputPortBoxes[outputIndex];
                         box.Render.Visibility = Visibility.Visible;
 
-                        var oldPort = box.Payload as Port;
+                        var oldPort = (Port)box.Payload;
 
-                        oldPort.Type = newPort.Type;
-                        oldPort.Name = newPort.Name;
+                        oldPort.CloneFrom(newPort);
 
                         var newText = new Text(newPort.Name)
                         {

@@ -62,6 +62,15 @@ namespace ProgrammingParadigms
             }
         }
 
+        public void CloneFrom(Port source)
+        {
+            Type = source.Type;
+            Name = source.Name;
+            IsInputPort = source.IsInputPort;
+            IsReversePort = source.IsReversePort;
+            Description = source.Description;
+        }
+
         public Port(string memento = "", Port source = null)
         {
             if (!string.IsNullOrEmpty(memento))
@@ -76,14 +85,7 @@ namespace ProgrammingParadigms
                 }
             }
 
-            if (source != null)
-            {
-                Type = source.Type;
-                Name = source.Name;
-                IsInputPort = source.IsInputPort;
-                IsReversePort = source.IsReversePort;
-                Description = source.Description;
-            }
+            if (source != null) CloneFrom(source);
 
             Id = Utilities.GetUniqueId();
         }
