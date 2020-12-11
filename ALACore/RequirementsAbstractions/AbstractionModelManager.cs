@@ -219,8 +219,9 @@ namespace RequirementsAbstractions
                         }
 
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
-                        var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
-                        port.IsReversePort = typeWithoutGenerics.EndsWith("B");
+                        // var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
+                        // port.IsReversePort = typeWithoutGenerics.EndsWith("B");
+                        port.IsReversePort = port.Type.Contains("IDataFlowB") || port.Type.Contains("IEventB");
 
                         if (port.IsReversePort)
                         {
@@ -280,8 +281,9 @@ namespace RequirementsAbstractions
                         port.Description = portSyntaxNode.HasLeadingTrivia ? ParsePortDocumentation(portSyntaxNode.GetLeadingTrivia().ToString()) : "";
 
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
-                        var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
-                        port.IsReversePort = typeWithoutGenerics.EndsWith("B");
+                        // var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
+                        // port.IsReversePort = typeWithoutGenerics.EndsWith("B");
+                        port.IsReversePort = port.Type.Contains("IDataFlowB") || port.Type.Contains("IEventB");
 
                         if (port.IsReversePort)
                         {
