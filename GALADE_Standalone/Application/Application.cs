@@ -442,7 +442,12 @@ namespace Application
             var id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check:true) {InstanceName="id_cc3adf40cb654337b01f77ade1881b44"}; /*  */
             var id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {InstanceName="id_a61fc923019942cea819e1b8d1b10384"}; /*  */
             var id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="id_09133302b430472dbe3cf9576d72bb3a"}; /*  */
-            var id_8b99ce9b4c97466983fc1b14ef889ee8 = new Cast<object, ALANode>() {}; /*  */
+            var id_8b99ce9b4c97466983fc1b14ef889ee8 = new Cast<object, ALANode>() {InstanceName="id_8b99ce9b4c97466983fc1b14ef889ee8"}; /*  */
+            var id_024172dbe8e2496b97e191244e493973 = new MenuItem(header:"Jump to selected wire's source") {}; /*  */
+            var id_7e64ef3262604943a2b4a086c5641d09 = new Data<ALANode>() {Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Source}; /*  */
+            var id_35947f28d1454366ad8ac16e08020905 = new ConditionalData<ALANode>() {Condition=input => input != null}; /*  */
+            var id_269ffcfe56874f4ba0876a93071234ae = new MenuItem(header:"Jump to selected wire's destination") {}; /*  */
+            var id_40173af405c9467bbc85c79a05b9da48 = new Data<ALANode>() {Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Destination}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -752,6 +757,13 @@ namespace Application
             UIConfig_canvasDisplayHoriz.WireTo(canvasDisplayHoriz, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             latestAddedNode.WireTo(id_8b99ce9b4c97466983fc1b14ef889ee8, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Cast","DestinationIsReference":false} */
             id_8b99ce9b4c97466983fc1b14ef889ee8.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "output"); /* {"SourceType":"Cast","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_581015f073614919a33126efd44bf477.WireTo(id_024172dbe8e2496b97e191244e493973, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_024172dbe8e2496b97e191244e493973.WireTo(id_7e64ef3262604943a2b4a086c5641d09, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_35947f28d1454366ad8ac16e08020905.WireTo(id_fff8d82dbdd04da18793108f9b8dd5cf, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_7e64ef3262604943a2b4a086c5641d09.WireTo(id_35947f28d1454366ad8ac16e08020905, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false} */
+            id_581015f073614919a33126efd44bf477.WireTo(id_269ffcfe56874f4ba0876a93071234ae, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_269ffcfe56874f4ba0876a93071234ae.WireTo(id_40173af405c9467bbc85c79a05b9da48, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_40173af405c9467bbc85c79a05b9da48.WireTo(id_35947f28d1454366ad8ac16e08020905, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -770,6 +782,16 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
