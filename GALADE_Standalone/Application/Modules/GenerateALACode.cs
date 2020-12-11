@@ -77,10 +77,18 @@ namespace Application
                 var sourcePort = wire.SourcePortBox.Payload as Port;
                 var destinationPort = wire.DestinationPortBox.Payload as Port;
 
+                if (sourcePort.IsReversePort)
+                {
+                    ALANode _temp1 = source;
+                    source = destination;
+                    destination = _temp1;
 
-                wireToBuilder.Append(sourcePort.IsReversePort
-                    ? CreateWireToString(destination.Name, source.Name, destinationPort.Name)
-                    : CreateWireToString(source.Name, destination.Name, sourcePort.Name));
+                    Port _temp2 = sourcePort;
+                    sourcePort = destinationPort;
+                    destinationPort = _temp2;
+                }
+
+                wireToBuilder.Append(CreateWireToString(source.Name, destination.Name, sourcePort.Name));
 
                 wireToBuilder.Append(" /* ");
                 if (wire.MetaData == null) wire.MetaData = new Newtonsoft.Json.Linq.JObject();

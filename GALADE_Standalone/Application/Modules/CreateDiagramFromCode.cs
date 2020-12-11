@@ -344,8 +344,12 @@ namespace Application
             var source = _nodesByName[sourceName];
             var destination = _nodesByName[destinationName];
 
+            bool isReversedWire = false;
+
             if (metaDataObj != null)
             {
+                if (metaDataObj.ContainsKey("IsReversed")) isReversedWire = bool.Parse(metaDataObj.GetValue("IsReversed")?.ToString() ?? "false");
+
                 if (source.Model.Type == "UNDEFINED" && metaDataObj.ContainsKey("SourceType"))
                 {
                     var newType = metaDataObj.GetValue("SourceType").ToString();
@@ -383,7 +387,7 @@ namespace Application
 
             var destinationPort = (Port)destinationPortBox.Payload;
 
-            if (sourcePort.IsReversePort) // Swap source and destination variables
+            if (isReversedWire || sourcePort.IsReversePort) // Swap source and destination variables
             {
                 object temp = source;
                 source = destination;

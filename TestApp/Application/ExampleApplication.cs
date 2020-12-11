@@ -38,11 +38,11 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var id_65c677a6ff924211bee41357c32b4be8 = new TextBox() {}; /*  */
+            var id_b82ddfed331d4786aa71140235ddabf0 = new TextBox() {InstanceName="id_b82ddfed331d4786aa71140235ddabf0"}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            add.WireTo(id_65c677a6ff924211bee41357c32b4be8, "inputOne"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"Add","DestinationIsReference":true} */
+            add.WireTo(id_b82ddfed331d4786aa71140235ddabf0, "inputOne"); /* {"SourceType":"Add","SourceIsReference":true,"DestinationType":"TextBox","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
 		
 		
@@ -56,6 +56,20 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
