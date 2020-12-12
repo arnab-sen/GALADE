@@ -56,7 +56,20 @@ namespace RequirementsAbstractions
         public Port SourcePort => SourcePortBox?.Payload as Port;
         public Box DestinationPortBox { get; set; }
         public Port DestinationPort => DestinationPortBox?.Payload as Port;
-        public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
+
+        public StateTransition<Enums.DiagramMode> StateTransition
+        {
+            get => _stateTransition;
+            set
+            {
+                _stateTransition = value;
+                _stateTransition.StateChanged += transition =>
+                {
+                    Validate();
+                };
+            }
+        }
+
         public bool Selected { get; set; } = false;
 
         // Private fields
@@ -64,6 +77,7 @@ namespace RequirementsAbstractions
         private CurvedLine _bezier = new CurvedLine();
         private ALANode _source;
         private ALANode _destination;
+        private StateTransition<Enums.DiagramMode> _stateTransition;
 
         // Ports
 

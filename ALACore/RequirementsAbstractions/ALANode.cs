@@ -836,6 +836,8 @@ namespace RequirementsAbstractions
             var ui = uiAbstraction.GetWPFElement();
             ui.GotFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
             ui.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
+            // ui.LostFocus += (sender, args) => { };
+            // ui.LostKeyboardFocus += (sender, args) => { };
         }
 
         private IUI CreateTypeGenericsDropDownMenus()
@@ -874,6 +876,8 @@ namespace RequirementsAbstractions
                 dropDown.WireTo(updateGeneric, "selectedItem");
 
                 horiz.WireTo(dropDown, "children");
+
+                SubscribeTextEditingEvent(dropDown);
             }
 
             // horiz.WireTo(closedAngleBracket, "children");
@@ -1284,7 +1288,9 @@ namespace RequirementsAbstractions
             }
 
             // Get focus on inner TextBox, must use the dispatcher to ensure that the internal TextBox is loaded and ready to be focused
-            dropDown.Dispatcher.Invoke(() => dropDown.Focus(), DispatcherPriority.Loaded);
+            dropDown.Dispatcher.Invoke(() => dropDown.Focus(), DispatcherPriority.ApplicationIdle);
+
+            dropDown.LostFocus += (sender, args) => { };
         }
 
         /// <summary>

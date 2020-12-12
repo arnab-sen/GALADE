@@ -8,6 +8,10 @@ using Libraries;
 
 namespace ProgrammingParadigms
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class StateTransition<T> where T : Enum
     {
         // Public fields and properties
@@ -24,7 +28,6 @@ namespace ProgrammingParadigms
         public void Update(T newState)
         {
             LatestTransition = Tuple.Create(CurrentState, newState);
-            CurrentState = newState;
 
             if (!newState.Equals(CurrentState))
             {
@@ -36,6 +39,8 @@ namespace ProgrammingParadigms
                 StateRefreshed?.Invoke(LatestTransition);
                 // Logging.Log($"StateTransition: State {LatestTransition.Item2} refreshed");
             }
+
+            CurrentState = newState;
         }
 
         public bool CurrentStateMatches(T flag)
