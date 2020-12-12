@@ -28,6 +28,9 @@ namespace RequirementsAbstractions
         public UIElement Render { get; set; }
         public bool MovingSource { get; set; } = false;
         public bool MovingDestination { get; set; } = false;
+        public Brush WireColour { get; set; } = Brushes.Black;
+        public Brush WireHighlightColour { get; set; } = Brushes.LightSkyBlue;
+        public bool IsHighlighted { get; set; } = false;
         public JObject MetaData { get; set; }
 
         public ALANode Source
@@ -83,12 +86,14 @@ namespace RequirementsAbstractions
 
         public void Highlight()
         {
-            _bezier.Colour = Brushes.LightSkyBlue;
+            _bezier.Colour = WireHighlightColour;
+            IsHighlighted = true;
         }
 
         public void Unhighlight()
         {
-            _bezier.Colour = Brushes.Black;
+            _bezier.Colour = WireColour;
+            IsHighlighted = false;
         }
 
         public Point GetAttachmentPoint(bool inputPort = false)
@@ -193,15 +198,45 @@ namespace RequirementsAbstractions
 
         public void Validate()
         {
-            // if (SourcePortBox.Payload is Port port &&
-            //     (port.Type.StartsWith("IUI") || port.Type.StartsWith("IEventHandler")))
-            // {
-            //     _bezier.Colour = Brushes.Green;
-            // }
-            // else
-            // {
-            //     _bezier.Colour = Brushes.Black;
-            // }
+            if (Source == null || Destination == null)
+            {
+                ChangeColour(validWire: false);
+                return;
+            }
+
+            var sourcePortType = Source.Model.GetPort(SourcePort.Name)?.Type ?? "";
+            var destinationPortType = Destination.Model.GetPort(DestinationPort.Name)?.Type ?? "";
+
+            if (string.IsNullOrEmpty(sourcePortType) || string.IsNullOrEmpty(destinationPortType) || sourcePortType != destinationPortType)
+            {
+                ChangeColour(validWire: false);
+                return;
+            }
+
+            ChangeColour(validWire: true);
+        }
+
+        private void ChangeColour(bool validWire = false)
+        {
+            if (validWire)
+            {
+                WireColour = Brushes.Black;
+                WireHighlightColour = Brushes.LightSkyBlue;
+            }
+            else
+            {
+                WireColour = Brushes.Red;
+                WireHighlightColour = Brushes.LightPink;
+            }
+
+            if (IsHighlighted)
+            {
+                Highlight();
+            }
+            else
+            {
+                Unhighlight();
+            }
         }
 
         public void AttachEndToMouse(bool source = true, bool detach = false)
