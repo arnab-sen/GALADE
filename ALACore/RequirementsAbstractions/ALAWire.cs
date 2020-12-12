@@ -212,6 +212,8 @@ namespace RequirementsAbstractions
 
         public void Validate()
         {
+            return;
+
             if (Source == null || Destination == null)
             {
                 ChangeColour(validWire: false);
