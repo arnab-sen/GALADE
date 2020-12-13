@@ -708,6 +708,12 @@ namespace RequirementsAbstractions
             sb.Append(Flatten(GetPropertySyntaxList(propertiesAndFields).ToString()));
             sb.Append("};");
 
+            if (MetaData == null)
+            {
+                MetaData = new JObject();
+                MetaData["IsRoot"] = IsRoot;
+            }
+
             sb.Append(" /* ");
             sb.Append(MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
             sb.Append(" */");
