@@ -422,7 +422,7 @@ namespace Application
             var id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {InstanceName="id_e3837af93b584ca9874336851ff0cd31",HorizAlignment="left"}; /*  */
             var id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {InstanceName="id_5c857c3a1a474ec19c0c3b054627c0a9",HorizAlignment="right"}; /*  */
             var globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20,InstanceName="globalVersionNumberDisplay"}; /*  */
-            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Change for Updates") {InstanceName="Change for Updates"}; /*  */
+            var id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for Updates") {InstanceName="Check for Updates"}; /*  */
             var id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/releases");}}; /*  */
             var id_20566090f5054429aebed4d371c2a613 = new ForEach<string>() {InstanceName="id_20566090f5054429aebed4d371c2a613"}; /*  */
             var id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"}; /*  */
@@ -822,6 +822,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
