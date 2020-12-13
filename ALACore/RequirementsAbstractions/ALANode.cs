@@ -1298,12 +1298,24 @@ namespace RequirementsAbstractions
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public bool IsMatch(string query, bool matchCase = false)
+        public bool IsMatch(string query, bool matchCase = false, bool searchName = true, bool searchType = true, bool searchInstanceName = true, bool searchFieldsAndProperties = true)
         {
-            return MatchString(Model.FullType, query, matchCase)
-                   || MatchString(Model.Name, query, matchCase)
-                   || MatchString(Model.GetValue("InstanceName"), query, matchCase)
-                   || MatchString(Model.GetValue("InstanceDescription"), query, matchCase);
+            if (searchName && MatchString(Model.Name, query, matchCase)) return true;
+            if (searchType && MatchString(Model.FullType, query, matchCase)) return true;
+            if (searchInstanceName && MatchString(Model.GetValue("InstanceName"), query, matchCase)) return true;
+            if (searchFieldsAndProperties)
+            {
+                var fieldsAndProperties = Model.GetProperties();
+                fieldsAndProperties.AddRange(Model.GetFields());
+
+                foreach (var pair in fieldsAndProperties)
+                {
+                    if (MatchString(pair.Key, query, matchCase)) return true;
+                    if (MatchString(pair.Value, query, matchCase)) return true;
+                }
+            }
+
+            return false;
         }
 
         private bool MatchString(string toMatch, string searchToken, bool matchCase = false)

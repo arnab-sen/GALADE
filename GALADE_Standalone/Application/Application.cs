@@ -186,6 +186,10 @@ namespace Application
             var UIConfig_canvasDisplayHoriz = new UIConfig() {InstanceName="UIConfig_canvasDisplayHoriz"}; /*  */
             var mainCanvasDisplay = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas,InstanceName="mainCanvasDisplay"}; /*  */
             var currentDiagramName = new DataFlowConnector<string>() {InstanceName="currentDiagramName"}; /*  */
+            var searchFilterNameChecked = new DataFlowConnector<bool>() {InstanceName="searchFilterNameChecked",Data=true}; /*  */
+            var searchFilterTypeChecked = new DataFlowConnector<bool>() {InstanceName="searchFilterTypeChecked",Data=true}; /*  */
+            var searchFilterInstanceNameChecked = new DataFlowConnector<bool>() {InstanceName="searchFilterInstanceNameChecked",Data=true}; /*  */
+            var searchFilterFieldsAndPropertiesChecked = new DataFlowConnector<bool>() {InstanceName="searchFilterFieldsAndPropertiesChecked",Data=true}; /*  */
             var id_855f86954b3e4776909cde23cd96d071 = new KeyEvent(eventName:"KeyUp") {InstanceName="Pressed the A key",Condition=args => mainGraph.Get("SelectedNode") != null && stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.A}; /*  */
             var id_581015f073614919a33126efd44bf477 = new ContextMenu() {InstanceName="id_581015f073614919a33126efd44bf477"}; /*  */
             var id_57e6a33441c54bc89dc30a28898cb1c0 = new MenuItem(header:"Add root") {InstanceName="id_57e6a33441c54bc89dc30a28898cb1c0"}; /*  */
@@ -366,7 +370,7 @@ namespace Application
             var currentSearchQuery = new DataFlowConnector<string>() {InstanceName="currentSearchQuery"}; /*  */
             var id_1c95fb3a139b4602bba7b10201112546 = new DispatcherData<ALANode>() {InstanceName="id_1c95fb3a139b4602bba7b10201112546"}; /*  */
             var id_01bdd051f2034331bd9f121029b0e2e8 = new DispatcherData<ALANode>() {InstanceName="id_01bdd051f2034331bd9f121029b0e2e8"}; /*  */
-            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {InstanceName="id_67bc4eb50bb04d9694a1a0d5ce65c9d9",Lambda=node =>{    var query = currentSearchQuery.Data;    if (node.IsMatch(query))    {        nodeSearchResults.Add(node);        nodeSearchTextResults.Add($"{node.Model.FullType} {node.Model.Name}");    }    var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1))        Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}}; /*  */
+            var id_67bc4eb50bb04d9694a1a0d5ce65c9d9 = new ApplyAction<ALANode>() {InstanceName="id_67bc4eb50bb04d9694a1a0d5ce65c9d9",Lambda=node =>{    var query = currentSearchQuery.Data;    var caseSensitive = false;    var searchName = searchFilterNameChecked.Data;    var searchType = searchFilterTypeChecked.Data;    var searchInstanceName = searchFilterInstanceNameChecked.Data;    var searchProperties = searchFilterFieldsAndPropertiesChecked.Data;    if (node.IsMatch(query, caseSensitive, searchName, searchType, searchInstanceName, searchProperties))    {        nodeSearchResults.Add(node);        nodeSearchTextResults.Add($"{node.Model.FullType} {node.Model.Name}");    }    var currentIndex = currentSearchResultIndex.Data;    var total = mainGraph.Nodes.Count;    if (currentIndex == (total - 1))        Logging.Message($"Found {nodeSearchResults.Count} search results for \"{query}\"");}}; /*  */
             var id_f526f560b3504a0b8115879e5d5354ff = new MenuItem(header:"Test ContextMenu") {InstanceName="Test ContextMenu"}; /*  */
             var id_dea56e5fd7174cd7983e8f2c837a941b = new ContextMenu() {InstanceName="id_dea56e5fd7174cd7983e8f2c837a941b"}; /*  */
             var directoryExplorerConfig = new UIConfig() {InstanceName="directoryExplorerConfig"}; /*  */
@@ -443,11 +447,27 @@ namespace Application
             var id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {InstanceName="id_a61fc923019942cea819e1b8d1b10384"}; /*  */
             var id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="id_09133302b430472dbe3cf9576d72bb3a"}; /*  */
             var id_8b99ce9b4c97466983fc1b14ef889ee8 = new Cast<object, ALANode>() {InstanceName="id_8b99ce9b4c97466983fc1b14ef889ee8"}; /*  */
-            var id_024172dbe8e2496b97e191244e493973 = new MenuItem(header:"Jump to selected wire's source") {}; /*  */
-            var id_7e64ef3262604943a2b4a086c5641d09 = new Data<ALANode>() {Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Source}; /*  */
-            var id_35947f28d1454366ad8ac16e08020905 = new ConditionalData<ALANode>() {Condition=input => input != null}; /*  */
-            var id_269ffcfe56874f4ba0876a93071234ae = new MenuItem(header:"Jump to selected wire's destination") {}; /*  */
-            var id_40173af405c9467bbc85c79a05b9da48 = new Data<ALANode>() {Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Destination}; /*  */
+            var id_024172dbe8e2496b97e191244e493973 = new MenuItem(header:"Jump to selected wire's source") {InstanceName="id_024172dbe8e2496b97e191244e493973"}; /*  */
+            var id_7e64ef3262604943a2b4a086c5641d09 = new Data<ALANode>() {InstanceName="id_7e64ef3262604943a2b4a086c5641d09",Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Source}; /*  */
+            var id_35947f28d1454366ad8ac16e08020905 = new ConditionalData<ALANode>() {InstanceName="id_35947f28d1454366ad8ac16e08020905",Condition=input => input != null}; /*  */
+            var id_269ffcfe56874f4ba0876a93071234ae = new MenuItem(header:"Jump to selected wire's destination") {InstanceName="id_269ffcfe56874f4ba0876a93071234ae"}; /*  */
+            var id_40173af405c9467bbc85c79a05b9da48 = new Data<ALANode>() {InstanceName="id_40173af405c9467bbc85c79a05b9da48",Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Destination}; /*  */
+            var id_72e0f3f39c364bedb36a74a011e08747 = new UIConfig() {InstanceName="id_72e0f3f39c364bedb36a74a011e08747",HorizAlignment="left"}; /*  */
+            var id_0fd8aa1777474e3cafb81088519f3d97 = new Horizontal() {InstanceName="id_0fd8aa1777474e3cafb81088519f3d97"}; /*  */
+            var id_57dc97beb4024bf294c44fea26cc5c89 = new CheckBox(check:true) {InstanceName="id_57dc97beb4024bf294c44fea26cc5c89"}; /*  */
+            var id_b6275330bff140168f4e68c87ed31b54 = new Text(text:"InstanceName") {InstanceName="id_b6275330bff140168f4e68c87ed31b54"}; /*  */
+            var id_ecd9f881354d40f485c3fadd9f577974 = new UIConfig() {InstanceName="id_ecd9f881354d40f485c3fadd9f577974",UniformMargin=2}; /*  */
+            var id_889bfe8dee4d447d8ea45c19feaf5ca2 = new Text(text:"Filters:") {InstanceName="id_889bfe8dee4d447d8ea45c19feaf5ca2"}; /*  */
+            var id_abe0267c9c964e2194aa9c5bf84ac413 = new CheckBox(check:true) {InstanceName="id_abe0267c9c964e2194aa9c5bf84ac413"}; /*  */
+            var id_edcc6a4999a24fc2ae4b190c5619351c = new Text(text:"Fields/Properties") {InstanceName="id_edcc6a4999a24fc2ae4b190c5619351c"}; /*  */
+            var id_6dd83767dc324c1bb4e34beafaac11fe = new CheckBox(check:true) {InstanceName="id_6dd83767dc324c1bb4e34beafaac11fe"}; /*  */
+            var id_7daf6ef76444402d9e9c6ed68f97a6c2 = new CheckBox(check:true) {InstanceName="id_7daf6ef76444402d9e9c6ed68f97a6c2"}; /*  */
+            var id_0e0c54964c4641d2958e710121d0429a = new Text(text:"Type") {InstanceName="id_0e0c54964c4641d2958e710121d0429a"}; /*  */
+            var id_39ae7418fea245fcaebd3a49b00d0683 = new Text(text:"Name") {InstanceName="id_39ae7418fea245fcaebd3a49b00d0683"}; /*  */
+            var id_cbdc03ac56ac4f179dd49e1312d7dca0 = new UIConfig() {InstanceName="id_cbdc03ac56ac4f179dd49e1312d7dca0",UniformMargin=2}; /*  */
+            var id_b868797a5ef6468abe35342f796a7376 = new UIConfig() {InstanceName="id_b868797a5ef6468abe35342f796a7376",UniformMargin=2}; /*  */
+            var id_c5fa777bee784429982813fd34ee9437 = new UIConfig() {InstanceName="id_c5fa777bee784429982813fd34ee9437",UniformMargin=2}; /*  */
+            var id_48456b7bb4cf40769ea65b77f071a7f8 = new UIConfig() {InstanceName="id_48456b7bb4cf40769ea65b77f071a7f8",UniformMargin=2}; /*  */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -691,7 +711,6 @@ namespace Application
             id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_de49d2fafc2140e996eb38fbf1e62103, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             id_c7dc32a5f12b41ad94a910a74de38827.WireTo(id_4686253b1d7d4cd9a4d5bf03d6b7e380, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             id_1928c515b2414f6690c6924a76461081.WireTo(id_f140e9e4ef3f4c07898073fde207da99, "filePathInput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"EditSetting","DestinationIsReference":false} */
-            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_25a53022f6ab4e9284fd321e9535801b, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             id_25a53022f6ab4e9284fd321e9535801b.WireTo(id_3622556a1b37410691b51b83c004a315, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"ListDisplay","DestinationIsReference":false} */
             projectDirectoryOptionsHoriz.WireTo(id_de10db4d6b8a426ba76b02959a58cb88, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             id_de10db4d6b8a426ba76b02959a58cb88.WireTo(id_0d4d34a2cd6749759ac0c2708ddf0cbc, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Button","DestinationIsReference":false} */
@@ -764,6 +783,27 @@ namespace Application
             id_581015f073614919a33126efd44bf477.WireTo(id_269ffcfe56874f4ba0876a93071234ae, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_269ffcfe56874f4ba0876a93071234ae.WireTo(id_40173af405c9467bbc85c79a05b9da48, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_40173af405c9467bbc85c79a05b9da48.WireTo(id_35947f28d1454366ad8ac16e08020905, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false} */
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_72e0f3f39c364bedb36a74a011e08747, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_cc0c82a2157f4b0291c812236a6e45ba.WireTo(id_25a53022f6ab4e9284fd321e9535801b, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_72e0f3f39c364bedb36a74a011e08747.WireTo(id_0fd8aa1777474e3cafb81088519f3d97, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
+            id_57dc97beb4024bf294c44fea26cc5c89.WireTo(id_b6275330bff140168f4e68c87ed31b54, "content"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_0fd8aa1777474e3cafb81088519f3d97.WireTo(id_ecd9f881354d40f485c3fadd9f577974, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_ecd9f881354d40f485c3fadd9f577974.WireTo(id_889bfe8dee4d447d8ea45c19feaf5ca2, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_cbdc03ac56ac4f179dd49e1312d7dca0.WireTo(id_abe0267c9c964e2194aa9c5bf84ac413, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_abe0267c9c964e2194aa9c5bf84ac413.WireTo(id_edcc6a4999a24fc2ae4b190c5619351c, "content"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_b868797a5ef6468abe35342f796a7376.WireTo(id_6dd83767dc324c1bb4e34beafaac11fe, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_c5fa777bee784429982813fd34ee9437.WireTo(id_7daf6ef76444402d9e9c6ed68f97a6c2, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_7daf6ef76444402d9e9c6ed68f97a6c2.WireTo(id_0e0c54964c4641d2958e710121d0429a, "content"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_6dd83767dc324c1bb4e34beafaac11fe.WireTo(id_39ae7418fea245fcaebd3a49b00d0683, "content"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_0fd8aa1777474e3cafb81088519f3d97.WireTo(id_b868797a5ef6468abe35342f796a7376, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_0fd8aa1777474e3cafb81088519f3d97.WireTo(id_c5fa777bee784429982813fd34ee9437, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_0fd8aa1777474e3cafb81088519f3d97.WireTo(id_48456b7bb4cf40769ea65b77f071a7f8, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_48456b7bb4cf40769ea65b77f071a7f8.WireTo(id_57dc97beb4024bf294c44fea26cc5c89, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_0fd8aa1777474e3cafb81088519f3d97.WireTo(id_cbdc03ac56ac4f179dd49e1312d7dca0, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_6dd83767dc324c1bb4e34beafaac11fe.WireTo(searchFilterNameChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_7daf6ef76444402d9e9c6ed68f97a6c2.WireTo(searchFilterTypeChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_57dc97beb4024bf294c44fea26cc5c89.WireTo(searchFilterInstanceNameChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_abe0267c9c964e2194aa9c5bf84ac413.WireTo(searchFilterFieldsAndPropertiesChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -782,6 +822,36 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
