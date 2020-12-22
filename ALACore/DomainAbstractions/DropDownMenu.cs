@@ -17,11 +17,12 @@ namespace DomainAbstractions
     /// whenever the dropdown is closed, keyboard focus is lost from the text box, or when the Enter key is pressed.</para>
     /// <para>If the currently selected text item is the same as the previously sent out value (if there is one), then the item will not be sent out.</para>
     /// <para>The dropdown can be forced to output its selected item by calling its Output method, although this is usually reserved for testing/debugging.
-    /// The intention for this abstraction is for it to output data when the user makes a selection.</para>
+    /// The intention for this abstraction is for it to output data whenever the user makes a new selection.</para>
     /// <para>Ports:</para>
     /// <para>1. IUI child: returns the ComboBox as a UIElement</para>
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; items: The items to show in the dropdown menu.</para>
     /// <para>3. IDataFlow&lt;string&gt; text: The text to display in the text box. This does not cause the selected text to be output.</para>
+    /// <para>4. IDataFlow&lt;string&gt; selectedItem: The output port for the selected text item.</para>
     /// </summary>
     public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string> // child, items, text
     {
