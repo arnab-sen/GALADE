@@ -444,9 +444,9 @@ namespace DomainAbstractions
             return sb.ToString();
         }
 
-        public AbstractionModel()
+        public AbstractionModel(AbstractionModel source = null)
         {
-
+            if (source != null) CloneFrom(source);
         }
     }
 }
