@@ -38,11 +38,13 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var id_b82ddfed331d4786aa71140235ddabf0 = new TextBox() {InstanceName="id_b82ddfed331d4786aa71140235ddabf0"}; /*  */
+            var id_b82ddfed331d4786aa71140235ddabf0 = new TextBox() {InstanceName="id_b82ddfed331d4786aa71140235ddabf0"}; /* {"IsRoot":false} */
+            var id_a0153988348040648db7cf78c65e960d = new Apply<string, string>() {}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            add.WireTo(id_b82ddfed331d4786aa71140235ddabf0, "inputOne"); /* {"SourceType":"Add","SourceIsReference":true,"DestinationType":"TextBox","DestinationIsReference":false} */
+            add.WireTo(id_b82ddfed331d4786aa71140235ddabf0, "output"); /* {"SourceType":"UNDEFINED","SourceIsReference":true,"DestinationType":"TextBox","DestinationIsReference":false} */
+            id_b82ddfed331d4786aa71140235ddabf0.WireTo(id_a0153988348040648db7cf78c65e960d, "textOutput"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
 		
 		
@@ -56,6 +58,12 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
 
 
 

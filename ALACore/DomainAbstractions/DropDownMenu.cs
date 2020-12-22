@@ -79,7 +79,7 @@ namespace DomainAbstractions
 
             _dropDown.DropDownClosed += (sender, args) =>
             {
-                if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
+                if (_dropDown.Text != _lastSentValue)
                 {
                     _lastSentValue = _dropDown.Text;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
@@ -98,7 +98,7 @@ namespace DomainAbstractions
 
             _dropDown.KeyDown += (sender, args) =>
             {
-                if (args.Key == Key.Enter)
+                if (args.Key == Key.Enter && _dropDown.Text != _lastSentValue)
                 {
                     // eventEnterPressed?.Execute();
                     _lastSentValue = _dropDown.Text;
@@ -109,7 +109,7 @@ namespace DomainAbstractions
 
             _dropDown.LostKeyboardFocus += (sender, args) =>
             {
-                if (_dropDown.Text != null && _dropDown.Text != _lastSentValue)
+                if (_dropDown.Text != _lastSentValue)
                 {
                     _lastSentValue = _dropDown.Text;
                     if (selectedItem != null) selectedItem.Data = _lastSentValue;
