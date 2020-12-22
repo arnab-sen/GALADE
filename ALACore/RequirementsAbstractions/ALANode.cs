@@ -196,6 +196,7 @@ namespace RequirementsAbstractions
         private bool _isRoot = false;
         private bool _isReference = false;
         private bool _isHighlighted = false;
+        private Dictionary<string, AbstractionModel> _loadedModels = new Dictionary<string, AbstractionModel>();
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -1297,6 +1298,26 @@ namespace RequirementsAbstractions
             dropDown.Dispatcher.Invoke(() => dropDown.Focus(), DispatcherPriority.ApplicationIdle);
 
             dropDown.LostFocus += (sender, args) => { };
+        }
+
+        public void LoadModel(AbstractionModel model)
+        {
+            if (Model != null)
+            {
+                // Save a clone of the current model
+                var loadedModel = new AbstractionModel(Model);
+                _loadedModels[Model.Type] = loadedModel;
+
+                // Reuse a previously loaded model if possible, otherwise use the new model
+                if (_loadedModels.ContainsKey(model.Type)) 
+                {
+                    Model.CloneFrom(_loadedModels[model.Type]);
+                }
+                else
+                {
+                    Model.CloneFrom(model);
+                }
+            }
         }
 
         /// <summary>
