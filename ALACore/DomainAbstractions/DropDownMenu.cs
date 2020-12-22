@@ -21,7 +21,7 @@ namespace DomainAbstractions
     /// <para>Ports:</para>
     /// <para>1. IUI child: returns the ComboBox as a UIElement</para>
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; items: The items to show in the dropdown menu.</para>
-    /// <para>3. IDataFlow&lt;string&gt; text: The text to display in the text box. This does not cause the selected text to be output.</para>
+    /// <para>3. IDataFlow&lt;string&gt; text: The text to display in the text box. This does not cause the selected text to be sent out.</para>
     /// <para>4. IDataFlow&lt;string&gt; selectedItem: The output port for the selected text item.</para>
     /// </summary>
     public class DropDownMenu : IUI, IDataFlow<List<string>>, IDataFlow<string> // child, items, text
