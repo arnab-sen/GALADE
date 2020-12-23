@@ -48,6 +48,7 @@ namespace DomainAbstractions
         public double TopMargin { get; set; } = double.NaN;
         public double RightMargin { get; set; } = double.NaN;
         public double BottomMargin { get; set; } = double.NaN;
+        public bool AllowDrop { get; set; } = false;
 
         // Private fields
         private UIElement _uiElement = new UIElement();
@@ -168,6 +169,8 @@ namespace DomainAbstractions
 
                 fe.Visibility = Visible ? Visibility.Visible : Visibility.Collapsed;
             }
+
+            ui.AllowDrop = AllowDrop;
 
             foreach (var eventHandler in eventHandlers)
             {

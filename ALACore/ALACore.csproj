@@ -146,6 +146,7 @@
     <Compile Include="DomainAbstractions\DirectoryTree.cs" />
     <Compile Include="DomainAbstractions\DispatcherData.cs" />
     <Compile Include="DomainAbstractions\DispatcherEvent.cs" />
+    <Compile Include="DomainAbstractions\DragEvent.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\FolderWatcher.cs" />
     <Compile Include="DomainAbstractions\ListDisplay.cs" />

@@ -92,6 +92,7 @@ namespace DomainAbstractions
                 ClipToBounds = true,
                 Focusable = true
             };
+
         }
 
         // Methods
