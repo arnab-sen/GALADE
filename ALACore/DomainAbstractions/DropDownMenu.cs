@@ -14,7 +14,7 @@ namespace DomainAbstractions
 {
     /// <summary>
     /// <para>A text box that has a dropdown menu attachment. The selected item from the dropdown is sent out
-    /// whenever the dropdown is closed or when the Enter key is pressed.</para>
+    /// whenever the dropdown is closed, keyboard focus is lost from the text box, or when the Enter key is pressed.</para>
     /// <para>If the currently selected text item is the same as the previously sent out value (if there is one), then the item will not be sent out.</para>
     /// <para>The dropdown can be forced to output its selected item by calling its Output method, although this is usually reserved for testing/debugging.
     /// The intention for this abstraction is for it to output data whenever the user makes a new selection.</para>
@@ -119,14 +119,14 @@ namespace DomainAbstractions
                 }
             };
 
-            // _dropDown.LostKeyboardFocus += (sender, args) =>
-            // {
-            //     if (_dropDown.Text != _lastSentValue)
-            //     {
-            //         _lastSentValue = _dropDown.Text;
-            //         if (selectedItem != null) selectedItem.Data = _lastSentValue;
-            //     }
-            // };
+            _dropDown.LostKeyboardFocus += (sender, args) =>
+            {
+                if (_dropDown.Text != _lastSentValue)
+                {
+                    _lastSentValue = _dropDown.Text;
+                    if (selectedItem != null) selectedItem.Data = _lastSentValue;
+                }
+            };
 
         }
 
