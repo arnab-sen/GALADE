@@ -399,30 +399,19 @@ namespace RequirementsAbstractions
 
             var initVars = Model.GetInitialisedVariables();
 
-            foreach (var row in _nodeParameterRows)
+            _nodeParameterRows.Clear();
+            foreach (var initVar in initVars)
             {
-                var paramName = row.Item2.Text;
-                var paramValueTextBox = row.Item3;
-                paramValueTextBox.Text = Model.GetValue(paramName);
-            }
-
-            if (initVars.Count > _nodeParameterRows.Count)
-            {
-                // Recreate node parameter rows because a mismatch is found
-                _nodeParameterRows.Clear();
-                foreach (var initVar in initVars)
+                if (string.IsNullOrWhiteSpace(initVar))
                 {
-                    if (string.IsNullOrWhiteSpace(initVar))
-                    {
-                        Model.RemoveValue("");
-                        continue;
-                    }
-
-                    CreateNodeParameterRow(initVar, Model.GetValue(initVar));
+                    Model.RemoveValue("");
+                    continue;
                 }
 
-                RefreshParameterRows();
+                CreateNodeParameterRow(initVar, Model.GetValue(initVar));
             }
+
+            RefreshParameterRows();
         }
 
         private AbstractionModel CreateDummyAbstractionModel()
@@ -1302,21 +1291,19 @@ namespace RequirementsAbstractions
 
         public void LoadModel(AbstractionModel model)
         {
-            if (Model != null)
-            {
-                // Save a clone of the current model
-                var loadedModel = new AbstractionModel(Model);
-                _loadedModels[Model.Type] = loadedModel;
+            if (Model == null) Model = new AbstractionModel();
+            // Save a clone of the current model
+            var loadedModel = new AbstractionModel(Model);
+            _loadedModels[Model.Type] = loadedModel;
 
-                // Reuse a previously loaded model if possible, otherwise use the new model
-                if (_loadedModels.ContainsKey(model.Type)) 
-                {
-                    Model.CloneFrom(_loadedModels[model.Type]);
-                }
-                else
-                {
-                    Model.CloneFrom(model);
-                }
+            // Reuse a previously loaded model if possible, otherwise use the new model
+            if (_loadedModels.ContainsKey(model.Type)) 
+            {
+                Model.CloneFrom(_loadedModels[model.Type]);
+            }
+            else
+            {
+                Model.CloneFrom(model);
             }
         }
 

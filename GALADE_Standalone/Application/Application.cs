@@ -471,7 +471,10 @@ namespace Application
             var UIConfig_mainCanvasDisplay = new UIConfig() {InstanceName="UIConfig_mainCanvasDisplay",AllowDrop=true}; /* {"IsRoot":false} */
             var id_dd7bf35a9a7c42059c340c211b761af9 = new DragEvent(eventName:"Drop") {InstanceName="id_dd7bf35a9a7c42059c340c211b761af9"}; /* {"IsRoot":false} */
             var getDroppedFilePaths = new Apply<DragEventArgs, List<string>>() {InstanceName="getDroppedFilePaths",Lambda=args =>{    var listOfFilePaths = new List<string>();    if (args.Data.GetDataPresent(DataFormats.FileDrop))    {        listOfFilePaths.AddRange((string[])args.Data.GetData(DataFormats.FileDrop));    }    return listOfFilePaths;}}; /* {"IsRoot":false} */
-            var addAbstractionsToAllNodes = new ApplyAction<List<string>>() {InstanceName="addAbstractionsToAllNodes",Lambda=paths => {    var newModels = new List<AbstractionModel>();    if (availableAbstractions == null) availableAbstractions = new List<string>();        foreach (var path in paths)     {        var model = abstractionModelManager.CreateAbstractionModelFromPath(path);        newModels.Add(model);    }        var newModelTypes = newModels.Select(m => m.Type).Where(t => !availableAbstractions.Contains(t)).ToList();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)     {        node.AvailableAbstractions.AddRange(newModelTypes);    }        availableAbstractions.AddRange(newModelTypes);}}; /* {"IsRoot":false} */
+            var addAbstractionsToAllNodes = new Apply<List<string>, List<string>>() {InstanceName="addAbstractionsToAllNodes",Lambda=paths =>{    var newModels = new List<AbstractionModel>();    if (availableAbstractions == null)        availableAbstractions = new List<string>();    foreach (var path in paths)    {        var model = abstractionModelManager.CreateAbstractionModelFromPath(path);        if (model != null)            newModels.Add(model);    }    var newModelTypes = newModels.Select(m => m.Type).Where(t => !availableAbstractions.Contains(t)).OrderBy(s => s).ToList();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.AvailableAbstractions.AddRange(newModelTypes);    }    availableAbstractions.AddRange(newModelTypes);    return newModelTypes;}}; /* {"IsRoot":false} */
+            var id_efd2a2dc177542c587c73a55def6fe3c = new DataFlowConnector<List<string>>() {InstanceName="id_efd2a2dc177542c587c73a55def6fe3c"}; /* {"IsRoot":false} */
+            var id_3e341111f8224aa7b947f522ef1f65ab = new Apply<List<string>, string>() {InstanceName="Create status message regarding newly added abstraction models",Lambda=modelNames =>{    var sb = new StringBuilder();    sb.Append($"Successfully added {modelNames.Count} new abstraction types");        if (modelNames.Count == 0)    {        sb.Clear();        sb.Append("Error: No new abstraction types were added.");        sb.Append(" Please check if the desired types already exist in any node's type dropdown.");        return sb.ToString();    }    else    {        sb.Append(": ");    }    var maxNames = 5;            sb.Append(modelNames.First());    var counter = 1;    foreach (var name in modelNames.Skip(1))     {        if (counter >= maxNames) return sb.ToString();                sb.Append($", {name}");        counter++;    }        return sb.ToString();}}; /* {"IsRoot":false} */
+            var updateStatusMessage = new ApplyAction<string>() {InstanceName="updateStatusMessage",Lambda=message => Logging.Message(message)}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -811,7 +814,10 @@ namespace Application
             canvasDisplayHoriz.WireTo(UIConfig_mainCanvasDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_dd7bf35a9a7c42059c340c211b761af9, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"DragEvent","DestinationIsReference":false} */
             id_dd7bf35a9a7c42059c340c211b761af9.WireTo(getDroppedFilePaths, "argsOutput"); /* {"SourceType":"DragEvent","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            getDroppedFilePaths.WireTo(addAbstractionsToAllNodes, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_efd2a2dc177542c587c73a55def6fe3c.WireTo(addAbstractionsToAllNodes, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            getDroppedFilePaths.WireTo(id_efd2a2dc177542c587c73a55def6fe3c, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            addAbstractionsToAllNodes.WireTo(id_3e341111f8224aa7b947f522ef1f65ab, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_3e341111f8224aa7b947f522ef1f65ab.WireTo(updateStatusMessage, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -830,6 +836,30 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
