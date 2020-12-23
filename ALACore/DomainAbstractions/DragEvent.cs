@@ -27,7 +27,7 @@ namespace DomainAbstractions
         // Ports
         private IDataFlow<object> sourceOutput;
         private IDataFlow<object> senderOutput;
-        private IDataFlow<EventArgs> argsOutput;
+        private IDataFlow<DragEventArgs> argsOutput;
         private IEvent eventHappened;
 
         public DragEvent(string eventName)
