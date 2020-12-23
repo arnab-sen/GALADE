@@ -87,7 +87,7 @@ namespace Application
 
         private void CreateWiring()
         {
-            var VERSION_NUMBER = "1.6.1";
+            var VERSION_NUMBER = "1.7.0-preview";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -468,6 +468,10 @@ namespace Application
             var id_b868797a5ef6468abe35342f796a7376 = new UIConfig() {InstanceName="id_b868797a5ef6468abe35342f796a7376",UniformMargin=2}; /* {"IsRoot":false} */
             var id_c5fa777bee784429982813fd34ee9437 = new UIConfig() {InstanceName="id_c5fa777bee784429982813fd34ee9437",UniformMargin=2}; /* {"IsRoot":false} */
             var id_48456b7bb4cf40769ea65b77f071a7f8 = new UIConfig() {InstanceName="id_48456b7bb4cf40769ea65b77f071a7f8",UniformMargin=2}; /* {"IsRoot":false} */
+            var UIConfig_mainCanvasDisplay = new UIConfig() {InstanceName="UIConfig_mainCanvasDisplay",AllowDrop=true}; /* {"IsRoot":false} */
+            var id_dd7bf35a9a7c42059c340c211b761af9 = new DragEvent(eventName:"Drop") {InstanceName="id_dd7bf35a9a7c42059c340c211b761af9"}; /* {"IsRoot":false} */
+            var getDroppedFilePaths = new Apply<DragEventArgs, List<string>>() {InstanceName="getDroppedFilePaths",Lambda=args =>{    var listOfFilePaths = new List<string>();    if (args.Data.GetDataPresent(DataFormats.FileDrop))    {        listOfFilePaths.AddRange((string[])args.Data.GetData(DataFormats.FileDrop));    }    return listOfFilePaths;}}; /* {"IsRoot":false} */
+            var addAbstractionsToAllNodes = new ApplyAction<List<string>>() {InstanceName="addAbstractionsToAllNodes",Lambda=paths => {    var newModels = new List<AbstractionModel>();    if (availableAbstractions == null) availableAbstractions = new List<string>();        foreach (var path in paths)     {        var model = abstractionModelManager.CreateAbstractionModelFromPath(path);        newModels.Add(model);    }        var newModelTypes = newModels.Select(m => m.Type).Where(t => !availableAbstractions.Contains(t)).ToList();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)     {        node.AvailableAbstractions.AddRange(newModelTypes);    }        availableAbstractions.AddRange(newModelTypes);}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -585,7 +589,6 @@ namespace Application
             mainWindowVertical.WireTo(mainHorizontal, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             mainWindowVertical.WireTo(statusBarHorizontal, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             mainHorizontal.WireTo(sidePanelHoriz, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
-            canvasDisplayHoriz.WireTo(mainCanvasDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"CanvasDisplay","DestinationIsReference":false} */
             sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */
             id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"TabContainer","DestinationIsReference":false} */
             id_7b250b222ca44ba2922547f03a4aef49.WireTo(directoryExplorerTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":false,"DestinationType":"Tab","DestinationIsReference":false} */
@@ -804,6 +807,11 @@ namespace Application
             id_7daf6ef76444402d9e9c6ed68f97a6c2.WireTo(searchFilterTypeChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_57dc97beb4024bf294c44fea26cc5c89.WireTo(searchFilterInstanceNameChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_abe0267c9c964e2194aa9c5bf84ac413.WireTo(searchFilterFieldsAndPropertiesChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            UIConfig_mainCanvasDisplay.WireTo(mainCanvasDisplay, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CanvasDisplay","DestinationIsReference":false} */
+            canvasDisplayHoriz.WireTo(UIConfig_mainCanvasDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            UIConfig_mainCanvasDisplay.WireTo(id_dd7bf35a9a7c42059c340c211b761af9, "eventHandlers"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"DragEvent","DestinationIsReference":false} */
+            id_dd7bf35a9a7c42059c340c211b761af9.WireTo(getDroppedFilePaths, "argsOutput"); /* {"SourceType":"DragEvent","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            getDroppedFilePaths.WireTo(addAbstractionsToAllNodes, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -822,6 +830,32 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
