@@ -809,7 +809,7 @@ namespace Application
             id_abe0267c9c964e2194aa9c5bf84ac413.WireTo(searchFilterFieldsAndPropertiesChecked, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             UIConfig_mainCanvasDisplay.WireTo(mainCanvasDisplay, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CanvasDisplay","DestinationIsReference":false} */
             canvasDisplayHoriz.WireTo(UIConfig_mainCanvasDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
-            UIConfig_mainCanvasDisplay.WireTo(id_dd7bf35a9a7c42059c340c211b761af9, "eventHandlers"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"DragEvent","DestinationIsReference":false} */
+            mainCanvasDisplay.WireTo(id_dd7bf35a9a7c42059c340c211b761af9, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"DragEvent","DestinationIsReference":false} */
             id_dd7bf35a9a7c42059c340c211b761af9.WireTo(getDroppedFilePaths, "argsOutput"); /* {"SourceType":"DragEvent","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             getDroppedFilePaths.WireTo(addAbstractionsToAllNodes, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -830,6 +830,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
