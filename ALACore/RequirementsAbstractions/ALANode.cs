@@ -1292,6 +1292,7 @@ namespace RequirementsAbstractions
         public void LoadModel(AbstractionModel model)
         {
             if (Model == null) Model = new AbstractionModel();
+
             // Save a clone of the current model
             var loadedModel = new AbstractionModel(Model);
             _loadedModels[Model.Type] = loadedModel;
