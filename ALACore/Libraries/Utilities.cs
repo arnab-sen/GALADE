@@ -208,9 +208,9 @@ namespace Libraries
             }
 
             var temp = new Dictionary<TKey, TValue>();
-            foreach (var kvp in dictionary)
+            foreach (var key in keys)
             {
-                temp[kvp.Key] = kvp.Value;
+                temp[key] = dictionary[key];
             }
 
             foreach (var key in keys)
