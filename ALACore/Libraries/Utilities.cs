@@ -85,7 +85,7 @@ namespace Libraries
             }
         }
 
-        public static void EnumerablePrinter(this IEnumerable enumerable)
+        public static void Log(this IEnumerable enumerable)
         {
             foreach (var element in enumerable)
             {
