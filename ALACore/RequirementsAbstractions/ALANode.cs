@@ -688,7 +688,8 @@ namespace RequirementsAbstractions
 
             var sb = new StringBuilder();
 
-            sb.Append("var ");
+            // sb.Append("var ");
+            sb.Append($"{Model.FullType} ");
             sb.Append(Name.Trim('@', ' '));
             sb.Append(" = new ");
             sb.Append(Model.FullType);

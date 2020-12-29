@@ -38,12 +38,12 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            var a = new Apply<string, string>() {InstanceName="id_a0153988348040648db7cf78c65e960d",Lambda=input => {    DoSomething();}}; /* {"IsRoot":false} */
-			var b = new Apply<string, string>();
+            Apply<string, string> a = new Apply<string, string>() {InstanceName="id_a0153988348040648db7cf78c65e960d",Lambda=input =>{    DoSomething();}}; /* {"IsRoot":false} */
+            Apply<string, string> b = new Apply<string, string>() {InstanceName="b"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-			a.WireTo(b, "output");
+            a.WireTo(b, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
 		
 		
@@ -57,6 +57,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
