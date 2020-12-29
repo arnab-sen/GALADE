@@ -409,7 +409,7 @@ namespace RequirementsAbstractions
 
                         if (inv.ContainsKey("portName") && inv.ContainsKey("portDescription") && !string.IsNullOrEmpty(inv["portName"]) && !string.IsNullOrEmpty(inv["portDescription"]))
                         {
-                            var port = model.GetPort(inv["portName"].Trim(' ', '\"'));
+                            var port = model.GetPort(inv["portName"].Trim(' ', '\"', '\''));
                             if (port != null) port.Description = inv["portDescription"].Trim();
                         }
                     }
