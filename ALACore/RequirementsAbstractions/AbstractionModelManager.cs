@@ -406,9 +406,10 @@ namespace RequirementsAbstractions
                     if (Regex.IsMatch(candidate, @"^[0-9]"))
                     {
                         var inv = InverseStringFormat.GetInverseStringFormat(candidate, @"{portIndex}. {portType} {portName}: {portDescription}");
+
                         if (inv.ContainsKey("portName") && inv.ContainsKey("portDescription") && !string.IsNullOrEmpty(inv["portName"]) && !string.IsNullOrEmpty(inv["portDescription"]))
                         {
-                            var port = model.GetPort(inv["portName"].Trim());
+                            var port = model.GetPort(inv["portName"].Trim(' ', '\"'));
                             if (port != null) port.Description = inv["portDescription"].Trim();
                         }
                     }

@@ -38,12 +38,19 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            Apply<string, string> a = new Apply<string, string>() {InstanceName="id_a0153988348040648db7cf78c65e960d",Lambda=input =>{    DoSomething();}}; /* {"IsRoot":false} */
-            Apply<string, string> b = new Apply<string, string>() {InstanceName="b"}; /* {"IsRoot":false} */
+            var a = new Menu() {InstanceName="Default"}; /* {"IsRoot":false} */
+            var id_44c89cda571c4b5d933e6523fe13f3be = new MenuItem() {InstanceName="id_44c89cda571c4b5d933e6523fe13f3be"}; /* {"IsRoot":false} */
+            var id_6624a0ab3cb64b9fa1f735c65bf1ed83 = new MenuItem() {InstanceName="id_6624a0ab3cb64b9fa1f735c65bf1ed83"}; /* {"IsRoot":false} */
+            var id_431601fd3eaa41db9fd94758db97488f = new Data<T>() {InstanceName="id_431601fd3eaa41db9fd94758db97488f"}; /* {"IsRoot":false} */
+            var id_fbad612b486d4f80a813f29858979d87 = new DataFlowConnector<bool>() {InstanceName="id_fbad612b486d4f80a813f29858979d87"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            a.WireTo(b, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            a.WireTo(id_44c89cda571c4b5d933e6523fe13f3be, "children"); /* {"SourceType":"Menu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            a.WireTo(id_6624a0ab3cb64b9fa1f735c65bf1ed83, "children"); /* {"SourceType":"Menu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_6624a0ab3cb64b9fa1f735c65bf1ed83.WireTo(id_431601fd3eaa41db9fd94758db97488f, "eventOutput"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_431601fd3eaa41db9fd94758db97488f.WireTo(id_fbad612b486d4f80a813f29858979d87, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_44c89cda571c4b5d933e6523fe13f3be.WireTo(id_fbad612b486d4f80a813f29858979d87, "dataFlowBOutput"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
 		
 		
@@ -57,6 +64,26 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

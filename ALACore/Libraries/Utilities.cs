@@ -188,5 +188,40 @@ namespace Libraries
 
             return brush;
         }
+
+        /// <summary>
+        /// Modifies all keys in a dictionary using a given function. If a condition predicate is supplied, then only keys satisfying that condition will be edited.
+        /// </summary>
+        /// <typeparam name="TKey"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="dictionary">The source dictionary to edit.</param>
+        /// <param name="keyTransform">The function to transform every key.</param>
+        /// <param name="condition">The condition predicate to select keys with. If null, then all keys will be selected.</param>
+        public static void EditKeys<TKey, TValue>(Dictionary<TKey, TValue> dictionary, Func<TKey, TKey> keyTransform, Func<TKey, bool> condition = null)
+        {
+            var keys = condition != null ? dictionary.Keys.Where(condition).ToList() : dictionary.Keys.ToList();
+
+            var keyMap = new Dictionary<TKey, TKey>();
+            foreach (var key in keys)
+            {
+                keyMap[key] = keyTransform(key);
+            }
+
+            var temp = new Dictionary<TKey, TValue>();
+            foreach (var kvp in dictionary)
+            {
+                temp[kvp.Key] = kvp.Value;
+            }
+
+            foreach (var key in keys)
+            {
+                dictionary.Remove(key);
+            }
+
+            foreach (var kvp in keyMap)
+            {
+                dictionary[keyMap[kvp.Key]] = temp[kvp.Key];
+            }
+        }
     }
 }

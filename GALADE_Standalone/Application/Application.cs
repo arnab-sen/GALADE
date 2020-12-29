@@ -50,6 +50,8 @@ namespace Application
         [STAThread]
         public static void Main(string[] args)
         {
+            InitTest();
+
             Logging.Log(args.ToString());
 
             Application app = new Application();
@@ -65,6 +67,20 @@ namespace Application
             };
 
             mainWindow.Run(windowApp);
+        }
+
+        public static void InitTest()
+        {
+            var dict = new Dictionary<string, string>()
+            {
+                {"\"key1\"", "val1"},
+                {"\"Key2\"", "val2"},
+                {"\"key3\"", "val3"},
+
+            };
+
+            Utilities.EditKeys(dict, s => s.Trim('\"'), key => key.StartsWith("\"k"));
+
         }
 
         public string GetSetting(string name)
