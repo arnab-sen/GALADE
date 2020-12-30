@@ -547,6 +547,14 @@ namespace RequirementsAbstractions
 	        
 	        dropDownUI.SelectionChanged += (sender, args) =>
             {
+                // Deinitialise previous selection
+                if (args.RemovedItems.Count > 0 && args.RemovedItems[0] is string)
+                {
+                    var oldVarName = (string)args.RemovedItems[0];
+                    Model.Deinitialise(oldVarName);
+                }
+
+                // Initialise new selection
                 var varName = dropDownUI.SelectedValue?.ToString() ?? "";
                 dropDown.Text = varName;
                 textBox.Text = Model.GetValue(varName);
@@ -565,7 +573,7 @@ namespace RequirementsAbstractions
 	        {
 		        var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));
                 var varName = row?.Item2.Text ?? "";
-                Model.Uninitialise(varName);
+                Model.Deinitialise(varName);
 		        _nodeParameterRows.Remove(row);
 		        RefreshParameterRows();
 	        };

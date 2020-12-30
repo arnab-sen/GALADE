@@ -358,7 +358,7 @@ namespace DomainAbstractions
             if (!_initialised.Contains(varName)) _initialised.Add(varName);
         }
 
-        public void Uninitialise(string varName)
+        public void Deinitialise(string varName)
         {
             if (_initialised.Contains(varName)) _initialised.Remove(varName);
         }
