@@ -548,6 +548,7 @@ namespace RequirementsAbstractions
 	        dropDownUI.SelectionChanged += (sender, args) =>
             {
                 var varName = dropDownUI.SelectedValue?.ToString() ?? "";
+                dropDown.Text = varName;
                 textBox.Text = Model.GetValue(varName);
                 Model.Initialise(varName);
             };
