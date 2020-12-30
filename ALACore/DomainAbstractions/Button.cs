@@ -11,7 +11,7 @@ namespace DomainAbstractions
     /// 1. IUI child: input IUI to get the WPF element
     /// 2. IEvent "eventButtonClicked": output event when button is clicked
     /// </summary>
-    public class Button : IUI // chlid
+    public class Button : IUI // child
     {
         // properties ------------------------------------------------------------
         public string InstanceName = "Default";
