@@ -62,15 +62,24 @@ namespace DomainAbstractions
         }
 
         // Methods
+        private void Output()
+        {
+            if (_listBox.SelectedValue == null) return;
+
+            if (selectedItem != null) selectedItem.Data = _listBox.SelectedValue.ToString();
+            if (selectedIndex != null) selectedIndex.Data = _listBox.SelectedIndex;
+        }
 
         public ListDisplay()
         {
+            _listBox.PreviewMouseLeftButtonDown += (sender, args) =>
+            {
+                Output();
+            };
+
             _listBox.SelectionChanged += (sender, args) =>
             {
-                if (_listBox.SelectedValue == null) return;
-
-                if (selectedItem != null) selectedItem.Data = _listBox.SelectedValue.ToString();
-                if (selectedIndex != null) selectedIndex.Data = _listBox.SelectedIndex;
+                Output();
             };
         }
     }
