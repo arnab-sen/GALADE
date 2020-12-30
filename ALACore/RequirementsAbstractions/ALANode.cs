@@ -1292,6 +1292,12 @@ namespace RequirementsAbstractions
 
         public void LoadModel(AbstractionModel model)
         {
+            if (model == null)
+            {
+                Logging.Log("Failed to load null model");
+                return;
+            }
+
             if (Model == null) Model = new AbstractionModel();
 
             // Save a clone of the current model
