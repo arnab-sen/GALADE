@@ -544,6 +544,12 @@ namespace RequirementsAbstractions
 
                 toolTipLabel.Content = tooltipDoc;
             };
+
+            // Only show uninitialised fields and properties
+            dropDownUI.DropDownOpened += (sender, args) =>
+            {
+                dropDown.Items = dropDown.Items.Where(item => dropDownUI.SelectedItem is string str && str  == item || !Model.GetInitialisedVariables().Contains(item));
+            };
 	        
 	        dropDownUI.SelectionChanged += (sender, args) =>
             {
@@ -560,7 +566,6 @@ namespace RequirementsAbstractions
                 textBox.Text = Model.GetValue(varName);
                 Model.Initialise(varName);
             };
-
 	        
 	        var horiz = new Horizontal();
 	        horiz.WireTo(dropDown, "children");
