@@ -406,12 +406,13 @@ namespace DomainAbstractions
                 if (indexList == null || indexList.Count == 0) continue; // Only update ports with generics
 
                 var fullType = port.Type;
-                var typeWithoutGenerics = fullType.Split('<').First();
-                
+                var replaceString = "_REPLACE_";
+                var typeWithoutGenerics = Regex.Replace(fullType, @"<[^<>]+>", replaceString);
+
+                var newGenericsSequence = $"<{_generics[indexList.First()]}{string.Concat(indexList.Skip(1).Select(i => $", {_generics[i]}"))}>";
+
+                typeWithoutGenerics = typeWithoutGenerics.Replace(replaceString, newGenericsSequence);
                 sb.Append(typeWithoutGenerics);
-                sb.Append("<" + _generics[indexList.First()]);
-                sb.Append(string.Concat(indexList.Skip(1).Select(i => $", {_generics[i]}")));
-                sb.Append(">");
 
                 port.Type = sb.ToString();
             }

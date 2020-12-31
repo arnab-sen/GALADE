@@ -38,16 +38,18 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            Button a = new Button() {InstanceName="a"}; /* {"IsRoot":false} */
-            Apply<T1, T2> b = new Apply<T1, T2>() {InstanceName="b"}; /* {"IsRoot":false} */
+            DataFlowConnector<string> a = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
+            DataFlowConnector<T> b = new DataFlowConnector<T>() {}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            a.WireTo(b, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            a.WireTo(b, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
         }
     }
 }
+
+
 
 
 

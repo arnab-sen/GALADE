@@ -302,7 +302,7 @@ namespace RequirementsAbstractions
                         {
                             var portGenerics = gen
                                 .DescendantNodesAndSelf().OfType<GenericNameSyntax>()
-                                .SelectMany(n => n.TypeArgumentList.Arguments.Select(a => a.ToString()))
+                                .SelectMany(n => n.TypeArgumentList.Arguments.Select(a => a.ToString()).Where(a => modelGenerics.Contains(a)))
                                 .ToHashSet();
 
                             foreach (var portGeneric in portGenerics)
