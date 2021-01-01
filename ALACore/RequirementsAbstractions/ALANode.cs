@@ -206,6 +206,7 @@ namespace RequirementsAbstractions
         private IUI _nodeIdRow;
         private CheckBox _nodeIsRootCheckBox;
         private CheckBox _nodeIsReferenceNodeCheckBox;
+        private ContextMenu _mainContextMenu;
 
 
         // Ports
@@ -1384,48 +1385,48 @@ namespace RequirementsAbstractions
             Vertical outputPortsVert = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
-            var rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /*  */
-            var id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /*  */
-            var createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /*  */
-            var createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /*  */
-            var createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /*  */
-            var id_71829b744cf145a0a934a55f7768c7bf = new ContextMenu() {InstanceName="id_71829b744cf145a0a934a55f7768c7bf"}; /*  */
-            var id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /*  */
-            var id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /*  */
-            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /*  */
-            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /*  */
-            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /*  */
-            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /*  */
-            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /*  */
-            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /*  */
-            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /*  */
-            var id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /*  */
-            var nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /*  */
-            var id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /*  */
-            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /*  */
-            var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /*  */
-            var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /*  */
+            var rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
+            var id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
+            var createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
+            var createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
+            var createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
+            var mainContextMenu = new ContextMenu() {InstanceName="mainContextMenu"}; /* {"IsRoot":false} */
+            var id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /* {"IsRoot":false} */
+            var id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
+            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
+            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /* {"IsRoot":false} */
+            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /* {"IsRoot":false} */
+            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /* {"IsRoot":false} */
+            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /* {"IsRoot":false} */
+            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /* {"IsRoot":false} */
+            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /* {"IsRoot":false} */
+            var id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /* {"IsRoot":false} */
+            var nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /* {"IsRoot":false} */
+            var id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /* {"IsRoot":false} */
+            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /* {"IsRoot":false} */
+            var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /* {"IsRoot":false} */
+            var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
             rootUI.WireTo(id_a38c965bdcac4123bb22c40a31b04de5, "uiLayout"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
-            rootUI.WireTo(id_71829b744cf145a0a934a55f7768c7bf, "contextMenu"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
+            rootUI.WireTo(mainContextMenu, "contextMenu"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
             id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createInputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
             id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createNodeMiddleVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
             id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_403baaf79a824981af02ae135627767f.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_4c03930a6877421eb54a5397acb93135, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_4c03930a6877421eb54a5397acb93135, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             nodeIsRootCheckBox.WireTo(id_fc8dfeb357454d458f8bd67f185de174, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
-            id_71829b744cf145a0a934a55f7768c7bf.WireTo(id_692340f2d88d4d0d80cff9daaff7350d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_692340f2d88d4d0d80cff9daaff7350d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
@@ -1438,6 +1439,7 @@ namespace RequirementsAbstractions
             _nodeMask.Children.Add(_detailedRender);
             _nodeIsRootCheckBox = nodeIsRootCheckBox;
             _nodeIsReferenceNodeCheckBox = nodeIsReferenceNodeCheckBox;
+            _mainContextMenu = mainContextMenu;
 
             AddUIEventsToNode(rootUI);
 
@@ -1459,6 +1461,8 @@ namespace RequirementsAbstractions
             
 
             
+
+
 
 
 

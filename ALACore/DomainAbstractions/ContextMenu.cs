@@ -15,7 +15,8 @@ namespace DomainAbstractions
     public class ContextMenu : IUI, IEvent // child, open
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
+        public UIElement Render => _contextMenu;
 
         // Private fields
         private System.Windows.Controls.ContextMenu _contextMenu = new System.Windows.Controls.ContextMenu();
