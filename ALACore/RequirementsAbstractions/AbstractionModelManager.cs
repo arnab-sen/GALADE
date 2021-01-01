@@ -188,15 +188,22 @@ namespace RequirementsAbstractions
 
                     var baseList = (parser.GetBaseObjects(classNode));
                     var portNodeList = (baseList.First() as BaseListSyntax)?.Types.ToList();
-                    string implementedPortsInlineComment = baseList.LastOrDefault()?.GetTrailingTrivia().ToString().Trim(new []{' ', '/', '\r', '\n'}) ?? "";
 
                     if (portNodeList == null) return;
-
                     var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), ProgrammingParadigms));
+
+                    var docLines = model.SourceCode.Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    var classDeclaration = docLines.First(line => line.Trim().Contains($"class {model.Type}"));
+
+                    // Get implemented port names
+                    // string implementedPortsInlineComment = baseList.LastOrDefault()?.GetTrailingTrivia().ToString().Trim(new []{' ', '/', '\r', '\n'}) ?? "";
+                    var implementedPortsInlineComment =
+                        classDeclaration.Split(new[] {"//"}, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+
                     var implementedPortNames = new List<string>();
                     if (!string.IsNullOrEmpty(implementedPortsInlineComment))
                     {
-                        implementedPortNames = implementedPortsInlineComment.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).ToList();
+                        implementedPortNames = implementedPortsInlineComment.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
                     }
 
                     var modelGenerics = model.GetGenerics();
