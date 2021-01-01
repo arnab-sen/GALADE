@@ -195,15 +195,18 @@ namespace RequirementsAbstractions
                     var docLines = model.SourceCode.Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     var classDeclaration = docLines.First(line => line.Trim().Contains($"class {model.Type}"));
 
-                    // Get implemented port names
-                    // string implementedPortsInlineComment = baseList.LastOrDefault()?.GetTrailingTrivia().ToString().Trim(new []{' ', '/', '\r', '\n'}) ?? "";
-                    var implementedPortsInlineComment =
-                        classDeclaration.Split(new[] {"//"}, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
-
                     var implementedPortNames = new List<string>();
-                    if (!string.IsNullOrEmpty(implementedPortsInlineComment))
+                    if (classDeclaration.Contains("//"))
                     {
-                        implementedPortNames = implementedPortsInlineComment.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+                        // Get implemented port names
+                        // string implementedPortsInlineComment = baseList.LastOrDefault()?.GetTrailingTrivia().ToString().Trim(new []{' ', '/', '\r', '\n'}) ?? "";
+                        var implementedPortsInlineComment =
+                            classDeclaration.Split(new[] { "//" }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault();
+
+                        if (!string.IsNullOrEmpty(implementedPortsInlineComment))
+                        {
+                            implementedPortNames = implementedPortsInlineComment.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+                        } 
                     }
 
                     var modelGenerics = model.GetGenerics();
