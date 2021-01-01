@@ -523,7 +523,7 @@ namespace Application
                     var edges = Graph.Edges;
                     foreach (var edge in edges)
                     {
-                        (edge as ALAWire).Refresh();
+                        (edge as ALAWire)?.Refresh();
                     }
                 }, DispatcherPriority.ContextIdle);
             };
