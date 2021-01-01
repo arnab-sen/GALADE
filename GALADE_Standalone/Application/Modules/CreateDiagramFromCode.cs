@@ -530,6 +530,7 @@ namespace Application
 
             Graph.AddNode(node);
             node.CreateInternals();
+
             if (draw) Canvas.Children.Add(node.Render);
 
             return node;

@@ -32,6 +32,7 @@ namespace RequirementsAbstractions
         public Brush WireHighlightColour { get; set; } = Brushes.LightSkyBlue;
         public bool IsHighlighted { get; set; } = false;
         public JObject MetaData { get; set; }
+        public int DefaultZIndex { get; set; } = 1;
 
         public ALANode Source
         {
@@ -96,6 +97,7 @@ namespace RequirementsAbstractions
             Canvas.Children.Add(Render);
             Canvas.SetLeft(Render, 0);
             Canvas.SetTop(Render, 0);
+            Canvas.SetZIndex(Render, DefaultZIndex);
         }
 
         public void Highlight()
@@ -190,12 +192,14 @@ namespace RequirementsAbstractions
         {
             Selected = true;
             Highlight();
+            Canvas.SetZIndex(Render, 99);
         }
 
         public void Deselect()
         {
             Selected = false;
             Unhighlight();
+            Canvas.SetZIndex(Render, DefaultZIndex);
         }
 
         public void ToggleSelect()

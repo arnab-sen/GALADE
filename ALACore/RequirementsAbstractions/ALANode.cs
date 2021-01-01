@@ -116,6 +116,7 @@ namespace RequirementsAbstractions
         public Canvas Canvas { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UIElement Render { get; set; }
+        public int DefaultZIndex { get; set; } = 0;
         public Brush NodeBackground { get; set; } = Utilities.BrushFromHex("#d2ecf9");
         public Brush ReferenceNodeBackground { get; set; } = Brushes.Orange;
         public Brush NodeBorder { get; set; } = Brushes.Black;
@@ -450,6 +451,8 @@ namespace RequirementsAbstractions
 
             // UpdateNodeParameters();
             RefreshParameterRows(removeEmptyRows: true);
+
+            Canvas.SetZIndex(Render, DefaultZIndex);
         }
 
         public void RefreshParameterRows(bool removeEmptyRows = false)
