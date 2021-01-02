@@ -1435,7 +1435,7 @@ namespace RequirementsAbstractions
 
             Render = _nodeMask;
             _nodeMask.Children.Clear();
-            _detailedRender.Child = (rootUI as IUI).GetWPFElement();
+            _detailedRender.Child = (rootUI as IUI).GetWPFElement(); // perf
             _nodeMask.Children.Add(_detailedRender);
             _nodeIsRootCheckBox = nodeIsRootCheckBox;
             _nodeIsReferenceNodeCheckBox = nodeIsReferenceNodeCheckBox;

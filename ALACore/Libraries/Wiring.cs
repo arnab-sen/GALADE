@@ -276,6 +276,7 @@ namespace Libraries
 
         public static string OutputWiring(dynamic A, dynamic B, dynamic matchedInterface, bool save = true)
         {
+            return ""; // This is a performance bottleneck, so disable for now until it can be called conditionally
             string AInstanceName = "(No InstanceName)";
             string BInstanceName = "(No InstanceName)";
             try { if (A.InstanceName != null) AInstanceName = $"(\"{A.InstanceName}\")"; } catch { };
