@@ -55,8 +55,7 @@ namespace Libraries
         /// </remarks>
         public static T WireTo<T>(this T A, object B, string APortName = null, bool reverse = false)
         {
-            string multiportExceptionMessage = $"The following wiring failed because the two instances are already wired together by another port.";
-            multiportExceptionMessage += "\nPlease use a new WireTo with this additional port name specified:";
+            string multiportExceptionMessage = $"Error: Wiring failed because the two instances are already wired together by another port.";
 
             if (A == null)
             {
@@ -99,12 +98,6 @@ namespace Libraries
 
                     if (SamePort(AfieldInfo.Name))
                     {
-                        if (wiredSomething)
-                        {
-                            string exceptionMessage = multiportExceptionMessage + "\n" + OutputWiring(A, B, AfieldInfo, save: false);
-                            // throw new Exception(exceptionMessage);
-                        }
-
                         AfieldInfo.SetValue(A, B);  // do the wiring
                         wiredSomething = true;
                         OutputWiring(A, B, AfieldInfo);
@@ -138,9 +131,7 @@ namespace Libraries
                             AListFieldValue = Activator.CreateInstance(listType.MakeGenericType(listParam));
                             if (wiredSomething)
                             {
-
-                                string exceptionMessage = multiportExceptionMessage + "\n" + OutputWiring(A, B, AListFieldValue, save: false);
-                                throw new Exception(exceptionMessage);
+                                throw new Exception(multiportExceptionMessage);
                             }
 
                             AlistFieldInfo.SetValue(A, AListFieldValue);
@@ -274,9 +265,10 @@ namespace Libraries
             OnWiring?.Invoke();
         }
 
-        public static string OutputWiring(dynamic A, dynamic B, dynamic matchedInterface, bool save = true)
+        public static void OutputWiring(dynamic A, dynamic B, dynamic matchedInterface, bool save = true)
         {
-            return ""; // This is a performance bottleneck, so disable for now until it can be called conditionally
+            if (Output == null) return;
+
             string AInstanceName = "(No InstanceName)";
             string BInstanceName = "(No InstanceName)";
             try { if (A.InstanceName != null) AInstanceName = $"(\"{A.InstanceName}\")"; } catch { };
@@ -293,8 +285,6 @@ namespace Libraries
             string output = $"({AClassName} {AInstanceName}.{matchedInterface.Name}) -- [{matchedInterfaceType}] --> ({BClassName} {BInstanceName})";
             
             Output?.Invoke(output);
-
-            return output;
         }
 
 

@@ -40,6 +40,8 @@ namespace Application
             {"ApplicationCodeFilePath", "" }
         };
 
+        private bool LOG_ALL_WIRING = false;
+
         // Methods
         private Application Initialize()
         {
@@ -145,7 +147,7 @@ namespace Application
             #endregion
 
             #region Set up logging
-            Wiring.Output += output => Logging.Log(output, WIRING_LOG_FILEPATH); // Print all WireTos to a log file
+            if (LOG_ALL_WIRING) Wiring.Output += output => Logging.Log(output, WIRING_LOG_FILEPATH); // Print all WireTos to a log file
             Logging.LogOutput += output =>
             {
                 if (output is Exception)
