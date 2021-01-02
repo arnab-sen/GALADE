@@ -178,6 +178,31 @@ namespace RequirementsAbstractions
             }
         }
 
+        /// <summary>
+        /// Reverse ports are output ports that are implemented ports, or input ports that are accepted ports. The main use case of reverse ports is to allow for fan-in lists,
+        /// as C# does not allow a class to implement multiple interfaces of the same type. A fan-in list would look like a fan-out list but with the interface type being a reverse port type.
+        /// <para>For example, a typical fan-out port looks like:</para>
+        /// <code>List&lt;IDataFlow&lt;string&gt;&gt; outputs</code>
+        /// <para>And a fan-in list would look like:</para>
+        /// <code>List&lt;IDataFlow_B&lt;string&gt;&gt; inputs</code>
+        /// <para>Reverse ports types are expected to end with "_B", although for legacy support, "IDataFlowB" and "IEventB" are also supported.</para>
+        /// </summary>
+        /// <param name="portType"></param>
+        /// <returns></returns>
+        private bool IsReversePort(string portType)
+        {
+            if (portType.StartsWith("List<"))
+            {
+                portType = Regex.Match(portType, @"(?<=List<).+(?=>)").Value;
+            }
+
+            if (portType.Contains("<")) portType = portType.Split('<').First();
+
+            var isReverse = portType == "IDataFlowB" || portType == "IEventB" || portType.EndsWith("_B");
+
+            return isReverse;
+        }
+
         private void SetPorts(ClassDeclarationSyntax classNode, AbstractionModel model, bool isInputPort = false)
         {
             try
@@ -231,7 +256,7 @@ namespace RequirementsAbstractions
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
                         // var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
                         // port.IsReversePort = typeWithoutGenerics.EndsWith("B");
-                        port.IsReversePort = port.Type.Contains("IDataFlowB") || port.Type.Contains("IEventB");
+                        port.IsReversePort = IsReversePort(port.Type);
 
                         if (port.IsReversePort)
                         {
@@ -293,7 +318,7 @@ namespace RequirementsAbstractions
                         // Handle reverse ports (e.g. IDataFlowB and IEventB)
                         // var typeWithoutGenerics = TypeWithoutGenerics(port.Type);
                         // port.IsReversePort = typeWithoutGenerics.EndsWith("B");
-                        port.IsReversePort = port.Type.Contains("IDataFlowB") || port.Type.Contains("IEventB");
+                        port.IsReversePort = IsReversePort(port.Type);
 
                         if (port.IsReversePort)
                         {
