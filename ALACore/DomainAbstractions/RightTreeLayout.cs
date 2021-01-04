@@ -51,7 +51,7 @@ namespace DomainAbstractions
         public Func<HashSet<string>> GetRoots { get; set; }
 
         // Optional - whether to use a breadth-first or depth-first layout. Breadth-first is used by default.
-        public bool UseBreadthFirst { get; set; } = false;
+        public bool UseBreadthFirst { get; set; } = true;
 
         // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
@@ -158,17 +158,26 @@ namespace DomainAbstractions
             while (q.Any())
             {
                 var next = q.Dequeue();
-                var children = GetChildren(next);
-                _treeConnections[GetID(next)] = new List<T>();
 
-                foreach (var child in children)
+                if (!_treeConnections.ContainsKey(GetID(next)))
                 {
-                    if (!treeParentFound.Contains(GetID(child)))
+                    if (next is RequirementsAbstractions.ALANode node)
                     {
-                        _treeConnections[GetID(next)].Add(child);
-                        treeParentFound.Add(GetID(child));
-                        q.Enqueue(child);
+                        var modelName = node.Model.Name;
                     }
+
+                    var children = GetChildren(next);
+                    _treeConnections[GetID(next)] = new List<T>();
+
+                    foreach (var child in children)
+                    {
+                        if (!treeParentFound.Contains(GetID(child)))
+                        {
+                            _treeConnections[GetID(next)].Add(child);
+                            treeParentFound.Add(GetID(child));
+                            q.Enqueue(child);
+                        }
+                    } 
                 }
             }
 

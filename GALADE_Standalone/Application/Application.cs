@@ -105,7 +105,7 @@ namespace Application
 
         private void CreateWiring()
         {
-            var VERSION_NUMBER = "1.7.0-preview";
+            var VERSION_NUMBER = "1.7.0";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
