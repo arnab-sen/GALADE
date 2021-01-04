@@ -30,6 +30,11 @@ namespace RequirementsAbstractions
         // Ports
 
         // Methods
+        public void ClearAbstractions()
+        {
+            _abstractionModels.Clear();
+        }
+
         public void OpenFile(string filePath = "")
         {
             if (string.IsNullOrEmpty(filePath))

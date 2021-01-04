@@ -20,6 +20,7 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public int Period { get; set; } = 1000;
         public double NumIterations { get; set; } = double.PositiveInfinity;
+        public bool SendInitialPulse { get; set; } = true;
 
         // Private fields
         private bool _keepRunning = true;
@@ -31,12 +32,14 @@ namespace DomainAbstractions
 
         private async Task Run()
         {
+            if (SendInitialPulse) eventHappened?.Execute();
+
             if (NumIterations.Equals(double.PositiveInfinity))
             {
                 while (_keepRunning)
                 {
-                    eventHappened?.Execute();
                     await Task.Delay(Period);
+                    eventHappened?.Execute();
                 }
 
                 _isRunning = false;
@@ -51,8 +54,8 @@ namespace DomainAbstractions
                         break;
                     }
 
-                    eventHappened?.Execute();
                     await Task.Delay(Period);
+                    eventHappened?.Execute();
                 }
             }
 
