@@ -163,7 +163,7 @@ namespace DomainAbstractions
                 if (!_treeConnections.ContainsKey(parentId))
                 {
                     var children = GetChildren(parent);
-                    _treeConnections[GetID(parent)] = new List<T>();
+                    _treeConnections[parentId] = new List<T>();
 
                     foreach (var child in children)
                     {
