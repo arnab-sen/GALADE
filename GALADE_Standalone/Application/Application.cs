@@ -11,6 +11,7 @@ using DomainAbstractions;
 using RequirementsAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Input;
@@ -105,7 +106,8 @@ namespace Application
 
         private void CreateWiring()
         {
-            var VERSION_NUMBER = "1.7.0";
+            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            var VERSION_NUMBER = $"{fullVersion.Major}.{fullVersion.Minor}.{fullVersion.Build}";
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
