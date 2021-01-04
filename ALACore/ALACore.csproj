@@ -149,6 +149,7 @@
     <Compile Include="DomainAbstractions\DragEvent.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\FolderWatcher.cs" />
+    <Compile Include="DomainAbstractions\HttpRequest.cs" />
     <Compile Include="DomainAbstractions\ListDisplay.cs" />
     <Compile Include="DomainAbstractions\MouseWheelEvent.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="DomainAbstractions\SimulateKeyboard.cs" />
     <Compile Include="DomainAbstractions\Stopwatch.cs" />
     <Compile Include="DomainAbstractions\TextEditor.cs" />
+    <Compile Include="DomainAbstractions\Clock.cs" />
     <Compile Include="DomainAbstractions\UIConfig.cs" />
     <Compile Include="DomainAbstractions\UIFactory.cs" />
     <Compile Include="DomainAbstractions\VisualEdge.cs" />

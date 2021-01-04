@@ -11,6 +11,7 @@ using DomainAbstractions;
 using RequirementsAbstractions;
 using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -202,6 +203,7 @@ namespace Application
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             MainWindow mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"}; /* {"IsRoot":true} */
+            DataFlowConnector<string> latestVersion = new DataFlowConnector<string>() {InstanceName="latestVersion"}; /* {"IsRoot":false} */
             Vertical mainWindowVertical = new Vertical() {InstanceName="mainWindowVertical",Layouts=new[]{0, 2, 0}}; /* {"IsRoot":false} */
             UIConfig UIConfig_canvasDisplayHoriz = new UIConfig() {InstanceName="UIConfig_canvasDisplayHoriz"}; /* {"IsRoot":false} */
             CanvasDisplay mainCanvasDisplay = new CanvasDisplay() {StateTransition=stateTransition,Height=720,Width=1280,Background=Brushes.White,Canvas=mainCanvas,InstanceName="mainCanvasDisplay"}; /* {"IsRoot":false} */
@@ -441,9 +443,9 @@ namespace Application
             Apply<string, string> id_e778c13b2c894113a7aff7ecfffe48f7 = new Apply<string, string>() {InstanceName="id_e778c13b2c894113a7aff7ecfffe48f7",Lambda=path =>{    var sb = new StringBuilder();    if (!string.IsNullOrEmpty(currentDiagramName.Data))    {        sb.Append($"{currentDiagramName.Data} | ");    }    var fullPath = Path.GetFullPath(path);    if (!string.IsNullOrEmpty(fullPath))    {        sb.Append($"{fullPath}");    }    return sb.ToString();}}; /* {"IsRoot":false} */
             UIConfig id_e3837af93b584ca9874336851ff0cd31 = new UIConfig() {InstanceName="id_e3837af93b584ca9874336851ff0cd31",HorizAlignment="left"}; /* {"IsRoot":false} */
             UIConfig id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {InstanceName="id_5c857c3a1a474ec19c0c3b054627c0a9",HorizAlignment="right"}; /* {"IsRoot":false} */
-            Text globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {Height=20,InstanceName="globalVersionNumberDisplay"}; /* {"IsRoot":false} */
+            Text globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {InstanceName="globalVersionNumberDisplay"}; /* {"IsRoot":false} */
             MenuItem id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for Updates") {InstanceName="Check for Updates"}; /* {"IsRoot":false} */
-            EventLambda id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    Process.Start("https://github.com/arnab-sen/GALADE/releases");}}; /* {"IsRoot":false} */
+            EventLambda id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    return;    Process.Start("https://github.com/arnab-sen/GALADE/releases");}}; /* {"IsRoot":false} */
             ForEach<string> id_20566090f5054429aebed4d371c2a613 = new ForEach<string>() {InstanceName="id_20566090f5054429aebed4d371c2a613"}; /* {"IsRoot":false} */
             DataFlowConnector<string> id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"}; /* {"IsRoot":false} */
             CodeParser id_cad49d55268145ab87788c650c6c5473 = new CodeParser() {InstanceName="id_cad49d55268145ab87788c650c6c5473"}; /* {"IsRoot":false} */
@@ -495,6 +497,21 @@ namespace Application
             DataFlowConnector<List<string>> id_efd2a2dc177542c587c73a55def6fe3c = new DataFlowConnector<List<string>>() {InstanceName="id_efd2a2dc177542c587c73a55def6fe3c"}; /* {"IsRoot":false} */
             Apply<List<string>, string> id_3e341111f8224aa7b947f522ef1f65ab = new Apply<List<string>, string>() {InstanceName="Create status message regarding newly added abstraction models",Lambda=modelNames =>{    var sb = new StringBuilder();    sb.Append($"Successfully added {modelNames.Count} new abstraction types");    if (modelNames.Count == 0)    {        sb.Clear();        sb.Append("Error: No new abstraction types were added.");        sb.Append(" Please check if the desired types already exist by viewing any node's type dropdown.");        return sb.ToString();    }    else    {        sb.Append(": ");    }    var maxNames = 10;    sb.Append(modelNames.First());    var counter = 1;    foreach (var name in modelNames.Skip(1))    {        counter++;        if (counter > maxNames)        {            sb.Append(", ...");            return sb.ToString();        }        sb.Append($", {name}");    }    return sb.ToString();}}; /* {"IsRoot":false} */
             ApplyAction<string> updateStatusMessage = new ApplyAction<string>() {InstanceName="updateStatusMessage",Lambda=message => Logging.Message(message)}; /* {"IsRoot":false} */
+            EventConnector id_0718ee88fded4b7b88258796df7db577 = new EventConnector() {InstanceName="id_0718ee88fded4b7b88258796df7db577"}; /* {"IsRoot":false} */
+            HttpRequest id_c359484e1d7147a09d63c0671fa5f1dd = new HttpRequest(url:"https://api.github.com/repos/arnab-sen/GALADE/releases/latest") {InstanceName="id_c359484e1d7147a09d63c0671fa5f1dd",UserAgent=$"GALADE v{VERSION_NUMBER}",requestMethod=HttpMethod.Get}; /* {"IsRoot":false} */
+            JSONParser id_db35acd5215c41849c685c49fba07a3d = new JSONParser() {InstanceName="id_db35acd5215c41849c685c49fba07a3d",JSONPath="$..tag_name"}; /* {"IsRoot":false} */
+            Apply<string, bool> compareVersionNumbers = new Apply<string, bool>() {InstanceName="compareVersionNumbers",Lambda=version => version == $"v{VERSION_NUMBER}" || string.IsNullOrEmpty(version)}; /* {"IsRoot":false} */
+            IfElse id_e33aaa2a4a5544a89931f05048e68406 = new IfElse() {InstanceName="id_e33aaa2a4a5544a89931f05048e68406"}; /* {"IsRoot":false} */
+            Text id_b47ca3c51c95416383ba250af31ee564 = new Text(text:" | Up to date") {InstanceName="id_b47ca3c51c95416383ba250af31ee564"}; /* {"IsRoot":false} */
+            Text id_07f10e1650504d298bdceddff2402f31 = new Text(text:$" - Last checked at {Utilities.GetCurrentTime(includeDate: false)}") {InstanceName="id_07f10e1650504d298bdceddff2402f31"}; /* {"IsRoot":false} */
+            Horizontal id_66a3103c3adc426fbc8473b66a8b0d22 = new Horizontal() {InstanceName="id_66a3103c3adc426fbc8473b66a8b0d22"}; /* {"IsRoot":false} */
+            Text id_b1a5dcbe40654113b08efc4299c6fdc2 = new Text(text:"") {InstanceName="id_b1a5dcbe40654113b08efc4299c6fdc2"}; /* {"IsRoot":false} */
+            Clock id_ae21c0350891480babdcd1efcb247295 = new Clock() {InstanceName="id_ae21c0350891480babdcd1efcb247295",Period=1000 * 60 * 30}; /* {"IsRoot":false} */
+            Data<string> id_34c59781fa2f4c5fb9102b7a65c461a0 = new Data<string>() {InstanceName="id_34c59781fa2f4c5fb9102b7a65c461a0",storedData=" | Up to date"}; /* {"IsRoot":false} */
+            EventConnector id_a46f4ed8460e421b97525bd352b58d85 = new EventConnector() {InstanceName="id_a46f4ed8460e421b97525bd352b58d85"}; /* {"IsRoot":false} */
+            Data<string> id_0e88688a360d451ab58c2fa25c9bf109 = new Data<string>() {InstanceName="id_0e88688a360d451ab58c2fa25c9bf109",storedData=$" - Last checked at {Utilities.GetCurrentTime(includeDate: false)}"}; /* {"IsRoot":false} */
+            EventConnector id_57972aa4bbc24e46b4b6171637d31440 = new EventConnector() {InstanceName="id_57972aa4bbc24e46b4b6171637d31440"}; /* {"IsRoot":false} */
+            Data<string> id_76de2a3c1e5f4fbbbe8928be48e25847 = new Data<string>() {InstanceName="id_76de2a3c1e5f4fbbbe8928be48e25847",storedData=$" | Update available ({latestVersion.Data})"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -757,10 +774,9 @@ namespace Application
             id_c9dbe185989e48c0869f984dd8e979f2.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_e778c13b2c894113a7aff7ecfffe48f7.WireTo(mainWindow, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"MainWindow","DestinationIsReference":false} */
             statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
-            statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
-            id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(globalVersionNumberDisplay, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_66a3103c3adc426fbc8473b66a8b0d22.WireTo(globalVersionNumberDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_0718ee88fded4b7b88258796df7db577.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_4577a8f0f63b4772bdc4eb4cb8581070.WireTo(id_97b81fc9cc04423192a12822a5a5a32e, "fileContentOutput"); /* {"SourceType":"FileReader","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_cad49d55268145ab87788c650c6c5473, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"CodeParser","DestinationIsReference":false} */
@@ -838,6 +854,28 @@ namespace Application
             getDroppedFilePaths.WireTo(id_efd2a2dc177542c587c73a55def6fe3c, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             addAbstractionsToAllNodes.WireTo(id_3e341111f8224aa7b947f522ef1f65ab, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             id_3e341111f8224aa7b947f522ef1f65ab.WireTo(updateStatusMessage, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_053e6b41724c4dcaad0b79b8924d647d.WireTo(id_0718ee88fded4b7b88258796df7db577, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_0718ee88fded4b7b88258796df7db577.WireTo(id_c359484e1d7147a09d63c0671fa5f1dd, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"HttpRequest","DestinationIsReference":false} */
+            id_c359484e1d7147a09d63c0671fa5f1dd.WireTo(id_db35acd5215c41849c685c49fba07a3d, "responseJsonOutput"); /* {"SourceType":"HttpRequest","SourceIsReference":false,"DestinationType":"JSONParser","DestinationIsReference":false} */
+            compareVersionNumbers.WireTo(id_e33aaa2a4a5544a89931f05048e68406, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false} */
+            id_66a3103c3adc426fbc8473b66a8b0d22.WireTo(id_b47ca3c51c95416383ba250af31ee564, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_66a3103c3adc426fbc8473b66a8b0d22.WireTo(id_07f10e1650504d298bdceddff2402f31, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(id_66a3103c3adc426fbc8473b66a8b0d22, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
+            statusBarHorizontal.WireTo(id_b1a5dcbe40654113b08efc4299c6fdc2, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_ae21c0350891480babdcd1efcb247295, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Clock","DestinationIsReference":false} */
+            id_ae21c0350891480babdcd1efcb247295.WireTo(id_0718ee88fded4b7b88258796df7db577, "eventHappened"); /* {"SourceType":"Clock","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_a46f4ed8460e421b97525bd352b58d85.WireTo(id_34c59781fa2f4c5fb9102b7a65c461a0, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_e33aaa2a4a5544a89931f05048e68406.WireTo(id_a46f4ed8460e421b97525bd352b58d85, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_a46f4ed8460e421b97525bd352b58d85.WireTo(id_0e88688a360d451ab58c2fa25c9bf109, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_e33aaa2a4a5544a89931f05048e68406.WireTo(id_57972aa4bbc24e46b4b6171637d31440, "elseOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_57972aa4bbc24e46b4b6171637d31440.WireTo(id_0e88688a360d451ab58c2fa25c9bf109, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_34c59781fa2f4c5fb9102b7a65c461a0.WireTo(id_b47ca3c51c95416383ba250af31ee564, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_0e88688a360d451ab58c2fa25c9bf109.WireTo(id_07f10e1650504d298bdceddff2402f31, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_76de2a3c1e5f4fbbbe8928be48e25847.WireTo(id_b47ca3c51c95416383ba250af31ee564, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_db35acd5215c41849c685c49fba07a3d.WireTo(latestVersion, "jsonOutput"); /* {"SourceType":"JSONParser","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            latestVersion.WireTo(compareVersionNumbers, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_57972aa4bbc24e46b4b6171637d31440.WireTo(id_76de2a3c1e5f4fbbbe8928be48e25847, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -856,6 +894,68 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

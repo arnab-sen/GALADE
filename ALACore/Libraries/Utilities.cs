@@ -144,9 +144,11 @@ namespace Libraries
             return path;
         }
 
-        public static string GetCurrentTime()
+        public static string GetCurrentTime(bool includeDate = true)
         {
-            return $"{DateTime.Now:yyyy-MM-dd HH-mm-ss-ffff}";
+            var timeStr = $"{DateTime.Now:h:mm:ss tt}";
+            if (includeDate) timeStr += $" {DateTime.Now:d}";
+            return timeStr;
         }
 
         /// <summary>
