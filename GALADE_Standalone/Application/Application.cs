@@ -445,7 +445,6 @@ namespace Application
             UIConfig id_5c857c3a1a474ec19c0c3b054627c0a9 = new UIConfig() {InstanceName="id_5c857c3a1a474ec19c0c3b054627c0a9",HorizAlignment="right"}; /* {"IsRoot":false} */
             Text globalVersionNumberDisplay = new Text(text:$"v{VERSION_NUMBER}") {InstanceName="globalVersionNumberDisplay"}; /* {"IsRoot":false} */
             MenuItem id_053e6b41724c4dcaad0b79b8924d647d = new MenuItem(header:"Check for Updates") {InstanceName="Check for Updates"}; /* {"IsRoot":false} */
-            EventLambda id_4c9b2f2946e8462a9beb23592965f48d = new EventLambda() {InstanceName="Open Releases page",Lambda=() =>{    return;    Process.Start("https://github.com/arnab-sen/GALADE/releases");}}; /* {"IsRoot":false} */
             ForEach<string> id_20566090f5054429aebed4d371c2a613 = new ForEach<string>() {InstanceName="id_20566090f5054429aebed4d371c2a613"}; /* {"IsRoot":false} */
             DataFlowConnector<string> id_97b81fc9cc04423192a12822a5a5a32e = new DataFlowConnector<string>() {InstanceName="id_97b81fc9cc04423192a12822a5a5a32e"}; /* {"IsRoot":false} */
             CodeParser id_cad49d55268145ab87788c650c6c5473 = new CodeParser() {InstanceName="id_cad49d55268145ab87788c650c6c5473"}; /* {"IsRoot":false} */
@@ -515,6 +514,8 @@ namespace Application
             EventLambda id_c1a238e8a915400a98840a913ce99bf5 = new EventLambda() {InstanceName="id_c1a238e8a915400a98840a913ce99bf5",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
             EventConnector id_cdeb94e2daee4057966eba31781ebd0d = new EventConnector() {InstanceName="id_cdeb94e2daee4057966eba31781ebd0d"}; /* {"IsRoot":false} */
             EventLambda id_45968f4d70794b7c994c8e0f6ee5093a = new EventLambda() {InstanceName="id_45968f4d70794b7c994c8e0f6ee5093a",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
+            MenuItem id_8ebb92deea4c4abf846371db834d9f87 = new MenuItem(header:"Open Releases page") {}; /* {"IsRoot":false} */
+            EventLambda id_835b587c7faf4fabbbe71010d28d9280 = new EventLambda() {Lambda=() => Process.Start("https://github.com/arnab-sen/GALADE/releases")}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -780,7 +781,6 @@ namespace Application
             statusBarHorizontal.WireTo(id_e3837af93b584ca9874336851ff0cd31, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             id_66a3103c3adc426fbc8473b66a8b0d22.WireTo(globalVersionNumberDisplay, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_053e6b41724c4dcaad0b79b8924d647d, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_0718ee88fded4b7b88258796df7db577.WireTo(id_4c9b2f2946e8462a9beb23592965f48d, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_4577a8f0f63b4772bdc4eb4cb8581070.WireTo(id_97b81fc9cc04423192a12822a5a5a32e, "fileContentOutput"); /* {"SourceType":"FileReader","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_6bc94d5f257847ff8a9a9c45e02333b4, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_97b81fc9cc04423192a12822a5a5a32e.WireTo(id_cad49d55268145ab87788c650c6c5473, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"CodeParser","DestinationIsReference":false} */
@@ -808,7 +808,6 @@ namespace Application
             id_2996cb469c4442d08b7e5ca2051336b1.WireTo(id_b6f2ab59cd0642afaf0fc124e6f9f055, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_17609c775b9c4dfcb1f01d427d2911ae, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_b6f2ab59cd0642afaf0fc124e6f9f055.WireTo(id_e778c13b2c894113a7aff7ecfffe48f7, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_4aff82900db2498e8b46be4a18b9fa8e.WireTo(id_322828528d644ff883d8787c8fb63e56, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(UIConfig_debugMainMenuItem, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             UIConfig_debugMainMenuItem.WireTo(id_08d455bfa9744704b21570d06c3c5389, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
@@ -882,6 +881,9 @@ namespace Application
             id_57972aa4bbc24e46b4b6171637d31440.WireTo(id_76de2a3c1e5f4fbbbe8928be48e25847, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_d59c0c09aeaf46c186317b9aeaf95e2e.WireTo(id_c1a238e8a915400a98840a913ce99bf5, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_cdeb94e2daee4057966eba31781ebd0d.WireTo(id_45968f4d70794b7c994c8e0f6ee5093a, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_8ebb92deea4c4abf846371db834d9f87, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_8ebb92deea4c4abf846371db834d9f87.WireTo(id_835b587c7faf4fabbbe71010d28d9280, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -900,6 +902,10 @@ namespace Application
         }
     }
 }
+
+
+
+
 
 
 
