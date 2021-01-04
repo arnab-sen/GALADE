@@ -161,11 +161,6 @@ namespace DomainAbstractions
 
                 if (!_treeConnections.ContainsKey(GetID(next)))
                 {
-                    if (next is RequirementsAbstractions.ALANode node)
-                    {
-                        var modelName = node.Model.Name;
-                    }
-
                     var children = GetChildren(next);
                     _treeConnections[GetID(next)] = new List<T>();
 
