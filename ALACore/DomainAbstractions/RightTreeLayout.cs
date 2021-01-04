@@ -157,19 +157,22 @@ namespace DomainAbstractions
 
             while (q.Any())
             {
-                var next = q.Dequeue();
+                var parent = q.Dequeue();
+                var parentId = GetID(parent);
 
-                if (!_treeConnections.ContainsKey(GetID(next)))
+                if (!_treeConnections.ContainsKey(parentId))
                 {
-                    var children = GetChildren(next);
-                    _treeConnections[GetID(next)] = new List<T>();
+                    var children = GetChildren(parent);
+                    _treeConnections[GetID(parent)] = new List<T>();
 
                     foreach (var child in children)
                     {
-                        if (!treeParentFound.Contains(GetID(child)))
+                        var childId = GetID(child);
+
+                        if (!treeParentFound.Contains(childId))
                         {
-                            _treeConnections[GetID(next)].Add(child);
-                            treeParentFound.Add(GetID(child));
+                            _treeConnections[parentId].Add(child);
+                            treeParentFound.Add(childId);
                             q.Enqueue(child);
                         }
                     } 
