@@ -199,6 +199,12 @@ namespace Application
             var nodeSearchResults = new List<ALANode>();
             var nodeSearchTextResults = new System.Collections.ObjectModel.ObservableCollection<string>();
 
+#if DEBUG
+            var versionCheckSendInitialPulse = false;
+#else
+            var versionCheckSendInitialPulse = true;
+#endif
+
             // var layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => {    var GetParent = new Func<ALAWire, ALANode>(wire => (wire.SourcePortBox.Payload as Port).IsReversePort ? wire.Destination : wire.Source);    var GetChild = new Func<ALAWire, ALANode>(wire => (wire.SourcePortBox.Payload as Port).IsReversePort ? wire.Source : wire.Destination);    var children = mainGraph.Edges.OfType<ALAWire>().Where(wire => GetParent(wire)?.Equals(n) ?? false).Select(GetChild);        return children;},HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50,GetRoots=() => mainGraph.Roots.OfType<ALANode>().Select(n => n.Id).ToHashSet()};
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
@@ -505,7 +511,7 @@ namespace Application
             Text id_07f10e1650504d298bdceddff2402f31 = new Text(text:"") {InstanceName="id_07f10e1650504d298bdceddff2402f31"}; /* {"IsRoot":false} */
             Horizontal id_66a3103c3adc426fbc8473b66a8b0d22 = new Horizontal() {InstanceName="id_66a3103c3adc426fbc8473b66a8b0d22"}; /* {"IsRoot":false} */
             Text id_b1a5dcbe40654113b08efc4299c6fdc2 = new Text(text:"") {InstanceName="id_b1a5dcbe40654113b08efc4299c6fdc2"}; /* {"IsRoot":false} */
-            Clock id_ae21c0350891480babdcd1efcb247295 = new Clock() {InstanceName="id_ae21c0350891480babdcd1efcb247295",Period=1000 * 60 * 30,SendInitialPulse=true}; /* {"IsRoot":false} */
+            Clock id_ae21c0350891480babdcd1efcb247295 = new Clock() {InstanceName="id_ae21c0350891480babdcd1efcb247295",Period=1000 * 60 * 30,SendInitialPulse= versionCheckSendInitialPulse }; /* {"IsRoot":false} */
             Data<string> id_34c59781fa2f4c5fb9102b7a65c461a0 = new Data<string>() {InstanceName="id_34c59781fa2f4c5fb9102b7a65c461a0",storedData=" | Up to date"}; /* {"IsRoot":false} */
             EventConnector id_a46f4ed8460e421b97525bd352b58d85 = new EventConnector() {InstanceName="id_a46f4ed8460e421b97525bd352b58d85"}; /* {"IsRoot":false} */
             Data<string> id_0e88688a360d451ab58c2fa25c9bf109 = new Data<string>() {InstanceName="id_0e88688a360d451ab58c2fa25c9bf109",Lambda = () => $" - Last checked at {Utilities.GetCurrentTime(includeDate: false)}"}; /* {"IsRoot":false} */
