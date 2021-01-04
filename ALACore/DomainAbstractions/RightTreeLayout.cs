@@ -48,7 +48,10 @@ namespace DomainAbstractions
         public double InitialY { get; set; } = 0;       
         
         // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
-        public Func<HashSet<string>> GetRoots { get; set; }       
+        public Func<HashSet<string>> GetRoots { get; set; }
+
+        // Optional - whether to use a breadth-first or depth-first layout. Breadth-first is used by default.
+        public bool UseBreadthFirst { get; set; } = true;
 
         // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
@@ -56,6 +59,8 @@ namespace DomainAbstractions
         // Private fields
         private HashSet<string> _visited = new HashSet<string>();
         private double _latestY = 0;
+        private Dictionary<string, List<T>> _treeConnections = new Dictionary<string, List<T>>();
+        private Func<T, IEnumerable<T>> _userDefinedGetChildren;
 
         // Ports
         private IDataFlow<HashSet<string>> visitedNodes;
@@ -138,6 +143,44 @@ namespace DomainAbstractions
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="root"></param>
+        private void CreateBreadthFirstTree(T root)
+        {
+            _treeConnections.Clear();
+
+            var q = new Queue<T>();
+            q.Enqueue(root);
+            var treeParentFound = new HashSet<string>();
+
+            while (q.Any())
+            {
+                var next = q.Dequeue();
+                var children = GetChildren(next);
+                _treeConnections[GetID(next)] = new List<T>();
+
+                foreach (var child in children)
+                {
+                    if (!treeParentFound.Contains(GetID(child)))
+                    {
+                        _treeConnections[GetID(next)].Add(child);
+                        treeParentFound.Add(GetID(child));
+                        q.Enqueue(child);
+                    }
+                }
+            }
+
+            // Overwrite GetChildren to only retrieve children from tree connections
+            GetChildren = node =>
+            {
+                var id = GetID(node);
+                return _treeConnections.ContainsKey(id) ? _treeConnections[id] : new List<T>();
+            };
+
+        }
+
         // IDataFlow<T> implementation
         T IDataFlow<T>.Data
         {
@@ -153,7 +196,21 @@ namespace DomainAbstractions
                     }
                 }
 
-                if (ParametersInstantiated()) SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
+                if (ParametersInstantiated())
+                {
+                    if (_userDefinedGetChildren == null)
+                    {
+                        _userDefinedGetChildren = GetChildren;
+                    }
+                    else
+                    {
+                        GetChildren = _userDefinedGetChildren;
+                    }
+
+                    if (UseBreadthFirst) CreateBreadthFirstTree(value); // Overwrites GetChildren to use _treeConnections
+
+                    SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
+                }
 
                 if (visitedNodes != null) visitedNodes.Data = _visited.Select(n => n).ToHashSet();
                 complete?.Execute();

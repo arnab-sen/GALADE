@@ -38,16 +38,23 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
-            DataFlowConnector<string> a = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
-            DataFlowConnector<T> b = new DataFlowConnector<T>() {}; /* {"IsRoot":false} */
+            DataFlowConnector<string> a = new DataFlowConnector<string>() {InstanceName="a"}; /* {"IsRoot":false} */
+            DataFlowConnector<T> b = new DataFlowConnector<T>() {InstanceName="b"}; /* {"IsRoot":false} */
+            Apply<T1, T2> c = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> d = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
             a.WireTo(b, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            a.WireTo(c, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            b.WireTo(d, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            b.WireTo(c, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
         }
     }
 }
+
+
 
 
 
