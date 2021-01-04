@@ -502,8 +502,8 @@ namespace Application
             JSONParser id_db35acd5215c41849c685c49fba07a3d = new JSONParser() {InstanceName="id_db35acd5215c41849c685c49fba07a3d",JSONPath="$..tag_name"}; /* {"IsRoot":false} */
             Apply<string, bool> compareVersionNumbers = new Apply<string, bool>() {InstanceName="compareVersionNumbers",Lambda=version => version == $"v{VERSION_NUMBER}" || string.IsNullOrEmpty(version)}; /* {"IsRoot":false} */
             IfElse id_e33aaa2a4a5544a89931f05048e68406 = new IfElse() {InstanceName="id_e33aaa2a4a5544a89931f05048e68406"}; /* {"IsRoot":false} */
-            Text id_b47ca3c51c95416383ba250af31ee564 = new Text(text:" | Up to date") {InstanceName="id_b47ca3c51c95416383ba250af31ee564"}; /* {"IsRoot":false} */
-            Text id_07f10e1650504d298bdceddff2402f31 = new Text(text:$" - Last checked at {Utilities.GetCurrentTime(includeDate: false)}") {InstanceName="id_07f10e1650504d298bdceddff2402f31"}; /* {"IsRoot":false} */
+            Text id_b47ca3c51c95416383ba250af31ee564 = new Text(text:" | Latest version unknown - please check for updates") {InstanceName="id_b47ca3c51c95416383ba250af31ee564"}; /* {"IsRoot":false} */
+            Text id_07f10e1650504d298bdceddff2402f31 = new Text(text:"") {InstanceName="id_07f10e1650504d298bdceddff2402f31"}; /* {"IsRoot":false} */
             Horizontal id_66a3103c3adc426fbc8473b66a8b0d22 = new Horizontal() {InstanceName="id_66a3103c3adc426fbc8473b66a8b0d22"}; /* {"IsRoot":false} */
             Text id_b1a5dcbe40654113b08efc4299c6fdc2 = new Text(text:"") {InstanceName="id_b1a5dcbe40654113b08efc4299c6fdc2"}; /* {"IsRoot":false} */
             Clock id_ae21c0350891480babdcd1efcb247295 = new Clock() {InstanceName="id_ae21c0350891480babdcd1efcb247295",Period=1000 * 60 * 30,SendInitialPulse=false}; /* {"IsRoot":false} */
@@ -511,7 +511,7 @@ namespace Application
             EventConnector id_a46f4ed8460e421b97525bd352b58d85 = new EventConnector() {InstanceName="id_a46f4ed8460e421b97525bd352b58d85"}; /* {"IsRoot":false} */
             Data<string> id_0e88688a360d451ab58c2fa25c9bf109 = new Data<string>() {InstanceName="id_0e88688a360d451ab58c2fa25c9bf109",storedData=$" - Last checked at {Utilities.GetCurrentTime(includeDate: false)}"}; /* {"IsRoot":false} */
             EventConnector id_57972aa4bbc24e46b4b6171637d31440 = new EventConnector() {InstanceName="id_57972aa4bbc24e46b4b6171637d31440"}; /* {"IsRoot":false} */
-            Data<string> id_76de2a3c1e5f4fbbbe8928be48e25847 = new Data<string>() {InstanceName="id_76de2a3c1e5f4fbbbe8928be48e25847",storedData=$" | Update available ({latestVersion.Data})"}; /* {"IsRoot":false} */
+            Data<string> id_76de2a3c1e5f4fbbbe8928be48e25847 = new Data<string>() {InstanceName="id_76de2a3c1e5f4fbbbe8928be48e25847",Lambda=() => $" | Update available ({latestVersion.Data})",storedData=$" | Update available ({latestVersion.Data})"}; /* {"IsRoot":false} */
             EventLambda id_c1a238e8a915400a98840a913ce99bf5 = new EventLambda() {InstanceName="id_c1a238e8a915400a98840a913ce99bf5",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
             EventConnector id_cdeb94e2daee4057966eba31781ebd0d = new EventConnector() {InstanceName="id_cdeb94e2daee4057966eba31781ebd0d"}; /* {"IsRoot":false} */
             EventLambda id_45968f4d70794b7c994c8e0f6ee5093a = new EventLambda() {InstanceName="id_45968f4d70794b7c994c8e0f6ee5093a",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
@@ -900,6 +900,10 @@ namespace Application
         }
     }
 }
+
+
+
+
 
 
 
