@@ -576,9 +576,10 @@ namespace Application
             ApplyAction<double> id_534f5b681fb746fcbbe0717eb7a6eef3 = new ApplyAction<double>() {InstanceName="id_534f5b681fb746fcbbe0717eb7a6eef3",Lambda=time =>{    Logging.Message($"{diagramCreatedMessage.Data} | Elapsed time: {time} seconds");}}; /* {"IsRoot":false} */
             EventConnector id_4ad815216ff8473ab0a61d1309adc7ac = new EventConnector() {InstanceName="id_4ad815216ff8473ab0a61d1309adc7ac"}; /* {"IsRoot":false} */
             EventLambda id_f26fca52bbc04d1d807e6e0da5150b83 = new EventLambda() {InstanceName="id_f26fca52bbc04d1d807e6e0da5150b83",Lambda=PaintAllWires}; /* {"IsRoot":false} */
-            EventConnector id_7ae4a459ae0f4a6babc4f76085f973c6 = new EventConnector() {}; /* {"IsRoot":false} */
-            DispatcherEvent id_c8785c2e47e042ae89c8c1281a0733f3 = new DispatcherEvent() {}; /* {"IsRoot":false} */
-            EventConnector id_3f04fdee5e074be2acca707a7e00b38f = new EventConnector() {}; /* {"IsRoot":false} */
+            EventConnector id_7ae4a459ae0f4a6babc4f76085f973c6 = new EventConnector() {InstanceName="id_7ae4a459ae0f4a6babc4f76085f973c6"}; /* {"IsRoot":false} */
+            DispatcherEvent id_c8785c2e47e042ae89c8c1281a0733f3 = new DispatcherEvent() {InstanceName="id_c8785c2e47e042ae89c8c1281a0733f3",Priority=DispatcherPriority.ApplicationIdle}; /* {"IsRoot":false} */
+            EventConnector id_3f04fdee5e074be2acca707a7e00b38f = new EventConnector() {InstanceName="id_3f04fdee5e074be2acca707a7e00b38f"}; /* {"IsRoot":false} */
+            EventLambda id_24ac836ec52c4df5ac9699594045b35b = new EventLambda() {Lambda=() => Logging.Message("Rendering diagram...")}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR main
 
             // BEGIN AUTO-GENERATED WIRING FOR main
@@ -606,10 +607,11 @@ namespace Application
             id_7ae4a459ae0f4a6babc4f76085f973c6.WireTo(id_c4326ea59fdb4fc88c3eaaf12f66400e, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_4ad815216ff8473ab0a61d1309adc7ac.WireTo(id_cafde6e0d8754dd1a5bb3b699628ef4a, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Stopwatch","DestinationIsReference":false} */
             id_22451793e0224fb4b2f387639abc3ff6.WireTo(id_7ae4a459ae0f4a6babc4f76085f973c6, "complete"); /* {"SourceType":"ForEach","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_c8785c2e47e042ae89c8c1281a0733f3.WireTo(id_3f04fdee5e074be2acca707a7e00b38f, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_3f04fdee5e074be2acca707a7e00b38f.WireTo(id_f26fca52bbc04d1d807e6e0da5150b83, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_3f04fdee5e074be2acca707a7e00b38f.WireTo(id_4ad815216ff8473ab0a61d1309adc7ac, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_7ae4a459ae0f4a6babc4f76085f973c6.WireTo(id_24ac836ec52c4df5ac9699594045b35b, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_7ae4a459ae0f4a6babc4f76085f973c6.WireTo(id_c8785c2e47e042ae89c8c1281a0733f3, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"DispatcherEvent","DestinationIsReference":false} */
-            id_c8785c2e47e042ae89c8c1281a0733f3.WireTo(id_3f04fdee5e074be2acca707a7e00b38f, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR main
 
             // Instance mapping
@@ -618,6 +620,32 @@ namespace Application
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

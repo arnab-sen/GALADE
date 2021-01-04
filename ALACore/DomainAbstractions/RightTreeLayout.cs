@@ -51,7 +51,7 @@ namespace DomainAbstractions
         public Func<HashSet<string>> GetRoots { get; set; }
 
         // Optional - whether to use a breadth-first or depth-first layout. Breadth-first is used by default.
-        public bool UseBreadthFirst { get; set; } = true;
+        public bool UseBreadthFirst { get; set; } = false;
 
         // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
