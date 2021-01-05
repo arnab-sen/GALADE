@@ -213,6 +213,11 @@ namespace RequirementsAbstractions
 
         // Methods
 
+        public override string ToString()
+        {
+            return $"{Model.FullType} {Model.Name} {Model.InstanceName}";
+        }
+
         /// <summary>
         /// Get the currently selected port. If none are selected, then return a default port.
         /// </summary>
