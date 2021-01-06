@@ -22,6 +22,11 @@ namespace DomainAbstractions
         public string InstanceDescription { get; set; } = "";
         public bool IsOpen { get; set; } = false;
 
+        /// <summary>
+        /// Determines whether or not to store the input data and event. If false, data and events can only ever pass through if sent while the gate is open.
+        /// </summary>
+        public bool Store { get; set; } = true;
+
         // Private fields
         private T _data;
         private bool _hasData = false;
@@ -42,6 +47,7 @@ namespace DomainAbstractions
         public void SendEvent()
         {
             eventOutput?.Execute();
+            _hasEvent = false;
         }
 
         // IDataFlow<T> implementation
@@ -57,7 +63,7 @@ namespace DomainAbstractions
                 }
                 else
                 {
-                    _hasData = true;
+                    if (Store) _hasData = true;
                 }
             }
         }
@@ -71,7 +77,7 @@ namespace DomainAbstractions
             }
             else
             {
-                _hasEvent = true;
+                if (Store) _hasEvent = true;
             }
         }
 

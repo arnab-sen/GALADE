@@ -312,23 +312,23 @@ namespace RequirementsAbstractions
         private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
-            var curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /*  */
-            var wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /*  */
-            var id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /*  */
-            var id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /*  */
-            var wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /*  */
-            var id_5a22e8db5ff94ecf8539826f46c5b735 = new MenuItem(header:"Move source") {InstanceName="id_5a22e8db5ff94ecf8539826f46c5b735"}; /*  */
-            var id_262a1b5c183d4b24bf3443567697cef1 = new MenuItem(header:"Move destination") {InstanceName="id_262a1b5c183d4b24bf3443567697cef1"}; /*  */
-            var id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_375a4e94d9d34270a4a028096c72ccea"}; /*  */
-            var id_d22091c77e774610943606a3674e7ee5 = new EventLambda() {InstanceName="id_d22091c77e774610943606a3674e7ee5",Lambda=() =>{    if (!Mouse.Captured?.Equals(Render) ?? true)        return;    if (MovingSource)    {        _bezier.Point0 = Mouse.GetPosition(Canvas);    }    else if (MovingDestination)    {        _bezier.Point3 = Mouse.GetPosition(Canvas);    }}}; /*  */
-            var id_4fa94caebd1040708ad83788d3477089 = new EventLambda() {InstanceName="id_4fa94caebd1040708ad83788d3477089",Lambda=() =>{    StartMoving(source: true);}}; /*  */
-            var id_0f34a06bd3574531a6c9b0579dd8b56a = new EventLambda() {InstanceName="id_0f34a06bd3574531a6c9b0579dd8b56a",Lambda=() =>{    StartMoving(source: false);}}; /*  */
-            var id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {InstanceName="id_a3bafb1880ea4ae3b2825dee844c50b1",ExtractSender=input => (input as CurvedLine).Render}; /*  */
-            var id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {InstanceName="id_0959a4bad0bd41f4ba02c7725022dc05",Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))    {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }        Graph.Set("selectedWire", this);    ToggleSelect();}}; /*  */
-            var id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header:"Delete wire") {InstanceName="id_55239d2e49364d59a3eb3e9a5ad20def"}; /*  */
-            var id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() {InstanceName="id_a06846997c5341ad94996d7aaf6b7e50",Lambda=() =>{    Delete();}}; /*  */
-            var id_5724d3f527eb4a69baaceb9929d0361c = new EventLambda() {InstanceName="id_5724d3f527eb4a69baaceb9929d0361c",Lambda=() =>{    Highlight();}}; /*  */
-            var id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {InstanceName="id_f09af2cbf36c4a1f8b0f7d36707b5779",Lambda=() =>{    if (!Selected)        Unhighlight();}}; /*  */
+            CurvedLine curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /* {"IsRoot":true} */
+            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /* {"IsRoot":false} */
+            MouseEvent id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /* {"IsRoot":false} */
+            MouseEvent id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /* {"IsRoot":false} */
+            ContextMenu wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /* {"IsRoot":false} */
+            MenuItem id_5a22e8db5ff94ecf8539826f46c5b735 = new MenuItem(header:"Move source") {InstanceName="id_5a22e8db5ff94ecf8539826f46c5b735"}; /* {"IsRoot":false} */
+            MenuItem id_262a1b5c183d4b24bf3443567697cef1 = new MenuItem(header:"Move destination") {InstanceName="id_262a1b5c183d4b24bf3443567697cef1"}; /* {"IsRoot":false} */
+            MouseEvent id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_375a4e94d9d34270a4a028096c72ccea"}; /* {"IsRoot":false} */
+            EventLambda id_d22091c77e774610943606a3674e7ee5 = new EventLambda() {InstanceName="id_d22091c77e774610943606a3674e7ee5",Lambda=() =>{    if (!Mouse.Captured?.Equals(Render) ?? true)        return;    if (MovingSource)    {        _bezier.Point0 = Mouse.GetPosition(Canvas);    }    else if (MovingDestination)    {        _bezier.Point3 = Mouse.GetPosition(Canvas);    }}}; /* {"IsRoot":false} */
+            EventLambda id_4fa94caebd1040708ad83788d3477089 = new EventLambda() {InstanceName="id_4fa94caebd1040708ad83788d3477089",Lambda=() =>{    StartMoving(source: true);}}; /* {"IsRoot":false} */
+            EventLambda id_0f34a06bd3574531a6c9b0579dd8b56a = new EventLambda() {InstanceName="id_0f34a06bd3574531a6c9b0579dd8b56a",Lambda=() =>{    StartMoving(source: false);}}; /* {"IsRoot":false} */
+            MouseButtonEvent id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {InstanceName="id_a3bafb1880ea4ae3b2825dee844c50b1",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
+            EventLambda id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {InstanceName="id_0959a4bad0bd41f4ba02c7725022dc05",Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))    {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }    Graph.Set("selectedWire", this);    ToggleSelect();}}; /* {"IsRoot":false} */
+            MenuItem id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header:"Delete wire") {InstanceName="id_55239d2e49364d59a3eb3e9a5ad20def"}; /* {"IsRoot":false} */
+            EventLambda id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() {InstanceName="id_a06846997c5341ad94996d7aaf6b7e50",Lambda=() =>{    Delete();}}; /* {"IsRoot":false} */
+            EventLambda id_5724d3f527eb4a69baaceb9929d0361c = new EventLambda() {InstanceName="id_5724d3f527eb4a69baaceb9929d0361c",Lambda=() =>{    Highlight();}}; /* {"IsRoot":false} */
+            EventLambda id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {InstanceName="id_f09af2cbf36c4a1f8b0f7d36707b5779",Lambda=() =>{    if (!Selected)        Unhighlight();}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
@@ -361,6 +361,8 @@ namespace RequirementsAbstractions
         }
     }
 }
+
+
 
 
 

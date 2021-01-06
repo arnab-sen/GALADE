@@ -418,7 +418,13 @@ namespace Application
             }
 
             _nodesWithTreeParents.Add(destinationName);
-            if (_autoCreatedRoots.Contains(destinationName)) _autoCreatedRoots.Remove(destinationName);
+            // if (_autoCreatedRoots.Contains(destinationName))
+            // {
+            //     _autoCreatedRoots.Remove(destinationName);
+            //     _nodesWithoutTreeParents.Remove(destinationName);
+            //     Graph.Roots.RemoveAll(o => o.Equals(destination));
+            //     destination.IsRoot = false;
+            // }
 
             if (!_nodesWithTreeParents.Contains(sourceName))
             {

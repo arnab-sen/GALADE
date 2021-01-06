@@ -472,7 +472,7 @@ namespace Application
             UIConfig UIConfig_debugMainMenuItem = new UIConfig() {InstanceName="UIConfig_debugMainMenuItem",Visible=false}; /* {"IsRoot":false} */
             CheckBox id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check:true) {InstanceName="id_cc3adf40cb654337b01f77ade1881b44"}; /* {"IsRoot":false} */
             EventConnector id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {InstanceName="id_a61fc923019942cea819e1b8d1b10384"}; /* {"IsRoot":false} */
-            MenuItem id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="id_09133302b430472dbe3cf9576d72bb3a"}; /* {"IsRoot":false} */
+            MenuItem id_09133302b430472dbe3cf9576d72bb3a = new MenuItem(header:"Show side panel") {InstanceName="Show side panel"}; /* {"IsRoot":false} */
             Cast<object, ALANode> id_8b99ce9b4c97466983fc1b14ef889ee8 = new Cast<object, ALANode>() {InstanceName="id_8b99ce9b4c97466983fc1b14ef889ee8"}; /* {"IsRoot":false} */
             MenuItem id_024172dbe8e2496b97e191244e493973 = new MenuItem(header:"Jump to selected wire's source") {InstanceName="id_024172dbe8e2496b97e191244e493973"}; /* {"IsRoot":false} */
             Data<ALANode> id_7e64ef3262604943a2b4a086c5641d09 = new Data<ALANode>() {InstanceName="id_7e64ef3262604943a2b4a086c5641d09",Lambda=() => (mainGraph.Get("selectedWire") as ALAWire)?.Source}; /* {"IsRoot":false} */
@@ -522,10 +522,22 @@ namespace Application
             EventLambda id_45968f4d70794b7c994c8e0f6ee5093a = new EventLambda() {InstanceName="id_45968f4d70794b7c994c8e0f6ee5093a",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
             MenuItem id_8ebb92deea4c4abf846371db834d9f87 = new MenuItem(header:"Open Releases page") {InstanceName="id_8ebb92deea4c4abf846371db834d9f87"}; /* {"IsRoot":false} */
             EventLambda id_835b587c7faf4fabbbe71010d28d9280 = new EventLambda() {InstanceName="id_835b587c7faf4fabbbe71010d28d9280",Lambda=() => Process.Start("https://github.com/arnab-sen/GALADE/releases")}; /* {"IsRoot":false} */
-            MenuItem id_3a7125ae5c814928a55c2d29e7e8c132 = new MenuItem(header:"Use depth-first layout") {}; /* {"IsRoot":false} */
-            CheckBox id_11418b009831455983cbc07c8d116a1f = new CheckBox() {}; /* {"IsRoot":false} */
-            ApplyAction<bool> id_ce0bcc39dd764d1087816b79eefa76bf = new ApplyAction<bool>() {Lambda=isChecked => {    layoutDiagram.UseBreadthFirst = !isChecked;}}; /* {"IsRoot":false} */
-            EventConnector id_f8930a779bd44b0792fbd4a43b3874c6 = new EventConnector() {}; /* {"IsRoot":false} */
+            MenuItem id_3a7125ae5c814928a55c2d29e7e8c132 = new MenuItem(header:"Use depth-first layout") {InstanceName="Use depth-first layout"}; /* {"IsRoot":false} */
+            CheckBox id_11418b009831455983cbc07c8d116a1f = new CheckBox() {InstanceName="id_11418b009831455983cbc07c8d116a1f"}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_ce0bcc39dd764d1087816b79eefa76bf = new ApplyAction<bool>() {InstanceName="id_ce0bcc39dd764d1087816b79eefa76bf",Lambda=isChecked =>{    layoutDiagram.UseBreadthFirst = !isChecked;}}; /* {"IsRoot":false} */
+            EventConnector id_f8930a779bd44b0792fbd4a43b3874c6 = new EventConnector() {InstanceName="id_f8930a779bd44b0792fbd4a43b3874c6"}; /* {"IsRoot":false} */
+            MenuItem id_943e3971561d493d97e38a8e29fb87dc = new MenuItem(header:"Use automatic layout when rewiring") {InstanceName="Use automatic layout when rewiring"}; /* {"IsRoot":false} */
+            CheckBox id_954c2d01269c4632a4ddccd75cde9fde = new CheckBox(check:true) {InstanceName="id_954c2d01269c4632a4ddccd75cde9fde"}; /* {"IsRoot":false} */
+            EventConnector id_cd6186e0fe844be586191519012bb72e = new EventConnector() {InstanceName="id_cd6186e0fe844be586191519012bb72e"}; /* {"IsRoot":false} */
+            Data<bool> id_0f0046b6b91e447aa9bf0a223fd59038 = new Data<bool>() {InstanceName="id_0f0046b6b91e447aa9bf0a223fd59038"}; /* {"IsRoot":false} */
+            IfElse id_edd3648585f44954b2df337f1b7a793b = new IfElse() {InstanceName="id_edd3648585f44954b2df337f1b7a793b"}; /* {"IsRoot":false} */
+            EventConnector startGuaranteedLayoutProcess = new EventConnector() {InstanceName="startGuaranteedLayoutProcess"}; /* {"IsRoot":false} */
+            EventLambda id_f81835850c0d4098bb59b38f8b7ce974 = new EventLambda() {InstanceName="id_f81835850c0d4098bb59b38f8b7ce974",Lambda=() => layoutDiagram.InitialY = 50}; /* {"IsRoot":false} */
+            UIConfig id_50349b82433f42ebb9d1ce591fc3bc35 = new UIConfig() {InstanceName="id_50349b82433f42ebb9d1ce591fc3bc35",ToolTipText="Uncheck to stop the diagram from rewiring whenever wires change source/destination, however automatic laying out will still occur when a new node is added.\nIf you wish to add a node without the diagram automatically laying out, use right click > Add Root to add a node at the current mouse position, with this unchecked."}; /* {"IsRoot":false} */
+            Data<bool> id_27ff7a25d9034a45a229edef6610e214 = new Data<bool>() {InstanceName="id_27ff7a25d9034a45a229edef6610e214",storedData=true}; /* {"IsRoot":false} */
+            DataFlowConnector<bool> id_d5c22176b9bb49dd91a1cb0a7e3f7196 = new DataFlowConnector<bool>() {InstanceName="id_d5c22176b9bb49dd91a1cb0a7e3f7196"}; /* {"IsRoot":false} */
+            DataFlowConnector<bool> useAutomaticLayout = new DataFlowConnector<bool>() {InstanceName="useAutomaticLayout",Data=true}; /* {"IsRoot":false} */
+            UIConfig id_87a535a0e11441af9072d6364a8aef74 = new UIConfig() {InstanceName="id_87a535a0e11441af9072d6364a8aef74"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -544,10 +556,9 @@ namespace Application
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(startRightTreeLayoutProcess, "eventOutput"); /* {"SourceType":"ConvertToEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
-            startRightTreeLayoutProcess.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"DispatcherEvent","DestinationIsReference":false} */
+            id_8647cbf4ac4049a99204b0e3aa70c326.WireTo(startGuaranteedLayoutProcess, "eventOutput"); /* {"SourceType":"ConvertToEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_9f631ef9374f4ca3b7b106434fb0f49c.WireTo(layoutDiagram, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"RightTreeLayout","DestinationIsReference":false} */
-            id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(startRightTreeLayoutProcess, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_ed16dd83790542f4bce1db7c9f2b928f.WireTo(startGuaranteedLayoutProcess, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_f19494c1e76f460a9189c172ac98de60, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f19494c1e76f460a9189c172ac98de60.WireTo(id_d59c0c09aeaf46c186317b9aeaf95e2e, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f19494c1e76f460a9189c172ac98de60.WireTo(id_bb687ee0b7dd4b86a38a3f81ddbab75f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
@@ -596,7 +607,7 @@ namespace Application
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ExtractALACode","DestinationIsReference":false} */
-            id_4a268943755348b68ee2cb6b71f73c40.WireTo(getRoots, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_f81835850c0d4098bb59b38f8b7ce974.WireTo(getRoots, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertInstantiations, "instantiations"); /* {"SourceType":"GenerateALACode","SourceIsReference":false,"DestinationType":"InsertFileCodeLines","DestinationIsReference":false} */
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertWireTos, "wireTos"); /* {"SourceType":"GenerateALACode","SourceIsReference":false,"DestinationType":"InsertFileCodeLines","DestinationIsReference":false} */
@@ -638,7 +649,6 @@ namespace Application
             id_d5d3af7a3c9a47bf9af3b1a1e1246267.WireTo(id_2ce385b32256413ab2489563287afaac, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false} */
             id_5ddd02478c734777b9e6f1079b4b3d45.WireTo(latestCodeFilePath, "settingJsonOutput"); /* {"SourceType":"GetSetting","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_f9b8e7f524a14884be753d19a351a285.WireTo(id_dcd4c90552dc4d3fb579833da87cd829, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"DispatcherEvent","DestinationIsReference":false} */
-            startRightTreeLayoutProcess.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_0b4478e56d614ca091979014db65d076, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"MouseButtonEvent","DestinationIsReference":false} */
             id_0b4478e56d614ca091979014db65d076.WireTo(id_d90fbf714f5f4fdc9b43cbe4d5cebf1c, "senderOutput"); /* {"SourceType":"MouseButtonEvent","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             mainWindowVertical.WireTo(mainHorizontal, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
@@ -896,10 +906,26 @@ namespace Application
             id_8ebb92deea4c4abf846371db834d9f87.WireTo(id_835b587c7faf4fabbbe71010d28d9280, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_3a7125ae5c814928a55c2d29e7e8c132, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f8930a779bd44b0792fbd4a43b3874c6.WireTo(id_11418b009831455983cbc07c8d116a1f, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            id_3a7125ae5c814928a55c2d29e7e8c132.WireTo(id_11418b009831455983cbc07c8d116a1f, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            id_11418b009831455983cbc07c8d116a1f.WireTo(id_ce0bcc39dd764d1087816b79eefa76bf, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_87a535a0e11441af9072d6364a8aef74.WireTo(id_11418b009831455983cbc07c8d116a1f, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_3a7125ae5c814928a55c2d29e7e8c132.WireTo(id_f8930a779bd44b0792fbd4a43b3874c6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_f8930a779bd44b0792fbd4a43b3874c6.WireTo(startRightTreeLayoutProcess, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_943e3971561d493d97e38a8e29fb87dc.WireTo(id_954c2d01269c4632a4ddccd75cde9fde, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            id_943e3971561d493d97e38a8e29fb87dc.WireTo(id_cd6186e0fe844be586191519012bb72e, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_cd6186e0fe844be586191519012bb72e.WireTo(id_954c2d01269c4632a4ddccd75cde9fde, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            startRightTreeLayoutProcess.WireTo(id_0f0046b6b91e447aa9bf0a223fd59038, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            startGuaranteedLayoutProcess.WireTo(id_4a268943755348b68ee2cb6b71f73c40, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"DispatcherEvent","DestinationIsReference":false} */
+            startRightTreeLayoutProcess.WireTo(id_1e62a1e411c9464c94ee234dd9dd3fdc, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_edd3648585f44954b2df337f1b7a793b.WireTo(startGuaranteedLayoutProcess, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            id_4a268943755348b68ee2cb6b71f73c40.WireTo(id_f81835850c0d4098bb59b38f8b7ce974, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_50349b82433f42ebb9d1ce591fc3bc35, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_50349b82433f42ebb9d1ce591fc3bc35.WireTo(id_943e3971561d493d97e38a8e29fb87dc, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_f9b8e7f524a14884be753d19a351a285.WireTo(id_27ff7a25d9034a45a229edef6610e214, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_27ff7a25d9034a45a229edef6610e214.WireTo(id_d5c22176b9bb49dd91a1cb0a7e3f7196, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_954c2d01269c4632a4ddccd75cde9fde.WireTo(useAutomaticLayout, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_3a7125ae5c814928a55c2d29e7e8c132.WireTo(id_87a535a0e11441af9072d6364a8aef74, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_11418b009831455983cbc07c8d116a1f.WireTo(id_ce0bcc39dd764d1087816b79eefa76bf, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_0f0046b6b91e447aa9bf0a223fd59038.WireTo(id_edd3648585f44954b2df337f1b7a793b, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false} */
+            id_0f0046b6b91e447aa9bf0a223fd59038.WireTo(useAutomaticLayout, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -918,6 +944,68 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
