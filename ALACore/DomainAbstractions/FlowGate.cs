@@ -20,10 +20,10 @@ namespace DomainAbstractions
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public string InstanceDescription { get; set; } = "";
+        public bool IsOpen { get; set; } = false;
 
         // Private fields
         private T _data;
-        private bool _isOpen = false;
         private bool _hasData = false;
         private bool _hasEvent = false;
 
@@ -51,7 +51,7 @@ namespace DomainAbstractions
             set
             {
                 _data = value;
-                if (_isOpen)
+                if (IsOpen)
                 {
                     SendData();
                 }
@@ -65,7 +65,7 @@ namespace DomainAbstractions
         // IEvent implementation
         void IEvent.Execute()
         {
-            if (_isOpen)
+            if (IsOpen)
             {
                 SendEvent();
             }
@@ -79,8 +79,8 @@ namespace DomainAbstractions
         {
             if (isOpen != null) isOpen.DataChanged += () =>
             {
-                _isOpen = isOpen.Data;
-                if (_isOpen)
+                IsOpen = isOpen.Data;
+                if (IsOpen)
                 {
                     if (_hasData) SendData();
                     if (_hasEvent) SendEvent();
