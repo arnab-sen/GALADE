@@ -215,7 +215,7 @@ namespace RequirementsAbstractions
 
         public override string ToString()
         {
-            return $"{Model.FullType} {Model.Name} {Model.InstanceName}";
+            return $"{Model.FullType} {Model.Name}";
         }
 
         /// <summary>

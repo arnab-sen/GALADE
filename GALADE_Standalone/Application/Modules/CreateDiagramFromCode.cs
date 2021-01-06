@@ -47,6 +47,7 @@ namespace Application
         private HashSet<string> _nodesWithoutTreeParents = new HashSet<string>();
         private string _firstRootVarName = "";
         private HashSet<string> _roots = new HashSet<string>(); // Nodes that should always be roots, e.g. ones that have names starting with "root_"
+        private HashSet<string> _autoCreatedRoots = new HashSet<string>(); // Nodes that haven't been wired to yet
 
         // Global instances
         private DataFlowConnector<string> _startCreation;
@@ -72,6 +73,7 @@ namespace Application
             _nodesWithTreeParents.Clear();
             _nodesWithoutTreeParents.Clear();
             _roots.Clear();
+            _autoCreatedRoots.Clear();
         }
 
         public void Create(string code)
@@ -412,9 +414,11 @@ namespace Application
                 _roots.Add(sourceName);
                 if (!Graph.Roots.Contains(source)) Graph.Roots.Add(source);
                 source.IsRoot = true;
+                _autoCreatedRoots.Add(sourceName);
             }
 
             _nodesWithTreeParents.Add(destinationName);
+            if (_autoCreatedRoots.Contains(destinationName)) _autoCreatedRoots.Remove(destinationName);
 
             if (!_nodesWithTreeParents.Contains(sourceName))
             {
@@ -423,6 +427,7 @@ namespace Application
                     if (!Graph.Roots.Contains(source)) Graph.Roots.Add(source);
                     _nodesWithoutTreeParents.Add(sourceName);
                     source.IsRoot = true;
+                    _autoCreatedRoots.Add(sourceName);
                 }
             }
 
