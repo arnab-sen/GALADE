@@ -1352,6 +1352,7 @@ namespace RequirementsAbstractions
             {
                 var fieldsAndProperties = Model.GetProperties();
                 fieldsAndProperties.AddRange(Model.GetFields());
+                fieldsAndProperties.AddRange(Model.GetConstructorArgs());
 
                 foreach (var pair in fieldsAndProperties)
                 {
