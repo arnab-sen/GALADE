@@ -78,7 +78,7 @@ namespace DomainAbstractions
                 }
             }
 
-            return Tuple.Create(upperSB.ToString(), lowerSB.ToString());
+            return Tuple.Create(upperSB.ToString().TrimStart(), lowerSB.ToString().TrimEnd());
         }
         
     // IDataFlow<string> implementation
