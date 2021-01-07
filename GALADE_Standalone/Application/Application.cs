@@ -541,6 +541,7 @@ namespace Application
             EventConnector id_7356212bcc714c699681e8dffc853761 = new EventConnector() {InstanceName="id_7356212bcc714c699681e8dffc853761"}; /* {"IsRoot":false} */
             Data<Dictionary<string, ALANode>> getTreeParentsFromGraph = new Data<Dictionary<string, ALANode>>() {InstanceName="getTreeParentsFromGraph",Lambda=() =>{    var treeParents = new Dictionary<string, ALANode>();    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())    {        var destId = wire.Destination.Id;        var sourceNode = wire.Source;        if (!treeParents.ContainsKey(destId))        {            treeParents[destId] = sourceNode;        }    }        return treeParents;}}; /* {"IsRoot":false} */
             ApplyAction<Dictionary<string, ALANode>> id_ec0f30ce468d4986abb9ad81abe73c17 = new ApplyAction<Dictionary<string, ALANode>>() {InstanceName="id_ec0f30ce468d4986abb9ad81abe73c17",Lambda=treeParents => layoutDiagram.TreeParents = treeParents}; /* {"IsRoot":false} */
+            UIConfig id_ab1d0ec0d92f4befb1ff44bb72cc8e10 = new UIConfig() {Visible=false}; /* {"IsRoot":true} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -908,7 +909,7 @@ namespace Application
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_8ebb92deea4c4abf846371db834d9f87, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_8ebb92deea4c4abf846371db834d9f87.WireTo(id_835b587c7faf4fabbbe71010d28d9280, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_3a7125ae5c814928a55c2d29e7e8c132, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_ab1d0ec0d92f4befb1ff44bb72cc8e10.WireTo(id_3a7125ae5c814928a55c2d29e7e8c132, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_f8930a779bd44b0792fbd4a43b3874c6.WireTo(id_11418b009831455983cbc07c8d116a1f, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_87a535a0e11441af9072d6364a8aef74.WireTo(id_11418b009831455983cbc07c8d116a1f, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_3a7125ae5c814928a55c2d29e7e8c132.WireTo(id_f8930a779bd44b0792fbd4a43b3874c6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
@@ -932,6 +933,7 @@ namespace Application
             id_0f0046b6b91e447aa9bf0a223fd59038.WireTo(useAutomaticLayout, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_f81835850c0d4098bb59b38f8b7ce974.WireTo(id_7356212bcc714c699681e8dffc853761, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             getTreeParentsFromGraph.WireTo(id_ec0f30ce468d4986abb9ad81abe73c17, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
+            id_4a42bbf671cd4dba8987bd656e5a2ced.WireTo(id_ab1d0ec0d92f4befb1ff44bb72cc8e10, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -950,6 +952,8 @@ namespace Application
         }
     }
 }
+
+
 
 
 
