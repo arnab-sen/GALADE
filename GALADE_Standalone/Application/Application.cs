@@ -227,7 +227,7 @@ namespace Application
             EventConnector startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"}; /* {"IsRoot":false} */
             DataFlowConnector<ALANode> id_9f631ef9374f4ca3b7b106434fb0f49c = new DataFlowConnector<ALANode>() {InstanceName="id_9f631ef9374f4ca3b7b106434fb0f49c"}; /* {"IsRoot":false} */
             KeyEvent id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
-            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (availableAbstractions == null)        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"}; /* {"IsRoot":false} */
             MenuItem id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {InstanceName="File"}; /* {"IsRoot":false} */
             MenuItem id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {InstanceName="Open Project"}; /* {"IsRoot":false} */
@@ -358,10 +358,9 @@ namespace Application
             Data<AbstractionModel> cloneSelectedNodeModel = new Data<AbstractionModel>() {InstanceName="cloneSelectedNodeModel",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return null;    var baseModel = selectedNode.Model;    var clone = new AbstractionModel(baseModel);    return clone;}}; /* {"IsRoot":false} */
             ApplyAction<AbstractionModel> id_0f802a208aad42209777c13b2e61fe56 = new ApplyAction<AbstractionModel>() {InstanceName="id_0f802a208aad42209777c13b2e61fe56",Lambda=input =>{    if (input == null)    {        Logging.Message("Nothing was copied.", timestamp: true);    }    else    {        mainGraph.Set("ClonedModel", input);        Logging.Message($"Copied {input} successfully.", timestamp: true);    }}}; /* {"IsRoot":false} */
             KeyEvent id_7363c80d952e4246aba050e007287444 = new KeyEvent(eventName:"KeyUp") {InstanceName="CTRL + V pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.V,Modifiers=new Key[]{Key.LeftCtrl}}; /* {"IsRoot":false} */
-            Data<AbstractionModel> id_316a3befaa364f0186efabcf5efaa33f = new Data<AbstractionModel>() {InstanceName="Create empty model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var tempModel = new AbstractionModel();    var clonedModelType = abstractionModelManager.GetAbstractionModel(clonedModel?.Type ?? "Apply");    return clonedModelType;}}; /* {"IsRoot":false} */
             ConvertToEvent<object> id_8647cbf4ac4049a99204b0e3aa70c326 = new ConvertToEvent<object>() {InstanceName="id_8647cbf4ac4049a99204b0e3aa70c326"}; /* {"IsRoot":false} */
             EventConnector id_5a22e32e96e641d49c6fb4bdf6fcd94b = new EventConnector() {InstanceName="id_5a22e32e96e641d49c6fb4bdf6fcd94b"}; /* {"IsRoot":false} */
-            EventLambda id_36c5f05380b04b378de94534411f3f88 = new EventLambda() {InstanceName="Overwrite with cloned model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var latestNode = latestAddedNode.Data as ALANode;    var model = latestNode?.Model;    if (model == null)        return;    latestNode.LoadModel(clonedModel);    latestNode?.UpdateUI();    latestNode.RefreshParameterRows(removeEmptyRows: true);}}; /* {"IsRoot":false} */
+            EventLambda id_36c5f05380b04b378de94534411f3f88 = new EventLambda() {InstanceName="Overwrite with cloned model",Lambda=() =>{    var clonedModel = mainGraph.Get("ClonedModel") as AbstractionModel;    var latestNode = latestAddedNode.Data as ALANode;    var model = latestNode?.Model;    if (model == null)        return;    model.CloneFrom(clonedModel);    latestNode?.UpdateUI();    latestNode.RefreshParameterRows(removeEmptyRows: true);}}; /* {"IsRoot":false} */
             DispatcherEvent id_0945b34f58a146ff983962f595f57fb2 = new DispatcherEvent() {InstanceName="id_0945b34f58a146ff983962f595f57fb2"}; /* {"IsRoot":false} */
             ApplyAction<KeyEventArgs> id_4341066281bc4015a668a3bbbcb7256b = new ApplyAction<KeyEventArgs>() {InstanceName="id_4341066281bc4015a668a3bbbcb7256b",Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
             DataFlowConnector<AbstractionModel> id_024b1810c2d24db3b9fac1ccce2fad9e = new DataFlowConnector<AbstractionModel>() {InstanceName="id_024b1810c2d24db3b9fac1ccce2fad9e"}; /* {"IsRoot":false} */
@@ -543,90 +542,11 @@ namespace Application
             ApplyAction<Dictionary<string, ALANode>> id_ec0f30ce468d4986abb9ad81abe73c17 = new ApplyAction<Dictionary<string, ALANode>>() {InstanceName="id_ec0f30ce468d4986abb9ad81abe73c17",Lambda=treeParents => layoutDiagram.TreeParents = treeParents}; /* {"IsRoot":false} */
             UIConfig id_ab1d0ec0d92f4befb1ff44bb72cc8e10 = new UIConfig() {InstanceName="id_ab1d0ec0d92f4befb1ff44bb72cc8e10",Visible=false}; /* {"IsRoot":true} */
             KeyEvent id_dd81a5ed9ff0413facf64a3ea65c2cf5 = new KeyEvent(eventName:"KeyDown") {InstanceName="id_dd81a5ed9ff0413facf64a3ea65c2cf5",Key=Key.Up,Modifiers=new Key[]{Key.LeftCtrl}}; /* {"IsRoot":false} */
-            EventLambda id_fe211cb0ce564e329374aa81c0e90975 = new EventLambda()
-            {
-                InstanceName = "id_fe211cb0ce564e329374aa81c0e90975",
-                Lambda = () =>
-                {
-                    var selectedWire = mainGraph.Get("selectedWire") as ALAWire;
-                    if (selectedWire == null)
-                        return;
-                    var currentIndexInSubList = -1;
-                    var indices = new List<int>();
-                    for (var i = 0;
-                        i < mainGraph.Edges.Count;
-                        i++)
-                    {
-                        var wire = mainGraph.Edges[i] as ALAWire;
-                        if (wire == null)
-                            continue;
-                        if (wire.Equals(selectedWire))
-                        {
-                            currentIndexInSubList = indices.Count;
-                        }
-
-                        if (wire.Source.Equals(selectedWire.Source))
-                        {
-                            indices.Add(i);
-                        }
-                    }
-
-                    if (currentIndexInSubList == -1 || !indices.Any() || currentIndexInSubList == 0)
-                        return;
-                    mainGraph.Edges.RemoveAll(o => o.Equals(selectedWire));
-                    currentIndexInSubList--;
-                    var newIndex = indices[currentIndexInSubList];
-                    mainGraph.Edges.Insert(newIndex,
-                        selectedWire);
-                    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())
-                    {
-                        wire.Refresh();
-                    }
-                }
-            }; /* {"IsRoot":false} */
-            ApplyAction<KeyEventArgs> id_3c565e37c3c1486e91007c4d1d284367 = new ApplyAction<KeyEventArgs>() {Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
-            KeyEvent id_cd5a0b075b9b47a4a371bc51c7f0aca3 = new KeyEvent(eventName:"KeyDown") {Key=Key.Down,Modifiers=new Key[] { Key.LeftCtrl }}; /* {"IsRoot":false} */
-            ApplyAction<KeyEventArgs> id_29a954d80a1a43ca8739e70022ebf3ec = new ApplyAction<KeyEventArgs>() {Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
-            EventLambda id_bb0843ea08114717a7f0739868ffb193 = new EventLambda()
-            {
-                Lambda = () =>
-                {
-                    var selectedWire = mainGraph.Get("selectedWire") as ALAWire;
-                    if (selectedWire == null)
-                        return;
-                    var currentIndexInSubList = -1;
-                    var indices = new List<int>();
-                    for (var i = 0;
-                        i < mainGraph.Edges.Count;
-                        i++)
-                    {
-                        var wire = mainGraph.Edges[i] as ALAWire;
-                        if (wire == null)
-                            continue;
-                        if (wire.Equals(selectedWire))
-                        {
-                            currentIndexInSubList = indices.Count;
-                        }
-
-                        if (wire.Source.Equals(selectedWire.Source))
-                        {
-                            indices.Add(i);
-                        }
-                    }
-
-                    if (currentIndexInSubList == -1 || !indices.Any() || currentIndexInSubList == indices.Count - 1)
-                        return;
-                    mainGraph.Edges.RemoveAll(o => o.Equals(selectedWire));
-                    currentIndexInSubList++;
-                    var newIndex = indices[currentIndexInSubList];
-                    mainGraph.Edges.Insert(newIndex,
-                        selectedWire);
-                    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())
-                    {
-                        wire.Refresh();
-                    }
-                }
-            }; /* {"IsRoot":false} */
+            EventLambda id_fe211cb0ce564e329374aa81c0e90975 = new EventLambda() {InstanceName="id_fe211cb0ce564e329374aa81c0e90975",Lambda=() =>{    var selectedWire = mainGraph.Get("selectedWire") as ALAWire;    if (selectedWire == null)        return;    var currentIndexInSubList = -1;    var indices = new List<int>();    for (var i = 0; i < mainGraph.Edges.Count; i++)    {        var wire = mainGraph.Edges[i] as ALAWire;        if (wire == null)            continue;        if (wire.Equals(selectedWire))        {            currentIndexInSubList = indices.Count;        }        if (wire.Source.Equals(selectedWire.Source))        {            indices.Add(i);        }    }    if (currentIndexInSubList == -1 || !indices.Any() || currentIndexInSubList == 0)        return;    mainGraph.Edges.RemoveAll(o => o.Equals(selectedWire));    currentIndexInSubList--;    var newIndex = indices[currentIndexInSubList];    mainGraph.Edges.Insert(newIndex, selectedWire);    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
+            ApplyAction<KeyEventArgs> id_3c565e37c3c1486e91007c4d1d284367 = new ApplyAction<KeyEventArgs>() {InstanceName="id_3c565e37c3c1486e91007c4d1d284367",Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
+            KeyEvent id_cd5a0b075b9b47a4a371bc51c7f0aca3 = new KeyEvent(eventName:"KeyDown") {InstanceName="id_cd5a0b075b9b47a4a371bc51c7f0aca3",Key=Key.Down,Modifiers=new Key[]{Key.LeftCtrl}}; /* {"IsRoot":false} */
+            ApplyAction<KeyEventArgs> id_29a954d80a1a43ca8739e70022ebf3ec = new ApplyAction<KeyEventArgs>() {InstanceName="id_29a954d80a1a43ca8739e70022ebf3ec",Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
+            EventLambda id_bb0843ea08114717a7f0739868ffb193 = new EventLambda() {InstanceName="id_bb0843ea08114717a7f0739868ffb193",Lambda=() =>{    var selectedWire = mainGraph.Get("selectedWire") as ALAWire;    if (selectedWire == null)        return;    var currentIndexInSubList = -1;    var indices = new List<int>();    for (var i = 0; i < mainGraph.Edges.Count; i++)    {        var wire = mainGraph.Edges[i] as ALAWire;        if (wire == null)            continue;        if (wire.Equals(selectedWire))        {            currentIndexInSubList = indices.Count;        }        if (wire.Source.Equals(selectedWire.Source))        {            indices.Add(i);        }    }    if (currentIndexInSubList == -1 || !indices.Any() || currentIndexInSubList == indices.Count - 1)        return;    mainGraph.Edges.RemoveAll(o => o.Equals(selectedWire));    currentIndexInSubList++;    var newIndex = indices[currentIndexInSubList];    mainGraph.Edges.Insert(newIndex, selectedWire);    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -776,10 +696,10 @@ namespace Application
             id_8863f404bed34d47922654bd0190259c.WireTo(cloneSelectedNodeModel, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_024b1810c2d24db3b9fac1ccce2fad9e.WireTo(id_0f802a208aad42209777c13b2e61fe56, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_7363c80d952e4246aba050e007287444, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
-            id_316a3befaa364f0186efabcf5efaa33f.WireTo(createNewALANode, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             createAndPaintALAWire.WireTo(id_8647cbf4ac4049a99204b0e3aa70c326, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ConvertToEvent","DestinationIsReference":false} */
             id_7363c80d952e4246aba050e007287444.WireTo(id_5a22e32e96e641d49c6fb4bdf6fcd94b, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
-            id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(id_316a3befaa364f0186efabcf5efaa33f, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(createDummyAbstractionModel, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_5a22e32e96e641d49c6fb4bdf6fcd94b.WireTo(id_0945b34f58a146ff983962f595f57fb2, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"DispatcherEvent","DestinationIsReference":false} */
             id_0945b34f58a146ff983962f595f57fb2.WireTo(id_36c5f05380b04b378de94534411f3f88, "delayedEvent"); /* {"SourceType":"DispatcherEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             id_7363c80d952e4246aba050e007287444.WireTo(id_4341066281bc4015a668a3bbbcb7256b, "argsOutput"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
@@ -802,7 +722,6 @@ namespace Application
             startSearchButton.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_5da1d2f5b13746f29802078592e59346.WireTo(id_00b0ca72bbce4ef4ba5cf395c666a26e, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
             id_ad29db53c0d64d4b8be9e31474882158.WireTo(createDummyAbstractionModel, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            createDummyAbstractionModel.WireTo(createNewALANode, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryOptionsHoriz, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
             searchTextBox.WireTo(id_5da1d2f5b13746f29802078592e59346, "eventEnterPressed"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             searchTab.WireTo(id_cc0c82a2157f4b0291c812236a6e45ba, "children"); /* {"SourceType":"Tab","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */

@@ -537,7 +537,7 @@ namespace Application
                 var referenceNodeColour = Brushes.Orange;
                 node.NodeBackground = !node.IsReferenceNode ? regularNodeColour : referenceNodeColour; 
 
-                node.LoadModel(ModelManager.GetAbstractionModel(newType));
+                node.LoadDefaultModel(ModelManager.GetAbstractionModel(newType));
 
                 node.UpdateUI();
 

@@ -1313,7 +1313,7 @@ namespace RequirementsAbstractions
             dropDown.LostFocus += (sender, args) => { };
         }
 
-        public void LoadModel(AbstractionModel model)
+        public void LoadDefaultModel(AbstractionModel model)
         {
             if (model == null)
             {
