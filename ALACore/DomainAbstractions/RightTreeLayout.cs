@@ -53,6 +53,12 @@ namespace DomainAbstractions
         // Optional - whether to use a breadth-first or depth-first layout. Breadth-first is used by default.
         public bool UseBreadthFirst { get; set; } = true;
 
+        /// <summary>
+        /// <para>Optional - contains the tree parent for each node ID. This will override the default behaviour of automatically finding tree parents through a BFS or DFS. </para>
+        /// <para>Useful for when you want to maintain a consistent graph topology.</para>
+        /// </summary>
+        public Dictionary<string, T> TreeParents { get; set; }
+
         // Only the latest y-coordinate needs to be known globally
         public double LatestY => _latestY;
 
@@ -178,14 +184,6 @@ namespace DomainAbstractions
                     } 
                 }
             }
-
-            // Overwrite GetChildren to only retrieve children from tree connections
-            GetChildren = node =>
-            {
-                var id = GetID(node);
-                return _treeConnections.ContainsKey(id) ? _treeConnections[id] : new List<T>();
-            };
-
         }
 
         // IDataFlow<T> implementation
@@ -209,12 +207,38 @@ namespace DomainAbstractions
                     {
                         _userDefinedGetChildren = GetChildren;
                     }
-                    else
-                    {
-                        GetChildren = _userDefinedGetChildren;
-                    }
 
-                    if (UseBreadthFirst) CreateBreadthFirstTree(value); // Overwrites GetChildren to use _treeConnections
+                    // Overwrites GetChildren to use _treeConnections
+                    if (UseBreadthFirst)
+                    {
+                        if (TreeParents == null)
+                        {
+
+                            if (_userDefinedGetChildren != null) GetChildren = _userDefinedGetChildren;
+
+                            CreateBreadthFirstTree(value);
+
+                            // Overwrite GetChildren to only retrieve children from tree connections
+                            GetChildren = node =>
+                            {
+                                var id = GetID(node);
+                                return _treeConnections.ContainsKey(id) ? _treeConnections[id] : new List<T>();
+                            };
+                        }
+                        else
+                        {
+                            // Overwrite GetChildren to only retrieve children that the node is the TreeParent of
+                            GetChildren = node =>
+                            {
+                                var allChildren = _userDefinedGetChildren(node);
+                                var treeChildren = allChildren.Where(c => !TreeParents.ContainsKey(GetID(c)) || TreeParents[GetID(c)].Equals(node));
+
+                                return treeChildren;
+                            };
+                        }
+
+                        
+                    }
 
                     SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
                 }

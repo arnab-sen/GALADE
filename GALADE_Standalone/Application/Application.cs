@@ -538,6 +538,9 @@ namespace Application
             DataFlowConnector<bool> id_d5c22176b9bb49dd91a1cb0a7e3f7196 = new DataFlowConnector<bool>() {InstanceName="id_d5c22176b9bb49dd91a1cb0a7e3f7196"}; /* {"IsRoot":false} */
             DataFlowConnector<bool> useAutomaticLayout = new DataFlowConnector<bool>() {InstanceName="useAutomaticLayout",Data=true}; /* {"IsRoot":false} */
             UIConfig id_87a535a0e11441af9072d6364a8aef74 = new UIConfig() {InstanceName="id_87a535a0e11441af9072d6364a8aef74"}; /* {"IsRoot":false} */
+            EventConnector id_7356212bcc714c699681e8dffc853761 = new EventConnector() {InstanceName="id_7356212bcc714c699681e8dffc853761"}; /* {"IsRoot":false} */
+            Data<Dictionary<string, ALANode>> getTreeParentsFromGraph = new Data<Dictionary<string, ALANode>>() {InstanceName="getTreeParentsFromGraph",Lambda=() =>{    var treeParents = new Dictionary<string, ALANode>();    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())    {        var destId = wire.Destination.Id;        var sourceNode = wire.Source;        if (!treeParents.ContainsKey(destId))        {            treeParents[destId] = sourceNode;        }    }        return treeParents;}}; /* {"IsRoot":false} */
+            ApplyAction<Dictionary<string, ALANode>> id_ec0f30ce468d4986abb9ad81abe73c17 = new ApplyAction<Dictionary<string, ALANode>>() {InstanceName="id_ec0f30ce468d4986abb9ad81abe73c17",Lambda=treeParents => layoutDiagram.TreeParents = treeParents}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -607,7 +610,8 @@ namespace Application
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_643997d9890f41d7a3fcab722aa48f89, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_6909a5f3b0e446d3bb0c1382dac1faa9.WireTo(id_261d188e3ce64cc8a06f390ba51e092f, "elseOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_cf7df48ac3304a8894a7536261a3b474.WireTo(extractALACode, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ExtractALACode","DestinationIsReference":false} */
-            id_f81835850c0d4098bb59b38f8b7ce974.WireTo(getRoots, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_7356212bcc714c699681e8dffc853761.WireTo(getTreeParentsFromGraph, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_7356212bcc714c699681e8dffc853761.WireTo(getRoots, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_a34c047df9ae4235a08b037fd9e48ab8.WireTo(generateCode, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertInstantiations, "instantiations"); /* {"SourceType":"GenerateALACode","SourceIsReference":false,"DestinationType":"InsertFileCodeLines","DestinationIsReference":false} */
             id_b5364bf1c9cd46a28e62bb2eb0e11692.WireTo(insertWireTos, "wireTos"); /* {"SourceType":"GenerateALACode","SourceIsReference":false,"DestinationType":"InsertFileCodeLines","DestinationIsReference":false} */
@@ -926,6 +930,8 @@ namespace Application
             id_11418b009831455983cbc07c8d116a1f.WireTo(id_ce0bcc39dd764d1087816b79eefa76bf, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_0f0046b6b91e447aa9bf0a223fd59038.WireTo(id_edd3648585f44954b2df337f1b7a793b, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false} */
             id_0f0046b6b91e447aa9bf0a223fd59038.WireTo(useAutomaticLayout, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_f81835850c0d4098bb59b38f8b7ce974.WireTo(id_7356212bcc714c699681e8dffc853761, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
+            getTreeParentsFromGraph.WireTo(id_ec0f30ce468d4986abb9ad81abe73c17, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
@@ -944,6 +950,18 @@ namespace Application
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
