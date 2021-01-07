@@ -92,7 +92,7 @@ namespace DomainAbstractions
         public TextBox(bool readOnly = false)
         {
             _textBox.AcceptsTab = true;
-            _textBox.AcceptsReturn = true;
+            // _textBox.AcceptsReturn = true;
 
             _textBox.TextChanged += (sender, args) =>
             {
@@ -103,6 +103,7 @@ namespace DomainAbstractions
                 }
 
             };
+
 
             // Track indentation
             _textBox.PreviewKeyDown += (sender, args) =>
@@ -137,8 +138,6 @@ namespace DomainAbstractions
 
                     Text = preText + latestLine + postText;
                     _textBox.Dispatcher.Invoke(() => _textBox.CaretIndex = preText.Length + latestLine.Length);
-
-                    args.Handled = true; // Handle enter press here rather than externally
                 }
                 else if (_textBox.AcceptsTab && args.Key == Key.Tab)
                 {
@@ -149,8 +148,22 @@ namespace DomainAbstractions
                     Text = preText + TabString + postText;
                     _textBox.Dispatcher.Invoke(() => _textBox.CaretIndex = preText.Length + TabString.Length);
 
-                    args.Handled = true;
                 }
+                else if (args.Key == Key.V && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+                {
+                    // Temporary enable AcceptsReturn to handle multiline text
+                    var acceptsReturn = _textBox.AcceptsReturn;
+                    _textBox.AcceptsReturn = true;
+                    _textBox.Paste();
+                    _textBox.AcceptsReturn = acceptsReturn;
+                }
+                else
+                {
+                    return;
+                }
+
+                args.Handled = true;
+
             };
 
             _textBox.HorizontalScrollBarVisibility = System.Windows.Controls.ScrollBarVisibility.Auto;

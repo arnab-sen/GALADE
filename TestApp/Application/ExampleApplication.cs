@@ -42,12 +42,14 @@ namespace Application
             Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
             Apply<T1, T2> id_a916724af200415c857a4e58062ce29f = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomethingElse();}}; /* {"IsRoot":false} */
             Apply<T1, T2> id_e2677bedbcf7485ca29b7816d96fa8fa = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomethingNew();}}; /* {"IsRoot":false} */
+            Apply<T1, T2> id_9a6b0de72c514a35b5b469c35298cbb1 = new Apply<T1, T2>() {Lambda=default}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
             A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             B.WireTo(id_a916724af200415c857a4e58062ce29f, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             B.WireTo(id_e2677bedbcf7485ca29b7816d96fa8fa, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            B.WireTo(id_9a6b0de72c514a35b5b469c35298cbb1, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
         }
     }
