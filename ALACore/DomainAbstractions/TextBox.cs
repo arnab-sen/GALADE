@@ -92,6 +92,7 @@ namespace DomainAbstractions
         public TextBox(bool readOnly = false)
         {
             _textBox.AcceptsTab = true;
+            _textBox.AcceptsReturn = true;
 
             _textBox.TextChanged += (sender, args) =>
             {

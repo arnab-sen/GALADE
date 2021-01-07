@@ -38,12 +38,12 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "test")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
+            Apply<T1, T2> A = new Apply<T1, T2>() {Lambda=() => {    DoSomething();}}; /* {"IsRoot":true} */
+            Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR test
 
 			// BEGIN AUTO-GENERATED WIRING FOR test
-            A.WireTo(B, "output"); /* {"SourceType":"UNDEFINED","SourceIsReference":false,"DestinationType":"UNDEFINED","DestinationIsReference":false} */
-            A.WireTo(C, "output"); /* {"SourceType":"UNDEFINED","SourceIsReference":false,"DestinationType":"UNDEFINED","DestinationIsReference":false} */
-            A.WireTo(D, "output"); /* {"SourceType":"UNDEFINED","SourceIsReference":false,"DestinationType":"UNDEFINED","DestinationIsReference":false} */
+            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR test
         }
     }
