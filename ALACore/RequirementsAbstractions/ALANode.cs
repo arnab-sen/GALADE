@@ -1275,19 +1275,35 @@ namespace RequirementsAbstractions
         {
             _rootUI.Background = !IsReferenceNode ? NodeHighlightedBackground : ReferenceNodeHighlightedBackground;
             _isHighlighted = true;
+
+            Canvas.SetZIndex(Render, 99);
+            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => w.Source.Equals(this) || w.Destination.Equals(this)))
+            {
+                var current = Canvas.GetZIndex(wire.Render);
+                Canvas.SetZIndex(wire.Render, 100);
+                current = Canvas.GetZIndex(wire.Render);
+            }
         }
 
         public void UnhighlightNode()
         {
             _rootUI.Background = !IsReferenceNode ? NodeBackground : ReferenceNodeBackground;
             _isHighlighted = false;
+
+            Canvas.SetZIndex(Render, DefaultZIndex);
+            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (w.Source.Equals(this) || w.Destination.Equals(this) && !w.IsHighlighted)))
+            {
+                Canvas.SetZIndex(wire.Render, wire.DefaultZIndex);
+            }
         }
 
         public void Select()
         {
             HighlightNode();
             Graph.Set("SelectedNode", this);
+
             if (!IsSelected()) _rootUI.Render.Focus();
+
             StateTransition.Update(Enums.DiagramMode.IdleSelected);
         }
 
@@ -1295,6 +1311,7 @@ namespace RequirementsAbstractions
         {
             UnhighlightNode();
             if (Graph.Get("SelectedNode")?.Equals(this) ?? false) Graph.Set("SelectedNode", null);
+
             if (Mouse.Captured?.Equals(_rootUI.Render) ?? false) Mouse.Capture(null);
         }
 

@@ -32,7 +32,7 @@ namespace RequirementsAbstractions
         public Brush WireHighlightColour { get; set; } = Brushes.LightSkyBlue;
         public bool IsHighlighted { get; set; } = false;
         public JObject MetaData { get; set; }
-        public int DefaultZIndex { get; set; } = 1;
+        public int DefaultZIndex { get; set; } = 10;
 
         public ALANode Source
         {
@@ -71,7 +71,7 @@ namespace RequirementsAbstractions
             }
         }
 
-        public bool Selected { get; set; } = false;
+        public bool IsSelected { get; set; } = false;
 
         // Private fields
         private Box rootUI;
@@ -102,7 +102,7 @@ namespace RequirementsAbstractions
             Canvas.Children.Add(Render);
             Canvas.SetLeft(Render, 0);
             Canvas.SetTop(Render, 0);
-            Canvas.SetZIndex(Render, DefaultZIndex);
+            // Canvas.SetZIndex(Render, DefaultZIndex);
         }
 
         public void Highlight()
@@ -195,21 +195,27 @@ namespace RequirementsAbstractions
 
         public void Select()
         {
-            Selected = true;
-            Highlight();
-            Canvas.SetZIndex(Render, 99);
+            if (!IsSelected)
+            {
+                IsSelected = true;
+                Highlight();
+                Canvas.SetZIndex(Render, 99); 
+            }
         }
 
         public void Deselect()
         {
-            Selected = false;
-            Unhighlight();
-            Canvas.SetZIndex(Render, DefaultZIndex);
+            if (IsSelected)
+            {
+                IsSelected = false;
+                Unhighlight();
+                Canvas.SetZIndex(Render, DefaultZIndex); 
+            }
         }
 
         public void ToggleSelect()
         {
-            if (Selected)
+            if (IsSelected)
             {
                 Deselect();
             }
@@ -333,7 +339,7 @@ namespace RequirementsAbstractions
             MenuItem id_55239d2e49364d59a3eb3e9a5ad20def = new MenuItem(header:"Delete wire") {InstanceName="id_55239d2e49364d59a3eb3e9a5ad20def"}; /* {"IsRoot":false} */
             EventLambda id_a06846997c5341ad94996d7aaf6b7e50 = new EventLambda() {InstanceName="id_a06846997c5341ad94996d7aaf6b7e50",Lambda=() =>{    Delete();}}; /* {"IsRoot":false} */
             EventLambda id_5724d3f527eb4a69baaceb9929d0361c = new EventLambda() {InstanceName="id_5724d3f527eb4a69baaceb9929d0361c",Lambda=() =>{    Highlight();}}; /* {"IsRoot":false} */
-            EventLambda id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {InstanceName="id_f09af2cbf36c4a1f8b0f7d36707b5779",Lambda=() =>{    if (!Selected)        Unhighlight();}}; /* {"IsRoot":false} */
+            EventLambda id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {InstanceName="id_f09af2cbf36c4a1f8b0f7d36707b5779",Lambda=() =>{    if (!IsSelected)        Unhighlight();}}; /* {"IsRoot":false} */
             MenuItem id_fb4c357790d34208be2c4ec5ea42166d = new MenuItem(header:"Promote at source") {InstanceName="id_fb4c357790d34208be2c4ec5ea42166d"}; /* {"IsRoot":false} */
             EventLambda id_3a401636c3e44a16884fd24f94925372 = new EventLambda() {InstanceName="id_3a401636c3e44a16884fd24f94925372",Lambda=() =>{    var currentTreeConnection = Graph.Edges.OfType<ALAWire>().FirstOrDefault(w => w.Source.Equals(Source));    var currentTreeConnectionIndex = Graph.Edges.IndexOf(currentTreeConnection);    Graph.Edges.Remove(this);    Graph.Edges.Insert(currentTreeConnectionIndex, this);    foreach (var wire in Graph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             MenuItem id_5e84922dd50544a6a279b1703c539772 = new MenuItem(header:"Set as tree connection/Promote at destination") {InstanceName="id_5e84922dd50544a6a279b1703c539772"}; /* {"IsRoot":false} */
