@@ -1279,9 +1279,8 @@ namespace RequirementsAbstractions
             Canvas.SetZIndex(Render, 99);
             foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => w.Source.Equals(this) || w.Destination.Equals(this)))
             {
-                var current = Canvas.GetZIndex(wire.Render);
+                if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, 100);
-                current = Canvas.GetZIndex(wire.Render);
             }
         }
 
@@ -1293,6 +1292,7 @@ namespace RequirementsAbstractions
             Canvas.SetZIndex(Render, DefaultZIndex);
             foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (w.Source.Equals(this) || w.Destination.Equals(this) && !w.IsHighlighted)))
             {
+                if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, wire.DefaultZIndex);
             }
         }
