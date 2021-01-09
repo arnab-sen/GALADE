@@ -35,9 +35,9 @@ namespace Application
 			
 		}
 
-        public ExampleDomainAbstraction(string arg0, string arg2 = "test")
+        public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
-			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR test
+			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Main
             Apply<T1, T2> A = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomething();}}; /* {"IsRoot":true} */
             Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
             Apply<T1, T2> id_a916724af200415c857a4e58062ce29f = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomethingElse();}}; /* {"IsRoot":false} */
@@ -45,13 +45,13 @@ namespace Application
             Apply<T1, T2> id_9a6b0de72c514a35b5b469c35298cbb1 = new Apply<T1, T2>() {InstanceName="id_9a6b0de72c514a35b5b469c35298cbb1",Lambda=default}; /* {"IsRoot":false} */
             Apply<T1, T2> C = new Apply<T1, T2>() {InstanceName="C"}; /* {"IsRoot":false} */
             Apply<T1, T2> D = new Apply<T1, T2>() {InstanceName="D"}; /* {"IsRoot":false} */
-            // END AUTO-GENERATED INSTANTIATIONS FOR test
+            // END AUTO-GENERATED INSTANTIATIONS FOR Main
 
-			// BEGIN AUTO-GENERATED WIRING FOR test
-            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"test"} */
+			// BEGIN AUTO-GENERATED WIRING FOR Main
+            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"Main"} */
             A.WireTo(C, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             C.WireTo(D, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            // END AUTO-GENERATED WIRING FOR test
+            // END AUTO-GENERATED WIRING FOR Main
         }
     }
 }
