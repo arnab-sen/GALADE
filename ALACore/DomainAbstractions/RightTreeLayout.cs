@@ -9,10 +9,10 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// <para>Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.</para>
-    /// <para>The following properties must be defined for this abstraction to function correctly: GetID, GetWidth, GetHeight, SetX, SetY, and GetChildren.</para>
+    /// <para>Runs an algorithm that sets the positions of nodes of type T in a graph, ensuring that the nodes are laid out from left to right, and that there are no overlaps.</para>
+    /// <para>The following properties must be defined for this abstraction to function correctly: GetID, GetWidth, GetHeight, SetX, SetY, GetChildren, and Roots.</para>
     /// </summary>
-    public class RightTreeLayout<T> : IDataFlow<T>, IEvent // rootInput, clearVisited
+    public class RightTreeLayout<T> : IEvent // start
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -35,6 +35,12 @@ namespace DomainAbstractions
         // Required - returns a collection of the node's children
         public Func<T, IEnumerable<T>> GetChildren { get; set; }  
 
+        // Required - a list of roots to traverse through
+        public List<T> Roots { get; set; }
+
+        // Optional - a list that contains every node in the graph. This will be used to try and lay out any nodes that weren't laid out in the first pass.
+        public List<T> AllNodes { get; set; }
+
         // Optional - sets the horizontal distance between every parent and child node render
         public double HorizontalGap { get; set; } = 100;    
         
@@ -47,12 +53,6 @@ namespace DomainAbstractions
         // Optional - sets the y-coordinate of the root node render
         public double InitialY { get; set; } = 0;       
         
-        // Optional - gets a set of IDs of nodes not to visit after visiting the initial node
-        public Func<HashSet<string>> GetRoots { get; set; }
-
-        // Optional - whether to use a breadth-first or depth-first layout. Breadth-first is used by default.
-        public bool UseBreadthFirst { get; set; } = true;
-
         /// <summary>
         /// <para>Optional - contains the tree parent for each node ID. This will override the default behaviour of automatically finding tree parents through a BFS or DFS. </para>
         /// <para>Useful for when you want to maintain a consistent graph topology.</para>
@@ -64,21 +64,13 @@ namespace DomainAbstractions
 
         // Private fields
         private HashSet<string> _visited = new HashSet<string>();
+        private List<T> _roots = new List<T>();
         private double _latestY = 0;
         private Dictionary<string, List<T>> _treeConnections = new Dictionary<string, List<T>>();
         private Func<T, IEnumerable<T>> _userDefinedGetChildren;
 
         // Ports
-        private IDataFlow<HashSet<string>> visitedNodes;
         private IEvent complete;
-
-        /// <summary>
-        /// Runs an algorithm that sets the positions of nodes of type T in a depth-first traversal tree, ensuring that the nodes are laid out from left to right, and that there are no overlaps.
-        /// </summary>
-        public RightTreeLayout()
-        {
-
-        }
 
         private bool ParametersInstantiated()
         {
@@ -186,72 +178,59 @@ namespace DomainAbstractions
             }
         }
 
-        // IDataFlow<T> implementation
-        T IDataFlow<T>.Data
+        private void Start()
         {
-            get => default;
-            set
+            _visited.Clear();
+
+            if (ParametersInstantiated())
             {
-                if (GetRoots != null)
+                if (_userDefinedGetChildren == null)
                 {
-                    var rootIds = GetRoots();
-                    foreach (var rootId in rootIds)
-                    {
-                        _visited.Add(rootId);
-                    }
+                    _userDefinedGetChildren = GetChildren;
                 }
 
-                if (ParametersInstantiated())
+                // Overwrite GetChildren to only retrieve children that the node is the TreeParent of
+                GetChildren = node =>
                 {
-                    if (_userDefinedGetChildren == null)
-                    {
-                        _userDefinedGetChildren = GetChildren;
-                    }
+                    var allChildren = _userDefinedGetChildren(node);
+                    var treeChildren = allChildren.Where(c => !TreeParents.ContainsKey(GetID(c)) || TreeParents[GetID(c)].Equals(node));
 
-                    // Overwrites GetChildren to use _treeConnections
-                    if (UseBreadthFirst)
-                    {
-                        if (TreeParents == null)
-                        {
+                    return treeChildren;
+                };
 
-                            if (_userDefinedGetChildren != null) GetChildren = _userDefinedGetChildren;
+                _latestY = InitialY;
 
-                            CreateBreadthFirstTree(value);
-
-                            // Overwrite GetChildren to only retrieve children from tree connections
-                            GetChildren = node =>
-                            {
-                                var id = GetID(node);
-                                return _treeConnections.ContainsKey(id) ? _treeConnections[id] : new List<T>();
-                            };
-                        }
-                        else
-                        {
-                            // Overwrite GetChildren to only retrieve children that the node is the TreeParent of
-                            GetChildren = node =>
-                            {
-                                var allChildren = _userDefinedGetChildren(node);
-                                var treeChildren = allChildren.Where(c => !TreeParents.ContainsKey(GetID(c)) || TreeParents[GetID(c)].Equals(node));
-
-                                return treeChildren;
-                            };
-                        }
-
-                        
-                    }
-
-                    SetRightTreeLayout(value, HorizontalGap, VerticalGap, InitialX, InitialY);
+                // Do a layout traversal pass from every root
+                foreach (var root in Roots)
+                {
+                    SetRightTreeLayout(root, HorizontalGap, VerticalGap, InitialX, _latestY);
                 }
 
-                if (visitedNodes != null) visitedNodes.Data = _visited.Select(n => n).ToHashSet();
-                complete?.Execute();
+                // Do a layout traversal pass from every node that hasn't been visited
+                if (AllNodes != null)
+                {
+                    foreach (var node in AllNodes)
+                    {
+                        if (!_visited.Contains(GetID(node)))
+                        {
+                            SetRightTreeLayout(node, HorizontalGap, VerticalGap, InitialX, _latestY);
+                        }
+                    }
+                }
             }
+
+            complete?.Execute();
         }
 
         // IEvent implementation
         void IEvent.Execute()
         {
-            _visited.Clear();
+            Start();
+        }
+
+        public RightTreeLayout()
+        {
+
         }
     }
 }
