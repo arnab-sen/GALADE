@@ -244,44 +244,7 @@ namespace Application
             RightTreeLayout<ALANode> layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50}; /* {"IsRoot":false} */
             EventConnector startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"}; /* {"IsRoot":false} */
             KeyEvent id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {InstanceName="R key pressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
-            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>()
-            {
-                InstanceName = "createNewALANode",
-                Lambda = input =>
-                {
-                    var node = new ALANode();
-                    node.Model = input;
-                    node.Graph = mainGraph;
-                    node.Canvas = mainCanvas;
-                    node.StateTransition = stateTransition;
-                    if (!availableAbstractions.Any())
-                        availableAbstractions = abstractionModelManager.GetAbstractionTypes()
-                            .OrderBy(s => s)
-                            .ToList();
-                    node.AvailableAbstractions.AddRange(availableAbstractions);
-                    node.TypeChanged += newType =>
-                    {
-                        if (node.Model.Type == newType)
-                            return;
-                        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));
-                        node.UpdateUI();
-                        Dispatcher.CurrentDispatcher.Invoke(() =>
-                            {
-                                var edges = mainGraph.Edges;
-                                foreach (var edge in edges)
-                                {
-                                    (edge as ALAWire).Refresh();
-                                }
-                            },
-                            DispatcherPriority.ContextIdle);
-                    };
-                    mainGraph.AddNode(node);
-                    node.CreateInternals();
-                    mainCanvas.Children.Add(node.Render);
-                    node.FocusOnTypeDropDown();
-                    return node;
-                }
-            }; /* {"IsRoot":false} */
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"}; /* {"IsRoot":false} */
             MenuItem id_f19494c1e76f460a9189c172ac98de60 = new MenuItem(header:"File") {InstanceName="File"}; /* {"IsRoot":false} */
             MenuItem id_d59c0c09aeaf46c186317b9aeaf95e2e = new MenuItem(header:"Open Project") {InstanceName="Open Project"}; /* {"IsRoot":false} */
@@ -628,19 +591,19 @@ namespace Application
             DispatcherEvent id_6306c5f7aa3d41978599c00a5999b96f = new DispatcherEvent() {InstanceName="id_6306c5f7aa3d41978599c00a5999b96f"}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_33d648af590b45139339fe533079ab12 = new ConvertToEvent<string>() {InstanceName="id_33d648af590b45139339fe533079ab12"}; /* {"IsRoot":false} */
             EventLambda id_3605f8d8e4624d84befb96fe76ebd3ac = new EventLambda() {InstanceName="id_c1a238e8a915400a98840a913ce99bf5",Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
-            MultiMenu id_6e909cf4d2004e078eacacf80f1f2bff = new MultiMenu() {InstanceName="id_6e909cf4d2004e078eacacf80f1f2bff",ParentHeader="Open recent projects..."}; /* {"IsRoot":false} */
+            MultiMenu id_6e909cf4d2004e078eacacf80f1f2bff = new MultiMenu() {InstanceName="id_6e909cf4d2004e078eacacf80f1f2bff",ParentHeader="Open Recent Projects..."}; /* {"IsRoot":false} */
             DataFlowConnector<object> id_e2c110ecff0740989d3d30144f84a94b = new DataFlowConnector<object>() {InstanceName="id_e2c110ecff0740989d3d30144f84a94b"}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_2b3a750d477d4e168aaa3ed0ae548650 = new ConvertToEvent<string>() {InstanceName="id_2b3a750d477d4e168aaa3ed0ae548650"}; /* {"IsRoot":false} */
             GetSetting id_6ecefc4cdc694ef2a46a8628cadc0e1d = new GetSetting(name:"RecentProjectPaths") {InstanceName="id_6ecefc4cdc694ef2a46a8628cadc0e1d"}; /* {"IsRoot":false} */
             Apply<string, List<string>> id_097392c5af294d32b5c928a590bad83b = new Apply<string, List<string>>() {InstanceName="id_097392c5af294d32b5c928a590bad83b",Lambda=json => JArray.Parse(json).Select(jt => jt.Value<string>()).ToList()}; /* {"IsRoot":false} */
             DataFlowConnector<List<string>> recentProjectPaths = new DataFlowConnector<List<string>>() {InstanceName="recentProjectPaths",Data=new List<string>()}; /* {"IsRoot":false} */
-            EventConnector id_408df459fb4c4846920b1a1edd4ac9e6 = new EventConnector() {}; /* {"IsRoot":false} */
-            Data<object> id_e045b91666df454ca2f7985443af56c5 = new Data<object>() {}; /* {"IsRoot":false} */
-            Apply<string, object> id_ef711f01535e48e2b65274af24d732f6 = new Apply<string, object>() {Lambda=path => {    var paths = recentProjectPaths.Data;    if (!paths.Contains(path)) paths.Add(path);    return new JArray(paths);}}; /* {"IsRoot":false} */
-            EditSetting id_6c8e7b486e894c6ca6bebaf40775b8b4 = new EditSetting() {JSONPath="$..RecentProjectPaths"}; /* {"IsRoot":false} */
-            Cast<object, string> id_cb85f096416943cb9c08e4862f304568 = new Cast<object, string>() {}; /* {"IsRoot":false} */
-            Apply<object, List<string>> id_5d9313a0a895402cb6be531e87c9b606 = new Apply<object, List<string>>() {Lambda=obj => (obj as JArray)?.Select(jt => jt.Value<string>()).ToList() ?? new List<string>()}; /* {"IsRoot":false} */
-            DataFlowConnector<object> id_4ad460d4bd8d4a63ad7aca7ed9f1c945 = new DataFlowConnector<object>() {}; /* {"IsRoot":false} */
+            EventConnector id_408df459fb4c4846920b1a1edd4ac9e6 = new EventConnector() {InstanceName="id_408df459fb4c4846920b1a1edd4ac9e6"}; /* {"IsRoot":false} */
+            Data<object> id_e045b91666df454ca2f7985443af56c5 = new Data<object>() {InstanceName="id_e045b91666df454ca2f7985443af56c5"}; /* {"IsRoot":false} */
+            Apply<string, object> id_ef711f01535e48e2b65274af24d732f6 = new Apply<string, object>() {InstanceName="id_ef711f01535e48e2b65274af24d732f6",Lambda=path =>{    var paths = recentProjectPaths.Data;    if (!paths.Contains(path))        paths.Add(path);    return new JArray(paths);}}; /* {"IsRoot":false} */
+            EditSetting id_6c8e7b486e894c6ca6bebaf40775b8b4 = new EditSetting() {InstanceName="id_6c8e7b486e894c6ca6bebaf40775b8b4",JSONPath="$..RecentProjectPaths"}; /* {"IsRoot":false} */
+            Cast<object, string> id_cb85f096416943cb9c08e4862f304568 = new Cast<object, string>() {InstanceName="id_cb85f096416943cb9c08e4862f304568"}; /* {"IsRoot":false} */
+            Apply<object, List<string>> id_5d9313a0a895402cb6be531e87c9b606 = new Apply<object, List<string>>() {InstanceName="id_5d9313a0a895402cb6be531e87c9b606",Lambda=obj => (obj as JArray)?.Select(jt => jt.Value<string>()).ToList() ?? new List<string>()}; /* {"IsRoot":false} */
+            DataFlowConnector<object> id_4ad460d4bd8d4a63ad7aca7ed9f1c945 = new DataFlowConnector<object>() {InstanceName="id_4ad460d4bd8d4a63ad7aca7ed9f1c945"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone

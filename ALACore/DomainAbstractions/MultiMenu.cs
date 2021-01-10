@@ -12,7 +12,11 @@ using ProgrammingParadigms;
 namespace DomainAbstractions
 {
     /// <summary>
-    /// <para>Creates multiple menu items based on a list of strings, and outputs the string content of a menu item when clicked.</para>
+    /// <para>Creates a menu item that opens to multiple menu items based on a list of strings, and outputs the string content of a menu item when clicked.</para>
+    /// <para>Ports:</para>
+    /// <para>1. IUI child: Returns the parent menu item with the child menu items added.</para>
+    /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; itemLabels: Updates the parent menu item with new menu items containing the elements in the input list.</para>
+    /// <para>3. IDataFlow&lt;string&gt; selectedLabel: Outputs the text content of the selected child menu item.</para>
     /// </summary>
     public class MultiMenu : IUI, IDataFlow<List<string>> // child, itemLabels
     {
