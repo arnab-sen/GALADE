@@ -86,6 +86,8 @@ namespace DomainAbstractions
             get => rootFilePath;
             set
             {
+                _foundFiles.Clear();
+                _foundDirectories.Clear();
                 rootFilePath = value;
 
                 if (Directory.Exists(value))

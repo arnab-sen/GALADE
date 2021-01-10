@@ -153,6 +153,7 @@
     <Compile Include="DomainAbstractions\HttpRequest.cs" />
     <Compile Include="DomainAbstractions\ListDisplay.cs" />
     <Compile Include="DomainAbstractions\MouseWheelEvent.cs" />
+    <Compile Include="DomainAbstractions\MultiMenu.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
     <Compile Include="DomainAbstractions\Scale.cs" />
     <Compile Include="DomainAbstractions\SimulateKeyboard.cs" />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -225,9 +226,17 @@ namespace RequirementsAbstractions
             }
         }
 
+        private bool PortsMatch(string portNameA, string portNameB)
+        {
+            if (portNameA.StartsWith("List<")) portNameA = Regex.Match(portNameA, @"(?<=List<).+(?=>)").Value;
+            if (portNameB.StartsWith("List<")) portNameB = Regex.Match(portNameB, @"(?<=List<).+(?=>)").Value;
+
+            return portNameA == portNameB;
+        }
+
         public void Validate()
         {
-            return;
+            return; 
 
             if (Source == null || Destination == null)
             {
@@ -238,13 +247,9 @@ namespace RequirementsAbstractions
             var sourcePortType = Source.Model.GetPort(SourcePort.Name)?.Type ?? "";
             var destinationPortType = Destination.Model.GetPort(DestinationPort.Name)?.Type ?? "";
 
-            if (string.IsNullOrEmpty(sourcePortType) || string.IsNullOrEmpty(destinationPortType) || sourcePortType != destinationPortType)
-            {
-                ChangeColour(validWire: false);
-                return;
-            }
-
-            ChangeColour(validWire: true);
+            ChangeColour(validWire: !(string.IsNullOrEmpty(sourcePortType) 
+                                    || string.IsNullOrEmpty(destinationPortType) 
+                                    || !PortsMatch(sourcePortType, destinationPortType)));
         }
 
         private void ChangeColour(bool validWire = false)
