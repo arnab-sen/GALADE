@@ -547,13 +547,26 @@ namespace Application
             EventLambda id_bb0843ea08114717a7f0739868ffb193 = new EventLambda() {InstanceName="id_bb0843ea08114717a7f0739868ffb193",Lambda=() =>{    var selectedWire = mainGraph.Get("selectedWire") as ALAWire;    if (selectedWire == null)        return;    var currentIndexInSubList = -1;    var indices = new List<int>();    for (var i = 0; i < mainGraph.Edges.Count; i++)    {        var wire = mainGraph.Edges[i] as ALAWire;        if (wire == null)            continue;        if (wire.Equals(selectedWire))        {            currentIndexInSubList = indices.Count;        }        if (wire.Source.Equals(selectedWire.Source))        {            indices.Add(i);        }    }    if (currentIndexInSubList == -1 || !indices.Any() || currentIndexInSubList == indices.Count - 1)        return;    mainGraph.Edges.RemoveAll(o => o.Equals(selectedWire));    currentIndexInSubList++;    var newIndex = indices[currentIndexInSubList];    mainGraph.Edges.Insert(newIndex, selectedWire);    foreach (var wire in mainGraph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             DispatcherEvent id_2155bd03579a4918b01e6912a0f24188 = new DispatcherEvent() {InstanceName="id_2155bd03579a4918b01e6912a0f24188"}; /* {"IsRoot":false} */
             MenuItem id_68ab46b356b64dbfb61d305ea9eced6f = new MenuItem(header:"Tools") {InstanceName="Tools"}; /* {"IsRoot":false} */
-            MenuItem id_7c21cf85883041b88e998ecc065cc4d4 = new MenuItem(header:"Create Instantiation Dictionary") {}; /* {"IsRoot":false} */
-            UIConfig id_8eb5d9903d6941d285da2fc3d2ccfc3a = new UIConfig() {ToolTipText="Creates code that represents creating a dictionary of all non-reference instantiations,\nwhere each key is an instance name, and each value is the instance."}; /* {"IsRoot":false} */
+            MenuItem id_7c21cf85883041b88e998ecc065cc4d4 = new MenuItem(header:"Create Instantiation Dictionary") {InstanceName="id_7c21cf85883041b88e998ecc065cc4d4"}; /* {"IsRoot":false} */
+            UIConfig id_8eb5d9903d6941d285da2fc3d2ccfc3a = new UIConfig() {InstanceName="id_8eb5d9903d6941d285da2fc3d2ccfc3a",ToolTipText="Creates code that represents creating a dictionary of all non-reference instantiations,\nwhere each key is an instance name, and each value is the instance."}; /* {"IsRoot":false} */
             MenuItem id_180fa624d01c4759a83050e30426343a = new MenuItem(header:"Test TextEditor") {InstanceName="Test TextEditor"}; /* {"IsRoot":false} */
-            PopupWindow id_5aec7a9782644198ab22d9ed7998ee15 = new PopupWindow(title:"Code Editor") {Height=500,Width=500}; /* {"IsRoot":false} */
-            TextBox id_23e510bd08224b64b10c378f0f8fcdfe = new TextBox() {}; /* {"IsRoot":false} */
-            EventConnector id_514f6109e8a24bc4b1ced57aaa255d90 = new EventConnector() {}; /* {"IsRoot":false} */
-            Data<string> id_260a747950844e2baa95f9b7b2677301 = new Data<string>() {storedData="text\ntext"}; /* {"IsRoot":false} */
+            PopupWindow id_5aec7a9782644198ab22d9ed7998ee15 = new PopupWindow(title:"Create Instantiation Dictionary") {Height=500,Width=1000,Resize=SizeToContent.WidthAndHeight,InstanceName="id_5aec7a9782644198ab22d9ed7998ee15"}; /* {"IsRoot":false} */
+            TextBox id_23e510bd08224b64b10c378f0f8fcdfe = new TextBox() {InstanceName="id_23e510bd08224b64b10c378f0f8fcdfe",AcceptsReturn=true,AcceptsTab=true}; /* {"IsRoot":false} */
+            EventConnector id_514f6109e8a24bc4b1ced57aaa255d90 = new EventConnector() {InstanceName="id_514f6109e8a24bc4b1ced57aaa255d90"}; /* {"IsRoot":false} */
+            UIConfig id_1c8c1eff6c1042cdb09364f0d4e80cf5 = new UIConfig() {InstanceName="id_1c8c1eff6c1042cdb09364f0d4e80cf5",Width=1000,Height=500,MaxHeight=500,LeftMargin=20,RightMargin=20,BottomMargin=20}; /* {"IsRoot":false} */
+            Apply<string, string> createInstanceDictionaryCode = new Apply<string, string>() {InstanceName="createInstanceDictionaryCode",Lambda=dictionaryName =>{    var instantiations = mainGraph.Nodes.OfType<ALANode>().Select(n => n.Model.Name).ToList();    var sb = new StringBuilder();    foreach (var instantiation in instantiations)    {        sb.AppendLine($"{dictionaryName}[\"{instantiation}\"] = {instantiation};");    }    return sb.ToString();}}; /* {"IsRoot":false} */
+            Vertical id_a1b1ae6b9ca64970b5b8988be0b5dda7 = new Vertical() {InstanceName="id_a1b1ae6b9ca64970b5b8988be0b5dda7"}; /* {"IsRoot":false} */
+            Horizontal id_65e62fc671b1436191ccdc2a2e8c8af8 = new Horizontal() {InstanceName="id_65e62fc671b1436191ccdc2a2e8c8af8"}; /* {"IsRoot":false} */
+            UIConfig id_ca4344b0f1334536b8ba52fda7567809 = new UIConfig() {InstanceName="id_ca4344b0f1334536b8ba52fda7567809",UniformMargin=2}; /* {"IsRoot":false} */
+            UIConfig id_e4615109bbba480cb0f7c11cc493cd84 = new UIConfig() {InstanceName="id_e4615109bbba480cb0f7c11cc493cd84",MinWidth=150,UniformMargin=2}; /* {"IsRoot":false} */
+            Text id_740a947e8deb4a26868e4858d59387de = new Text(text:"Dictionary name:") {FontSize=16,InstanceName="id_740a947e8deb4a26868e4858d59387de"}; /* {"IsRoot":false} */
+            TextBox id_a1163328ed694682ad454ff0f88e4dfe = new TextBox() {InstanceName="id_a1163328ed694682ad454ff0f88e4dfe"}; /* {"IsRoot":false} */
+            DataFlowConnector<string> id_e7a7ac196c52416aa49fc77fe0503251 = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
+            Data<string> id_df9b787cea7845f88e1faf65240adb4f = new Data<string>() {storedData="_abstractionsDict"}; /* {"IsRoot":false} */
+            UIConfig id_28f139af6d3941658d65e5c08a79006d = new UIConfig() {Width=100,UniformMargin=2}; /* {"IsRoot":false} */
+            Button id_a96a45b9b88648ebbf6ea3d24f036269 = new Button(title:"Regenerate") {}; /* {"IsRoot":false} */
+            Data<string> id_b8f48b755a8545fcb626463d325ffe03 = new Data<string>() {}; /* {"IsRoot":false} */
+            UIConfig id_5b1aec35b5fd47e482a25168390fcd66 = new UIConfig() {HorizAlignment="middle",LeftMargin=10,TopMargin=10,RightMargin=10,BottomMargin=10}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -951,11 +964,28 @@ namespace Application
             id_8eb5d9903d6941d285da2fc3d2ccfc3a.WireTo(id_7c21cf85883041b88e998ecc065cc4d4, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_68ab46b356b64dbfb61d305ea9eced6f.WireTo(id_8eb5d9903d6941d285da2fc3d2ccfc3a, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             id_08d455bfa9744704b21570d06c3c5389.WireTo(id_180fa624d01c4759a83050e30426343a, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_514f6109e8a24bc4b1ced57aaa255d90.WireTo(id_df9b787cea7845f88e1faf65240adb4f, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_514f6109e8a24bc4b1ced57aaa255d90.WireTo(id_5aec7a9782644198ab22d9ed7998ee15, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false} */
-            id_5aec7a9782644198ab22d9ed7998ee15.WireTo(id_23e510bd08224b64b10c378f0f8fcdfe, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false} */
+            id_1c8c1eff6c1042cdb09364f0d4e80cf5.WireTo(id_23e510bd08224b64b10c378f0f8fcdfe, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false} */
+            id_7c21cf85883041b88e998ecc065cc4d4.WireTo(id_514f6109e8a24bc4b1ced57aaa255d90, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             id_180fa624d01c4759a83050e30426343a.WireTo(id_514f6109e8a24bc4b1ced57aaa255d90, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
-            id_514f6109e8a24bc4b1ced57aaa255d90.WireTo(id_260a747950844e2baa95f9b7b2677301, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            id_260a747950844e2baa95f9b7b2677301.WireTo(id_23e510bd08224b64b10c378f0f8fcdfe, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false} */
+            createInstanceDictionaryCode.WireTo(id_23e510bd08224b64b10c378f0f8fcdfe, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false} */
+            id_5b1aec35b5fd47e482a25168390fcd66.WireTo(id_65e62fc671b1436191ccdc2a2e8c8af8, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
+            id_a1b1ae6b9ca64970b5b8988be0b5dda7.WireTo(id_5b1aec35b5fd47e482a25168390fcd66, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_a1b1ae6b9ca64970b5b8988be0b5dda7.WireTo(id_1c8c1eff6c1042cdb09364f0d4e80cf5, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_df9b787cea7845f88e1faf65240adb4f.WireTo(createInstanceDictionaryCode, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_5aec7a9782644198ab22d9ed7998ee15.WireTo(id_a1b1ae6b9ca64970b5b8988be0b5dda7, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */
+            id_65e62fc671b1436191ccdc2a2e8c8af8.WireTo(id_ca4344b0f1334536b8ba52fda7567809, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_65e62fc671b1436191ccdc2a2e8c8af8.WireTo(id_e4615109bbba480cb0f7c11cc493cd84, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_ca4344b0f1334536b8ba52fda7567809.WireTo(id_740a947e8deb4a26868e4858d59387de, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false} */
+            id_e4615109bbba480cb0f7c11cc493cd84.WireTo(id_a1163328ed694682ad454ff0f88e4dfe, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false} */
+            id_a1163328ed694682ad454ff0f88e4dfe.WireTo(id_e7a7ac196c52416aa49fc77fe0503251, "textOutput"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_65e62fc671b1436191ccdc2a2e8c8af8.WireTo(id_28f139af6d3941658d65e5c08a79006d, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            id_28f139af6d3941658d65e5c08a79006d.WireTo(id_a96a45b9b88648ebbf6ea3d24f036269, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Button","DestinationIsReference":false} */
+            id_a96a45b9b88648ebbf6ea3d24f036269.WireTo(id_b8f48b755a8545fcb626463d325ffe03, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_b8f48b755a8545fcb626463d325ffe03.WireTo(id_e7a7ac196c52416aa49fc77fe0503251, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_b8f48b755a8545fcb626463d325ffe03.WireTo(createInstanceDictionaryCode, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_a1163328ed694682ad454ff0f88e4dfe.WireTo(id_b8f48b755a8545fcb626463d325ffe03, "eventEnterPressed"); /* {"SourceType":"TextBox","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;

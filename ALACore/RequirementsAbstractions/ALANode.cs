@@ -1277,7 +1277,7 @@ namespace RequirementsAbstractions
             _isHighlighted = true;
 
             Canvas.SetZIndex(Render, 99);
-            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => w.Source.Equals(this) || w.Destination.Equals(this)))
+            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (w.Source?.Equals(this) ?? false) || (w.Destination?.Equals(this) ?? false)))
             {
                 if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, 100);
@@ -1290,7 +1290,7 @@ namespace RequirementsAbstractions
             _isHighlighted = false;
 
             Canvas.SetZIndex(Render, DefaultZIndex);
-            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (w.Source.Equals(this) || w.Destination.Equals(this) && !w.IsHighlighted)))
+            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (!w.IsHighlighted && (w.Source?.Equals(this) ?? false) || (w.Destination?.Equals(this) ?? false))))
             {
                 if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, wire.DefaultZIndex);
