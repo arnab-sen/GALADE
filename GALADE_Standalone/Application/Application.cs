@@ -604,6 +604,10 @@ namespace Application
             Cast<object, string> id_cb85f096416943cb9c08e4862f304568 = new Cast<object, string>() {InstanceName="id_cb85f096416943cb9c08e4862f304568"}; /* {"IsRoot":false} */
             Apply<object, List<string>> id_5d9313a0a895402cb6be531e87c9b606 = new Apply<object, List<string>>() {InstanceName="id_5d9313a0a895402cb6be531e87c9b606",Lambda=obj => (obj as JArray)?.Select(jt => jt.Value<string>()).ToList() ?? new List<string>()}; /* {"IsRoot":false} */
             DataFlowConnector<object> id_4ad460d4bd8d4a63ad7aca7ed9f1c945 = new DataFlowConnector<object>() {InstanceName="id_4ad460d4bd8d4a63ad7aca7ed9f1c945"}; /* {"IsRoot":false} */
+            MenuItem id_d386225d5368436185ff7e18a6dfd91a = new MenuItem(header:"Paste") {}; /* {"IsRoot":false} */
+            TextClipboard id_355e5bd4d98745b2a42eb1266198128b = new TextClipboard() {}; /* {"IsRoot":false} */
+            Apply<string, string> id_ceae580b14444b1e82c23813f47a47cd = new Apply<string, string>() {Lambda=json => {    var jObj = JObject.Parse(json);    var instantiations =    var wireTos = }}; /* {"IsRoot":false} */
+            Apply<JToken, List<string>> id_13b7938df5e148a385988f71c8b65c20 = new Apply<JToken, List<string>>() {Lambda=jt => (jt as JArray).Select(el => el.Value<string>()).ToList()}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1050,6 +1054,10 @@ namespace Application
             id_5d9313a0a895402cb6be531e87c9b606.WireTo(id_6e909cf4d2004e078eacacf80f1f2bff, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false} */
             id_6ecefc4cdc694ef2a46a8628cadc0e1d.WireTo(id_fcfcb5f0ae544c968dcbc734ac1db51b, "filePathInput"); /* {"SourceType":"GetSetting","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_6e909cf4d2004e078eacacf80f1f2bff.WireTo(id_a1f87102954345b69de6841053fce813, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false} */
+            id_581015f073614919a33126efd44bf477.WireTo(id_d386225d5368436185ff7e18a6dfd91a, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_d386225d5368436185ff7e18a6dfd91a.WireTo(id_355e5bd4d98745b2a42eb1266198128b, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
+            id_355e5bd4d98745b2a42eb1266198128b.WireTo(id_ceae580b14444b1e82c23813f47a47cd, "contentOutput"); /* {"SourceType":"TextClipboard","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_ceae580b14444b1e82c23813f47a47cd.WireTo(id_13b7938df5e148a385988f71c8b65c20, "jTokenOutput"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             _mainWindow = mainWindow;
