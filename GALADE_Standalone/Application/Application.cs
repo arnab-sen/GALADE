@@ -610,6 +610,7 @@ namespace Application
             mainWindow.WireTo(mainWindowVertical, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false} */
             mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false} */
             mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"MenuBar","DestinationIsReference":false} */
+            mainCanvasDisplay.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_855f86954b3e4776909cde23cd96d071, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_ed16dd83790542f4bce1db7c9f2b928f, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_bbd9df1f15ea4926b97567d08b6835dd, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
@@ -618,7 +619,6 @@ namespace Application
             mainCanvasDisplay.WireTo(id_1de443ed1108447199237a8c0c584fcf, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_2a7c8f3b6b5e4879ad5a35ff6d8538fd, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"MouseWheelEvent","DestinationIsReference":false} */
             mainCanvasDisplay.WireTo(id_a26b08b25184469db6f0c4987d4c68dd, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false} */
-            mainCanvasDisplay.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
             id_581015f073614919a33126efd44bf477.WireTo(id_57e6a33441c54bc89dc30a28898cb1c0, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_581015f073614919a33126efd44bf477.WireTo(id_83c3db6e4dfa46518991f706f8425177, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_57e6a33441c54bc89dc30a28898cb1c0.WireTo(id_5297a497d2de44e5bc0ea2c431cdcee6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */

@@ -325,6 +325,46 @@ namespace RequirementsAbstractions
             if (deleteDestination && Destination != null && Graph.ContainsNode(Destination)) Destination.Delete(deleteDestination);
         }
 
+        public string ToWireTo(JObject metaData = null)
+        {
+            var sb = new StringBuilder();
+            var source = Source;
+            var destination = Destination;
+            var sourcePort = SourcePortBox.Payload as Port;
+            var destinationPort = DestinationPortBox.Payload as Port;
+
+            if (sourcePort.IsReversePort)
+            {
+                ALANode _temp1 = source;
+                source = destination;
+                destination = _temp1;
+
+                Port _temp2 = sourcePort;
+                sourcePort = destinationPort;
+                destinationPort = _temp2;
+            }
+
+            sb.Append(string.IsNullOrWhiteSpace(sourcePort.Name) ? $"{source.Name}.WireTo({destination.Name});" : $"{source.Name}.WireTo({destination.Name}, \"{sourcePort.Name}\");");
+
+            sb.Append(" /* ");
+
+            if (metaData == null)
+            {
+                metaData = new JObject
+                {
+                    ["SourceType"] = source.Model.Type,
+                    ["SourceIsReference"] = source.IsReferenceNode,
+                    ["DestinationType"] = destination.Model.Type,
+                    ["DestinationIsReference"] = destination.IsReferenceNode
+                };
+            }
+            sb.Append(metaData.ToString(Newtonsoft.Json.Formatting.None));
+
+            sb.Append(" */");
+
+            return sb.ToString();
+        }
+
         private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI

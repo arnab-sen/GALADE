@@ -61,7 +61,6 @@ namespace Application
         public List<string> GenerateWireTos()
         {
             _wireTos = new List<string>();
-            var wireToBuilder = new StringBuilder();
 
             var edges = Graph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null);
 
@@ -70,37 +69,9 @@ namespace Application
                 var wire = edge as ALAWire;
                 if (wire == null) continue;
 
-                wireToBuilder.Clear();
+                var wireTo = wire.ToWireTo();
 
-                var source = wire.Source;
-                var destination = wire.Destination;
-                var sourcePort = wire.SourcePortBox.Payload as Port;
-                var destinationPort = wire.DestinationPortBox.Payload as Port;
-
-                if (sourcePort.IsReversePort)
-                {
-                    ALANode _temp1 = source;
-                    source = destination;
-                    destination = _temp1;
-
-                    Port _temp2 = sourcePort;
-                    sourcePort = destinationPort;
-                    destinationPort = _temp2;
-                }
-
-                wireToBuilder.Append(CreateWireToString(source.Name, destination.Name, sourcePort.Name));
-
-                wireToBuilder.Append(" /* ");
-                if (wire.MetaData == null) wire.MetaData = new Newtonsoft.Json.Linq.JObject();
-                wire.MetaData["SourceType"] = source.Model.Type;
-                wire.MetaData["SourceIsReference"] = source.IsReferenceNode;
-
-                wire.MetaData["DestinationType"] = destination.Model.Type;
-                wire.MetaData["DestinationIsReference"] = destination.IsReferenceNode;
-                wireToBuilder.Append(wire.MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
-                wireToBuilder.Append(" */");
-
-                _wireTos.Add(wireToBuilder.ToString());
+                _wireTos.Add(wireTo);
             }
 
             return _wireTos;

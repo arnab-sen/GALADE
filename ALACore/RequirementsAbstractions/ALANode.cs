@@ -675,23 +675,9 @@ namespace RequirementsAbstractions
             }
         }
 
-        public string ToInstantiation(bool singleLine = true)
-        {
-            var instantiation = "";
+        public string ToInstantiation(bool singleLine = true) => singleLine ? ToFlatInstantiation() : ToFormattedInstantiation();
 
-            if (singleLine)
-            {
-                instantiation = ToFlatInstantiation();
-            }
-            else
-            {
-                instantiation = ToFormattedInstantiation();
-            }
-
-            return instantiation;
-        }
-
-        private string ToFlatInstantiation()
+        private string ToFlatInstantiation(JObject metaData = null)
         {
             var instantiation = "";
 
@@ -722,14 +708,24 @@ namespace RequirementsAbstractions
             sb.Append(Flatten(GetPropertySyntaxList(propertiesAndFields).ToString()));
             sb.Append("};");
 
-            if (MetaData == null)
+            JObject tempMetaData;
+            if (metaData == null)
             {
-                MetaData = new JObject();
-                MetaData["IsRoot"] = IsRoot;
+                if (MetaData == null)
+                {
+                    MetaData = new JObject();
+                    MetaData["IsRoot"] = IsRoot;
+                }
+
+                tempMetaData = MetaData;
+            }
+            else
+            {
+                tempMetaData = metaData;
             }
 
             sb.Append(" /* ");
-            sb.Append(MetaData?.ToString(Newtonsoft.Json.Formatting.None) ?? "");
+            sb.Append(tempMetaData.ToString(Newtonsoft.Json.Formatting.None));
             sb.Append(" */");
 
             instantiation = sb.ToString();
@@ -1402,33 +1398,111 @@ namespace RequirementsAbstractions
             }
         }
 
+        public List<ALAWire> GetConnectedWires(Dictionary<string, string> treeParents = null)
+        {
+            var connectedWires = new List<ALAWire>();
+
+            var q = new Queue<ALANode>();
+            q.Enqueue(this);
+            var visited = new HashSet<string>();
+            if (treeParents == null) treeParents = new Dictionary<string, string>();
+
+            while (q.Any())
+            {
+                var parent = q.Dequeue();
+
+                if (!visited.Contains(parent.Id))
+                {
+                    visited.Add(parent.Id);
+
+                    var directWires = Graph.Edges.OfType<ALAWire>().Where(wire => wire.Source == parent).ToList();
+                    connectedWires.AddRange(directWires);
+                    var children = directWires.Select(wire => wire.Destination);
+
+                    foreach (var child in children)
+                    {
+                        if (!visited.Contains(child.Id))
+                        {
+                            q.Enqueue(child);
+                            treeParents[child.Id] = parent.Id;
+                        }
+                    }
+                }
+            }
+
+            return connectedWires;
+        }
+
+        public string GenerateConnectedSubdiagramCode()
+        {
+            var jObj = new JObject();
+            var instantiations = new JArray(ToFlatInstantiation());
+            var addedNodes = new HashSet<string>() { Id };
+            var addedWires = new HashSet<string>();
+
+            var wireTos = new JArray();
+            jObj["Instantiations"] = instantiations;
+            jObj["WireTos"] = wireTos;
+
+            var treeParents = new Dictionary<string, string>();
+
+            var wires = GetConnectedWires(treeParents);
+            foreach (var wire in wires)
+            {
+                if (addedWires.Contains(wire.Id) || wire.Source == null || wire.Destination == null || wire.Source.Equals(wire.Destination)) continue;
+
+                if (!addedNodes.Contains(wire.Source.Id))
+                {
+                    addedNodes.Add(wire.Source.Id);
+                    instantiations.Add(wire.Source.ToFlatInstantiation());
+                }
+
+                if (!addedNodes.Contains(wire.Destination.Id))
+                {
+                    addedNodes.Add(wire.Destination.Id);
+                    instantiations.Add(wire.Destination.ToFlatInstantiation());
+                }
+                
+                wireTos.Add(wire.ToWireTo());
+                addedWires.Add(wire.Id);
+            }
+
+            return jObj.ToString();
+        }
+
         private void CreateWiring()
         {
             Vertical inputPortsVert = null;
             Vertical outputPortsVert = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
-            var rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
-            var id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
-            var createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
-            var createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
-            var createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
-            var mainContextMenu = new ContextMenu() {InstanceName="mainContextMenu"}; /* {"IsRoot":false} */
-            var id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /* {"IsRoot":false} */
-            var id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
-            var id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
-            var id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /* {"IsRoot":false} */
-            var id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /* {"IsRoot":false} */
-            var id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /* {"IsRoot":false} */
-            var id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /* {"IsRoot":false} */
-            var id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /* {"IsRoot":false} */
-            var id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /* {"IsRoot":false} */
-            var id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /* {"IsRoot":false} */
-            var nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /* {"IsRoot":false} */
-            var id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /* {"IsRoot":false} */
-            var id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /* {"IsRoot":false} */
-            var nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /* {"IsRoot":false} */
-            var id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
+            Box rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
+            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
+            UIFactory createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
+            UIFactory createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
+            UIFactory createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
+            ContextMenu mainContextMenu = new ContextMenu() {InstanceName="mainContextMenu"}; /* {"IsRoot":false} */
+            MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /* {"IsRoot":false} */
+            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
+            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
+            Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /* {"IsRoot":false} */
+            TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /* {"IsRoot":false} */
+            MenuItem id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /* {"IsRoot":false} */
+            EventLambda id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /* {"IsRoot":false} */
+            MenuItem id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /* {"IsRoot":false} */
+            EventLambda id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /* {"IsRoot":false} */
+            MenuItem id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /* {"IsRoot":false} */
+            CheckBox nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /* {"IsRoot":false} */
+            MenuItem id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /* {"IsRoot":false} */
+            CheckBox nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
+            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {}; /* {"IsRoot":false} */
+            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {}; /* {"IsRoot":false} */
+            Data<string> id_c20e3a07b4f941838b8008281978b6cb = new Data<string>() {Lambda=() => ToFlatInstantiation()}; /* {"IsRoot":false} */
+            Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {Lambda=instantiation => {    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>() { instantiation });    return jObj.ToString();}}; /* {"IsRoot":false} */
+            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {}; /* {"IsRoot":false} */
+            Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {InstanceName="",Lambda=() => GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
@@ -1439,7 +1513,7 @@ namespace RequirementsAbstractions
             id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
             mainContextMenu.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_403baaf79a824981af02ae135627767f.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
             mainContextMenu.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
@@ -1454,6 +1528,14 @@ namespace RequirementsAbstractions
             nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_7d4b8a9390724664acd0fb4f586d0b63, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_96fa54c808104c0cb7d23f092946f54d, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_96fa54c808104c0cb7d23f092946f54d.WireTo(id_c20e3a07b4f941838b8008281978b6cb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_c20e3a07b4f941838b8008281978b6cb.WireTo(id_b48d69dd54c44742ad807387f9d11e09, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
+            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_a69c62a42dfc460b81024720b3d94941, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_a69c62a42dfc460b81024720b3d94941.WireTo(id_52d97f7602cf47a7bc58e6a1ad1a977a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
+            id_b48d69dd54c44742ad807387f9d11e09.WireTo(id_67487fc1e2e949a590412918be99c15d, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
+            id_52d97f7602cf47a7bc58e6a1ad1a977a.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALANodeUI
 
             Render = _nodeMask;
@@ -1476,34 +1558,3 @@ namespace RequirementsAbstractions
         }
     }
 }
-
-
-
-
-
-            
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

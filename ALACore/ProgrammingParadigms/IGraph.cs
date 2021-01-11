@@ -8,7 +8,7 @@ using Libraries;
 namespace ProgrammingParadigms
 {
     /// <summary>
-    /// <para>A generic graph data structure. Stores a set of node ids and a set of edge ids.
+    /// <para>A generic graph data structure. Stores a set of nodes and a set of edges.
     /// Nodes and edges are passed as objects, to keep IGraph abstract and decoupled.</para>
     /// <para>It also has several operation functions, to add/delete nodes and edges.</para>
     /// <para>Each node and edge should have a unique associated string id.
