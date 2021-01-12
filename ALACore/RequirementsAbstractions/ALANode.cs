@@ -1261,7 +1261,7 @@ namespace RequirementsAbstractions
 
         public void SetDescription(string text)
         {
-            MetaData["Description"] = text;
+            MetaData?.SetProperty("Description", text);
         }
 
         private void AddUIEventsToNode(Box nodeBox)
