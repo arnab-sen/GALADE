@@ -1271,21 +1271,21 @@ namespace RequirementsAbstractions
         {
             var render = nodeBox.Render;
 
-            var toolTipLabel = new System.Windows.Controls.Label()
+            var toolTipText = new System.Windows.Controls.TextBlock()
             {
-                Content = Model.GetDocumentation()
+                Text = Model.GetDocumentation()
             };
 
             render.ToolTip = new System.Windows.Controls.ToolTip()
             {
-                Content = toolTipLabel
+                Content = toolTipText
             };
 
             ToolTipService.SetShowDuration(render, 60000); // Show tooltip for 60 seconds
 
             render.MouseEnter += (sender, args) =>
             {
-                toolTipLabel.Content = Model.GetDocumentation();
+                toolTipText.Text = $"Instance Name: {Model.Name}\n\nDocumentation:\n{Model.GetDocumentation()}";
                 HighlightNode();
             };
 
