@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Libraries;
 using ProgrammingParadigms;
@@ -15,6 +16,7 @@ using System.Windows.Input;
 using ContextMenu = DomainAbstractions.ContextMenu;
 using MenuItem = DomainAbstractions.MenuItem;
 using Newtonsoft.Json.Linq;
+using TextBox = DomainAbstractions.TextBox;
 
 namespace RequirementsAbstractions
 {
@@ -356,9 +358,12 @@ namespace RequirementsAbstractions
                     ["SourceType"] = source.Model.Type,
                     ["SourceIsReference"] = source.IsReferenceNode,
                     ["DestinationType"] = destination.Model.Type,
-                    ["DestinationIsReference"] = destination.IsReferenceNode
+                    ["DestinationIsReference"] = destination.IsReferenceNode,
+                    ["Description"] = GetDescription()
+
                 };
             }
+
             sb.Append(metaData.ToString(Newtonsoft.Json.Formatting.None));
 
             sb.Append(" */");
@@ -366,11 +371,66 @@ namespace RequirementsAbstractions
             return sb.ToString();
         }
 
+        private void OpenDescriptionEditor()
+        {
+            // Use a Popup to open text outside the node
+            var descPopup = new Popup()
+            {
+                AllowsTransparency = true,
+                Placement = PlacementMode.Bottom
+            };
+
+            var popupBackground = new Border()
+            {
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(1)
+            };
+
+            var popupText = new System.Windows.Controls.TextBox()
+            {
+                MinWidth = 200,
+                MinHeight = 50,
+                AcceptsTab = true,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 500,
+                MaxHeight = 200,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            popupBackground.Child = popupText;
+
+            descPopup.Child = popupBackground;
+
+            descPopup.Opened += (sender, args) => popupText.Text = GetDescription();
+            popupText.TextChanged += (sender, args) => SetDescription(popupText.Text);
+
+            descPopup.PlacementTarget = Render;
+            descPopup.Placement = PlacementMode.MousePoint;
+            descPopup.StaysOpen = false;
+            descPopup.IsOpen = true;
+
+            popupText.Focus();
+        }
+
+        private string GetDescription()
+        {
+            if (MetaData != null && MetaData.ContainsKey("Description")) return MetaData["Description"].Value<string>();
+            return "";
+        }
+
+        private void SetDescription(string text)
+        {
+            if (MetaData != null) MetaData["Description"] = text;
+        }
+
         private void CreateWiring()
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
             CurvedLine curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /* {"IsRoot":true} */
-            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    return $"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}";}}; /* {"IsRoot":false} */
+            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    var sb = new StringBuilder();    sb.Append($"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}");    if (MetaData != null && MetaData.ContainsKey("Description") && !string.IsNullOrWhiteSpace(MetaData["Description"].Value<string>())) sb.AppendLine("\n\n" + MetaData["Description"].Value<string>());        return sb.ToString();}}; /* {"IsRoot":false} */
             MouseEvent id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /* {"IsRoot":false} */
             MouseEvent id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /* {"IsRoot":false} */
             ContextMenu wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /* {"IsRoot":false} */
@@ -391,6 +451,8 @@ namespace RequirementsAbstractions
             MenuItem id_5e84922dd50544a6a279b1703c539772 = new MenuItem(header:"Set as tree connection/Promote at destination") {InstanceName="id_5e84922dd50544a6a279b1703c539772"}; /* {"IsRoot":false} */
             EventLambda id_41314b5186b34283b2551077b9f841f6 = new EventLambda() {InstanceName="id_41314b5186b34283b2551077b9f841f6",Lambda=() =>{    var currentTreeConnection = Graph.Edges.OfType<ALAWire>().FirstOrDefault(w => w.Destination.Equals(Destination));    var currentTreeConnectionIndex = Graph.Edges.IndexOf(currentTreeConnection);    Graph.Edges.Remove(this);    Graph.Edges.Insert(currentTreeConnectionIndex, this);    foreach (var wire in Graph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             UIConfig UIConfig_curvedWire = new UIConfig() {InstanceName="UIConfig_curvedWire",ToolTipShowDuration=60}; /* {"IsRoot":true} */
+            MenuItem id_aa2371bf2416455dae164034a27c8bfc = new MenuItem(header:"Edit description") {}; /* {"IsRoot":false} */
+            EventLambda id_42f22ef33bee467f9dc2415b85827edb = new EventLambda() {Lambda=() => OpenDescriptionEditor()}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
@@ -415,6 +477,8 @@ namespace RequirementsAbstractions
             wireContextMenu.WireTo(id_5e84922dd50544a6a279b1703c539772, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_5e84922dd50544a6a279b1703c539772.WireTo(id_41314b5186b34283b2551077b9f841f6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             UIConfig_curvedWire.WireTo(curvedWire, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CurvedLine","DestinationIsReference":false} */
+            wireContextMenu.WireTo(id_aa2371bf2416455dae164034a27c8bfc, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_aa2371bf2416455dae164034a27c8bfc.WireTo(id_42f22ef33bee467f9dc2415b85827edb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALAWireUI
 
             _bezier = curvedWire;
