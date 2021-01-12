@@ -1236,7 +1236,8 @@ namespace RequirementsAbstractions
             descPopup.Child = popupBackground;
 
             descPopup.Opened += (sender, args) => popupText.Text = GetDescription();
-            descPopup.Closed += (sender, args) => SetDescription(popupText.Text);
+            // descPopup.Closed += (sender, args) => SetDescription(popupText.Text);
+            popupText.TextChanged += (sender, args) => SetDescription(popupText.Text);
 
             descPopupButton.Click += (sender, args) =>
             {

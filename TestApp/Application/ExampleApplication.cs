@@ -38,10 +38,10 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Main
-            Apply<T1, T2> A = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomething();}}; /* {"IsRoot":true,"Description":"This is a test description for an Apply abstraction.\r\nThis data will be saved on close."} */
+            Apply<T1, T2> A = new Apply<T1, T2>() {InstanceName="A",Lambda=() =>{    DoSomething();}}; /* {"IsRoot":true,"Description":"This is a description for an Apply abstraction."} */
             Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
             Apply<T1, T2> C = new Apply<T1, T2>() {InstanceName="C"}; /* {"IsRoot":false} */
-            Apply<T1, T2> root = new Apply<T1, T2>() {InstanceName="root"}; /* {"IsRoot":true} */
+            Apply<T1, T2> root = new Apply<T1, T2>() {InstanceName="root"}; /* {"IsRoot":true,"Description":"Test"} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Main
 
 			// BEGIN AUTO-GENERATED WIRING FOR Main
