@@ -22,11 +22,6 @@ namespace DomainAbstractions
         // Ports
         private List<IEventHandler> eventHandlers = new List<IEventHandler>();
 
-        public ToolTip()
-        {
-
-        }
-
         private void OnWiringInitialize()
         {
             foreach (var eventHandler in eventHandlers)
@@ -48,6 +43,11 @@ namespace DomainAbstractions
             }
 
             return _toolTip;
+        }
+
+        public ToolTip()
+        {
+
         }
     }
 }

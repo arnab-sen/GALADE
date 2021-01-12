@@ -76,7 +76,8 @@ namespace RequirementsAbstractions
 
         // Private fields
         private Box rootUI;
-        private CurvedLine _bezier = new CurvedLine();
+        private CurvedLine _bezier;
+        private UIConfig _bezierConfig;
         private ALANode _source;
         private ALANode _destination;
         private StateTransition<Enums.DiagramMode> _stateTransition;
@@ -98,7 +99,7 @@ namespace RequirementsAbstractions
         {
             Refresh();
 
-            Render = (_bezier as IUI).GetWPFElement();
+            Render = (_bezierConfig as IUI).GetWPFElement();
 
             Canvas.Children.Add(Render);
             Canvas.SetLeft(Render, 0);
@@ -389,6 +390,7 @@ namespace RequirementsAbstractions
             EventLambda id_3a401636c3e44a16884fd24f94925372 = new EventLambda() {InstanceName="id_3a401636c3e44a16884fd24f94925372",Lambda=() =>{    var currentTreeConnection = Graph.Edges.OfType<ALAWire>().FirstOrDefault(w => w.Source.Equals(Source));    var currentTreeConnectionIndex = Graph.Edges.IndexOf(currentTreeConnection);    Graph.Edges.Remove(this);    Graph.Edges.Insert(currentTreeConnectionIndex, this);    foreach (var wire in Graph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             MenuItem id_5e84922dd50544a6a279b1703c539772 = new MenuItem(header:"Set as tree connection/Promote at destination") {InstanceName="id_5e84922dd50544a6a279b1703c539772"}; /* {"IsRoot":false} */
             EventLambda id_41314b5186b34283b2551077b9f841f6 = new EventLambda() {InstanceName="id_41314b5186b34283b2551077b9f841f6",Lambda=() =>{    var currentTreeConnection = Graph.Edges.OfType<ALAWire>().FirstOrDefault(w => w.Destination.Equals(Destination));    var currentTreeConnectionIndex = Graph.Edges.IndexOf(currentTreeConnection);    Graph.Edges.Remove(this);    Graph.Edges.Insert(currentTreeConnectionIndex, this);    foreach (var wire in Graph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
+            UIConfig UIConfig_curvedWire = new UIConfig() {InstanceName="UIConfig_curvedWire",ToolTipShowDuration=60}; /* {"IsRoot":true} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
@@ -412,9 +414,11 @@ namespace RequirementsAbstractions
             id_fb4c357790d34208be2c4ec5ea42166d.WireTo(id_3a401636c3e44a16884fd24f94925372, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             wireContextMenu.WireTo(id_5e84922dd50544a6a279b1703c539772, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_5e84922dd50544a6a279b1703c539772.WireTo(id_41314b5186b34283b2551077b9f841f6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            UIConfig_curvedWire.WireTo(curvedWire, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CurvedLine","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALAWireUI
 
             _bezier = curvedWire;
+            _bezierConfig = UIConfig_curvedWire;
         }
 
         public ALAWire()

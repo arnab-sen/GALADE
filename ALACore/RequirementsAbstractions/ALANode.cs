@@ -543,6 +543,7 @@ namespace RequirementsAbstractions
 	        
 	        var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
 	        dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
+            ToolTipService.SetShowDuration(dropDownUI, 60000); // Show tooltip for 60 seconds
 
             dropDownUI.MouseEnter += (sender, args) =>
             {
@@ -970,6 +971,8 @@ namespace RequirementsAbstractions
                 Content = toolTipLabel
             };
 
+            ToolTipService.SetShowDuration(box.Render, 60000); // Show tooltip for 60 seconds
+
             box.Render.MouseEnter += (sender, args) => toolTipLabel.Content = GetPortDocumentation(port.Name);
 
             var text = new Text(text: port.Name);
@@ -1277,6 +1280,8 @@ namespace RequirementsAbstractions
             {
                 Content = toolTipLabel
             };
+
+            ToolTipService.SetShowDuration(render, 60000); // Show tooltip for 60 seconds
 
             render.MouseEnter += (sender, args) =>
             {

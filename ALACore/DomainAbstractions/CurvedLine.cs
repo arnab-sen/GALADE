@@ -125,8 +125,6 @@ namespace DomainAbstractions
                 _render.Focusable = false;
             }
 
-
-
             _pathFigure.Segments = new PathSegmentCollection()
             {
                 _bezier
@@ -153,8 +151,8 @@ namespace DomainAbstractions
                 eventHandler.Sender = this;
             }
 
-            if (toolTip != null) _path.ToolTip = toolTip.GetWPFElement();
-            if (contextMenu != null) _path.ContextMenu = contextMenu.GetWPFElement() as System.Windows.Controls.ContextMenu;
+            if (toolTip != null) _render.ToolTip = toolTip.GetWPFElement();
+            if (contextMenu != null) _render.ContextMenu = contextMenu.GetWPFElement() as System.Windows.Controls.ContextMenu;
 
             _render.Children.Add(_path);
 

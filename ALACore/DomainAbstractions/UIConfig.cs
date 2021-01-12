@@ -31,6 +31,11 @@ namespace DomainAbstractions
         public double ActualWidth => (_uiElement as FrameworkElement)?.ActualWidth ?? 0;
 
         /// <summary>
+        /// Sets the amount of time, in seconds, that the element's tooltip should remain open.
+        /// </summary>
+        public double ToolTipShowDuration { get; set; } = double.NaN;
+
+        /// <summary>
         /// Choose from left, right, or middle.
         /// </summary>
         public string HorizAlignment { get; set; } = "";
@@ -152,6 +157,7 @@ namespace DomainAbstractions
                 if (!double.IsNaN(MinWidth)) fe.MinWidth = MinWidth;
                 if (!double.IsNaN(MaxHeight)) fe.MaxHeight = MaxHeight;
                 if (!double.IsNaN(MaxWidth)) fe.MaxWidth = MaxWidth;
+                if (!double.IsNaN(ToolTipShowDuration)) ToolTipService.SetShowDuration(fe, (int)Math.Round(ToolTipShowDuration * 1000));
 
                 if (double.IsNaN(UniformMargin))
                 {
