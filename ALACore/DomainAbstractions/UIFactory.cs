@@ -10,11 +10,15 @@ using ProgrammingParadigms;
 
 namespace DomainAbstractions
 {
+    /// <summary>
+    /// Creates and returns a UI instance. Either GetUIContainer or GetUIElement must be defined.
+    /// </summary>
     public class UIFactory : IUI // child
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public Func<IUI> GetUIContainer { get; set; }
+        public Func<UIElement> GetUIElement { get; set; }
 
         // Private fields
 
@@ -24,10 +28,20 @@ namespace DomainAbstractions
         // IUI implementation
         UIElement IUI.GetWPFElement()
         {
-            var uiContainer = GetUIContainer();
-            if (uiInstanceOutput != null) uiInstanceOutput.Data = uiContainer;
+            if (GetUIContainer != null)
+            {
+                var uiContainer = GetUIContainer();
+                if (uiInstanceOutput != null) uiInstanceOutput.Data = uiContainer;
 
-            return uiContainer.GetWPFElement();
+                return uiContainer.GetWPFElement(); 
+            }
+            else
+            {
+                var uiElement = GetUIElement();
+                if (uiInstanceOutput != null) uiInstanceOutput.Data = uiElement;
+
+                return uiElement;
+            }
         }
 
         // Methods

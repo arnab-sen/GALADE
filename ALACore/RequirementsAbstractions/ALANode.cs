@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Libraries;
@@ -1169,7 +1170,7 @@ namespace RequirementsAbstractions
 
             addNewParameterRow.WireTo(getInitialisedRow, "children");
             addNewParameterRow.WireTo(addNewRowButton, "children");
-            addNewParameterRow.WireTo(new Text(""), "children");
+            // addNewParameterRow.WireTo(new Text(""), "children");
 
             addNewRowButton.WireTo(new EventLambda()
             {
@@ -1180,7 +1181,86 @@ namespace RequirementsAbstractions
                 }
             }, "eventButtonClicked");
 
+            // Use an Expander to open text inside the node
+            // var descriptionExpander = new Expander();
+            // descriptionExpander.ExpandDirection = ExpandDirection.Down;
+            // var descriptionExpanderText = new Label()
+            // {
+            //     Content = "Test\nString"
+            // };
+            //
+            // descriptionExpander.Content = descriptionExpanderText;
+            //
+            // addNewParameterRow.WireTo(new UIFactory()
+            // {
+            //     GetUIElement = () => descriptionExpander
+            // });
+
+            // Use a Popup to open text outside the node
+            var descPopupButton = new System.Windows.Controls.Button()
+            {
+                Content = "?",
+                Width = 20,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(5)
+            };
+
+            var descPopup = new Popup()
+            {
+                AllowsTransparency = true,
+                Placement = PlacementMode.Bottom
+            };
+
+            var popupBackground = new Border()
+            {
+                Background = Brushes.White,
+                BorderBrush = Brushes.Black,
+                BorderThickness = new Thickness(1)
+            };
+
+            var popupText = new System.Windows.Controls.TextBox()
+            {
+                MinWidth = 200,
+                MinHeight = 50,
+                AcceptsTab = true,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 500,
+                MaxHeight = 200,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+
+            popupBackground.Child = popupText;
+
+            descPopup.Child = popupBackground;
+
+            descPopup.Opened += (sender, args) => popupText.Text = GetDescription();
+            descPopup.Closed += (sender, args) => SetDescription(popupText.Text);
+
+            descPopupButton.Click += (sender, args) =>
+            {
+                descPopup.PlacementTarget = descPopupButton;
+                descPopup.StaysOpen = false;
+                descPopup.IsOpen = true;
+            };
+
+            addNewParameterRow.WireTo(new UIFactory()
+            {
+                GetUIElement = () => descPopupButton
+            });
+
             return addNewParameterRow;
+        }
+
+        public string GetDescription()
+        {
+            return MetaData?.GetValue("Description")?.Value<string>() ?? "";
+        }
+
+        public void SetDescription(string text)
+        {
+            MetaData["Description"] = text;
         }
 
         private void AddUIEventsToNode(Box nodeBox)
@@ -1497,12 +1577,13 @@ namespace RequirementsAbstractions
             MenuItem id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /* {"IsRoot":false} */
             CheckBox nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /* {"IsRoot":false} */
             ApplyAction<bool> id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
-            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {}; /* {"IsRoot":false} */
-            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {}; /* {"IsRoot":false} */
-            Data<string> id_c20e3a07b4f941838b8008281978b6cb = new Data<string>() {Lambda=() => ToFlatInstantiation()}; /* {"IsRoot":false} */
-            Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {Lambda=instantiation => {    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>() { instantiation });    return jObj.ToString();}}; /* {"IsRoot":false} */
-            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {}; /* {"IsRoot":false} */
+            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {InstanceName="id_7d4b8a9390724664acd0fb4f586d0b63"}; /* {"IsRoot":false} */
+            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {InstanceName="id_96fa54c808104c0cb7d23f092946f54d"}; /* {"IsRoot":false} */
+            Data<string> id_c20e3a07b4f941838b8008281978b6cb = new Data<string>() {InstanceName="id_c20e3a07b4f941838b8008281978b6cb",Lambda=() => ToFlatInstantiation()}; /* {"IsRoot":false} */
+            Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {InstanceName="id_b48d69dd54c44742ad807387f9d11e09",Lambda=instantiation =>{    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>()    {instantiation});    return jObj.ToString();}}; /* {"IsRoot":false} */
+            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {InstanceName="id_a69c62a42dfc460b81024720b3d94941"}; /* {"IsRoot":false} */
             Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {InstanceName="",Lambda=() => GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
+            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
@@ -1528,7 +1609,7 @@ namespace RequirementsAbstractions
             nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
             id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
             id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_7d4b8a9390724664acd0fb4f586d0b63, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
+            id_7c333d78095d4982b82623733fbdbe00.WireTo(id_7d4b8a9390724664acd0fb4f586d0b63, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_96fa54c808104c0cb7d23f092946f54d, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_96fa54c808104c0cb7d23f092946f54d.WireTo(id_c20e3a07b4f941838b8008281978b6cb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_c20e3a07b4f941838b8008281978b6cb.WireTo(id_b48d69dd54c44742ad807387f9d11e09, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
@@ -1536,6 +1617,7 @@ namespace RequirementsAbstractions
             id_a69c62a42dfc460b81024720b3d94941.WireTo(id_52d97f7602cf47a7bc58e6a1ad1a977a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
             id_b48d69dd54c44742ad807387f9d11e09.WireTo(id_67487fc1e2e949a590412918be99c15d, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
             id_52d97f7602cf47a7bc58e6a1ad1a977a.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
+            mainContextMenu.WireTo(id_7c333d78095d4982b82623733fbdbe00, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALANodeUI
 
             Render = _nodeMask;
