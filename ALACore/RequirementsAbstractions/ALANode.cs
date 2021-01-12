@@ -242,7 +242,7 @@ namespace RequirementsAbstractions
         /// <param name="name">The variable name of the port.</param>
         /// <param name="useDefault">Whether to return a default port box if the desired port does not exist.</param>
         /// <returns></returns>
-        public Box GetPortBox(string name, bool useDefault = true)
+        public Box GetPortBox(string name = "", bool useDefault = true)
         {
             foreach (var outputPortBox in _outputPortBoxes)
             {
@@ -1570,7 +1570,7 @@ namespace RequirementsAbstractions
             ContextMenu mainContextMenu = new ContextMenu() {InstanceName="mainContextMenu"}; /* {"IsRoot":false} */
             MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /* {"IsRoot":false} */
             EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
-            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
+            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
             Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /* {"IsRoot":false} */
             TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /* {"IsRoot":false} */
             MenuItem id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /* {"IsRoot":false} */
@@ -1589,41 +1589,41 @@ namespace RequirementsAbstractions
             Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {InstanceName="id_b48d69dd54c44742ad807387f9d11e09",Lambda=instantiation =>{    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>()    {instantiation});    return jObj.ToString();}}; /* {"IsRoot":false} */
             MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {InstanceName="id_a69c62a42dfc460b81024720b3d94941"}; /* {"IsRoot":false} */
             Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {InstanceName="",Lambda=() => GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
-            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
+            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {InstanceName="id_7c333d78095d4982b82623733fbdbe00",Visible=false}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
-            rootUI.WireTo(id_a38c965bdcac4123bb22c40a31b04de5, "uiLayout"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false} */
-            rootUI.WireTo(mainContextMenu, "contextMenu"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createInputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createNodeMiddleVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
-            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_403baaf79a824981af02ae135627767f.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_4c03930a6877421eb54a5397acb93135, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            nodeIsRootCheckBox.WireTo(id_fc8dfeb357454d458f8bd67f185de174, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_692340f2d88d4d0d80cff9daaff7350d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false} */
-            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false} */
-            id_7c333d78095d4982b82623733fbdbe00.WireTo(id_7d4b8a9390724664acd0fb4f586d0b63, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_96fa54c808104c0cb7d23f092946f54d, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_96fa54c808104c0cb7d23f092946f54d.WireTo(id_c20e3a07b4f941838b8008281978b6cb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            id_c20e3a07b4f941838b8008281978b6cb.WireTo(id_b48d69dd54c44742ad807387f9d11e09, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false} */
-            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_a69c62a42dfc460b81024720b3d94941, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_a69c62a42dfc460b81024720b3d94941.WireTo(id_52d97f7602cf47a7bc58e6a1ad1a977a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false} */
-            id_b48d69dd54c44742ad807387f9d11e09.WireTo(id_67487fc1e2e949a590412918be99c15d, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
-            id_52d97f7602cf47a7bc58e6a1ad1a977a.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false} */
-            mainContextMenu.WireTo(id_7c333d78095d4982b82623733fbdbe00, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false} */
+            rootUI.WireTo(id_a38c965bdcac4123bb22c40a31b04de5, "uiLayout"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":""} */
+            rootUI.WireTo(mainContextMenu, "contextMenu"); /* {"SourceType":"Box","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false,"Description":""} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createInputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":""} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createNodeMiddleVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":""} */
+            id_a38c965bdcac4123bb22c40a31b04de5.WireTo(createOutputPortsVertical, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_403baaf79a824981af02ae135627767f, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_403baaf79a824981af02ae135627767f.WireTo(id_872f85f0291843daad50fcaf77f4e9c2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_506e76d969fe492291d78e607738dd48, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_506e76d969fe492291d78e607738dd48.WireTo(id_3a93eeaf377b47c8b9bbd70dda63370c, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
+            id_3a93eeaf377b47c8b9bbd70dda63370c.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_1ef9731dc4674b8e97409364e29134d2, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_1ef9731dc4674b8e97409364e29134d2.WireTo(id_07bac55274924004ba5f349da0f11ef7, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_5d1f3fa471fe492586d178fa2eb2fd81, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_5d1f3fa471fe492586d178fa2eb2fd81.WireTo(id_a68a6c716096461585853877fa2c6f7a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_4c03930a6877421eb54a5397acb93135, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false,"Description":""} */
+            nodeIsRootCheckBox.WireTo(id_fc8dfeb357454d458f8bd67f185de174, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_692340f2d88d4d0d80cff9daaff7350d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "icon"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false,"Description":""} */
+            nodeIsReferenceNodeCheckBox.WireTo(id_5549bbb3a73e4fceb7b571f3ba58b9db, "isChecked"); /* {"SourceType":"CheckBox","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":""} */
+            id_692340f2d88d4d0d80cff9daaff7350d.WireTo(nodeIsReferenceNodeCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false,"Description":""} */
+            id_4c03930a6877421eb54a5397acb93135.WireTo(nodeIsRootCheckBox, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"CheckBox","DestinationIsReference":false,"Description":""} */
+            id_7c333d78095d4982b82623733fbdbe00.WireTo(id_7d4b8a9390724664acd0fb4f586d0b63, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_96fa54c808104c0cb7d23f092946f54d, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_96fa54c808104c0cb7d23f092946f54d.WireTo(id_c20e3a07b4f941838b8008281978b6cb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
+            id_c20e3a07b4f941838b8008281978b6cb.WireTo(id_b48d69dd54c44742ad807387f9d11e09, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":""} */
+            id_7d4b8a9390724664acd0fb4f586d0b63.WireTo(id_a69c62a42dfc460b81024720b3d94941, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_a69c62a42dfc460b81024720b3d94941.WireTo(id_52d97f7602cf47a7bc58e6a1ad1a977a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
+            id_b48d69dd54c44742ad807387f9d11e09.WireTo(id_67487fc1e2e949a590412918be99c15d, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false,"Description":""} */
+            id_52d97f7602cf47a7bc58e6a1ad1a977a.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false,"Description":""} */
+            mainContextMenu.WireTo(id_7c333d78095d4982b82623733fbdbe00, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":""} */
             // END AUTO-GENERATED WIRING FOR ALANodeUI
 
             Render = _nodeMask;
