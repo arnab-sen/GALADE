@@ -178,7 +178,14 @@ namespace DomainAbstractions
                 _properties[name] = value;
             }
 
-            if (initialise) Initialise(name);
+            if (initialise)
+            {
+                Initialise(name);
+            }
+            else
+            {
+                Deinitialise(name);
+            }
 
             if (name == "InstanceName") Description = value; 
         }
@@ -271,6 +278,7 @@ namespace DomainAbstractions
             ReplaceDict(source._memberDocumentation, _memberDocumentation);
 
             _initialised = source._initialised.ToHashSet();
+            SetValue("InstanceName", "", false);
 
             SetGenerics(source.GetGenerics());
         }
