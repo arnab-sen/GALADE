@@ -462,6 +462,7 @@ namespace RequirementsAbstractions
             curvedWire.WireTo(id_b7877b330b854e33a1cb9ab810091c7f, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false} */
             curvedWire.WireTo(id_375a4e94d9d34270a4a028096c72ccea, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false} */
             curvedWire.WireTo(id_a3bafb1880ea4ae3b2825dee844c50b1, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseButtonEvent","DestinationIsReference":false} */
+            wireContextMenu.WireTo(id_aa2371bf2416455dae164034a27c8bfc, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             wireContextMenu.WireTo(id_5a22e8db5ff94ecf8539826f46c5b735, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             wireContextMenu.WireTo(id_262a1b5c183d4b24bf3443567697cef1, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             wireContextMenu.WireTo(id_55239d2e49364d59a3eb3e9a5ad20def, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
@@ -477,7 +478,6 @@ namespace RequirementsAbstractions
             wireContextMenu.WireTo(id_5e84922dd50544a6a279b1703c539772, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_5e84922dd50544a6a279b1703c539772.WireTo(id_41314b5186b34283b2551077b9f841f6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             UIConfig_curvedWire.WireTo(curvedWire, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CurvedLine","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_aa2371bf2416455dae164034a27c8bfc, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
             id_aa2371bf2416455dae164034a27c8bfc.WireTo(id_42f22ef33bee467f9dc2415b85827edb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
             // END AUTO-GENERATED WIRING FOR ALAWireUI
 
