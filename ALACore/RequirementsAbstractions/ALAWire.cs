@@ -423,7 +423,22 @@ namespace RequirementsAbstractions
 
         private void SetDescription(string text)
         {
-            if (MetaData != null) MetaData["Description"] = text;
+            if (MetaData == null) MetaData = CreateDefaultMetaData();
+            MetaData["Description"] = text;
+        }
+
+        private JObject CreateDefaultMetaData()
+        {
+            var obj = new JObject()
+            {
+                ["SourceType"] = Source.Model.Type,
+                ["SourceIsReference"] = Source.IsReferenceNode,
+                ["DestinationType"] = Destination.Model.Type,
+                ["DestinationIsReference"] = Destination.IsReferenceNode,
+                ["Description"] = ""
+            };
+
+            return obj;
         }
 
         private void CreateWiring()
