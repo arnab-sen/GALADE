@@ -155,6 +155,7 @@
     <Compile Include="DomainAbstractions\MouseWheelEvent.cs" />
     <Compile Include="DomainAbstractions\MultiMenu.cs" />
     <Compile Include="DomainAbstractions\ObjectFactory.cs" />
+    <Compile Include="DomainAbstractions\PopupBox.cs" />
     <Compile Include="DomainAbstractions\Scale.cs" />
     <Compile Include="DomainAbstractions\SimulateKeyboard.cs" />
     <Compile Include="DomainAbstractions\Stopwatch.cs" />

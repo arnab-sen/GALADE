@@ -83,6 +83,15 @@ namespace RequirementsAbstractions
         private ALANode _source;
         private ALANode _destination;
         private StateTransition<Enums.DiagramMode> _stateTransition;
+        private double _sourceX;
+        private double _sourceY;
+        private double _destX;
+        private double _destY;
+        private bool _isPreviewingSource = false;
+        private bool _isPreviewingDest = false;
+        private Canvas _previewCanvas = new Canvas();
+        private Border _previewBlock = new Border() { Width = 500, Height = 150, Background = Brushes.White, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
+
 
         // Ports
 
@@ -445,7 +454,7 @@ namespace RequirementsAbstractions
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
             CurvedLine curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /* {"IsRoot":true} */
-            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    var sb = new StringBuilder();    sb.Append($"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}");    if (MetaData != null && MetaData.ContainsKey("Description") && !string.IsNullOrWhiteSpace(MetaData["Description"].Value<string>())) sb.AppendLine("\n\n" + MetaData["Description"].Value<string>());        return sb.ToString();}}; /* {"IsRoot":false} */
+            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    var sb = new StringBuilder();    sb.Append($"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}");    if (MetaData != null && MetaData.ContainsKey("Description") && !string.IsNullOrWhiteSpace(MetaData["Description"].Value<string>()))        sb.AppendLine("\n\n" + MetaData["Description"].Value<string>());    return sb.ToString();}}; /* {"IsRoot":false} */
             MouseEvent id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6"}; /* {"IsRoot":false} */
             MouseEvent id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {ExtractSender=input => (input as CurvedLine).Render,InstanceName="id_b7877b330b854e33a1cb9ab810091c7f"}; /* {"IsRoot":false} */
             ContextMenu wireContextMenu = new ContextMenu() {InstanceName="wireContextMenu"}; /* {"IsRoot":false} */
@@ -466,34 +475,54 @@ namespace RequirementsAbstractions
             MenuItem id_5e84922dd50544a6a279b1703c539772 = new MenuItem(header:"Set as tree connection/Promote at destination") {InstanceName="id_5e84922dd50544a6a279b1703c539772"}; /* {"IsRoot":false} */
             EventLambda id_41314b5186b34283b2551077b9f841f6 = new EventLambda() {InstanceName="id_41314b5186b34283b2551077b9f841f6",Lambda=() =>{    var currentTreeConnection = Graph.Edges.OfType<ALAWire>().FirstOrDefault(w => w.Destination.Equals(Destination));    var currentTreeConnectionIndex = Graph.Edges.IndexOf(currentTreeConnection);    Graph.Edges.Remove(this);    Graph.Edges.Insert(currentTreeConnectionIndex, this);    foreach (var wire in Graph.Edges.OfType<ALAWire>())    {        wire.Refresh();    }}}; /* {"IsRoot":false} */
             UIConfig UIConfig_curvedWire = new UIConfig() {InstanceName="UIConfig_curvedWire",ToolTipShowDuration=60}; /* {"IsRoot":true} */
-            MenuItem id_aa2371bf2416455dae164034a27c8bfc = new MenuItem(header:"Edit description") {}; /* {"IsRoot":false} */
-            EventLambda id_42f22ef33bee467f9dc2415b85827edb = new EventLambda() {Lambda=() => OpenDescriptionEditor()}; /* {"IsRoot":false} */
+            MenuItem id_aa2371bf2416455dae164034a27c8bfc = new MenuItem(header:"Edit description") {InstanceName="id_aa2371bf2416455dae164034a27c8bfc"}; /* {"IsRoot":false} */
+            EventLambda id_42f22ef33bee467f9dc2415b85827edb = new EventLambda() {InstanceName="id_42f22ef33bee467f9dc2415b85827edb",Lambda=() => OpenDescriptionEditor()}; /* {"IsRoot":false} */
+            PopupBox id_28ec5549505f4edda6b4d3837d650c99 = new PopupBox() {InstanceName="id_28ec5549505f4edda6b4d3837d650c99",GetPlacementObject=() => Render}; /* {"IsRoot":false} */
+            UIFactory id_c3585d05ffb044a9ab3ae9b827a87eef = new UIFactory() {InstanceName="id_c3585d05ffb044a9ab3ae9b827a87eef",GetUIElement=() => _previewBlock}; /* {"IsRoot":false} */
+            EventConnector id_89e2805960f44fbea06651d1976b7100 = new EventConnector() {InstanceName="id_89e2805960f44fbea06651d1976b7100"}; /* {"IsRoot":false} */
+            EventConnector id_497a79197c1548ccb70f4a3b9daaefe9 = new EventConnector() {InstanceName="id_497a79197c1548ccb70f4a3b9daaefe9"}; /* {"IsRoot":false} */
+            EventLambda id_632c53de1e7142ba80bf2a38691670a8 = new EventLambda() {InstanceName="id_632c53de1e7142ba80bf2a38691670a8",Lambda=() =>{    if (!_isPreviewingSource)        return;    _previewCanvas.Children.Remove(Source.Render);    Canvas.SetLeft(Source.Render, _sourceX);    Canvas.SetTop(Source.Render, _sourceY);    Canvas.Children.Add(Source.Render);    _isPreviewingSource = false;}}; /* {"IsRoot":false} */
+            EventLambda id_0d037abe6d514666b413fcc70ccc5408 = new EventLambda() {InstanceName="id_0d037abe6d514666b413fcc70ccc5408",Lambda=() =>{    if (_isPreviewingSource)        return;    if (Canvas.Children.Contains(Source.Render))        Canvas.Children.Remove(Source.Render);    _isPreviewingSource = true;    if (!_previewCanvas.Children.Contains(Source.Render))        _previewCanvas.Children.Add(Source.Render);    _sourceX = Canvas.GetLeft(Source.Render);    _sourceY = Canvas.GetTop(Source.Render);    Canvas.SetLeft(Source.Render, 0);    Canvas.SetTop(Source.Render, 0);}}; /* {"IsRoot":false} */
+            Data<bool> id_afe9b89a89b34fecaaa5798198d4a018 = new Data<bool>() {InstanceName="id_afe9b89a89b34fecaaa5798198d4a018",Lambda=() => _isPreviewingSource}; /* {"IsRoot":false} */
+            IfElse id_b17b7a05e6a94403a88b872dac929eae = new IfElse() {InstanceName="id_b17b7a05e6a94403a88b872dac929eae"}; /* {"IsRoot":false} */
+            FlowGate<object> id_a700ea30b2894d8f9c3ed466cedc47ab = new FlowGate<object>() {InstanceName="id_a700ea30b2894d8f9c3ed466cedc47ab",IsOpen=false}; /* {"IsRoot":false} */
+            EventConnector id_dedab574624f47f6a769e36f92853c19 = new EventConnector() {InstanceName="id_dedab574624f47f6a769e36f92853c19"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
-            curvedWire.WireTo(wireToolTip, "toolTip"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"ToolTip","DestinationIsReference":false} */
-            curvedWire.WireTo(wireContextMenu, "contextMenu"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false} */
-            curvedWire.WireTo(id_bd225a8fef8e4e2c895b2e67ba4a99f6, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false} */
-            curvedWire.WireTo(id_b7877b330b854e33a1cb9ab810091c7f, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false} */
-            curvedWire.WireTo(id_375a4e94d9d34270a4a028096c72ccea, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false} */
-            curvedWire.WireTo(id_a3bafb1880ea4ae3b2825dee844c50b1, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseButtonEvent","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_aa2371bf2416455dae164034a27c8bfc, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_5a22e8db5ff94ecf8539826f46c5b735, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_262a1b5c183d4b24bf3443567697cef1, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_55239d2e49364d59a3eb3e9a5ad20def, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_5a22e8db5ff94ecf8539826f46c5b735.WireTo(id_4fa94caebd1040708ad83788d3477089, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_262a1b5c183d4b24bf3443567697cef1.WireTo(id_0f34a06bd3574531a6c9b0579dd8b56a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_375a4e94d9d34270a4a028096c72ccea.WireTo(id_d22091c77e774610943606a3674e7ee5, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_a3bafb1880ea4ae3b2825dee844c50b1.WireTo(id_0959a4bad0bd41f4ba02c7725022dc05, "eventHappened"); /* {"SourceType":"MouseButtonEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_55239d2e49364d59a3eb3e9a5ad20def.WireTo(id_a06846997c5341ad94996d7aaf6b7e50, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_bd225a8fef8e4e2c895b2e67ba4a99f6.WireTo(id_5724d3f527eb4a69baaceb9929d0361c, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            id_b7877b330b854e33a1cb9ab810091c7f.WireTo(id_f09af2cbf36c4a1f8b0f7d36707b5779, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_fb4c357790d34208be2c4ec5ea42166d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_fb4c357790d34208be2c4ec5ea42166d.WireTo(id_3a401636c3e44a16884fd24f94925372, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            wireContextMenu.WireTo(id_5e84922dd50544a6a279b1703c539772, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false} */
-            id_5e84922dd50544a6a279b1703c539772.WireTo(id_41314b5186b34283b2551077b9f841f6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
-            UIConfig_curvedWire.WireTo(curvedWire, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CurvedLine","DestinationIsReference":false} */
-            id_aa2371bf2416455dae164034a27c8bfc.WireTo(id_42f22ef33bee467f9dc2415b85827edb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false} */
+            curvedWire.WireTo(wireToolTip, "toolTip"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"ToolTip","DestinationIsReference":false,"Description":""} */
+            curvedWire.WireTo(wireContextMenu, "contextMenu"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false,"Description":""} */
+            curvedWire.WireTo(id_bd225a8fef8e4e2c895b2e67ba4a99f6, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false,"Description":""} */
+            curvedWire.WireTo(id_b7877b330b854e33a1cb9ab810091c7f, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false,"Description":""} */
+            curvedWire.WireTo(id_375a4e94d9d34270a4a028096c72ccea, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseEvent","DestinationIsReference":false,"Description":""} */
+            curvedWire.WireTo(id_a3bafb1880ea4ae3b2825dee844c50b1, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseButtonEvent","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_aa2371bf2416455dae164034a27c8bfc, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_5a22e8db5ff94ecf8539826f46c5b735, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_262a1b5c183d4b24bf3443567697cef1, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_55239d2e49364d59a3eb3e9a5ad20def, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_5a22e8db5ff94ecf8539826f46c5b735.WireTo(id_4fa94caebd1040708ad83788d3477089, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_262a1b5c183d4b24bf3443567697cef1.WireTo(id_0f34a06bd3574531a6c9b0579dd8b56a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_dedab574624f47f6a769e36f92853c19.WireTo(id_d22091c77e774610943606a3674e7ee5, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_89e2805960f44fbea06651d1976b7100.WireTo(id_632c53de1e7142ba80bf2a38691670a8, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_a3bafb1880ea4ae3b2825dee844c50b1.WireTo(id_0959a4bad0bd41f4ba02c7725022dc05, "eventHappened"); /* {"SourceType":"MouseButtonEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_55239d2e49364d59a3eb3e9a5ad20def.WireTo(id_a06846997c5341ad94996d7aaf6b7e50, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_bd225a8fef8e4e2c895b2e67ba4a99f6.WireTo(id_5724d3f527eb4a69baaceb9929d0361c, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_497a79197c1548ccb70f4a3b9daaefe9.WireTo(id_f09af2cbf36c4a1f8b0f7d36707b5779, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_fb4c357790d34208be2c4ec5ea42166d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_fb4c357790d34208be2c4ec5ea42166d.WireTo(id_3a401636c3e44a16884fd24f94925372, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            wireContextMenu.WireTo(id_5e84922dd50544a6a279b1703c539772, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            id_5e84922dd50544a6a279b1703c539772.WireTo(id_41314b5186b34283b2551077b9f841f6, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            UIConfig_curvedWire.WireTo(curvedWire, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"CurvedLine","DestinationIsReference":false,"Description":""} */
+            id_aa2371bf2416455dae164034a27c8bfc.WireTo(id_42f22ef33bee467f9dc2415b85827edb, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_89e2805960f44fbea06651d1976b7100.WireTo(id_0d037abe6d514666b413fcc70ccc5408, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":""} */
+            id_b17b7a05e6a94403a88b872dac929eae.WireTo(id_28ec5549505f4edda6b4d3837d650c99, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"PopupBox","DestinationIsReference":false,"Description":""} */
+            id_28ec5549505f4edda6b4d3837d650c99.WireTo(id_c3585d05ffb044a9ab3ae9b827a87eef, "child"); /* {"SourceType":"PopupBox","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":""} */
+            id_a700ea30b2894d8f9c3ed466cedc47ab.WireTo(id_89e2805960f44fbea06651d1976b7100, "eventOutput"); /* {"SourceType":"FlowGate","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":""} */
+            id_b7877b330b854e33a1cb9ab810091c7f.WireTo(id_497a79197c1548ccb70f4a3b9daaefe9, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":""} */
+            id_89e2805960f44fbea06651d1976b7100.WireTo(id_afe9b89a89b34fecaaa5798198d4a018, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
+            id_afe9b89a89b34fecaaa5798198d4a018.WireTo(id_b17b7a05e6a94403a88b872dac929eae, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false,"Description":""} */
+            id_dedab574624f47f6a769e36f92853c19.WireTo(id_a700ea30b2894d8f9c3ed466cedc47ab, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"FlowGate","DestinationIsReference":false,"Description":""} */
+            id_375a4e94d9d34270a4a028096c72ccea.WireTo(id_dedab574624f47f6a769e36f92853c19, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":""} */
             // END AUTO-GENERATED WIRING FOR ALAWireUI
 
             _bezier = curvedWire;
@@ -503,6 +532,8 @@ namespace RequirementsAbstractions
         public ALAWire()
         {
             Id = Utilities.GetUniqueId();
+
+            _previewBlock.Child = _previewCanvas;
 
             CreateWiring();
         }
