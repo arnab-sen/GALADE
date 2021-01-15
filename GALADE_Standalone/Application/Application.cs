@@ -101,8 +101,13 @@ namespace Application
 
         private void CreateWiring()
         {
+#if DEBUG
+            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            var VERSION_NUMBER = $"{fullVersion.Major}.{fullVersion.Minor}.{fullVersion.Build}-preview";
+#else
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             var VERSION_NUMBER = $"{fullVersion.Major}.{fullVersion.Minor}.{fullVersion.Build}";
+#endif
 
             #region Set up directory and file paths
             string APP_DIRECTORY = Utilities.GetApplicationDirectory();
@@ -155,9 +160,9 @@ namespace Application
             settingsIncomplete |= InitialiseMissingJObjectProperty(settingsObj, "RecentProjectPaths", new JArray());
 
             if (settingsIncomplete) File.WriteAllText(SETTINGS_FILEPATH, settingsObj.ToString());
-            #endregion
+#endregion
 
-            #region Diagram constants and singletons
+#region Diagram constants and singletons
 
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
@@ -165,9 +170,9 @@ namespace Application
                 Matches = (flag, currentState) => (flag & currentState) != 0
             };
 
-            #endregion
+#endregion
 
-            #region Set up logging
+#region Set up logging
             if (LOG_ALL_WIRING) Wiring.Output += output => Logging.Log(output, WIRING_LOG_FILEPATH); // Print all WireTos to a log file
             Logging.LogOutput += output =>
             {
@@ -206,7 +211,7 @@ namespace Application
                 Logging.Log(message);
             };
 
-            #endregion
+#endregion
 
             Graph mainGraph = new Graph();
 
