@@ -101,12 +101,10 @@ namespace Application
 
         private void CreateWiring()
         {
-#if DEBUG
-            var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            var VERSION_NUMBER = $"{fullVersion.Major}.{fullVersion.Minor}.{fullVersion.Build}-preview";
-#else
             var fullVersion = Assembly.GetExecutingAssembly().GetName().Version;
             var VERSION_NUMBER = $"{fullVersion.Major}.{fullVersion.Minor}.{fullVersion.Build}";
+#if DEBUG
+            VERSION_NUMBER += "-preview";
 #endif
 
             #region Set up directory and file paths
