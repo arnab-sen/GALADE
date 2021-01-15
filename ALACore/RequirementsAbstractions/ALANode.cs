@@ -1205,7 +1205,9 @@ namespace RequirementsAbstractions
                 Content = "?",
                 Width = 20,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = new Thickness(5)
+                Margin = new Thickness(5),
+                Background = new SolidColorBrush(Color.FromRgb(221, 221, 221)),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(112, 112, 112))
             };
 
             var descPopup = new Popup()
@@ -1234,13 +1236,33 @@ namespace RequirementsAbstractions
                 HorizontalScrollBarVisibility = ScrollBarVisibility.Auto
             };
 
+            var desc = GetDescription();
+            if (!string.IsNullOrWhiteSpace(desc))
+            {
+                descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
+                descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
+            }
+
             popupBackground.Child = popupText;
 
             descPopup.Child = popupBackground;
 
             descPopup.Opened += (sender, args) => popupText.Text = GetDescription();
             // descPopup.Closed += (sender, args) => SetDescription(popupText.Text);
-            popupText.TextChanged += (sender, args) => SetDescription(popupText.Text);
+            popupText.TextChanged += (sender, args) =>
+            {
+                SetDescription(popupText.Text);
+                if (!string.IsNullOrWhiteSpace(popupText.Text))
+                {
+                    descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
+                    descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
+                }
+                else
+                {
+                    descPopupButton.Background = new SolidColorBrush(Color.FromRgb(221, 221, 221));
+                    descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(112, 112, 112));
+                }
+            };
 
             descPopupButton.Click += (sender, args) =>
             {
