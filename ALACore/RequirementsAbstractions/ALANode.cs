@@ -515,6 +515,13 @@ namespace RequirementsAbstractions
 		        Font = "Consolas",
                 TabString = "    "
 	        };
+
+            var UIConfig_textBox = new UIConfig()
+            {
+                MaxWidth = 500
+            };
+
+            UIConfig_textBox.WireTo(textBox, "child");
             
             // var textBox = new TextEditor()
             // {
@@ -580,7 +587,7 @@ namespace RequirementsAbstractions
 	        
 	        var horiz = new Horizontal();
 	        horiz.WireTo(dropDown, "children");
-	        horiz.WireTo(textBox, "children");
+	        horiz.WireTo(UIConfig_textBox, "children");
 	        horiz.WireTo(deleteButton, "children");
 	        
 	        var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;

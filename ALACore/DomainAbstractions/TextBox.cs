@@ -91,6 +91,8 @@ namespace DomainAbstractions
         /// </summary>
         public TextBox(bool readOnly = false)
         {
+            _textBox.TextWrapping = TextWrapping.Wrap;
+
             _textBox.AcceptsTab = true;
             // _textBox.AcceptsReturn = true;
 
@@ -103,7 +105,6 @@ namespace DomainAbstractions
                 }
 
             };
-
 
             // Track indentation
             _textBox.PreviewKeyDown += (sender, args) =>
