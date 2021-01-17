@@ -267,8 +267,8 @@ namespace Application
             KeyEvent id_ed16dd83790542f4bce1db7c9f2b928f = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
             Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {}; /* {"IsRoot":false} */
-            MenuItem menu_File = new MenuItem(header:"File") {InstanceName="menu_File"}; /* {"IsRoot":false} */
-            MenuItem menu_OpenProject = new MenuItem(header:"Open Project") {InstanceName="menu_OpenProject"}; /* {"IsRoot":false} */
+            MenuItem menu_File = new MenuItem(header:"File") {}; /* {"IsRoot":false} */
+            MenuItem menu_OpenProject = new MenuItem(header:"Open Project") {}; /* {"IsRoot":false} */
             FolderBrowser id_463b31fe2ac04972b5055a3ff2f74fe3 = new FolderBrowser() {Description=""}; /* {"IsRoot":false} */
             DirectorySearch id_63088b53f85b4e6bb564712c525e063c = new DirectorySearch(directoriesToFind:new string[] { "DomainAbstractions", "ProgrammingParadigms", "RequirementsAbstractions", "Modules" }) {FilenameFilter="*.cs"}; /* {"IsRoot":false} */
             Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_a98457fc05fc4e84bfb827f480db93d3 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("DomainAbstractions"))    {        list = input["DomainAbstractions"];    }    return list;}}; /* {"IsRoot":false} */
@@ -299,7 +299,7 @@ namespace Application
             Data<AbstractionModel> id_5297a497d2de44e5bc0ea2c431cdcee6 = new Data<AbstractionModel>() {Lambda=createDummyAbstractionModel.Lambda}; /* {"IsRoot":false} */
             Apply<AbstractionModel, object> id_9bd4555e80434a7b91b65e0b386593b0 = new Apply<AbstractionModel, object>() {Lambda=createNewALANode.Lambda}; /* {"IsRoot":false} */
             ApplyAction<object> id_7fabbaae488340a59d940100d38e9447 = new ApplyAction<object>() {Lambda=input =>{    var alaNode = input as ALANode;    var mousePos = Mouse.GetPosition(mainCanvas);    alaNode.PositionX = mousePos.X;    alaNode.PositionY = mousePos.Y;    mainGraph.Set("LatestNode", input);    if (mainGraph.Get("SelectedNode") == null)    {        mainGraph.Set("SelectedNode", input);    } /* mainGraph.Roots.Add(input);    alaNode.IsRoot = true; */}}; /* {"IsRoot":false} */
-            MenuItem menu_OpenCodeFile = new MenuItem(header:"Open Code File") {InstanceName="menu_OpenCodeFile"}; /* {"IsRoot":false} */
+            MenuItem menu_OpenCodeFile = new MenuItem(header:"Open Code File") {}; /* {"IsRoot":false} */
             FileBrowser id_14170585873a4fb6a7550bfb3ce8ecd4 = new FileBrowser() {Mode="Open"}; /* {"IsRoot":false} */
             FileReader id_2810e4e86da348b98b39c987e6ecd7b6 = new FileReader() {}; /* {"IsRoot":false} */
             CreateDiagramFromCode createDiagramFromCode = new CreateDiagramFromCode() {Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=false}; /* {"IsRoot":false} */
@@ -369,7 +369,7 @@ namespace Application
             Vertical id_987196dd20ab4721b0c193bb7a2064f4 = new Vertical() {Layouts=new int[]{2}}; /* {"IsRoot":false} */
             TabContainer id_7b250b222ca44ba2922547f03a4aef49 = new TabContainer() {}; /* {"IsRoot":false} */
             Tab directoryExplorerTab = new Tab(title:"Directory Explorer") {}; /* {"IsRoot":false} */
-            MenuItem menu_View = new MenuItem(header:"View") {InstanceName="menu_View"}; /* {"IsRoot":false} */
+            MenuItem menu_View = new MenuItem(header:"View") {}; /* {"IsRoot":false} */
             Horizontal canvasDisplayHoriz = new Horizontal() {}; /* {"IsRoot":false} */
             DirectoryTree directoryTreeExplorer = new DirectoryTree() {FilenameFilter="*.cs",Height=700}; /* {"IsRoot":false} */
             Vertical id_e8a68acda2aa4d54add689bd669589d3 = new Vertical() {Layouts=new int[]{2, 0}}; /* {"IsRoot":false} */
@@ -507,7 +507,7 @@ namespace Application
             UIConfig UIConfig_debugMainMenuItem = new UIConfig() {Visible=showDebugMenu}; /* {"IsRoot":false} */
             CheckBox id_cc3adf40cb654337b01f77ade1881b44 = new CheckBox(check:true) {}; /* {"IsRoot":false} */
             EventConnector id_a61fc923019942cea819e1b8d1b10384 = new EventConnector() {}; /* {"IsRoot":false} */
-            MenuItem menu_ShowSidePanel = new MenuItem(header:"Show Side Panel") {InstanceName="menu_ShowSidePanel"}; /* {"IsRoot":false} */
+            MenuItem menu_ShowSidePanel = new MenuItem(header:"Show Side Panel") {}; /* {"IsRoot":false} */
             Cast<object, ALANode> id_8b99ce9b4c97466983fc1b14ef889ee8 = new Cast<object, ALANode>() {}; /* {"IsRoot":false} */
             MenuItem id_024172dbe8e2496b97e191244e493973 = new MenuItem(header:"Jump to selected wire's source") {}; /* {"IsRoot":false} */
             Data<ALANode> id_7e64ef3262604943a2b4a086c5641d09 = new Data<ALANode>() {Lambda=() => (mainGraph.Get("SelectedWire") as ALAWire)?.Source}; /* {"IsRoot":false} */
@@ -611,7 +611,7 @@ namespace Application
             DispatcherEvent id_6306c5f7aa3d41978599c00a5999b96f = new DispatcherEvent() {}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_33d648af590b45139339fe533079ab12 = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
             EventLambda id_3605f8d8e4624d84befb96fe76ebd3ac = new EventLambda() {Lambda=() =>{    abstractionModelManager.ClearAbstractions();    availableAbstractions?.Clear();}}; /* {"IsRoot":false} */
-            MultiMenu menu_OpenRecentProjects = new MultiMenu() {InstanceName="menu_OpenRecentProjects",ParentHeader="Open Recent Projects..."}; /* {"IsRoot":false} */
+            MultiMenu menu_OpenRecentProjects = new MultiMenu() {ParentHeader="Open Recent Projects..."}; /* {"IsRoot":false} */
             DataFlowConnector<object> id_e2c110ecff0740989d3d30144f84a94b = new DataFlowConnector<object>() {}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_2b3a750d477d4e168aaa3ed0ae548650 = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
             GetSetting id_6ecefc4cdc694ef2a46a8628cadc0e1d = new GetSetting(name:"RecentProjectPaths") {}; /* {"IsRoot":false} */
@@ -638,7 +638,7 @@ namespace Application
             ApplyAction<ALAWire> id_192fe80aafb34059af0f997434d4eb24 = new ApplyAction<ALAWire>() {Lambda=wire => mainGraph.Set("SelectedNode", wire.Source)}; /* {"IsRoot":false} */
             DataFlowConnector<ALAWire> id_f135f2c631b941d4916589a8fb078d6e = new DataFlowConnector<ALAWire>() {}; /* {"IsRoot":false} */
             ConvertToEvent<ALAWire> id_1cfa104de254494cb1d4552604cc6b94 = new ConvertToEvent<ALAWire>() {}; /* {"IsRoot":false} */
-            MenuItem menu_EditNodeSpacing = new MenuItem(header:"Edit Node Spacing") {InstanceName="menu_EditNodeSpacing"}; /* {"IsRoot":false} */
+            MenuItem menu_EditNodeSpacing = new MenuItem(header:"Edit Node Spacing") {}; /* {"IsRoot":false} */
             PopupWindow id_72c67c7f881142c99b7021fc1f3ae6ad = new PopupWindow() {Height=200,Width=250}; /* {"IsRoot":false} */
             Vertical id_d5ea8f6014a44f6faf59a7b5768bcadf = new Vertical() {}; /* {"IsRoot":false} */
             Horizontal id_54c8bc7425ab4b4580b5584852487782 = new Horizontal() {}; /* {"IsRoot":false} */
@@ -650,7 +650,7 @@ namespace Application
             ApplyAction<string> id_ea6694878c8c44c28f2d054ee089c12e = new ApplyAction<string>() {Lambda=input => layoutDiagram.HorizontalGap = double.Parse(input)}; /* {"IsRoot":false} */
             ApplyAction<string> id_c2835f5e1f3149ccb42f1865fa67de55 = new ApplyAction<string>() {Lambda=input => layoutDiagram.VerticalGap = double.Parse(input)}; /* {"IsRoot":false} */
             Button id_a417fd2a5a144349b36c5e149810c442 = new Button(title:"OK") {}; /* {"IsRoot":false} */
-            UIConfig id_977932d8d02445979383614993bac82c = new UIConfig() {HorizAlignment="right",UniformMargin=2}; /* {"IsRoot":false} */
+            UIConfig id_977932d8d02445979383614993bac82c = new UIConfig() {Width=50,HorizAlignment="right",UniformMargin=2}; /* {"IsRoot":false} */
             UIConfig id_477f5f3243c6416f99fbf40d65945e0e = new UIConfig() {UniformMargin=2}; /* {"IsRoot":false} */
             UIConfig id_97b80479ebba440d94a51a888044a581 = new UIConfig() {UniformMargin=2}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
