@@ -29,7 +29,8 @@ namespace Application
         public Canvas Canvas { get; set; }
         public AbstractionModelManager ModelManager { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
-        
+        public IEvent RefreshLayout { get; set; }
+
         /// <summary>
         /// Determines whether to update the existing graph or to create a new one.
         /// </summary>
@@ -548,11 +549,15 @@ namespace Application
                     {
                         (edge as ALAWire)?.Refresh();
                     }
+
+                    RefreshLayout.Execute();
+
                 }, DispatcherPriority.ContextIdle);
             };
 
             Graph.AddNode(node);
             node.CreateInternals();
+            node.LoadDefaultModel(node.Model);
 
             if (draw) Canvas.Children.Add(node.Render);
 

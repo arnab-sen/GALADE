@@ -248,6 +248,7 @@ namespace Application
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             MainWindow mainWindow = new MainWindow(title:"GALADE") {InstanceName="mainWindow"}; /* {"IsRoot":true} */
+            EventConnector startGuaranteedLayoutProcess = new EventConnector() { InstanceName = "startGuaranteedLayoutProcess" }; /* {"IsRoot":false} */
             DataFlowConnector<string> latestVersion = new DataFlowConnector<string>() {InstanceName="latestVersion"}; /* {"IsRoot":false} */
             Vertical mainWindowVertical = new Vertical() {InstanceName="mainWindowVertical",Layouts=new[]{0, 2, 0}}; /* {"IsRoot":false} */
             UIConfig UIConfig_canvasDisplayHoriz = new UIConfig() {InstanceName="UIConfig_canvasDisplayHoriz"}; /* {"IsRoot":false} */
@@ -301,7 +302,7 @@ namespace Application
             MenuItem id_bb687ee0b7dd4b86a38a3f81ddbab75f = new MenuItem(header:"Open Code File") {InstanceName="Open Code File"}; /* {"IsRoot":false} */
             FileBrowser id_14170585873a4fb6a7550bfb3ce8ecd4 = new FileBrowser() {InstanceName="id_14170585873a4fb6a7550bfb3ce8ecd4",Mode="Open"}; /* {"IsRoot":false} */
             FileReader id_2810e4e86da348b98b39c987e6ecd7b6 = new FileReader() {InstanceName="id_2810e4e86da348b98b39c987e6ecd7b6"}; /* {"IsRoot":false} */
-            CreateDiagramFromCode createDiagramFromCode = new CreateDiagramFromCode() {InstanceName="createDiagramFromCode",Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=false}; /* {"IsRoot":false} */
+            CreateDiagramFromCode createDiagramFromCode = new CreateDiagramFromCode() {InstanceName="createDiagramFromCode",Graph=mainGraph,Canvas=mainCanvas,ModelManager=abstractionModelManager,StateTransition=stateTransition,Update=false, RefreshLayout = startGuaranteedLayoutProcess}; /* {"IsRoot":false} */
             EventConnector id_f9b8e7f524a14884be753d19a351a285 = new EventConnector() {InstanceName="id_f9b8e7f524a14884be753d19a351a285"}; /* {"IsRoot":false} */
             Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_8fc35564768b4a64a57dc321cc1f621f = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_8fc35564768b4a64a57dc321cc1f621f",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("ProgrammingParadigms"))    {        list = input["ProgrammingParadigms"];    }    return list;}}; /* {"IsRoot":false} */
             Apply<Dictionary<string, List<string>>, IEnumerable<string>> id_0fd49143884d4a6e86e6ed0ea2f1b5b4 = new Apply<Dictionary<string, List<string>>, IEnumerable<string>>() {InstanceName="id_0fd49143884d4a6e86e6ed0ea2f1b5b4",Lambda=input =>{    var list = new List<string>();    if (input.ContainsKey("RequirementsAbstractions"))    {        list = input["RequirementsAbstractions"];    }    return list;}}; /* {"IsRoot":false} */
@@ -564,7 +565,6 @@ namespace Application
             EventConnector id_cd6186e0fe844be586191519012bb72e = new EventConnector() {InstanceName="id_cd6186e0fe844be586191519012bb72e"}; /* {"IsRoot":false} */
             Data<bool> id_0f0046b6b91e447aa9bf0a223fd59038 = new Data<bool>() {InstanceName="id_0f0046b6b91e447aa9bf0a223fd59038"}; /* {"IsRoot":false} */
             IfElse id_edd3648585f44954b2df337f1b7a793b = new IfElse() {InstanceName="id_edd3648585f44954b2df337f1b7a793b"}; /* {"IsRoot":false} */
-            EventConnector startGuaranteedLayoutProcess = new EventConnector() {InstanceName="startGuaranteedLayoutProcess"}; /* {"IsRoot":false} */
             EventLambda initialiseRightTreeLayout = new EventLambda() {InstanceName="initialiseRightTreeLayout",Lambda=() =>{    layoutDiagram.InitialY = 50;    layoutDiagram.Roots = mainGraph.Roots.OfType<ALANode>().ToList();    layoutDiagram.AllNodes = mainGraph.Nodes.OfType<ALANode>().ToList();}}; /* {"IsRoot":false} */
             UIConfig id_50349b82433f42ebb9d1ce591fc3bc35 = new UIConfig() {InstanceName="id_50349b82433f42ebb9d1ce591fc3bc35",ToolTipText="Uncheck to stop the diagram from rewiring whenever wires change source/destination, however automatic laying out will still occur when a new node is added.\nIf you wish to add a node without the diagram automatically laying out, use right click > Add Root to add a node at the current mouse position, with this unchecked."}; /* {"IsRoot":false} */
             Data<bool> id_27ff7a25d9034a45a229edef6610e214 = new Data<bool>() {InstanceName="id_27ff7a25d9034a45a229edef6610e214",storedData=true}; /* {"IsRoot":false} */
