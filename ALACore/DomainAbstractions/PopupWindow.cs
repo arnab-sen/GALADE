@@ -68,7 +68,7 @@ namespace DomainAbstractions
         /// </summary>
         /// <param name="title">the text displayed on the top border of the window</param>
         /// <param name="showCloseMiniMaxButton">control the displaying of close, minimum and maximum button</param>
-        public PopupWindow(string title = null, bool showCloseMiniMaxButton = true)
+        public PopupWindow(string title = "", bool showCloseMiniMaxButton = true)
         {
             window.Title = title;
             window.WindowStartupLocation = WindowStartupLocation.CenterScreen;

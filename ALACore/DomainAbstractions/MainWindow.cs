@@ -47,8 +47,8 @@ namespace DomainAbstractions
                 Title = title,
                 Height = SystemParameters.PrimaryScreenHeight * 0.65,
                 Width = SystemParameters.PrimaryScreenWidth * 0.6,
-                MinHeight = 500,
-                MinWidth = 750,
+                // MinHeight = 500,
+                // MinWidth = 750,
                 Background = Brushes.White,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
                 WindowState = WindowState.Maximized
