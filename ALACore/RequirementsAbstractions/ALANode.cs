@@ -602,11 +602,9 @@ namespace RequirementsAbstractions
             if (string.IsNullOrEmpty(text))
             {
                 text = $"{Model.Type}";
-                var description = !string.IsNullOrEmpty(Model.Description)
-                    ? Model.Description
-                    : Model.GetValue("InstanceName");
+                var description = Model.Name;
 
-                if (!string.IsNullOrEmpty(Model.Description) && !Model.Description.StartsWith("\"id_") && Model.Description != "Default") 
+                if (!string.IsNullOrEmpty(Model.Name) && !Model.Name.StartsWith("\"id_")) 
                     text = text + "\n" + description;
             }
 
