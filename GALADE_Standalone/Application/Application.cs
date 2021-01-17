@@ -639,7 +639,7 @@ namespace Application
             ApplyAction<ALAWire> id_192fe80aafb34059af0f997434d4eb24 = new ApplyAction<ALAWire>() {Lambda=wire => mainGraph.Set("SelectedNode", wire.Source)}; /* {"IsRoot":false} */
             DataFlowConnector<ALAWire> id_f135f2c631b941d4916589a8fb078d6e = new DataFlowConnector<ALAWire>() {}; /* {"IsRoot":false} */
             ConvertToEvent<ALAWire> id_1cfa104de254494cb1d4552604cc6b94 = new ConvertToEvent<ALAWire>() {}; /* {"IsRoot":false} */
-            MenuItem menu_EditNodeSpacing = new MenuItem(header:"Edit Node Spacing") {}; /* {"IsRoot":false} */
+            MenuItem menu_NodeSpacing = new MenuItem(header:"Node Spacing") {InstanceName="menu_NodeSpacing"}; /* {"IsRoot":false} */
             PopupWindow id_72c67c7f881142c99b7021fc1f3ae6ad = new PopupWindow() {Height=200,Width=250}; /* {"IsRoot":false} */
             Vertical id_d5ea8f6014a44f6faf59a7b5768bcadf = new Vertical() {}; /* {"IsRoot":false} */
             Horizontal id_54c8bc7425ab4b4580b5584852487782 = new Horizontal() {}; /* {"IsRoot":false} */
@@ -1119,8 +1119,8 @@ namespace Application
             id_2c58e14cba984eb89065062bde6593be.WireTo(id_f135f2c631b941d4916589a8fb078d6e, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":""} */
             id_1cfa104de254494cb1d4552604cc6b94.WireTo(createDummyAbstractionModel, "eventOutput"); /* {"SourceType":"ConvertToEvent","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
             id_110e0e17c17e481291e3a1669fd3edaf.WireTo(startGuaranteedLayoutProcess, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":""} */
-            menu_Edit.WireTo(menu_EditNodeSpacing, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
-            menu_EditNodeSpacing.WireTo(id_72c67c7f881142c99b7021fc1f3ae6ad, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":""} */
+            menu_Edit.WireTo(menu_NodeSpacing, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            menu_NodeSpacing.WireTo(id_72c67c7f881142c99b7021fc1f3ae6ad, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":""} */
             id_72c67c7f881142c99b7021fc1f3ae6ad.WireTo(id_d5ea8f6014a44f6faf59a7b5768bcadf, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":""} */
             id_97b80479ebba440d94a51a888044a581.WireTo(id_54c8bc7425ab4b4580b5584852487782, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":""} */
             id_54c8bc7425ab4b4580b5584852487782.WireTo(id_d696f92299cb4a86bfda5c0d70f3e6ce, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false,"Description":""} */
