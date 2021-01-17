@@ -604,7 +604,7 @@ namespace RequirementsAbstractions
                 text = $"{Model.Type}";
                 var description = Model.Name;
 
-                if (!string.IsNullOrEmpty(Model.Name) && !Model.Name.StartsWith("\"id_")) 
+                if (!string.IsNullOrEmpty(Model.Name) && !Model.Name.StartsWith("id_")) 
                     text = text + "\n" + description;
             }
 
