@@ -246,6 +246,7 @@ namespace Application
             // id_c6019d5521de4ad7805d5d3caa9363ab.WireTo(id_f40ea959779d484eb73bafd1b8052294, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false,"Description":""} */
             // // END AUTO-GENERATED WIRING FOR testDiagram
 
+            #region main diagram
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             MainWindow mainWindow = new MainWindow(title:"GALADE") {}; /* {"IsRoot":true} */
             EventConnector startGuaranteedLayoutProcess = new EventConnector() {}; /* {"IsRoot":false} */
@@ -653,6 +654,7 @@ namespace Application
             UIConfig id_977932d8d02445979383614993bac82c = new UIConfig() {Width=50,HorizAlignment="right",UniformMargin=2}; /* {"IsRoot":false} */
             UIConfig id_477f5f3243c6416f99fbf40d65945e0e = new UIConfig() {UniformMargin=2}; /* {"IsRoot":false} */
             UIConfig id_97b80479ebba440d94a51a888044a581 = new UIConfig() {UniformMargin=2}; /* {"IsRoot":false} */
+            MenuItem menu_Edit = new MenuItem(header:"Edit") {InstanceName="menu_Edit"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -772,6 +774,7 @@ namespace Application
             sidePanelHoriz.WireTo(id_987196dd20ab4721b0c193bb7a2064f4, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":""} */
             id_987196dd20ab4721b0c193bb7a2064f4.WireTo(id_7b250b222ca44ba2922547f03a4aef49, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"TabContainer","DestinationIsReference":false,"Description":""} */
             id_7b250b222ca44ba2922547f03a4aef49.WireTo(directoryExplorerTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":false,"DestinationType":"Tab","DestinationIsReference":false,"Description":""} */
+            id_42967d39c2334aab9c23697d04177f8a.WireTo(menu_Edit, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
             id_42967d39c2334aab9c23697d04177f8a.WireTo(menu_View, "children"); /* {"SourceType":"MenuBar","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
             id_a1f87102954345b69de6841053fce813.WireTo(id_2b3a750d477d4e168aaa3ed0ae548650, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ConvertToEvent","DestinationIsReference":false,"Description":""} */
             directoryExplorerConfig.WireTo(directoryTreeExplorer, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"DirectoryTree","DestinationIsReference":false,"Description":""} */
@@ -1116,7 +1119,7 @@ namespace Application
             id_2c58e14cba984eb89065062bde6593be.WireTo(id_f135f2c631b941d4916589a8fb078d6e, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":""} */
             id_1cfa104de254494cb1d4552604cc6b94.WireTo(createDummyAbstractionModel, "eventOutput"); /* {"SourceType":"ConvertToEvent","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":""} */
             id_110e0e17c17e481291e3a1669fd3edaf.WireTo(startGuaranteedLayoutProcess, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":""} */
-            menu_View.WireTo(menu_EditNodeSpacing, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
+            menu_Edit.WireTo(menu_EditNodeSpacing, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":""} */
             menu_EditNodeSpacing.WireTo(id_72c67c7f881142c99b7021fc1f3ae6ad, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":""} */
             id_72c67c7f881142c99b7021fc1f3ae6ad.WireTo(id_d5ea8f6014a44f6faf59a7b5768bcadf, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":""} */
             id_97b80479ebba440d94a51a888044a581.WireTo(id_54c8bc7425ab4b4580b5584852487782, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":""} */
@@ -1133,7 +1136,7 @@ namespace Application
             id_d5ea8f6014a44f6faf59a7b5768bcadf.WireTo(id_977932d8d02445979383614993bac82c, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":""} */
             id_a417fd2a5a144349b36c5e149810c442.WireTo(id_72c67c7f881142c99b7021fc1f3ae6ad, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":""} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
-
+#endregion
             _mainWindow = mainWindow;
 
             // BEGIN MANUAL INSTANTIATIONS
