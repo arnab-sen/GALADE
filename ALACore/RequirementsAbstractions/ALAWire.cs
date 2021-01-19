@@ -360,18 +360,15 @@ namespace RequirementsAbstractions
 
             sb.Append(" /* ");
 
-            if (metaData == null)
-            {
-                metaData = new JObject
-                {
-                    ["SourceType"] = source.Model.Type,
-                    ["SourceIsReference"] = source.IsReferenceNode,
-                    ["DestinationType"] = destination.Model.Type,
-                    ["DestinationIsReference"] = destination.IsReferenceNode,
-                    ["Description"] = GetDescription()
+            if (metaData == null) metaData = new JObject();
 
-                };
-            }
+            if (!metaData.ContainsKey("SourceType")) metaData["SourceType"] = source.Model.Type;
+            if (!metaData.ContainsKey("SourceIsReference")) metaData["SourceIsReference"] = source.IsReferenceNode;
+            if (!metaData.ContainsKey("DestinationType")) metaData["DestinationType"] = destination.Model.Type;
+            if (!metaData.ContainsKey("DestinationIsReference")) metaData["DestinationIsReference"] = destination.IsReferenceNode;
+            if (!metaData.ContainsKey("Description")) metaData["Description"] = GetDescription();
+            if (!metaData.ContainsKey("SourceGenerics")) metaData["SourceGenerics"] = new JArray(source.Model.GetGenerics());
+            if (!metaData.ContainsKey("DestinationGenerics")) metaData["DestinationGenerics"] = new JArray(destination.Model.GetGenerics());
 
             sb.Append(metaData.ToString(Newtonsoft.Json.Formatting.None));
 

@@ -360,11 +360,37 @@ namespace Application
                     source.TypeChanged?.Invoke(newType);
                 }
 
+                if (metaDataObj.ContainsKey("SourceGenerics"))
+                {
+                    var generics = metaDataObj["SourceGenerics"].Values().ToList();
+
+                    for (var i = 0; i < generics.Count(); i++)
+                    {
+                        source.Model.UpdateGeneric(i, generics[i].Value<string>());
+                    }
+
+                    source.Model.RefreshGenerics();
+                    source.UpdateUI();
+                }
+
                 if (destination.Model.Type == "UNDEFINED" && metaDataObj.ContainsKey("DestinationType"))
                 {
                     var newType = metaDataObj.GetValue("DestinationType").ToString();
                     destination.ChangeTypeInUI(newType);
                     destination.TypeChanged?.Invoke(newType);
+                }
+
+                if (metaDataObj.ContainsKey("DestinationGenerics"))
+                {
+                    var generics = metaDataObj["DestinationGenerics"].Values().ToList();
+
+                    for (var i = 0; i < generics.Count(); i++)
+                    {
+                        destination.Model.UpdateGeneric(i, generics[i].Value<string>());
+                    }
+
+                    destination.Model.RefreshGenerics();
+                    destination.UpdateUI();
                 }
 
                 if (metaDataObj.ContainsKey("SourceIsReference")) source.IsReferenceNode = bool.Parse(metaDataObj.GetValue("SourceIsReference").ToString());
