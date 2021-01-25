@@ -63,6 +63,10 @@ namespace DomainAbstractions
             return keyCode;
         }
 
+        /// <summary>
+        /// Simulate a single key press.
+        /// </summary>
+        /// <param name="key"></param>
         public void SimulateKey(string key)
         {
             try
@@ -81,6 +85,11 @@ namespace DomainAbstractions
             }
         }
 
+        /// <summary>
+        /// Simulate multiple keys, including modifiers. Modifiers will be held down in order, then the regular keys will be pressed in order.
+        /// </summary>
+        /// <param name="modifiers"></param>
+        /// <param name="keys"></param>
         public void SimulateKeys(List<string> modifiers, List<string> keys)
         {
             try
