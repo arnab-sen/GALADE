@@ -38,17 +38,15 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Main
-            DataFlowConnector<string> B = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
-            Apply<string, bool> id_67c6c080ba7641ad84fb67d7fa5e4c49 = new Apply<string, bool>() {}; /* {"IsRoot":false} */
             AbstractionModel id_c1ebb1132d90433b97a4e344b4dddf6e = new AbstractionModel() {}; /* {"IsRoot":false} */
             AbstractionModel id_f1661fa73da64a9ba6769d8a32e1048b = new AbstractionModel() {}; /* {"IsRoot":false} */
             AbstractionModel id_5197c8183ea440f797efcfd411b71f24 = new AbstractionModel() {}; /* {"IsRoot":false} */
+            Apply<string, string> A = new Apply<string, string>() {InstanceName="A"}; /* {"IsRoot":false} */
+            Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Main
 
 			// BEGIN AUTO-GENERATED WIRING FOR Main
-            A.WireTo(B, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":true,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string"]} */
-            B.WireTo(id_67c6c080ba7641ad84fb67d7fa5e4c49, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string","bool"]} */
-            B.WireTo(test, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":true,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string"]} */
+            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["string","string"],"DestinationGenerics":["T1","T2"]} */
             // END AUTO-GENERATED WIRING FOR Main
         }
     }
