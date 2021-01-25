@@ -14,6 +14,7 @@ namespace DomainAbstractions
 {
     /// <summary>
     /// <para>Simulates key presses on the keyboard. The desired keys can be set through the Keys property, and any modifiers through the Modifiers property.</para>
+    /// <para>Requires the InputSimulator NuGet package: <code>https://www.nuget.org/packages/InputSimulator/</code> <code>https://github.com/michaelnoonan/inputsimulator</code></para>
     /// <para>Common mappings:</para>
     /// <code>A-Z and 0-9 = A-Z and 0-9</code>
     /// <code>Enter = ENTER</code>
