@@ -105,7 +105,7 @@ namespace DomainAbstractions
 
         public SimulateKeyboard()
         {
-            _readableKeyMapping["ENTER"] = "ACCEPT";
+            _readableKeyMapping["ENTER"] = "RETURN";
             _readableKeyMapping["ALT"] = "MENU";
             _readableKeyMapping["LALT"] = "LMENU";
             _readableKeyMapping["RALT"] = "RMENU";
