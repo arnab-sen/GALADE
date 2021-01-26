@@ -21,7 +21,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Application
 {
-    public class CreateDiagramFromCode : IDataFlow<string>
+    /// <summary>
+    /// <para>Generates an ALA diagram from ALA code.</para>
+    /// <para>Ports:</para>
+    /// <para>1. IDataFlow&lt;Tuple&lt;string, List&lt;string&gt;&gt;&gt; diagramCode: A tuple where Item1 is the diagram name and Item2 is a list of all the instantiation and WireTo lines combined.</para>
+    /// </summary>
+    public class CreateDiagramFromCode : IDataFlow<Tuple<string, List<string>>> // diagramCode
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -49,20 +54,34 @@ namespace Application
         private string _firstRootVarName = "";
         private HashSet<string> _roots = new HashSet<string>(); // Nodes that should always be roots, e.g. ones that have names starting with "root_"
         private HashSet<string> _autoCreatedRoots = new HashSet<string>(); // Nodes that haven't been wired to yet
+        private Tuple<string, List<string>> _currentDiagramSegment;
 
         // Global instances
         private DataFlowConnector<string> _startCreation;
 
         // Ports
-        
-        // IDataFlow<string> implementation
-        string IDataFlow<string>.Data
+
+        // // IDataFlow<string> implementation
+        // string IDataFlow<string>.Data
+        // {
+        //     get => default;
+        //     set
+        //     {
+        //         _code = value;
+        //         Create(_code);
+        //     }
+        // }
+
+        // IDataFlow<List<Tuple<string, List<string>>>> implementation
+        Tuple<string, List<string>> IDataFlow<Tuple<string, List<string>>>.Data
         {
-            get => default;
+            get => _currentDiagramSegment;
             set
             {
-                _code = value;
-                Create(_code);
+                _currentDiagramSegment = value;
+
+                var code = CreateDummyClass(_currentDiagramSegment.Item2);
+                Create(code);
             }
         }
 
@@ -284,6 +303,27 @@ namespace Application
             {
                 Logging.Log($"Failed to parse node instantiation in CreateDiagramFromCode.\nException: {e}");
             }
+        }
+
+        /// <summary>
+        /// A temporary measure to get code working with Roslyn. Wraps all incoming instantiations and wiring with a C# class and a CreateWiring() method.
+        /// </summary>
+        private string CreateDummyClass(List<string> instantiationsAndWireTos)
+        {
+            /* Put the code inside a CreateWiring() method in a dummy class so that CreateDiagramFromCode uses it correctly. TODO: Update CreateDiagramFromCode to work with plain lists of instantiations and WireTos. */
+            var sb = new StringBuilder();
+            sb.AppendLine("class DummyClass {");
+            sb.AppendLine("void CreateWiring() {");
+
+            foreach (var line in instantiationsAndWireTos)
+            {
+                sb.AppendLine(line);
+            }
+
+            sb.AppendLine("}");
+            sb.AppendLine("}");
+
+            return sb.ToString();
         }
 
         public IEnumerable<ExpressionStatementSyntax> GetWireTos(string code)

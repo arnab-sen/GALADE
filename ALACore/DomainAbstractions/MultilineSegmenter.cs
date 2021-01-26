@@ -31,6 +31,8 @@ namespace DomainAbstractions
 
         // Private fields
         private string _inputString = "";
+        private List<Tuple<string, List<string>, string>> _segments;
+
 
         private enum SegmentationMode
         {
@@ -50,7 +52,8 @@ namespace DomainAbstractions
             get => _inputString;
             set
             {
-
+                _segments = CreateSegments(value, IsStartLine, IsStopLine);
+                if (segments != null) segments.Data = _segments;
             }
         }
 
@@ -75,6 +78,7 @@ namespace DomainAbstractions
                     if (isStartLine(line))
                     {
                         currentStartLine = line;
+                        mode = SegmentationMode.LookingForStopLine;
                     }
                 }
                 else if (mode == SegmentationMode.LookingForStopLine)
@@ -86,6 +90,7 @@ namespace DomainAbstractions
                         segments.Add(segmentBundle);
 
                         mode = SegmentationMode.LookingForStartLine;
+                        currentSegment = new List<string>();
                     }
                     else
                     {

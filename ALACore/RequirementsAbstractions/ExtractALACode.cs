@@ -14,6 +14,8 @@ namespace RequirementsAbstractions
     /// <para>Extracts code between code generation landmarks.</para>
     /// <para>Ports:</para>
     /// <para>1. IDataFlow&lt;string&gt; codeInput:</para>
+    /// <para>2. IDataFlow&lt;Tuple&lt;string, List&lt;string&gt;&gt;&gt; selectedDiagram: A (diagramName, instantiationsAndWireTos) tuple.</para>
+    /// <para>3. IDataFlow&lt;Dictionary&lt;string, List&lt;string&gt;&gt;&gt; allDiagrams: A dictionary of (diagramName, instantiationsAndWireTos) pairs.</para>
     /// </summary>
     public class ExtractALACode : IDataFlow<string> // codeInput
     {
@@ -45,8 +47,10 @@ namespace RequirementsAbstractions
         // Ports
         private IDataFlow<string> instantiationCodeOutput;
         private IDataFlow<string> wiringCodeOutput;
+        private IDataFlow<Tuple<string, List<string>>> selectedDiagram;
+        private IDataFlow<Dictionary<string, List<string>>> allDiagrams;
         private IEvent diagramSelected;
-        
+
         // Input instances
         private DataFlowConnector<string> codeInputConnector = new DataFlowConnector<string>() { InstanceName = "codeInputConnector" };
 
@@ -240,6 +244,33 @@ namespace RequirementsAbstractions
             Landmarks[1] = $"// END AUTO-GENERATED INSTANTIATIONS FOR {diagramName}";
             Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}";
             Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {diagramName}";
+
+            var allDiagramsDictionary = new Dictionary<string, List<string>>();
+            foreach (var kvp in instantiations)
+            {
+                allDiagramsDictionary[kvp.Key] = new List<string>(kvp.Value);
+            }
+
+            foreach (var kvp in wireTos)
+            {
+                if (!allDiagramsDictionary.ContainsKey(kvp.Key))
+                {
+                    allDiagramsDictionary[kvp.Key] = new List<string>(kvp.Value);
+                }
+                else
+                {
+                    allDiagramsDictionary[kvp.Key].AddRange(kvp.Value);
+                }
+            }
+
+            if (allDiagrams != null) allDiagrams.Data = allDiagramsDictionary;
+            if (selectedDiagram != null)
+            {
+                var combined = new List<string>();
+                if (instantiations.ContainsKey(diagramName)) combined.AddRange(instantiations[diagramName]);
+                if (wireTos.ContainsKey(diagramName)) combined.AddRange(wireTos[diagramName]);
+                selectedDiagram.Data = Tuple.Create(diagramName, combined);
+            }
 
             if (instantiationCodeOutputConnector != null) instantiationCodeOutputConnector.Data = ConnectLines(instantiations[diagramName]);
             if (wiringCodeOutputConnector != null) wiringCodeOutputConnector.Data = ConnectLines(wireTos[diagramName]);    
