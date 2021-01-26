@@ -199,6 +199,8 @@ namespace RequirementsAbstractions
         private bool _isReference = false;
         private bool _isHighlighted = false;
         private Dictionary<string, AbstractionModel> _loadedModels = new Dictionary<string, AbstractionModel>();
+        private System.Windows.Controls.Button _descPopupButton = null;
+        private System.Windows.Controls.TextBox _popupText = null;
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -291,6 +293,8 @@ namespace RequirementsAbstractions
 
                 if (IsReferenceNode && !_nameTextBox.Text.StartsWith("@")) _nameTextBox.Text = "@" + Model.Name;
             }, DispatcherPriority.Loaded);
+
+            _popupText.Dispatcher.Invoke(() => _popupText.Text = GetDescription());
 
         }
 
@@ -1209,7 +1213,7 @@ namespace RequirementsAbstractions
             // });
 
             // Use a Popup to open text outside the node
-            var descPopupButton = new System.Windows.Controls.Button()
+            _descPopupButton = new System.Windows.Controls.Button()
             {
                 Content = "?",
                 Width = 20,
@@ -1232,7 +1236,7 @@ namespace RequirementsAbstractions
                 BorderThickness = new Thickness(1)
             };
 
-            var popupText = new System.Windows.Controls.TextBox()
+            _popupText = new System.Windows.Controls.TextBox()
             {
                 MinWidth = 200,
                 MinHeight = 50,
@@ -1248,41 +1252,41 @@ namespace RequirementsAbstractions
             var desc = GetDescription();
             if (!string.IsNullOrWhiteSpace(desc))
             {
-                descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
-                descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
+                _descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
+                _descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
             }
 
-            popupBackground.Child = popupText;
+            popupBackground.Child = _popupText;
 
             descPopup.Child = popupBackground;
 
-            descPopup.Opened += (sender, args) => popupText.Text = GetDescription();
+            descPopup.Opened += (sender, args) => _popupText.Text = GetDescription();
             // descPopup.Closed += (sender, args) => SetDescription(popupText.Text);
-            popupText.TextChanged += (sender, args) =>
+            _popupText.TextChanged += (sender, args) =>
             {
-                SetDescription(popupText.Text);
-                if (!string.IsNullOrWhiteSpace(popupText.Text))
+                SetDescription(_popupText.Text);
+                if (!string.IsNullOrWhiteSpace(_popupText.Text))
                 {
-                    descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
-                    descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
+                    _descPopupButton.Background = new SolidColorBrush(Color.FromRgb(167, 220, 252));
+                    _descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(60, 127, 177));
                 }
                 else
                 {
-                    descPopupButton.Background = new SolidColorBrush(Color.FromRgb(221, 221, 221));
-                    descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(112, 112, 112));
+                    _descPopupButton.Background = new SolidColorBrush(Color.FromRgb(221, 221, 221));
+                    _descPopupButton.BorderBrush = new SolidColorBrush(Color.FromRgb(112, 112, 112));
                 }
             };
 
-            descPopupButton.Click += (sender, args) =>
+            _descPopupButton.Click += (sender, args) =>
             {
-                descPopup.PlacementTarget = descPopupButton;
+                descPopup.PlacementTarget = _descPopupButton;
                 descPopup.StaysOpen = false;
                 descPopup.IsOpen = true;
             };
 
             addNewParameterRow.WireTo(new UIFactory()
             {
-                GetUIElement = () => descPopupButton
+                GetUIElement = () => _descPopupButton
             });
 
             return addNewParameterRow;
