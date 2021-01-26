@@ -85,7 +85,7 @@ namespace RequirementsAbstractions
             // (instanceNeedingInitialValue as IDataFlow<T>).Data = defaultValue;
         }
 
-        public void ExtractCode(string code, bool outputUserSelection = true)
+        public void ExtractCode(string code, string chosenDiagramName = "")
         {
             var codeLines = code.Split(new []{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var unnamedInstantiationsCounter = 0;
@@ -212,7 +212,7 @@ namespace RequirementsAbstractions
 
             if (allDiagrams != null) allDiagrams.Data = allDiagramsDictionary;
 
-            if (outputUserSelection)
+            if (string.IsNullOrWhiteSpace(chosenDiagramName))
             {
                 // Ask the user to choose a diagram if there are multiple, otherwise just select the first diagram
                 if (wireTos.Keys.Count > 1)
@@ -222,7 +222,11 @@ namespace RequirementsAbstractions
                 else
                 {
                     Output(wireTos.Keys.First(), instantiations, wireTos);
-                }  
+                }   
+            }
+            else
+            {
+                Output(chosenDiagramName, instantiations, wireTos);
             }
 
         }
@@ -268,21 +272,23 @@ namespace RequirementsAbstractions
 
         private void Output(string diagramName, Dictionary<string, List<string>> instantiations, Dictionary<string, List<string>> wireTos)
         {
-            Landmarks[0] = $"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {diagramName}";
-            Landmarks[1] = $"// END AUTO-GENERATED INSTANTIATIONS FOR {diagramName}";
-            Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}";
-            Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {diagramName}";
+            CurrentDiagramName = diagramName;
+
+            Landmarks[0] = $"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {CurrentDiagramName}";
+            Landmarks[1] = $"// END AUTO-GENERATED INSTANTIATIONS FOR {CurrentDiagramName}";
+            Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {CurrentDiagramName}";
+            Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {CurrentDiagramName}";
 
             if (selectedDiagram != null)
             {
                 var combined = new List<string>();
-                if (instantiations.ContainsKey(diagramName)) combined.AddRange(instantiations[diagramName]);
-                if (wireTos.ContainsKey(diagramName)) combined.AddRange(wireTos[diagramName]);
-                selectedDiagram.Data = Tuple.Create(diagramName, combined);
+                if (instantiations.ContainsKey(CurrentDiagramName)) combined.AddRange(instantiations[CurrentDiagramName]);
+                if (wireTos.ContainsKey(CurrentDiagramName)) combined.AddRange(wireTos[CurrentDiagramName]);
+                selectedDiagram.Data = Tuple.Create(CurrentDiagramName, combined);
             }
 
-            if (instantiationCodeOutputConnector != null) instantiationCodeOutputConnector.Data = ConnectLines(instantiations[diagramName]);
-            if (wiringCodeOutputConnector != null) wiringCodeOutputConnector.Data = ConnectLines(wireTos[diagramName]);    
+            if (instantiationCodeOutputConnector != null) instantiationCodeOutputConnector.Data = ConnectLines(instantiations[CurrentDiagramName]);
+            if (wiringCodeOutputConnector != null) wiringCodeOutputConnector.Data = ConnectLines(wireTos[CurrentDiagramName]);    
             diagramSelected?.Execute();
         }
 

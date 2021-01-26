@@ -39,19 +39,23 @@ namespace Application
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram1
             Apply<T1, T2> C = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> test = new Apply<T1, T2>() {InstanceName="test"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Diagram1
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram1
             A.WireTo(C, "output"); /* {"SourceType":"Apply","SourceIsReference":true,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+            A.WireTo(test, "output"); /* {"SourceType":"Apply","SourceIsReference":true,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
             // END AUTO-GENERATED WIRING FOR Diagram1
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2
             Apply<T1, T2> A = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
             Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> test1 = new Apply<T1, T2>() {InstanceName="test1"}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram2
 			
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram2
             A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+            A.WireTo(test1, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
             // END AUTO-GENERATED WIRING FOR Diagram2
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram3
