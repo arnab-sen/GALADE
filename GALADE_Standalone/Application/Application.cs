@@ -661,7 +661,7 @@ namespace Application
             MultiMenu menu_OpenDiagram = new MultiMenu() {ParentHeader="Open Diagram..."}; /* {"IsRoot":false} */
             DataFlowConnector<Dictionary<string, Tuple<string, List<string>>>> allDiagramsCode = new DataFlowConnector<Dictionary<string, Tuple<string, List<string>>>>() {}; /* {"IsRoot":false} */
             Apply<Dictionary<string, Tuple<string, List<string>>>, List<string>> getDiagramList = new Apply<Dictionary<string, Tuple<string, List<string>>>, List<string>>() {Lambda=allDiagrams =>{    return allDiagrams.Keys.ToList();}}; /* {"IsRoot":false} */
-            Apply<string, Tuple<string, List<string>>> id_38501a618c7b4b1aac1194f24f8d325d = new Apply<string, Tuple<string, List<string>>>() {Lambda=diagramName =>{      return allDiagramsCode.Data[diagramName];}}; /* {"IsRoot":false} */
+            Apply<string, Tuple<string, List<string>>> id_38501a618c7b4b1aac1194f24f8d325d = new Apply<string, Tuple<string, List<string>>>() {Lambda=diagramName =>{    return allDiagramsCode.Data[diagramName];}}; /* {"IsRoot":false} */
             DataFlowConnector<string> id_0bcb2cfeb90d43a5973f21d2e4c50dcc = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
             EventLambda id_fb0a6ff48d6f4360bdef001007ee8459 = new EventLambda() {Lambda=() =>{    insertInstantiations.StartLandmark = $"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {currentDiagramName.Data}";    insertInstantiations.EndLandmark = $"// END AUTO-GENERATED INSTANTIATIONS FOR {currentDiagramName.Data}";    insertWireTos.StartLandmark = $"// BEGIN AUTO-GENERATED WIRING FOR {currentDiagramName.Data}";    insertWireTos.EndLandmark = $"// END AUTO-GENERATED WIRING FOR {currentDiagramName.Data}";}}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_dccd548f0c18412385231185ef028374 = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
@@ -673,9 +673,9 @@ namespace Application
             DataFlowConnector<string> id_4543ca6d3d6a47789f52e4cc7d841ee5 = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_8398ff1988b344c1841ea38cde6e1ce3 = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
             Data<ALANode> getMatchingNodeInNewGraph = new Data<ALANode>() {Lambda=() =>{    var oldSelectedNode = mainGraph.Get("SelectedNode") as ALANode;    var newSelectedNode = mainGraph.Nodes.OfType<ALANode>().First(node => node.Name == oldSelectedNode.Name);    return newSelectedNode;}}; /* {"IsRoot":false} */
-            UIConfig id_24f0cee4833c4971b8c9cb2bdbb1c868 = new UIConfig() {}; /* {"IsRoot":false} */
+            UIConfig id_24f0cee4833c4971b8c9cb2bdbb1c868 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
             MenuItem id_25ed8d5621754358bb15633274ef191a = new MenuItem(header:"Create Abstraction") {}; /* {"IsRoot":false} */
-            MenuItem id_eeaef5bfff254a4f850d013288ef44fa = new MenuItem(header:"Create auto-generation landmarks") {}; /* {"IsRoot":false} */
+            MenuItem id_eeaef5bfff254a4f850d013288ef44fa = new MenuItem(header:"Create Code Generation Landmarks") {}; /* {"IsRoot":false} */
             PopupWindow id_c7ff61bc312843019dde00238832d5a1 = new PopupWindow() {Height=100,Width=200}; /* {"IsRoot":false} */
             UIConfig id_56042a0e94ed4d599965f1f9c4fb7b8c = new UIConfig() {UniformMargin=3}; /* {"IsRoot":false} */
             Text id_a1e3c8eca2ee4f75ab41465c2bc1a9a9 = new Text(text:"Diagram name: ") {}; /* {"IsRoot":false} */
@@ -694,7 +694,7 @@ namespace Application
             ConvertToEvent<string> id_782197630669407095b6042ba91bbc4b = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
             Data<string> id_a808288fa4ae48b0a33de1fda8e4b58a = new Data<string>() {}; /* {"IsRoot":false} */
             FileReader id_5997270bf4614726ac236d5536fa79ab = new FileReader() {}; /* {"IsRoot":false} */
-            ApplyAction<string> id_590d452a50e4468ca15074a88f59f6d6 = new ApplyAction<string>() {Lambda=code => {    extractALACode.ExtractCode(code, currentDiagramName.Data);}}; /* {"IsRoot":false} */
+            ApplyAction<string> id_590d452a50e4468ca15074a88f59f6d6 = new ApplyAction<string>() {Lambda=code =>{    extractALACode.ExtractCode(code, currentDiagramName.Data);}}; /* {"IsRoot":false} */
             EventConnector id_d0697034644f4faa9dbc1f263f45708c = new EventConnector() {}; /* {"IsRoot":false} */
             ApplyAction<string> id_c31dec24e80b4e328882abbc3368489e = new ApplyAction<string>() {Lambda=name => extractALACode.CurrentDiagramName = name}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
