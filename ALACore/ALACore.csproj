@@ -159,6 +159,7 @@
     <Compile Include="DomainAbstractions\PopupBox.cs" />
     <Compile Include="DomainAbstractions\Scale.cs" />
     <Compile Include="DomainAbstractions\SimulateKeyboard.cs" />
+    <Compile Include="DomainAbstractions\SourceFileGenerator.cs" />
     <Compile Include="DomainAbstractions\Stopwatch.cs" />
     <Compile Include="DomainAbstractions\TextEditor.cs" />
     <Compile Include="DomainAbstractions\Clock.cs" />

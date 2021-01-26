@@ -38,7 +38,7 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram1
-            Apply<T1, T2> C = new Apply<T1, T2>() {InstanceName="C"}; /* {"IsRoot":false} */
+            Apply<T1, T2> C = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Diagram1
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram1
@@ -46,8 +46,8 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR Diagram1
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2
-            Apply<T1, T2> A = new Apply<T1, T2>() {InstanceName="A"}; /* {"IsRoot":false} */
-            Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
+            Apply<T1, T2> A = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram2
 			
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram2
@@ -62,7 +62,7 @@ namespace Application
 			// END AUTO-GENERATED WIRING FOR Diagram3
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram4
-            Apply<T1, T2> C = new Apply<T1, T2>() {InstanceName="C"}; /* {"IsRoot":false} */
+            Apply<T1, T2> C = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram4
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram4
