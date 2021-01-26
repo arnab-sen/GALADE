@@ -26,7 +26,7 @@ namespace RequirementsAbstractions
         public string Instantiations => instantiationCodeOutputConnector.Data;
         public string Wiring => wiringCodeOutputConnector.Data;
         public string SourceCode { get; set; } = "";
-        public Dictionary<string, HashSet<string>> NodeToDiagramMapping { get; } = new Dictionary<string, HashSet<string>>();
+        public Dictionary<string, List<string>> NodeToDiagramMapping { get; } = new Dictionary<string, List<string>>();
 
         /// <summary>
         /// The landmarks are stored as follows:
@@ -300,7 +300,7 @@ namespace RequirementsAbstractions
         /// <summary>
         /// Generates a mapping for each node to every diagram that it is found in.
         /// </summary>
-        public static void CreateNodeToDiagramMappings(Dictionary<string, Tuple<string, List<string>>> allDiagrams, Dictionary<string, HashSet<string>> mapping)
+        public static void CreateNodeToDiagramMappings(Dictionary<string, Tuple<string, List<string>>> allDiagrams, Dictionary<string, List<string>> mapping)
         {
             var parser = new CodeParser();
             mapping.Clear();
@@ -320,10 +320,14 @@ namespace RequirementsAbstractions
                     {
                         try
                         {
-                            var inv = InverseStringFormat.GetInverseStringFormat(line, "{A}.WireTo({B},{sourcePort});");
-                            var instanceName = inv["A"];
-                            if (!mapping.ContainsKey(instanceName)) mapping[instanceName] = new HashSet<string>();
-                            if (!mapping[instanceName].Contains(diagramName)) mapping[instanceName].Add(diagramName);
+                            var inv = InverseStringFormat.GetInverseStringFormat(line, @"{A}.WireTo({B},{sourcePort});");
+                            var instanceNameA = inv["A"];
+                            if (!mapping.ContainsKey(instanceNameA)) mapping[instanceNameA] = new List<string>();
+                            if (!mapping[instanceNameA].Contains(diagramName)) mapping[instanceNameA].Add(diagramName);
+
+                            var instanceNameB = inv["B"];
+                            if (!mapping.ContainsKey(instanceNameB)) mapping[instanceNameB] = new List<string>();
+                            if (!mapping[instanceNameB].Contains(diagramName)) mapping[instanceNameB].Add(diagramName);
                         }
                         catch (Exception e)
                         {
@@ -336,8 +340,10 @@ namespace RequirementsAbstractions
                         {
                             var node = parser.GetRoot(line).DescendantNodes().OfType<VariableDeclarationSyntax>().First();
                             var instanceName = node.Variables.First().Identifier.Text;
-                            if (!mapping.ContainsKey(instanceName)) mapping[instanceName] = new HashSet<string>();
-                            if (!mapping[instanceName].Contains(diagramName)) mapping[instanceName].Add(diagramName);
+                            if (!mapping.ContainsKey(instanceName)) mapping[instanceName] = new List<string>();
+
+                            // The diagram that contains the instance as a non-reference node should be at the top of the list
+                            if (!mapping[instanceName].Contains(diagramName)) mapping[instanceName].Insert(0, diagramName); 
                         }
                         catch (Exception e)
                         {
