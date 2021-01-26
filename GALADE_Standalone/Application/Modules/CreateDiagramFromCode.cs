@@ -444,7 +444,12 @@ namespace Application
                 _autoCreatedRoots.Add(sourceName);
             }
 
-            _nodesWithTreeParents.Add(destinationName);
+            SolidColorBrush wireColour = null;
+            if (!_nodesWithTreeParents.Add(destinationName))
+            {
+                wireColour = new SolidColorBrush(Colors.Black);
+                wireColour.Opacity = 0.1;
+            }
             // if (_autoCreatedRoots.Contains(destinationName))
             // {
             //     _autoCreatedRoots.Remove(destinationName);
@@ -473,6 +478,7 @@ namespace Application
 
             var wire = CreateALAWire(source, destination, sourcePortBox, destinationPortBox);
             if (metaDataObj != null) wire.MetaData = metaDataObj;
+            if (wireColour != null) wire.WireColour = wireColour;
 
             Graph.AddEdge(wire);
 

@@ -36,6 +36,7 @@ namespace RequirementsAbstractions
         public bool IsHighlighted { get; set; } = false;
         public JObject MetaData { get; set; }
         public int DefaultZIndex { get; set; } = 10;
+        public bool IsTreeConnection { get; set; } = false;
 
         public ALANode Source
         {
@@ -116,6 +117,8 @@ namespace RequirementsAbstractions
             Canvas.SetLeft(Render, 0);
             Canvas.SetTop(Render, 0);
             // Canvas.SetZIndex(Render, DefaultZIndex);
+
+            _bezier.Colour = IsHighlighted ? WireHighlightColour : WireColour;
         }
 
         public void Highlight()
