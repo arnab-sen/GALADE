@@ -37,32 +37,17 @@ namespace Application
 
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
-			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Main
-            AbstractionModel id_c1ebb1132d90433b97a4e344b4dddf6e = new AbstractionModel() {}; /* {"IsRoot":false} */
-            AbstractionModel id_f1661fa73da64a9ba6769d8a32e1048b = new AbstractionModel() {}; /* {"IsRoot":false} */
-            AbstractionModel id_5197c8183ea440f797efcfd411b71f24 = new AbstractionModel() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> A = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram1
             Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> C = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> D = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> E = new Apply<T1, T2>() {InstanceName="E"}; /* {"IsRoot":false} */
-            Apply<T1, T2> F = new Apply<T1, T2>() {InstanceName="F"}; /* {"IsRoot":false} */
-            Apply<T1, T2> G = new Apply<T1, T2>() {InstanceName="G"}; /* {"IsRoot":false} */
-            // END AUTO-GENERATED INSTANTIATIONS FOR Main
+            // END AUTO-GENERATED INSTANTIATIONS FOR Diagram1
 
-			// BEGIN AUTO-GENERATED WIRING FOR Main
-            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            A.WireTo(C, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            A.WireTo(D, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            D.WireTo(A, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            C.WireTo(E, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            C.WireTo(F, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            D.WireTo(G, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            E.WireTo(D, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            F.WireTo(C, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            G.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            B.WireTo(G, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            // END AUTO-GENERATED WIRING FOR Main
+			// BEGIN AUTO-GENERATED WIRING FOR Diagram1
+            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":true,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+            // END AUTO-GENERATED WIRING FOR Diagram1
+			
+			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2
+            Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            // END AUTO-GENERATED WIRING FOR Diagram2
         }
     }
 }

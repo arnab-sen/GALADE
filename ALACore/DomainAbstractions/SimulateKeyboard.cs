@@ -14,6 +14,7 @@ namespace DomainAbstractions
 {
     /// <summary>
     /// <para>Simulates key presses on the keyboard. The desired keys can be set through the Keys property, and any modifiers through the Modifiers property.</para>
+    /// <para>Requires the InputSimulator NuGet package: <code>https://www.nuget.org/packages/InputSimulator/</code> <code>https://github.com/michaelnoonan/inputsimulator</code></para>
     /// <para>Common mappings:</para>
     /// <code>A-Z and 0-9 = A-Z and 0-9</code>
     /// <code>Enter = ENTER</code>
@@ -63,6 +64,10 @@ namespace DomainAbstractions
             return keyCode;
         }
 
+        /// <summary>
+        /// Simulate a single key press.
+        /// </summary>
+        /// <param name="key"></param>
         public void SimulateKey(string key)
         {
             try
@@ -81,6 +86,11 @@ namespace DomainAbstractions
             }
         }
 
+        /// <summary>
+        /// Simulate multiple keys, including modifiers. Modifiers will be held down in order, then the regular keys will be pressed in order.
+        /// </summary>
+        /// <param name="modifiers"></param>
+        /// <param name="keys"></param>
         public void SimulateKeys(List<string> modifiers, List<string> keys)
         {
             try
@@ -105,7 +115,7 @@ namespace DomainAbstractions
 
         public SimulateKeyboard()
         {
-            _readableKeyMapping["ENTER"] = "ACCEPT";
+            _readableKeyMapping["ENTER"] = "RETURN";
             _readableKeyMapping["ALT"] = "MENU";
             _readableKeyMapping["LALT"] = "LMENU";
             _readableKeyMapping["RALT"] = "RMENU";

@@ -148,6 +148,7 @@
     <Compile Include="DomainAbstractions\DispatcherEvent.cs" />
     <Compile Include="DomainAbstractions\DragEvent.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
+    <Compile Include="DomainAbstractions\MultilineSegmenter.cs" />
     <Compile Include="DomainAbstractions\FlowGate.cs" />
     <Compile Include="DomainAbstractions\FolderWatcher.cs" />
     <Compile Include="DomainAbstractions\HttpRequest.cs" />

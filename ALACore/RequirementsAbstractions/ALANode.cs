@@ -277,7 +277,9 @@ namespace RequirementsAbstractions
             
             Render.Dispatcher.Invoke(() =>
             {
+                if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
                 _textMaskRender = CreateTextMask();
+
                 if (IsSelected())
                 {
                     HighlightNode();
@@ -677,7 +679,7 @@ namespace RequirementsAbstractions
                 if (_textMaskRender != null) _textMaskRender.Visibility = Visibility.Collapsed;
 
                 if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
-                
+
                 _textMaskRender = null;
             }
         }
@@ -891,6 +893,8 @@ namespace RequirementsAbstractions
                     Lambda = newType =>
                     {
                         Model.UpdateGeneric(genericIndex, newType);
+
+                        if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
                         _textMaskRender = CreateTextMask();
                     }
 
