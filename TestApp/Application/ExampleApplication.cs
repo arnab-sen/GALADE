@@ -46,7 +46,11 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR Diagram1
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2
-            Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            C.WireTo(D, "output"); /* {"SourceType":"Apply","SourceIsReference":true,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram2
+			
+			// BEGIN AUTO-GENERATED WIRING FOR Diagram2
+            Apply<T1, T2> D = new Apply<T1, T2>() {InstanceName="D"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED WIRING FOR Diagram2
         }
     }
