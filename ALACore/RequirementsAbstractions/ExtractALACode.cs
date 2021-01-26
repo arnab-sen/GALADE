@@ -48,7 +48,7 @@ namespace RequirementsAbstractions
         private IDataFlow<string> instantiationCodeOutput;
         private IDataFlow<string> wiringCodeOutput;
         private IDataFlow<Tuple<string, List<string>>> selectedDiagram;
-        private IDataFlow<Dictionary<string, List<string>>> allDiagrams;
+        private IDataFlow<Dictionary<string, Tuple<string, List<string>>>> allDiagrams;
         private IEvent diagramSelected;
 
         // Input instances
@@ -245,21 +245,21 @@ namespace RequirementsAbstractions
             Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}";
             Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {diagramName}";
 
-            var allDiagramsDictionary = new Dictionary<string, List<string>>();
+            var allDiagramsDictionary = new Dictionary<string, Tuple<string, List<string>>>();
             foreach (var kvp in instantiations)
             {
-                allDiagramsDictionary[kvp.Key] = new List<string>(kvp.Value);
+                allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
             }
 
             foreach (var kvp in wireTos)
             {
                 if (!allDiagramsDictionary.ContainsKey(kvp.Key))
                 {
-                    allDiagramsDictionary[kvp.Key] = new List<string>(kvp.Value);
+                    allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
                 }
                 else
                 {
-                    allDiagramsDictionary[kvp.Key].AddRange(kvp.Value);
+                    allDiagramsDictionary[kvp.Key].Item2.AddRange(kvp.Value);
                 }
             }
 
