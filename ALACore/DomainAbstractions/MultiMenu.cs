@@ -17,6 +17,7 @@ namespace DomainAbstractions
     /// <para>1. IUI child: Returns the parent menu item with the child menu items added.</para>
     /// <para>2. IDataFlow&lt;List&lt;string&gt;&gt; itemLabels: Updates the parent menu item with new menu items containing the elements in the input list.</para>
     /// <para>3. IDataFlow&lt;string&gt; selectedLabel: Outputs the text content of the selected child menu item.</para>
+    /// <para>4. IEvent isOpening: An event emitted right before the menu is opened.</para>
     /// </summary>
     public class MultiMenu : IUI, IDataFlow<List<string>> // child, itemLabels
     {
@@ -25,6 +26,7 @@ namespace DomainAbstractions
         public string InstanceDescription { get; set; } = "";
         public string ParentHeader { get; set; } = "Open";
         public List<string> Labels { get; set; }
+        public bool RemoveEmptyLabels { get; set; } = true;
 
         // Private fields
         private System.Windows.Controls.MenuItem _parentMenuItem = new System.Windows.Controls.MenuItem();
@@ -32,6 +34,7 @@ namespace DomainAbstractions
 
         // Ports
         private IDataFlow<string> selectedLabel;
+        private IEvent isOpening;
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
@@ -60,6 +63,8 @@ namespace DomainAbstractions
 
             foreach (var item in labels)
             {
+                if (RemoveEmptyLabels && string.IsNullOrWhiteSpace(item)) continue;
+
                 var menuItem = new System.Windows.Controls.MenuItem()
                 {
                     Header = item
@@ -77,6 +82,8 @@ namespace DomainAbstractions
         public MultiMenu()
         {
             _parentMenuItem.ItemsSource = _menuItems;
+            _parentMenuItem.MouseEnter += (sender, args) => isOpening?.Execute();
+
         }
     }
 }

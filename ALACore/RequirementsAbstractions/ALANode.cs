@@ -520,7 +520,7 @@ namespace RequirementsAbstractions
 
             var UIConfig_textBox = new UIConfig()
             {
-                MaxWidth = 500
+                MaxWidth = 1000
             };
 
             UIConfig_textBox.WireTo(textBox, "child");
@@ -1593,34 +1593,34 @@ namespace RequirementsAbstractions
             Vertical outputPortsVert = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
-            Box rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
-            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
-            UIFactory createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
-            UIFactory createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
-            UIFactory createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
-            ContextMenu mainContextMenu = new ContextMenu() {InstanceName="mainContextMenu"}; /* {"IsRoot":false} */
-            MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {InstanceName="id_403baaf79a824981af02ae135627767f"}; /* {"IsRoot":false} */
-            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {InstanceName="id_872f85f0291843daad50fcaf77f4e9c2",Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
-            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {InstanceName="id_506e76d969fe492291d78e607738dd48"}; /* {"IsRoot":false} */
-            Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {InstanceName="id_3a93eeaf377b47c8b9bbd70dda63370c",Lambda=() => Name}; /* {"IsRoot":false} */
-            TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {InstanceName="id_67487fc1e2e949a590412918be99c15d"}; /* {"IsRoot":false} */
-            MenuItem id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {InstanceName="id_1ef9731dc4674b8e97409364e29134d2"}; /* {"IsRoot":false} */
-            EventLambda id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {InstanceName="id_07bac55274924004ba5f349da0f11ef7",Lambda=() => Delete(deleteChildren: false)}; /* {"IsRoot":false} */
-            MenuItem id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {InstanceName="id_5d1f3fa471fe492586d178fa2eb2fd81"}; /* {"IsRoot":false} */
-            EventLambda id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {InstanceName="id_a68a6c716096461585853877fa2c6f7a",Lambda=() => Delete(deleteChildren: true)}; /* {"IsRoot":false} */
-            MenuItem id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {InstanceName="id_4c03930a6877421eb54a5397acb93135"}; /* {"IsRoot":false} */
-            CheckBox nodeIsRootCheckBox = new CheckBox(check:IsRoot) {InstanceName="nodeIsRootCheckBox"}; /* {"IsRoot":false} */
-            ApplyAction<bool> id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {InstanceName="id_fc8dfeb357454d458f8bd67f185de174",Lambda=checkState => IsRoot = checkState}; /* {"IsRoot":false} */
-            MenuItem id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {InstanceName="id_692340f2d88d4d0d80cff9daaff7350d"}; /* {"IsRoot":false} */
-            CheckBox nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {InstanceName="nodeIsReferenceNodeCheckBox"}; /* {"IsRoot":false} */
-            ApplyAction<bool> id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {InstanceName="id_5549bbb3a73e4fceb7b571f3ba58b9db",Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
-            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {InstanceName="id_7d4b8a9390724664acd0fb4f586d0b63"}; /* {"IsRoot":false} */
-            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {InstanceName="id_96fa54c808104c0cb7d23f092946f54d"}; /* {"IsRoot":false} */
-            Data<string> id_c20e3a07b4f941838b8008281978b6cb = new Data<string>() {InstanceName="id_c20e3a07b4f941838b8008281978b6cb",Lambda=() => ToFlatInstantiation()}; /* {"IsRoot":false} */
-            Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {InstanceName="id_b48d69dd54c44742ad807387f9d11e09",Lambda=instantiation =>{    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>()    {instantiation});    return jObj.ToString();}}; /* {"IsRoot":false} */
-            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {InstanceName="id_a69c62a42dfc460b81024720b3d94941"}; /* {"IsRoot":false} */
-            Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {InstanceName="",Lambda=() => GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
-            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {InstanceName="id_7c333d78095d4982b82623733fbdbe00",Visible=false}; /* {"IsRoot":false} */
+            Box rootUI = new Box() {Background=NodeBackground}; /* {"IsRoot":true} */
+            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {}; /* {"IsRoot":false} */
+            UIFactory createInputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
+            UIFactory createNodeMiddleVertical = new UIFactory() {GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
+            UIFactory createOutputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
+            ContextMenu mainContextMenu = new ContextMenu() {}; /* {"IsRoot":false} */
+            MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {}; /* {"IsRoot":false} */
+            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
+            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {}; /* {"IsRoot":false} */
+            Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => Name}; /* {"IsRoot":false} */
+            TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {}; /* {"IsRoot":false} */
+            MenuItem id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {}; /* {"IsRoot":false} */
+            EventLambda id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {Lambda=() => Delete(deleteChildren: false)}; /* {"IsRoot":false} */
+            MenuItem id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {}; /* {"IsRoot":false} */
+            EventLambda id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {Lambda=() => Delete(deleteChildren: true)}; /* {"IsRoot":false} */
+            MenuItem id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {}; /* {"IsRoot":false} */
+            CheckBox nodeIsRootCheckBox = new CheckBox(check:IsRoot) {}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {Lambda=checkState => IsRoot = checkState}; /* {"IsRoot":false} */
+            MenuItem id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {}; /* {"IsRoot":false} */
+            CheckBox nodeIsReferenceNodeCheckBox = new CheckBox(check:IsReferenceNode) {}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {Lambda=checkState => IsReferenceNode = checkState}; /* {"IsRoot":false} */
+            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {}; /* {"IsRoot":false} */
+            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {}; /* {"IsRoot":false} */
+            Data<string> id_c20e3a07b4f941838b8008281978b6cb = new Data<string>() {Lambda=() => ToFlatInstantiation()}; /* {"IsRoot":false} */
+            Apply<string, string> id_b48d69dd54c44742ad807387f9d11e09 = new Apply<string, string>() {Lambda=instantiation =>{    var jObj = new JObject();    jObj["Instantiations"] = new JArray(new List<string>()    {instantiation});    return jObj.ToString();}}; /* {"IsRoot":false} */
+            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {}; /* {"IsRoot":false} */
+            Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {Lambda=() => GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
+            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI

@@ -2,11 +2,13 @@ using System;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace RequirementsAbstractions
 {
@@ -23,6 +25,8 @@ namespace RequirementsAbstractions
         public string InstanceName { get; set; } = "Default";
         public string Instantiations => instantiationCodeOutputConnector.Data;
         public string Wiring => wiringCodeOutputConnector.Data;
+        public string SourceCode { get; set; } = "";
+        public Dictionary<string, HashSet<string>> NodeToDiagramMapping { get; } = new Dictionary<string, HashSet<string>>();
 
         /// <summary>
         /// The landmarks are stored as follows:
@@ -42,7 +46,6 @@ namespace RequirementsAbstractions
         public string CurrentDiagramName { get; set; }
 
         // Private fields
-        private string _sourceCode = "";
 
         // Ports
         private IDataFlow<string> instantiationCodeOutput;
@@ -65,8 +68,8 @@ namespace RequirementsAbstractions
             get => default;
             set
             {
-                _sourceCode = value;
-                ExtractCode(_sourceCode, out var instantiations, out var wireTos);
+                SourceCode = value;
+                ExtractCode(SourceCode);
             }
         }
 
@@ -82,13 +85,13 @@ namespace RequirementsAbstractions
             // (instanceNeedingInitialValue as IDataFlow<T>).Data = defaultValue;
         }
 
-        private void ExtractCode(string code, out Dictionary<string, List<string>> instantiations, out Dictionary<string, List<string>> wireTos)
+        public void ExtractCode(string code, bool outputUserSelection = true)
         {
             var codeLines = code.Split(new []{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var unnamedInstantiationsCounter = 0;
             var unnamedWireTosCounter = 0;
-            instantiations = new Dictionary<string, List<string>>();
-            wireTos = new Dictionary<string, List<string>>();
+            var instantiations = new Dictionary<string, List<string>>();
+            var wireTos = new Dictionary<string, List<string>>();
 
             var lineIndex = 0;
             while (lineIndex < codeLines.Length)
@@ -187,14 +190,39 @@ namespace RequirementsAbstractions
                 lineIndex++;
             }
 
-            // Ask the user to choose a diagram if there are multiple, otherwise just select the first diagram
-            if (wireTos.Keys.Count > 1)
+            var allDiagramsDictionary = new Dictionary<string, Tuple<string, List<string>>>();
+            foreach (var kvp in instantiations)
             {
-                GetUserSelection(instantiations.Keys.ToList(), instantiations, wireTos);
+                allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
             }
-            else
+
+            foreach (var kvp in wireTos)
             {
-                Output(wireTos.Keys.First(), instantiations, wireTos);
+                if (!allDiagramsDictionary.ContainsKey(kvp.Key))
+                {
+                    allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
+                }
+                else
+                {
+                    allDiagramsDictionary[kvp.Key].Item2.AddRange(kvp.Value);
+                }
+            }
+
+            CreateNodeToDiagramMappings(allDiagramsDictionary, NodeToDiagramMapping);
+
+            if (allDiagrams != null) allDiagrams.Data = allDiagramsDictionary;
+
+            if (outputUserSelection)
+            {
+                // Ask the user to choose a diagram if there are multiple, otherwise just select the first diagram
+                if (wireTos.Keys.Count > 1)
+                {
+                    GetUserSelection(instantiations.Keys.ToList(), instantiations, wireTos);
+                }
+                else
+                {
+                    Output(wireTos.Keys.First(), instantiations, wireTos);
+                }  
             }
 
         }
@@ -245,25 +273,6 @@ namespace RequirementsAbstractions
             Landmarks[2] = $"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}";
             Landmarks[3] = $"// END AUTO-GENERATED WIRING FOR {diagramName}";
 
-            var allDiagramsDictionary = new Dictionary<string, Tuple<string, List<string>>>();
-            foreach (var kvp in instantiations)
-            {
-                allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
-            }
-
-            foreach (var kvp in wireTos)
-            {
-                if (!allDiagramsDictionary.ContainsKey(kvp.Key))
-                {
-                    allDiagramsDictionary[kvp.Key] = Tuple.Create(kvp.Key, new List<string>(kvp.Value));
-                }
-                else
-                {
-                    allDiagramsDictionary[kvp.Key].Item2.AddRange(kvp.Value);
-                }
-            }
-
-            if (allDiagrams != null) allDiagrams.Data = allDiagramsDictionary;
             if (selectedDiagram != null)
             {
                 var combined = new List<string>();
@@ -287,6 +296,59 @@ namespace RequirementsAbstractions
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Generates a mapping for each node to every diagram that it is found in.
+        /// </summary>
+        public static void CreateNodeToDiagramMappings(Dictionary<string, Tuple<string, List<string>>> allDiagrams, Dictionary<string, HashSet<string>> mapping)
+        {
+            var parser = new CodeParser();
+            mapping.Clear();
+
+            foreach (var diagram in allDiagrams)
+            {
+                var diagramName = diagram.Key;
+                var instantiationsAndWireTos = diagram.Value.Item2;
+
+                foreach (var instantiationOrWireTo in instantiationsAndWireTos)
+                {
+                    if (string.IsNullOrWhiteSpace(instantiationOrWireTo)) continue;
+                    var line = instantiationOrWireTo.Trim();
+
+                    // If the line is a WireTo call
+                    if (Regex.IsMatch(line, @"[\w_\d]+.WireTo\("))
+                    {
+                        try
+                        {
+                            var inv = InverseStringFormat.GetInverseStringFormat(line, "{A}.WireTo({B},{sourcePort});");
+                            var instanceName = inv["A"];
+                            if (!mapping.ContainsKey(instanceName)) mapping[instanceName] = new HashSet<string>();
+                            if (!mapping[instanceName].Contains(diagramName)) mapping[instanceName].Add(diagramName);
+                        }
+                        catch (Exception e)
+                        {
+                            Logging.Log($"Failed to parse WireTo info for \"{line}\" in ExtractALACode:\n{e}");
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var node = parser.GetRoot(line).DescendantNodes().OfType<VariableDeclarationSyntax>().First();
+                            var instanceName = node.Variables.First().Identifier.Text;
+                            if (!mapping.ContainsKey(instanceName)) mapping[instanceName] = new HashSet<string>();
+                            if (!mapping[instanceName].Contains(diagramName)) mapping[instanceName].Add(diagramName);
+                        }
+                        catch (Exception e)
+                        {
+                            Logging.Log($"Failed to parse instantiation info for \"{line}\" in ExtractALACode:\n{e}");
+                        }
+                    }
+                }
+            }
+
+            var multiNodes = mapping.Where(kvp => kvp.Value.Count > 1).ToList();
+        }
         
         /// <summary>
         /// <para></para>
@@ -297,45 +359,3 @@ namespace RequirementsAbstractions
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
