@@ -67,7 +67,7 @@ namespace DomainAbstractions
 
                 var menuItem = new System.Windows.Controls.MenuItem()
                 {
-                    Header = item
+                    Header = new TextBlock() { Text = item }
                 };
 
                 _menuItems.Add(menuItem);
