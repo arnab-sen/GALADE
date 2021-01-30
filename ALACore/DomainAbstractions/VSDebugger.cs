@@ -14,24 +14,71 @@ namespace DomainAbstractions
     /// <summary>
     /// A class that hooks onto and interacts with the debugger of the first opened instance of Visual Studio 2019.
     /// </summary>
-    public class VSDebugger : IEvent // start
+    public class VSDebugger : IDataFlow<Tuple<string, int>> // filePathAndLineNumber
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private Debugger _debugger;
-        private DebuggerEvents _debuggerEvents; // Reference to this must be kept alive in order to use the events, so we define it here
+
+        // Reference to this must be kept alive in order to use the events, so we define it here
+        private DebuggerEvents _debuggerEvents; 
+        private Tuple<string, int> _lastPair;
+        private Dictionary<string, string> _mappingVSToDTEVersion = new Dictionary<string, string>()
+        {
+            {"2019", "16"},
+            {"2017", "15"},
+            {"2015", "14"},
+            {"2013", "12"},
+            {"2012", "11"},
+            {"2010", "10"},
+        };
 
         // Ports
 
-        // IEvent implementation
-        void IEvent.Execute()
+        // IDataFlow<Tuple<string, int>> implementation
+        Tuple<string, int> IDataFlow<Tuple<string, int>>.Data
         {
-            Test();
+            get => _lastPair;
+            set
+            {
+                _lastPair = value;
+
+                ConnectToVisualStudio();
+                AddBreakPoint(_lastPair.Item1, _lastPair.Item2);
+
+            }
         }
 
         // Methods
+        /// <summary>
+        /// Creates a hook to the debugger of the first opened VS process of a given version.
+        /// </summary>
+        /// <param name="VSVersion"></param>
+        public void ConnectToVisualStudio(string VSVersion = "2019")
+        {
+            if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
+            {
+                throw new ArgumentException($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
+            }
+
+            DTE2 dte = (DTE2)Marshal.GetActiveObject($"VisualStudio.DTE.{_mappingVSToDTEVersion[VSVersion]}.0");
+            _debugger = dte.Debugger;
+            _debuggerEvents = dte.Events.DebuggerEvents;
+        }
+
+        /// <summary>
+        /// Sets and enables a breakpoint at the given line number of the file found at the given file path.
+        /// If the line number is not a valid breakpoint line, and the line contains a method signature, then the next valid line number will be used.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="lineNumber"></param>
+        public void AddBreakPoint(string filePath, int lineNumber)
+        {
+            _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber);
+        }
+
         private async void Test()
         {
             // 16 for 2019, 15 for 2017, 14 for 2015, 12 for 2013, 11 for 2012, 10 for 2010

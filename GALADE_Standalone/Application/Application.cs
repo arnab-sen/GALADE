@@ -253,6 +253,7 @@ namespace Application
             #region main diagram
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             MainWindow mainWindow = new MainWindow(title:"GALADE") {}; /* {"IsRoot":true} */
+            ContextMenu alaNodeContextMenu = new ContextMenu() {}; /* {"IsRoot":false} */
             DataFlowConnector<string> currentDiagramName = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
             EventConnector startGuaranteedLayoutProcess = new EventConnector() {}; /* {"IsRoot":false} */
             DataFlowConnector<string> latestVersion = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
@@ -270,7 +271,7 @@ namespace Application
             RightTreeLayout<ALANode> layoutDiagram = new RightTreeLayout<ALANode>() {GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),Roots=mainGraph.Roots.OfType<ALANode>().ToList(),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50}; /* {"IsRoot":false} */
             EventConnector startRightTreeLayoutProcess = new EventConnector() {}; /* {"IsRoot":false} */
             KeyEvent R_KeyPressed = new KeyEvent(eventName:"KeyDown") {Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
-            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.ContextMenu = alaNodeContextMenu.Menu;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {}; /* {"IsRoot":false} */
             MenuItem menu_File = new MenuItem(header:"File") {}; /* {"IsRoot":false} */
             MenuItem menu_OpenProject = new MenuItem(header:"Open Project") {}; /* {"IsRoot":false} */
@@ -295,7 +296,7 @@ namespace Application
             StateChangeListener id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any}; /* {"IsRoot":false} */
             Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool> id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}}; /* {"IsRoot":false} */
             IfElse id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {}; /* {"IsRoot":false} */
-            EventConnector appStartConnector = new EventConnector() {InstanceName="appStartConnector"}; /* {"IsRoot":false} */
+            EventConnector appStartConnector = new EventConnector() {}; /* {"IsRoot":false} */
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() {Lambda=input =>{    var source = mainGraph.Get("SelectedNode") as ALANode;    var destination = input as ALANode;    var sourcePort = source.GetSelectedPort(inputPort: false);    var destinationPort = destination.GetSelectedPort(inputPort: true);    var wire = new ALAWire()    {Graph = mainGraph, Canvas = mainCanvas, Source = source, Destination = destination, SourcePortBox = sourcePort, DestinationPortBox = destinationPort, StateTransition = stateTransition};    mainGraph.AddEdge(wire);    wire.Paint();    return wire;}}; /* {"IsRoot":false} */
             KeyEvent Delete_KeyPressed = new KeyEvent(eventName:"KeyDown") {Key=Key.Delete}; /* {"IsRoot":false} */
             EventLambda id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}}; /* {"IsRoot":false} */
@@ -700,7 +701,6 @@ namespace Application
             EventConnector id_d0697034644f4faa9dbc1f263f45708c = new EventConnector() {}; /* {"IsRoot":false} */
             ApplyAction<string> id_c31dec24e80b4e328882abbc3368489e = new ApplyAction<string>() {Lambda=name => extractALACode.CurrentDiagramName = name}; /* {"IsRoot":false} */
             DataFlowConnector<ALANode> currentALANode = new DataFlowConnector<ALANode>() {}; /* {"IsRoot":false} */
-            ContextMenu alaNodeContextMenu = new ContextMenu() {}; /* {"IsRoot":false} */
             MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {}; /* {"IsRoot":false} */
             EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(currentALANode.Data.Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
             MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {}; /* {"IsRoot":false} */
@@ -721,7 +721,10 @@ namespace Application
             MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {}; /* {"IsRoot":false} */
             Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {Lambda=() => currentALANode.Data.GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
             UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
-            EventLambda initialiseALANodeContextMenu = new EventLambda() {InstanceName="initialiseALANodeContextMenu",Lambda=() => (alaNodeContextMenu as IUI).GetWPFElement()}; /* {"IsRoot":false} */
+            EventLambda initialiseALANodeContextMenu = new EventLambda() {Lambda=() => (alaNodeContextMenu as IUI).GetWPFElement()}; /* {"IsRoot":false} */
+            StateChangeListener id_4ed11222676e42cfae927c4278b45719 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.IdleSelected}; /* {"IsRoot":false} */
+            Data<ALANode> id_2aab3d52bd8543a6823a3951e01531d5 = new Data<ALANode>() {Lambda=() => mainGraph.Get("SelectedNode") as ALANode}; /* {"IsRoot":false} */
+            ConditionalData<ALANode> id_03977820012e4b5db575f844dfafa97c = new ConditionalData<ALANode>() {Condition=input => input != null}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1278,7 +1281,11 @@ namespace Application
             id_a69c62a42dfc460b81024720b3d94941.WireTo(id_52d97f7602cf47a7bc58e6a1ad1a977a, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
             id_52d97f7602cf47a7bc58e6a1ad1a977a.WireTo(id_67487fc1e2e949a590412918be99c15d, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":[]} */
             alaNodeContextMenu.WireTo(id_7c333d78095d4982b82623733fbdbe00, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(initialiseALANodeContextMenu, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(initialiseALANodeContextMenu, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_4ed11222676e42cfae927c4278b45719, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_4ed11222676e42cfae927c4278b45719.WireTo(id_2aab3d52bd8543a6823a3951e01531d5, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["ALANode"]} */
+            id_03977820012e4b5db575f844dfafa97c.WireTo(currentALANode, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
+            id_2aab3d52bd8543a6823a3951e01531d5.WireTo(id_03977820012e4b5db575f844dfafa97c, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 

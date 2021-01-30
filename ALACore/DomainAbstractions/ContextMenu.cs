@@ -16,10 +16,9 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public UIElement Render => _contextMenu;
+        public System.Windows.Controls.ContextMenu Menu { get; set; } = new System.Windows.Controls.ContextMenu();
 
         // Private fields
-        private System.Windows.Controls.ContextMenu _contextMenu = new System.Windows.Controls.ContextMenu();
 
         // Ports
         private List<IUI> children = new List<IUI>();
@@ -29,10 +28,10 @@ namespace DomainAbstractions
         {
             foreach (var child in children)
             {
-                _contextMenu.Items.Add(child.GetWPFElement());
+                Menu.Items.Add(child.GetWPFElement());
             }
 
-            return _contextMenu;
+            return Menu;
         }
 
         // IEvent implementation
@@ -44,7 +43,7 @@ namespace DomainAbstractions
         // Methods
         public void Open()
         {
-            _contextMenu.IsOpen = true;
+            Menu.IsOpen = true;
         }
 
         public ContextMenu()
