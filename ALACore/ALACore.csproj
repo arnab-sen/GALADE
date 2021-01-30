@@ -224,6 +224,7 @@
     <Compile Include="DomainAbstractions\Vertical.cs" />
     <Compile Include="DomainAbstractions\VisualNode.cs" />
     <Compile Include="DomainAbstractions\VisualPortGraphNode.cs" />
+    <Compile Include="DomainAbstractions\VSDebugger.cs" />
     <Compile Include="DomainAbstractions\Where.cs" />
     <Compile Include="Libraries\Logging.cs" />
     <Compile Include="Libraries\Utilities.cs" />

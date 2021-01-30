@@ -80,80 +80,7 @@ namespace Application
 
         public async void InitTest()
         {
-            DTE2 dte = (DTE2)Marshal.GetActiveObject("VisualStudio.DTE.16.0");
 
-            try
-            {
-                _debugger = dte.Debugger;
-                _debuggerEvents = dte.Events.DebuggerEvents;
-                // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
-                // {
-                //     var a = _debugger.CurrentStackFrame?.Locals.ToString() ?? "none found";
-                //
-                //     Logging.Log("----- Testing -----");
-                //     Logging.Log(a);
-                //     Logging.Log("----- End Testing -----");
-                //
-                // };
-
-                while (true)
-                {
-                    var sb = new StringBuilder();
-                    sb.AppendLine("Current debugger status:");
-                    sb.Append(GetDebuggerInfo());
-                    Logging.Log(sb.ToString());
-
-                    await Task.Delay(5000);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Logging.Log(e);
-            }
-        }
-
-        private string GetDebuggerInfo()
-        {
-            var sb = new StringBuilder();
-
-            if (_debugger.CurrentStackFrame != null)
-            {
-                // var locals = _debugger.CurrentStackFrame.Locals.GetEnumerator();
-                // while (locals.MoveNext())
-                // {
-                //
-                //     var comObject = locals.Current;
-                //     if (comObject == null) continue;
-                //
-                //     
-                //
-                // }
-
-                // var methodName = _debugger.CurrentStackFrame.FunctionName;
-                // sb.AppendLine($"Currently in method: {methodName}");
-
-                var lastBreakpoint = _debugger.BreakpointLastHit;
-                // var className = _debugger.BreakpointLastHit.;
-
-                // sb.AppendLine($"Currently in method {methodName} on line {lineNumber}");
-                sb.AppendLine($"Status:");
-                sb.AppendLine($"Method: {lastBreakpoint.FunctionName}");
-                sb.AppendLine($"Line number: {lastBreakpoint.FileLine}");
-                sb.AppendLine($"File path: {lastBreakpoint.File}");
-                sb.AppendLine($"Condition: {lastBreakpoint.Condition}");
-
-                // _debugger.Breakpoints.Add(File: lastBreakpoint.File, Line: lastBreakpoint.FileLine + 1);
-                _debugger.StepOver(); Thread.Sleep(1000);
-                _debugger.StepOver(); Thread.Sleep(1000);
-                _debugger.StepOver(); Thread.Sleep(1000);
-            }
-            else
-            {
-                sb.AppendLine("Stack frame is currently null");
-            }
-
-            return sb.ToString();
         }
 
         /// <summary>
@@ -368,7 +295,7 @@ namespace Application
             StateChangeListener id_368a7dc77fe24060b5d4017152492c1e = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Any}; /* {"IsRoot":false} */
             Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool> id_2f4df1d9817246e5a9184857ec5a2bf8 = new Apply<Tuple<Enums.DiagramMode, Enums.DiagramMode>, bool>() {Lambda=input =>{    return input.Item1 == Enums.DiagramMode.AwaitingPortSelection && input.Item2 == Enums.DiagramMode.Idle;}}; /* {"IsRoot":false} */
             IfElse id_c80f46b08d894d4faa674408bf846b3f = new IfElse() {}; /* {"IsRoot":false} */
-            EventConnector id_642ae4874d1e4fd2a777715cc1996b49 = new EventConnector() {}; /* {"IsRoot":false} */
+            EventConnector appStartConnector = new EventConnector() {InstanceName="appStartConnector"}; /* {"IsRoot":false} */
             Apply<object, object> createAndPaintALAWire = new Apply<object, object>() {Lambda=input =>{    var source = mainGraph.Get("SelectedNode") as ALANode;    var destination = input as ALANode;    var sourcePort = source.GetSelectedPort(inputPort: false);    var destinationPort = destination.GetSelectedPort(inputPort: true);    var wire = new ALAWire()    {Graph = mainGraph, Canvas = mainCanvas, Source = source, Destination = destination, SourcePortBox = sourcePort, DestinationPortBox = destinationPort, StateTransition = stateTransition};    mainGraph.AddEdge(wire);    wire.Paint();    return wire;}}; /* {"IsRoot":false} */
             KeyEvent Delete_KeyPressed = new KeyEvent(eventName:"KeyDown") {Key=Key.Delete}; /* {"IsRoot":false} */
             EventLambda id_46a4d6e6cfb940278eb27561c43cbf37 = new EventLambda() {Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    if (selectedNode == null)        return;    selectedNode.Delete(deleteChildren: false);}}; /* {"IsRoot":false} */
@@ -799,7 +726,7 @@ namespace Application
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
             mainWindow.WireTo(mainWindowVertical, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            mainWindow.WireTo(id_642ae4874d1e4fd2a777715cc1996b49, "appStart"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            mainWindow.WireTo(appStartConnector, "appStart"); /* {"SourceType":"MainWindow","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             mainWindowVertical.WireTo(id_42967d39c2334aab9c23697d04177f8a, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"MenuBar","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             mainCanvasDisplay.WireTo(id_581015f073614919a33126efd44bf477, "contextMenu"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"ContextMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             mainCanvasDisplay.WireTo(A_KeyPressed, "eventHandlers"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"KeyEvent","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -841,10 +768,10 @@ namespace Application
             id_368a7dc77fe24060b5d4017152492c1e.WireTo(id_2f4df1d9817246e5a9184857ec5a2bf8, "transitionOutput"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["Tuple<Enums.DiagramMode, Enums.DiagramMode>","bool"]} */
             id_2f4df1d9817246e5a9184857ec5a2bf8.WireTo(id_c80f46b08d894d4faa674408bf846b3f, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false,"Description":"","SourceGenerics":["Tuple<Enums.DiagramMode, Enums.DiagramMode>","bool"],"DestinationGenerics":[]} */
             id_c80f46b08d894d4faa674408bf846b3f.WireTo(startRightTreeLayoutProcess, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_cdeb94e2daee4057966eba31781ebd0d, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(getProjectFolderPath, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"GetSetting","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_cdeb94e2daee4057966eba31781ebd0d, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(getProjectFolderPath, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"GetSetting","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_f9b8e7f524a14884be753d19a351a285, "complete"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             Delete_KeyPressed.WireTo(id_46a4d6e6cfb940278eb27561c43cbf37, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_83c3db6e4dfa46518991f706f8425177.WireTo(startRightTreeLayoutProcess, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_5297a497d2de44e5bc0ea2c431cdcee6.WireTo(id_9bd4555e80434a7b91b65e0b386593b0, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":["AbstractionModel","object"]} */
@@ -921,7 +848,7 @@ namespace Application
             id_a1f87102954345b69de6841053fce813.WireTo(directoryTreeExplorer, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DirectoryTree","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":[]} */
             directoryExplorerTab.WireTo(id_e8a68acda2aa4d54add689bd669589d3, "children"); /* {"SourceType":"Tab","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_6d789ff1a0bc4a2d8e88733adc266be8, "argsOutput"); /* {"SourceType":"MouseWheelEvent","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["MouseWheelEventArgs"]} */
@@ -1139,7 +1066,7 @@ namespace Application
             id_5c857c3a1a474ec19c0c3b054627c0a9.WireTo(id_66a3103c3adc426fbc8473b66a8b0d22, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             statusBarHorizontal.WireTo(id_b1a5dcbe40654113b08efc4299c6fdc2, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             statusBarHorizontal.WireTo(id_5c857c3a1a474ec19c0c3b054627c0a9, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_642ae4874d1e4fd2a777715cc1996b49.WireTo(id_ae21c0350891480babdcd1efcb247295, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Clock","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(id_ae21c0350891480babdcd1efcb247295, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Clock","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_ae21c0350891480babdcd1efcb247295.WireTo(id_0718ee88fded4b7b88258796df7db577, "eventHappened"); /* {"SourceType":"Clock","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_a46f4ed8460e421b97525bd352b58d85.WireTo(id_34c59781fa2f4c5fb9102b7a65c461a0, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
             id_e33aaa2a4a5544a89931f05048e68406.WireTo(id_a46f4ed8460e421b97525bd352b58d85, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1332,12 +1259,23 @@ namespace Application
 #endregion
             _mainWindow = mainWindow;
 
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
+            EventConnector startDebuggerPolling = new EventConnector() {InstanceName="startDebuggerPolling"}; /* {"IsRoot":false} */
+            VSDebugger id_904a8bbacc06407293fa9dcb011706cd = new VSDebugger() {}; /* {"IsRoot":false} */
+            // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
+
+            // BEGIN AUTO-GENERATED WIRING FOR Debugger
+            appStartConnector.WireTo(startDebuggerPolling, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":true,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            startDebuggerPolling.WireTo(id_904a8bbacc06407293fa9dcb011706cd, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"VSDebugger","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            // END AUTO-GENERATED WIRING FOR Debugger
+
+
             // BEGIN MANUAL INSTANTIATIONS
             // END MANUAL INSTANTIATIONS
 
             // BEGIN MANUAL WIRING
             // END MANUAL WIRING
-            
+
 
         }
 
