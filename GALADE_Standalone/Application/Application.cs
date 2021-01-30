@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -13,8 +14,10 @@ using WPFCanvas = System.Windows.Controls.Canvas;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -22,6 +25,11 @@ using Application;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Path = System.IO.Path;
+using EnvDTE;
+using EnvDTE80;
+using TextEditor = DomainAbstractions.TextEditor;
+using Process = System.Diagnostics.Process;
+using Thread = System.Threading.Thread;
 
 namespace Application
 {
@@ -46,6 +54,9 @@ namespace Application
 
         private bool LOG_ALL_WIRING = false;
 
+        private EnvDTE.Debugger _debugger;
+        private EnvDTE.DebuggerEvents _debuggerEvents;
+
         // Methods
         private Application Initialize()
         {
@@ -56,29 +67,93 @@ namespace Application
         [STAThread]
         public static void Main(string[] args)
         {
-            InitTest();
 
             Logging.Log(args.ToString());
 
             Application app = new Application();
+            app.InitTest();
             var mainWindow = app.Initialize()._mainWindow;
             mainWindow.CreateUI();
             var windowApp = mainWindow.CreateApp();
             mainWindow.Run(windowApp);
         }
 
-        public static void InitTest()
+        public async void InitTest()
         {
-            var dict = new Dictionary<string, string>()
+            DTE2 dte = (DTE2)Marshal.GetActiveObject("VisualStudio.DTE.16.0");
+
+            try
             {
-                {"\"key1\"", "val1"},
-                {"\"Key2\"", "val2"},
-                {"\"key3\"", "val3"},
+                _debugger = dte.Debugger;
+                _debuggerEvents = dte.Events.DebuggerEvents;
+                // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
+                // {
+                //     var a = _debugger.CurrentStackFrame?.Locals.ToString() ?? "none found";
+                //
+                //     Logging.Log("----- Testing -----");
+                //     Logging.Log(a);
+                //     Logging.Log("----- End Testing -----");
+                //
+                // };
 
-            };
+                while (true)
+                {
+                    var sb = new StringBuilder();
+                    sb.AppendLine("Current debugger status:");
+                    sb.Append(GetDebuggerInfo());
+                    Logging.Log(sb.ToString());
 
-            Utilities.EditKeys(dict, s => s.Trim('\"'), key => key.StartsWith("\"k"));
+                    await Task.Delay(5000);
+                }
 
+            }
+            catch (Exception e)
+            {
+                Logging.Log(e);
+            }
+        }
+
+        private string GetDebuggerInfo()
+        {
+            var sb = new StringBuilder();
+
+            if (_debugger.CurrentStackFrame != null)
+            {
+                // var locals = _debugger.CurrentStackFrame.Locals.GetEnumerator();
+                // while (locals.MoveNext())
+                // {
+                //
+                //     var comObject = locals.Current;
+                //     if (comObject == null) continue;
+                //
+                //     
+                //
+                // }
+
+                // var methodName = _debugger.CurrentStackFrame.FunctionName;
+                // sb.AppendLine($"Currently in method: {methodName}");
+
+                var lastBreakpoint = _debugger.BreakpointLastHit;
+                // var className = _debugger.BreakpointLastHit.;
+
+                // sb.AppendLine($"Currently in method {methodName} on line {lineNumber}");
+                sb.AppendLine($"Status:");
+                sb.AppendLine($"Method: {lastBreakpoint.FunctionName}");
+                sb.AppendLine($"Line number: {lastBreakpoint.FileLine}");
+                sb.AppendLine($"File path: {lastBreakpoint.File}");
+                sb.AppendLine($"Condition: {lastBreakpoint.Condition}");
+
+                // _debugger.Breakpoints.Add(File: lastBreakpoint.File, Line: lastBreakpoint.FileLine + 1);
+                _debugger.StepOver(); Thread.Sleep(1000);
+                _debugger.StepOver(); Thread.Sleep(1000);
+                _debugger.StepOver(); Thread.Sleep(1000);
+            }
+            else
+            {
+                sb.AppendLine("Stack frame is currently null");
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -694,9 +769,32 @@ namespace Application
             ConvertToEvent<string> id_782197630669407095b6042ba91bbc4b = new ConvertToEvent<string>() {}; /* {"IsRoot":false} */
             Data<string> id_a808288fa4ae48b0a33de1fda8e4b58a = new Data<string>() {}; /* {"IsRoot":false} */
             FileReader id_5997270bf4614726ac236d5536fa79ab = new FileReader() {}; /* {"IsRoot":false} */
-            ApplyAction<string> id_590d452a50e4468ca15074a88f59f6d6 = new ApplyAction<string>() {Lambda=code =>{    extractALACode.ExtractCode(code, currentDiagramName.Data);}}; /* {"IsRoot":false} */
+            ApplyAction<string> id_590d452a50e4468ca15074a88f59f6d6 = new ApplyAction<string>() {Lambda=code =>{    extractALACode.ExtractCode(code);}}; /* {"IsRoot":false} */
             EventConnector id_d0697034644f4faa9dbc1f263f45708c = new EventConnector() {}; /* {"IsRoot":false} */
             ApplyAction<string> id_c31dec24e80b4e328882abbc3368489e = new ApplyAction<string>() {Lambda=name => extractALACode.CurrentDiagramName = name}; /* {"IsRoot":false} */
+            DataFlowConnector<ALANode> currentALANode = new DataFlowConnector<ALANode>() {}; /* {"IsRoot":false} */
+            ContextMenu alaNodeContextMenu = new ContextMenu() {}; /* {"IsRoot":false} */
+            MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {}; /* {"IsRoot":false} */
+            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(currentALANode.Data.Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
+            MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {}; /* {"IsRoot":false} */
+            Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => currentALANode.Data.Name}; /* {"IsRoot":false} */
+            TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {}; /* {"IsRoot":false} */
+            MenuItem id_1ef9731dc4674b8e97409364e29134d2 = new MenuItem(header:"Delete node") {}; /* {"IsRoot":false} */
+            EventLambda id_07bac55274924004ba5f349da0f11ef7 = new EventLambda() {Lambda=() => currentALANode.Data.Delete(deleteChildren: false)}; /* {"IsRoot":false} */
+            MenuItem id_5d1f3fa471fe492586d178fa2eb2fd81 = new MenuItem(header:"Delete node and children") {}; /* {"IsRoot":false} */
+            EventLambda id_a68a6c716096461585853877fa2c6f7a = new EventLambda() {Lambda=() => currentALANode.Data.Delete(deleteChildren: true)}; /* {"IsRoot":false} */
+            MenuItem id_4c03930a6877421eb54a5397acb93135 = new MenuItem(header:"IsRoot") {}; /* {"IsRoot":false} */
+            CheckBox nodeIsRootCheckBox = new CheckBox(check:currentALANode.Data?.IsRoot ?? false) {}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_fc8dfeb357454d458f8bd67f185de174 = new ApplyAction<bool>() {Lambda=checkState => currentALANode.Data.IsRoot = checkState}; /* {"IsRoot":false} */
+            MenuItem id_692340f2d88d4d0d80cff9daaff7350d = new MenuItem(header:"IsReferenceNode") {}; /* {"IsRoot":false} */
+            CheckBox nodeIsReferenceNodeCheckBox = new CheckBox(check:currentALANode.Data?.IsReferenceNode ?? false) {}; /* {"IsRoot":false} */
+            ApplyAction<bool> id_5549bbb3a73e4fceb7b571f3ba58b9db = new ApplyAction<bool>() {Lambda=checkState => currentALANode.Data.IsReferenceNode = checkState}; /* {"IsRoot":false} */
+            MenuItem id_7d4b8a9390724664acd0fb4f586d0b63 = new MenuItem(header:"Copy...") {}; /* {"IsRoot":false} */
+            MenuItem id_96fa54c808104c0cb7d23f092946f54d = new MenuItem(header:"This node") {}; /* {"IsRoot":false} */
+            MenuItem id_a69c62a42dfc460b81024720b3d94941 = new MenuItem(header:"This node and its subtree") {}; /* {"IsRoot":false} */
+            Data<string> id_52d97f7602cf47a7bc58e6a1ad1a977a = new Data<string>() {Lambda=() => currentALANode.Data.GenerateConnectedSubdiagramCode()}; /* {"IsRoot":false} */
+            UIConfig id_7c333d78095d4982b82623733fbdbe00 = new UIConfig() {Visible=false}; /* {"IsRoot":false} */
+            EventLambda initialiseALANodeContextMenu = new EventLambda() {Lambda=() => (alaNodeContextMenu as IUI).GetWPFElement()}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
