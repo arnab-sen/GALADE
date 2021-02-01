@@ -704,7 +704,7 @@ namespace Application
             ApplyAction<string> id_c31dec24e80b4e328882abbc3368489e = new ApplyAction<string>() {Lambda=name => extractALACode.CurrentDiagramName = name}; /* {"IsRoot":false} */
             DataFlowConnector<ALANode> currentALANode = new DataFlowConnector<ALANode>() {}; /* {"IsRoot":false} */
             MenuItem id_403baaf79a824981af02ae135627767f = new MenuItem(header:"Open source code in your default .cs file editor") {}; /* {"IsRoot":false} */
-            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(currentALANode.Data.Model.GetCodeFilePath());}}; /* {"IsRoot":false} */
+            EventLambda id_872f85f0291843daad50fcaf77f4e9c2 = new EventLambda() {Lambda=() =>{    Process.Start(currentALANode.Data.Model.CodeFilePath);}}; /* {"IsRoot":false} */
             MenuItem id_506e76d969fe492291d78e607738dd48 = new MenuItem(header:"Copy variable name") {}; /* {"IsRoot":false} */
             Data<string> id_3a93eeaf377b47c8b9bbd70dda63370c = new Data<string>() {Lambda=() => currentALANode.Data.Name}; /* {"IsRoot":false} */
             TextClipboard id_67487fc1e2e949a590412918be99c15d = new TextClipboard() {}; /* {"IsRoot":false} */
@@ -732,6 +732,9 @@ namespace Application
             MenuItem id_60e4784f8ddb48e2bba8b6dbf4264d50 = new MenuItem(header:"Add Breakpoint To...") {}; /* {"IsRoot":false} */
             MultiMenu id_63a2a94966104719a555020dfeec9b4f = new MultiMenu() {ParentHeader="Method..."}; /* {"IsRoot":false} */
             MultiMenu id_159865d27c234bc7a0acec04ee4b7674 = new MultiMenu() {ParentHeader="Property setter..."}; /* {"IsRoot":false} */
+            Data<List<string>> id_223a4a7d40044465889a8a6f3c2a44b1 = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetProperties(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToList();    return names;}}; /* {"IsRoot":false} */
+            Data<List<string>> id_f8b2a18a0b7b451dae38f38aab7f364f = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetMethods(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToList();    return names;}}; /* {"IsRoot":false} */
+            Apply<string, Tuple<string, int>> id_679c26c6de8a4a3f9136568f96a64030 = new Apply<string, Tuple<string, int>>() {Lambda=name =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var methodNode = parser.GetMethods(node.Model.SourceCode).FirstOrDefault(n => n.Identifier.ToString() == name);    var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);    var lineNumber = lineSpan.StartLinePosition.Line;    var filePath = node.Model.CodeFilePath;    var filePathAndLineNumberPair = Tuple.Create();}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1299,6 +1302,11 @@ namespace Application
             alaNodeContextMenu.WireTo(id_60e4784f8ddb48e2bba8b6dbf4264d50, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_63a2a94966104719a555020dfeec9b4f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_159865d27c234bc7a0acec04ee4b7674, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_159865d27c234bc7a0acec04ee4b7674.WireTo(id_223a4a7d40044465889a8a6f3c2a44b1, "isOpening"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<string>"]} */
+            id_223a4a7d40044465889a8a6f3c2a44b1.WireTo(id_159865d27c234bc7a0acec04ee4b7674, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
+            id_63a2a94966104719a555020dfeec9b4f.WireTo(id_f8b2a18a0b7b451dae38f38aab7f364f, "isOpening"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<string>"]} */
+            id_f8b2a18a0b7b451dae38f38aab7f364f.WireTo(id_63a2a94966104719a555020dfeec9b4f, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
+            id_63a2a94966104719a555020dfeec9b4f.WireTo(id_679c26c6de8a4a3f9136568f96a64030, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string","Tuple<string, int>"]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 

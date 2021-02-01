@@ -251,7 +251,7 @@ namespace DomainAbstractions
 
             _documentation = source._documentation;
             SourceCode = source.SourceCode;
-            CodeFilePath = source.GetCodeFilePath();
+            CodeFilePath = source.CodeFilePath;
 
             _portsById.Clear();
 
