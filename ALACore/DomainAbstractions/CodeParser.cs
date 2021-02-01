@@ -151,42 +151,42 @@ namespace DomainAbstractions
         public List<string> ExtractStrings(IEnumerable<SyntaxNode> nodes, bool preserveSurroundings = false) => nodes.Select(d => preserveSurroundings ? d.ToFullString() : d.ToString()).ToList();
 
         // Get all members
-        public IEnumerable<SyntaxNode> GetMembers(string code) => GetMembers(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetMembers(SyntaxNode root) => root.DescendantNodes().OfType<MemberDeclarationSyntax>();
+        public IEnumerable<MemberDeclarationSyntax> GetMembers(string code) => GetMembers(GetRoot(code));
+        public IEnumerable<MemberDeclarationSyntax> GetMembers(SyntaxNode root) => root.DescendantNodes().OfType<MemberDeclarationSyntax>();
 
         // Get classes
-        public IEnumerable<SyntaxNode> GetClasses(string code) => GetClasses(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
+        public IEnumerable<ClassDeclarationSyntax> GetClasses(string code) => GetClasses(GetRoot(code));
+        public IEnumerable<ClassDeclarationSyntax> GetClasses(SyntaxNode root) => root.DescendantNodes().OfType<ClassDeclarationSyntax>();
 
         // Get interfaces
-        public IEnumerable<SyntaxNode> GetInterfaces(string code) => GetInterfaces(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+        public IEnumerable<InterfaceDeclarationSyntax> GetInterfaces(string code) => GetInterfaces(GetRoot(code));
+        public IEnumerable<InterfaceDeclarationSyntax> GetInterfaces(SyntaxNode root) => root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
 
         // Get base classes and interfaces
-        public IEnumerable<SyntaxNode> GetBaseObjects(string code) => GetBaseObjects(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetBaseObjects(SyntaxNode root) => root.DescendantNodes().OfType<BaseListSyntax>();
+        public IEnumerable<BaseListSyntax> GetBaseObjects(string code) => GetBaseObjects(GetRoot(code));
+        public IEnumerable<BaseListSyntax> GetBaseObjects(SyntaxNode root) => root.DescendantNodes().OfType<BaseListSyntax>();
 
         // Get enums
-        public IEnumerable<SyntaxNode> GetEnums(string code) => GetEnums(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetEnums(SyntaxNode root) => root.DescendantNodes().OfType<EnumDeclarationSyntax>();
+        public IEnumerable<EnumDeclarationSyntax> GetEnums(string code) => GetEnums(GetRoot(code));
+        public IEnumerable<EnumDeclarationSyntax> GetEnums(SyntaxNode root) => root.DescendantNodes().OfType<EnumDeclarationSyntax>();
 
         // Get fields
-        public IEnumerable<SyntaxNode> GetFields(string code) => GetFields(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetFields(SyntaxNode root) => root.DescendantNodes().OfType<FieldDeclarationSyntax>();
+        public IEnumerable<FieldDeclarationSyntax> GetFields(string code) => GetFields(GetRoot(code));
+        public IEnumerable<FieldDeclarationSyntax> GetFields(SyntaxNode root) => root.DescendantNodes().OfType<FieldDeclarationSyntax>();
 
         // Get properties
-        public IEnumerable<SyntaxNode> GetProperties(string code) => GetProperties(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetProperties(SyntaxNode root) => root.DescendantNodes().OfType<PropertyDeclarationSyntax>();
+        public IEnumerable<PropertyDeclarationSyntax> GetProperties(string code) => GetProperties(GetRoot(code));
+        public IEnumerable<PropertyDeclarationSyntax> GetProperties(SyntaxNode root) => root.DescendantNodes().OfType<PropertyDeclarationSyntax>();
 
         // Get methods
-        public IEnumerable<SyntaxNode> GetMethods(string code) => GetMethods(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetMethods(SyntaxNode root) => root.DescendantNodes().OfType<MethodDeclarationSyntax>();
+        public IEnumerable<MethodDeclarationSyntax> GetMethods(string code) => GetMethods(GetRoot(code));
+        public IEnumerable<MethodDeclarationSyntax> GetMethods(SyntaxNode root) => root.DescendantNodes().OfType<MethodDeclarationSyntax>();
 
         // Get parameters
-        public IEnumerable<SyntaxNode> GetParameters(string code) => GetParameters(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetParameters(SyntaxNode root)
+        public IEnumerable<ParameterSyntax> GetParameters(string code) => GetParameters(GetRoot(code));
+        public IEnumerable<ParameterSyntax> GetParameters(SyntaxNode root)
         {
-            var parameters = new List<SyntaxNode>();
+            var parameters = new List<ParameterSyntax>();
 
             foreach (var method in root.DescendantNodes().OfType<MethodDeclarationSyntax>())
             {
@@ -197,8 +197,8 @@ namespace DomainAbstractions
         }
 
         // Get constructor args
-        public IEnumerable<SyntaxNode> GetConstructors(string code) => GetConstructors(GetRoot(code));
-        public IEnumerable<SyntaxNode> GetConstructors(SyntaxNode root) => root.DescendantNodes().OfType<ConstructorDeclarationSyntax>();
+        public IEnumerable<ConstructorDeclarationSyntax> GetConstructors(string code) => GetConstructors(GetRoot(code));
+        public IEnumerable<ConstructorDeclarationSyntax> GetConstructors(SyntaxNode root) => root.DescendantNodes().OfType<ConstructorDeclarationSyntax>();
 
         // Get documentation blocks
         //TODO

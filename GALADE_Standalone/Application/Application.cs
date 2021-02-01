@@ -28,6 +28,7 @@ using Path = System.IO.Path;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TextEditor = DomainAbstractions.TextEditor;
 using Process = System.Diagnostics.Process;
 using Thread = System.Threading.Thread;
@@ -727,35 +728,10 @@ namespace Application
             Data<ALANode> id_2aab3d52bd8543a6823a3951e01531d5 = new Data<ALANode>() {Lambda=() => mainGraph.Get("SelectedNode") as ALANode}; /* {"IsRoot":false} */
             ConditionalData<ALANode> id_03977820012e4b5db575f844dfafa97c = new ConditionalData<ALANode>() {Condition=input => input != null}; /* {"IsRoot":false} */
             MultiMenu id_25d736b7723741709250527d85069c1e = new MultiMenu() {ParentHeader="Add Breakpoint To..."}; /* {"IsRoot":false} */
-            Data<List<string>> id_ddc3842f5472448c80d4a993cc165678 = new Data<List<string>>()
-            {
-                Lambda = () =>
-                {
-                    var node = currentALANode.Data;
-                    if (node == null)
-                        return new List<string>();
-                    var parser = new CodeParser();
-                    var methodNodes = parser.GetMethods(node.Model.SourceCode);
-                    var propertyNodes = parser.GetProperties(node.Model.SourceCode);
-
-                    foreach (var methodNode in methodNodes)
-                    {
-                        var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);
-                        var lineNumber = lineSpan.StartLinePosition.Line;
-                    }
-
-                    foreach (var propertyNode in propertyNodes)
-                    {
-                        var lineSpan = propertyNode.SyntaxTree.GetLineSpan(propertyNode.Span);
-                        var lineNumber = lineSpan.StartLinePosition.Line;
-                    }
-
-                    var methodNames = parser.GetMethods(node.Model.SourceCode)
-                        .Select(m => m.ToString())
-                        .ToList();
-                    return methodNames;
-                }
-            }; /* {"IsRoot":false,"Description":"Get a list of the selected instance's methods"} */
+            Data<List<string>> id_ddc3842f5472448c80d4a993cc165678 = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    if (node == null)        return new List<string>();    var parser = new CodeParser();    var methodNodes = parser.GetMethods(node.Model.SourceCode);    var propertyNodes = parser.GetProperties(node.Model.SourceCode);    foreach (var methodNode in methodNodes)    {        var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);        var lineNumber = lineSpan.StartLinePosition.Line;    }    foreach (var propertyNode in propertyNodes)    {        var lineSpan = propertyNode.SyntaxTree.GetLineSpan(propertyNode.Span);        var lineNumber = lineSpan.StartLinePosition.Line;    }    var methodNames = parser.GetMethods(node.Model.SourceCode).OfType<MethodDeclarationSyntax>().Select(m => m.Identifier.ToString()).ToList();    return methodNames;}}; /* {"IsRoot":false,"Description":"Get a list of the selected instance's methods"} */
+            MenuItem id_60e4784f8ddb48e2bba8b6dbf4264d50 = new MenuItem(header:"Add Breakpoint To...") {}; /* {"IsRoot":false} */
+            MultiMenu id_63a2a94966104719a555020dfeec9b4f = new MultiMenu() {ParentHeader="Method..."}; /* {"IsRoot":false} */
+            MultiMenu id_159865d27c234bc7a0acec04ee4b7674 = new MultiMenu() {ParentHeader="Property setter..."}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1320,6 +1296,9 @@ namespace Application
             alaNodeContextMenu.WireTo(id_25d736b7723741709250527d85069c1e, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_25d736b7723741709250527d85069c1e.WireTo(id_ddc3842f5472448c80d4a993cc165678, "isOpening"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<string>"]} */
             id_ddc3842f5472448c80d4a993cc165678.WireTo(id_25d736b7723741709250527d85069c1e, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
+            alaNodeContextMenu.WireTo(id_60e4784f8ddb48e2bba8b6dbf4264d50, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_63a2a94966104719a555020dfeec9b4f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_159865d27c234bc7a0acec04ee4b7674, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 
