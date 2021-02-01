@@ -78,7 +78,6 @@ namespace DomainAbstractions
         public string GetDocumentation() => _documentation;
 
         public string GetMemberDocumentation(string memberName) => _memberDocumentation.ContainsKey(memberName) ? _memberDocumentation[memberName] : "";
-        public string GetCodeFilePath() => CodeFilePath;
         public HashSet<string> GetInitialisedVariables() => _initialised.Select(s => s).ToHashSet();
         public string GetPortBaseType(string portName) => _portBaseTypes.ContainsKey(portName) ? _portBaseTypes[portName] : "undefined";
 
