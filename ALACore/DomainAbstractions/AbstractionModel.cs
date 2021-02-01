@@ -53,6 +53,8 @@ namespace DomainAbstractions
         public List<KeyValuePair<string, string>> GetConstructorArgs() => _constructorArgs.ToList();
         public List<KeyValuePair<string, string>> GetFields() => _fields.ToList();
         public List<KeyValuePair<string, string>> GetProperties() => _properties.ToList();
+        public bool ContainsField(string fieldName) => _fields.ContainsKey(fieldName);
+        public bool ContainsProperty(string propertyName) => _properties.ContainsKey(propertyName);
 
         public Port GetPort(string portName)
         {

@@ -35,6 +35,8 @@ namespace Application
         public AbstractionModelManager ModelManager { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public IEvent RefreshLayout { get; set; }
+        public System.Windows.Controls.ContextMenu NodeContextMenu { get; set; }
+        public System.Windows.Controls.ContextMenu WireContextMenu { get; set; }
 
         /// <summary>
         /// Determines whether to update the existing graph or to create a new one.
@@ -572,7 +574,11 @@ namespace Application
 
         public ALANode CreateNodeFromModel(AbstractionModel model, bool draw = false)
         {
-            var node = new ALANode();
+            var node = new ALANode()
+            {
+                ContextMenu = NodeContextMenu
+            };
+
             if (model.Name.StartsWith("id_"))
             {
                 node.Id = model.Name.Substring(3);

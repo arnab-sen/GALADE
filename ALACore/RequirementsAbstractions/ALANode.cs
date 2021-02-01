@@ -698,32 +698,42 @@ namespace RequirementsAbstractions
         {
             var instantiation = "";
 
+            var sb = new StringBuilder();
+            // sb.Append("var ");
+            sb.Append($"{Model.FullType} ");
+            var trimmedName = Name.Trim('@', ' ');
+            sb.Append(trimmedName);
+            sb.Append(" = new ");
+            sb.Append(Model.FullType);
+            
+
             var initialised = Model.GetInitialisedVariables();
             var constructorArgs = Model.GetConstructorArgs()
                 .Where(kvp => initialised.Contains(kvp.Key))
                 .OrderBy(kvp => kvp.Key)
                 .ToList();
 
-            var propertiesAndFields = Model.GetProperties()
+            var propertiesAndFields = new List<KeyValuePair<string, string>>();
+
+            if (!initialised.Contains("InstanceName") 
+                && (Model.ContainsField("InstanceName") || Model.ContainsProperty("InstanceName")) ) 
+                propertiesAndFields.Add(new KeyValuePair<string, string>("InstanceName", $"\"{trimmedName}\""));
+
+            propertiesAndFields.AddRange(Model.GetProperties()
                 .Where(kvp => initialised.Contains(kvp.Key))
-                .ToList();
+                .ToList());
 
             propertiesAndFields.AddRange(Model.GetFields()
                 .Where(kvp => initialised.Contains(kvp.Key))
                 .ToList());
 
-            var sb = new StringBuilder();
 
-            // sb.Append("var ");
-            sb.Append($"{Model.FullType} ");
-            sb.Append(Name.Trim('@', ' '));
-            sb.Append(" = new ");
-            sb.Append(Model.FullType);
             sb.Append("(");
             sb.Append(Flatten(GetConstructorArgumentSyntaxList(constructorArgs).ToString()));
             sb.Append(") {");
             sb.Append(Flatten(GetPropertySyntaxList(propertiesAndFields).ToString()));
             sb.Append("};");
+
 
             JObject tempMetaData;
             if (metaData == null)
@@ -1603,11 +1613,11 @@ namespace RequirementsAbstractions
             Vertical outputPortsVert = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
-            Box rootUI = new Box() {Background=NodeBackground}; /* {"IsRoot":true} */
-            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {}; /* {"IsRoot":false} */
-            UIFactory createInputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
-            UIFactory createNodeMiddleVertical = new UIFactory() {GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
-            UIFactory createOutputPortsVertical = new UIFactory() {GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
+            Box rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
+            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
+            UIFactory createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
+            UIFactory createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
+            UIFactory createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI
