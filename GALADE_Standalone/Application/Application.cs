@@ -31,7 +31,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TextEditor = DomainAbstractions.TextEditor;
 using Process = System.Diagnostics.Process;
-using Thread = System.Threading.Thread;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Application
 {
@@ -255,6 +255,7 @@ namespace Application
             #region main diagram
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             MainWindow mainWindow = new MainWindow(title:"GALADE") {}; /* {"IsRoot":true} */
+            VSDebugger visualStudioDebugger = new VSDebugger() {}; /* {"IsRoot":false} */
             ContextMenu alaNodeContextMenu = new ContextMenu() {}; /* {"IsRoot":false} */
             DataFlowConnector<string> currentDiagramName = new DataFlowConnector<string>() {}; /* {"IsRoot":false} */
             EventConnector startGuaranteedLayoutProcess = new EventConnector() {}; /* {"IsRoot":false} */
@@ -727,14 +728,13 @@ namespace Application
             StateChangeListener id_4ed11222676e42cfae927c4278b45719 = new StateChangeListener() {StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.IdleSelected}; /* {"IsRoot":false} */
             Data<ALANode> id_2aab3d52bd8543a6823a3951e01531d5 = new Data<ALANode>() {Lambda=() => mainGraph.Get("SelectedNode") as ALANode}; /* {"IsRoot":false} */
             ConditionalData<ALANode> id_03977820012e4b5db575f844dfafa97c = new ConditionalData<ALANode>() {Condition=input => input != null}; /* {"IsRoot":false} */
-            MultiMenu id_25d736b7723741709250527d85069c1e = new MultiMenu() {ParentHeader="Add Breakpoint To..."}; /* {"IsRoot":false} */
-            Data<List<string>> id_ddc3842f5472448c80d4a993cc165678 = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    if (node == null)        return new List<string>();    var parser = new CodeParser();    var methodNodes = parser.GetMethods(node.Model.SourceCode);    var propertyNodes = parser.GetProperties(node.Model.SourceCode);    foreach (var methodNode in methodNodes)    {        var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);        var lineNumber = lineSpan.StartLinePosition.Line;    }    foreach (var propertyNode in propertyNodes)    {        var lineSpan = propertyNode.SyntaxTree.GetLineSpan(propertyNode.Span);        var lineNumber = lineSpan.StartLinePosition.Line;    }    var methodNames = parser.GetMethods(node.Model.SourceCode).OfType<MethodDeclarationSyntax>().Select(m => m.Identifier.ToString()).ToList();    return methodNames;}}; /* {"IsRoot":false,"Description":"Get a list of the selected instance's methods"} */
             MenuItem id_60e4784f8ddb48e2bba8b6dbf4264d50 = new MenuItem(header:"Add Breakpoint To...") {}; /* {"IsRoot":false} */
             MultiMenu id_63a2a94966104719a555020dfeec9b4f = new MultiMenu() {ParentHeader="Method..."}; /* {"IsRoot":false} */
-            MultiMenu id_159865d27c234bc7a0acec04ee4b7674 = new MultiMenu() {ParentHeader="Property setter..."}; /* {"IsRoot":false} */
-            Data<List<string>> id_223a4a7d40044465889a8a6f3c2a44b1 = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetProperties(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToList();    return names;}}; /* {"IsRoot":false} */
-            Data<List<string>> id_f8b2a18a0b7b451dae38f38aab7f364f = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetMethods(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToList();    return names;}}; /* {"IsRoot":false} */
-            Apply<string, Tuple<string, int>> id_679c26c6de8a4a3f9136568f96a64030 = new Apply<string, Tuple<string, int>>() {Lambda=name =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var methodNode = parser.GetMethods(node.Model.SourceCode).FirstOrDefault(n => n.Identifier.ToString() == name);    var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);    var lineNumber = lineSpan.StartLinePosition.Line;    var filePath = node.Model.CodeFilePath;    var filePathAndLineNumberPair = Tuple.Create();}}; /* {"IsRoot":false} */
+            MultiMenu id_159865d27c234bc7a0acec04ee4b7674 = new MultiMenu() {ParentHeader="Property..."}; /* {"IsRoot":false} */
+            Data<List<string>> id_223a4a7d40044465889a8a6f3c2a44b1 = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetProperties(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToHashSet().ToList();    return names;}}; /* {"IsRoot":false} */
+            Data<List<string>> id_f8b2a18a0b7b451dae38f38aab7f364f = new Data<List<string>>() {Lambda=() =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var names = parser.GetMethods(node.Model.SourceCode).Select(n => n.Identifier.ToString()).ToHashSet().ToList();    return names;}}; /* {"IsRoot":false} */
+            ApplyAction<string> id_679c26c6de8a4a3f9136568f96a64030 = new ApplyAction<string>() {Lambda=name =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var methodNodes = parser.GetMethods(node.Model.SourceCode).Where(n => n.Identifier.ToString() == name); /* Should handle multiple method overloads */    var condition = !string.IsNullOrEmpty(node.Model.GetValue("InstanceName")) ? $"InstanceName == {node.Model.GetValue("InstanceName")}" : "";        foreach (var methodNode in methodNodes)    {        var lineSpan = methodNode.SyntaxTree.GetLineSpan(methodNode.Span);        var lineNumber = lineSpan.StartLinePosition.Line + 1;        var filePath = node.Model.CodeFilePath;        visualStudioDebugger.AddBreakpoint(filePath, lineNumber, condition: condition);    }}}; /* {"IsRoot":false} */
+            ApplyAction<string> id_defa271deca54e258e852a5977ea5e46 = new ApplyAction<string>() {Lambda=name =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var propertyNode = parser.GetProperties(node.Model.SourceCode).FirstOrDefault(n => n.Identifier.ToString() == name);    var filePath = node.Model.CodeFilePath;    var accessors = propertyNode.DescendantNodes().OfType<AccessorDeclarationSyntax>();    var condition = !string.IsNullOrEmpty(node.Model.GetValue("InstanceName")) ? $"InstanceName == {node.Model.GetValue("InstanceName")}" : "";        foreach (var acc in accessors)    {        var span = acc.SyntaxTree.GetLineSpan(acc.Span);        var line = span.StartLinePosition.Line + 1;        var column = span.StartLinePosition.Character;        visualStudioDebugger.AddBreakpoint(filePath, line, column, condition: condition);    }}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1296,9 +1296,6 @@ namespace Application
             id_4ed11222676e42cfae927c4278b45719.WireTo(id_2aab3d52bd8543a6823a3951e01531d5, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["ALANode"]} */
             id_03977820012e4b5db575f844dfafa97c.WireTo(currentALANode, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             id_2aab3d52bd8543a6823a3951e01531d5.WireTo(id_03977820012e4b5db575f844dfafa97c, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
-            alaNodeContextMenu.WireTo(id_25d736b7723741709250527d85069c1e, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_25d736b7723741709250527d85069c1e.WireTo(id_ddc3842f5472448c80d4a993cc165678, "isOpening"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<string>"]} */
-            id_ddc3842f5472448c80d4a993cc165678.WireTo(id_25d736b7723741709250527d85069c1e, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
             alaNodeContextMenu.WireTo(id_60e4784f8ddb48e2bba8b6dbf4264d50, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_63a2a94966104719a555020dfeec9b4f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_60e4784f8ddb48e2bba8b6dbf4264d50.WireTo(id_159865d27c234bc7a0acec04ee4b7674, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1306,28 +1303,30 @@ namespace Application
             id_223a4a7d40044465889a8a6f3c2a44b1.WireTo(id_159865d27c234bc7a0acec04ee4b7674, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
             id_63a2a94966104719a555020dfeec9b4f.WireTo(id_f8b2a18a0b7b451dae38f38aab7f364f, "isOpening"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<string>"]} */
             id_f8b2a18a0b7b451dae38f38aab7f364f.WireTo(id_63a2a94966104719a555020dfeec9b4f, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"MultiMenu","DestinationIsReference":false,"Description":"","SourceGenerics":["List<string>"],"DestinationGenerics":[]} */
-            id_63a2a94966104719a555020dfeec9b4f.WireTo(id_679c26c6de8a4a3f9136568f96a64030, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string","Tuple<string, int>"]} */
+            id_63a2a94966104719a555020dfeec9b4f.WireTo(id_679c26c6de8a4a3f9136568f96a64030, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            id_159865d27c234bc7a0acec04ee4b7674.WireTo(id_defa271deca54e258e852a5977ea5e46, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            appStartConnector.WireTo(visualStudioDebugger, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"VSDebugger","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 
             _mainWindow = mainWindow;
 
-            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
-            EventConnector startDebuggerPolling = new EventConnector() {InstanceName="startDebuggerPolling"}; /* {"IsRoot":false} */
-            VSDebugger id_904a8bbacc06407293fa9dcb011706cd = new VSDebugger() {}; /* {"IsRoot":false} */
-            // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
-
-            // BEGIN AUTO-GENERATED WIRING FOR Debugger
-            appStartConnector.WireTo(startDebuggerPolling, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":true,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            startDebuggerPolling.WireTo(id_904a8bbacc06407293fa9dcb011706cd, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"VSDebugger","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            // END AUTO-GENERATED WIRING FOR Debugger
-
-
-            // BEGIN MANUAL INSTANTIATIONS
-            // END MANUAL INSTANTIATIONS
-
-            // BEGIN MANUAL WIRING
-            // END MANUAL WIRING
+            // // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
+            // EventConnector startDebuggerPolling = new EventConnector() {InstanceName="startDebuggerPolling"}; /* {"IsRoot":false} */
+            // VSDebugger id_904a8bbacc06407293fa9dcb011706cd = new VSDebugger() {}; /* {"IsRoot":false} */
+            // // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
+            //
+            // // BEGIN AUTO-GENERATED WIRING FOR Debugger
+            // appStartConnector.WireTo(startDebuggerPolling, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":true,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            // startDebuggerPolling.WireTo(id_904a8bbacc06407293fa9dcb011706cd, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"VSDebugger","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            // // END AUTO-GENERATED WIRING FOR Debugger
+            //
+            //
+            // // BEGIN MANUAL INSTANTIATIONS
+            // // END MANUAL INSTANTIATIONS
+            //
+            // // BEGIN MANUAL WIRING
+            // // END MANUAL WIRING
 
 
         }

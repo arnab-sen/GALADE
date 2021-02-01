@@ -8,13 +8,14 @@ using ProgrammingParadigms;
 using EnvDTE;
 using EnvDTE80;
 using Libraries;
+using System.IO;
 
 namespace DomainAbstractions
 {
     /// <summary>
     /// A class that hooks onto and interacts with the debugger of the first opened instance of Visual Studio 2019.
     /// </summary>
-    public class VSDebugger : IDataFlow<Tuple<string, int>> // filePathAndLineNumber
+    public class VSDebugger : IEvent // connect
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -37,19 +38,8 @@ namespace DomainAbstractions
 
         // Ports
 
-        // IDataFlow<Tuple<string, int>> implementation
-        Tuple<string, int> IDataFlow<Tuple<string, int>>.Data
-        {
-            get => _lastPair;
-            set
-            {
-                _lastPair = value;
-
-                ConnectToVisualStudio();
-                AddBreakPoint(_lastPair.Item1, _lastPair.Item2);
-
-            }
-        }
+        // IEvent implementation
+        void IEvent.Execute() => ConnectToVisualStudio();
 
         // Methods
         /// <summary>
@@ -74,9 +64,52 @@ namespace DomainAbstractions
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="lineNumber"></param>
-        public void AddBreakPoint(string filePath, int lineNumber)
+        public void AddBreakpoint(string filePath, int lineNumber, int column = 1, string condition = "")
         {
-            _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber);
+            if (string.IsNullOrEmpty(condition))
+            {
+                _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber, Column: column);
+            }
+            else
+            {
+
+                var existingBreakpoint = GetBreakpoint(filePath, lineNumber);
+                if (existingBreakpoint == null)
+                {
+                    _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber, Column: column, Condition: condition, ConditionType: dbgBreakpointConditionType.dbgBreakpointConditionTypeWhenTrue);
+                }
+                else
+                {
+                    var newCondition = $"{existingBreakpoint.Condition} || {condition}";
+                    existingBreakpoint.Delete();
+                    _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber, Column: column, Condition: newCondition, ConditionType: dbgBreakpointConditionType.dbgBreakpointConditionTypeWhenTrue);
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// Returns the first breakpoint found at the given filepath, line number, and column. If none are found, null is returned.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="column">The character position of the breakpoint. Ignored if -1, and the default value is -1.</param>
+        /// <returns></returns>
+        public Breakpoint GetBreakpoint(string filePath, int lineNumber, int column = -1)
+        {
+            if (_debugger != null)
+            {
+                var enumerator = _debugger.Breakpoints.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current is Breakpoint breakpoint)
+                    {
+                        if (breakpoint.File == filePath && breakpoint.FileLine == lineNumber && (column == -1 || breakpoint.FileColumn == column)) return breakpoint;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private async void Test()
