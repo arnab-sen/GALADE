@@ -38,14 +38,9 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram1
-            Apply<T1, T2> A = new Apply<T1, T2>() {}; /* {"IsRoot":true,"Description":"test"} */
-            Apply<T1, T2> B = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> test = new Apply<T1, T2>() {}; /* {"IsRoot":false,"Description":"test"} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Diagram1
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram1
-            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
-            A.WireTo(test, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
             // END AUTO-GENERATED WIRING FOR Diagram1
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2

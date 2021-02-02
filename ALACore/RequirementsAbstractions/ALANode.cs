@@ -202,6 +202,7 @@ namespace RequirementsAbstractions
         private Dictionary<string, AbstractionModel> _loadedModels = new Dictionary<string, AbstractionModel>();
         private System.Windows.Controls.Button _descPopupButton = null;
         private System.Windows.Controls.TextBox _popupText = null;
+        private bool _canMove = true;
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -563,6 +564,16 @@ namespace RequirementsAbstractions
 
             dropDownUI.MouseEnter += (sender, args) =>
             {
+                _canMove = false;
+            };
+
+            dropDownUI.MouseLeave += (sender, args) =>
+            {
+                _canMove = true;
+            };
+
+            dropDownUI.MouseEnter += (sender, args) =>
+            {
                 var memberDocumentation = Model.GetMemberDocumentation(dropDownUI.Text);
                 var tooltipDoc = "";
 
@@ -880,6 +891,9 @@ namespace RequirementsAbstractions
             ui.GotKeyboardFocus += (sender, args) => StateTransition.Update(Enums.DiagramMode.TextEditing);
             // ui.LostFocus += (sender, args) => { };
             // ui.LostKeyboardFocus += (sender, args) => { };
+
+            ui.MouseEnter += (sender, args) => _canMove = false;
+            ui.MouseLeave += (sender, args) => _canMove = true;
         }
 
         private IUI CreateTypeGenericsDropDownMenus()
@@ -1100,6 +1114,7 @@ namespace RequirementsAbstractions
                 Text = Model.Type,
                 Width = 100
             };
+
             _typeDropDown = nodeTypeDropDownMenu;
 
             var createGenericDropDownMenus = new UIFactory() { GetUIContainer = CreateTypeGenericsDropDownMenus };
@@ -1350,7 +1365,8 @@ namespace RequirementsAbstractions
             render.MouseMove += (sender, args) =>
             {
                 if (Mouse.LeftButton == MouseButtonState.Pressed 
-                    && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    // && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    && _canMove
                     && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
                 {
                     if (!Mouse.Captured?.Equals(render) ?? true) Mouse.Capture(render);
