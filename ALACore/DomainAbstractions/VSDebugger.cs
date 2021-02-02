@@ -112,6 +112,21 @@ namespace DomainAbstractions
             return null;
         }
 
+        public void ClearAllBreakpoints(string filePath)
+        {
+            if (_debugger != null)
+            {
+                var enumerator = _debugger.Breakpoints.GetEnumerator();
+                while (enumerator.MoveNext())
+                {
+                    if (enumerator.Current is Breakpoint breakpoint)
+                    {
+                        if (breakpoint.File == filePath) breakpoint.Delete();
+                    }
+                }
+            }
+        }
+
         private async void Test()
         {
             // 16 for 2019, 15 for 2017, 14 for 2015, 12 for 2013, 11 for 2012, 10 for 2010

@@ -23,7 +23,6 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public string InstanceDescription { get; set; } = "";
         public string ParentHeader { get; set; } = "Open";
         public List<string> Labels { get; set; }
         public bool RemoveEmptyLabels { get; set; } = true;

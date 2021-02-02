@@ -751,6 +751,8 @@ namespace Application
             UIConfig id_684e6edd75674c2a9a29c9b54b87490d = new UIConfig() {InstanceName="id_684e6edd75674c2a9a29c9b54b87490d"}; /* {"IsRoot":false} */
             EventLambda id_e123ea4ecfae4d6f9ac28e989f6cadc7 = new EventLambda() {InstanceName="id_e123ea4ecfae4d6f9ac28e989f6cadc7",Lambda=() =>{    nodeIsReferenceNodeCheckBox.Change((mainGraph.Get("SelectedNode") as ALANode)?.IsReferenceNode ?? false);}}; /* {"IsRoot":false} */
             EventConnector id_d6c2a4dff53046c980a7154fd2fc5d09 = new EventConnector() {InstanceName="id_d6c2a4dff53046c980a7154fd2fc5d09"}; /* {"IsRoot":false} */
+            MenuItem id_892a525479834bc8a7080287cf96c3d8 = new MenuItem(header:"Clear all breakpoints") {InstanceName="id_892a525479834bc8a7080287cf96c3d8"}; /* {"IsRoot":false} */
+            EventLambda id_c9c6a5dc1f46498ebb3ed35dbc7de601 = new EventLambda() {InstanceName="id_c9c6a5dc1f46498ebb3ed35dbc7de601",Lambda=() => {    visualStudioDebugger.ClearAllBreakpoints((mainGraph.Get("SelectedNode") as ALANode).Model.CodeFilePath);}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1333,11 +1335,13 @@ namespace Application
             alaWireContextMenu.WireTo(id_269ffcfe56874f4ba0876a93071234ae, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             alaWireContextMenu.WireTo(id_ec06a192a3b9424e996af338bd0e1699, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_faea6a735f174accaaf3420081bf3ffc.WireTo(id_a051dcfb8cb44366b137a79167c29e01, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            alaNodeContextMenu.WireTo(id_892a525479834bc8a7080287cf96c3d8, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             alaNodeContextMenu.WireTo(id_23911df98c8a4eacbc7cae3e641158d1, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             alaNodeContextMenu.WireTo(id_684e6edd75674c2a9a29c9b54b87490d, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             alaNodeContextMenu.WireTo(id_d6c2a4dff53046c980a7154fd2fc5d09, "opened"); /* {"SourceType":"ContextMenu","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_d6c2a4dff53046c980a7154fd2fc5d09.WireTo(id_ae7138511e314f22b4a0453980c0bda7, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_d6c2a4dff53046c980a7154fd2fc5d09.WireTo(id_e123ea4ecfae4d6f9ac28e989f6cadc7, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_892a525479834bc8a7080287cf96c3d8.WireTo(id_c9c6a5dc1f46498ebb3ed35dbc7de601, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 
