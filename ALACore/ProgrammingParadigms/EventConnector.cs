@@ -32,7 +32,7 @@ namespace ProgrammingParadigms
     public class EventConnector : IEvent, IEventB // input, eventHappenedB
     {
         // Properties
-        public string InstanceName;
+        public string InstanceName { get; set; } = "Default";
 
         // outputs
         private List<IEvent> fanoutList = new List<IEvent>();
