@@ -22,7 +22,7 @@ namespace DomainAbstractions
     public class PortGraphConnection : IPortConnection, IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public VisualPortGraph Graph { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public UndoHistory UndoHistory { get; set; }

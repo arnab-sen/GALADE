@@ -14,7 +14,7 @@ namespace DomainAbstractions
     public class Text : IUI, IDataFlow<string>, IDataFlow<bool> // child, textInput, visible
     {
         // properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Brush Color = Brushes.Black;
         public Brush Background;
         public double HeightRatio;

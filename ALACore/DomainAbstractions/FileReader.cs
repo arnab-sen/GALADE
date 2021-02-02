@@ -18,7 +18,7 @@ namespace DomainAbstractions
     public class FileReader : IDataFlow<string> // filePathInput
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private string filePath = "";

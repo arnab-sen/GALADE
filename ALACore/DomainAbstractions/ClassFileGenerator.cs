@@ -11,7 +11,7 @@ namespace DomainAbstractions
     public class ClassFileGenerator
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public List<string> Usings { get; set; } = new List<string>();
         public string Namespace { get; set; } = "Application";
         public string ClassName { get; set; } = "DefaultClass";

@@ -15,7 +15,7 @@ namespace ProgrammingParadigms
     public class VisualStyle
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Brush Background { get; set; } = Brushes.White;
         public Brush BackgroundHighlight { get; set; } = Brushes.White;
         public Brush Foreground { get; set; } = Brushes.Black;

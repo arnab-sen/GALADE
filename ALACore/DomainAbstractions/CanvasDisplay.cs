@@ -21,7 +21,7 @@ namespace DomainAbstractions
     public class CanvasDisplay : IUI, IDataFlow<UIElement>, IEvent // child, addItem, clearAndOutput
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
 
         public double Height

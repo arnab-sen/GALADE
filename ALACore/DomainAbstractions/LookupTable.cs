@@ -11,7 +11,7 @@ namespace DomainAbstractions
     public class LookupTable<T1, T2> : IDataFlow<Tuple<T1, T2>>, IDataFlow<T1> // pair, key
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         public Dictionary<T1, T2> InitialDictionary
         {

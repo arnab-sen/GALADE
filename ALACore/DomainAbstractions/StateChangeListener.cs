@@ -24,7 +24,7 @@ namespace DomainAbstractions
     public class StateChangeListener : IEvent // start
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public Enums.DiagramMode PreviousStateShouldMatch { get; set; } = Enums.DiagramMode.Any;
         public Enums.DiagramMode CurrentStateShouldMatch { get; set; } = Enums.DiagramMode.Any;

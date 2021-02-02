@@ -19,7 +19,7 @@ namespace DomainAbstractions
     public class TextClipboard : IDataFlow<string>, IEvent // contentInput, sendOutput
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public bool ClearOnOutput { get; set; } = false;
 
         // Private fields

@@ -14,7 +14,7 @@ namespace DomainAbstractions
     public class Cast<T1, T2> : IDataFlow<T1> // input
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         T1 preCast;

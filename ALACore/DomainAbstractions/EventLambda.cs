@@ -14,7 +14,7 @@ namespace DomainAbstractions
     public class EventLambda : IEvent // start
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Action Lambda;
 
         // Private fields

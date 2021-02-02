@@ -18,7 +18,7 @@ namespace DomainAbstractions
     public class IfElse : IEvent, IDataFlow<bool> // start, condition
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public bool Condition { set; get; } = true;
 
         // Ports

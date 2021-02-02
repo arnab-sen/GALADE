@@ -14,7 +14,7 @@ namespace DomainAbstractions
     public class Button : IUI // child
     {
         // properties ------------------------------------------------------------
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         // the properties can extend for any UI customizing requirements
         public double Width { set => button.Width = value; }
         public double Height { set => button.Height = value; }

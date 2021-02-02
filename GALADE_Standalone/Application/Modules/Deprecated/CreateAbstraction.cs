@@ -26,7 +26,7 @@ namespace Application
     public class CreateAbstraction : IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Enums.ALALayer Layer { get; set; } = Enums.ALALayer.DomainAbstractions;
         public bool WriteFile { get; set; } = false;
         public string ClassName { get; set; }

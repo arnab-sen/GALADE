@@ -18,7 +18,7 @@ namespace DomainAbstractions
     public class Apply<T1, T2> : IDataFlow<T1> // input
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Func<T1, T2> Lambda;
 
         // Private fields

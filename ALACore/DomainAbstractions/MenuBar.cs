@@ -13,7 +13,7 @@ namespace DomainAbstractions
     public class MenuBar : System.Windows.Controls.Menu, IUI // child
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
 

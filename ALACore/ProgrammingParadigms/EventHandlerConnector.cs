@@ -13,7 +13,7 @@ namespace ProgrammingParadigms
     public class EventHandlerConnector : IEventHandler
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private object _lastSender;

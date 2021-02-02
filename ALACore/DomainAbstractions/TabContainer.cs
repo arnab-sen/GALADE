@@ -21,7 +21,7 @@ namespace DomainAbstractions
         private List<IUI> childrenTabs = new List<IUI>();
 
         // properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Thickness Margin { set => tabControl.Margin = value; }
 
         //private fields

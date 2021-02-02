@@ -20,7 +20,7 @@ namespace DomainAbstractions
     public class Data<T> : IEvent,  IDataFlow<T>, IDataFlowB<T> // start, inputData, returnData
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public bool Perishable = false;
         public int PerishCount = 1; // Data cannot be pushed or pulled after it has been sent this amount of times
         public Func<T> Lambda;

@@ -19,7 +19,7 @@ namespace DomainAbstractions
     public class Loop<T> : IEvent, IDataFlow<List<T>> // getNextValue, inputList
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public bool ClearOnCompletion = true;
 
         // Private fields

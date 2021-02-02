@@ -15,7 +15,7 @@ namespace ProgrammingParadigms
     public class UndoHistory
     {
         // Public strings and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private Stack<Tuple<IMemento, string>> undoStack = new Stack<Tuple<IMemento, string>>();

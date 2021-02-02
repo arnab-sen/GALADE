@@ -18,14 +18,14 @@ namespace DomainAbstractions
     public class Collection<T> : IDataFlow<T>, IEvent // addItem, clear
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         /// <summary>
         /// Output when the list reaches this length, -1 for output at any length, -2 to disable auto-output
         /// </summary>
-        public int OutputLength { get; set;} = -2;
-        public bool OutputOnEvent { get; set;} = true;
-        public bool ClearOnOutput { get; set;} = false;
+        public int OutputLength{ get; set; } = -2;
+        public bool OutputOnEvent{ get; set; } = true;
+        public bool ClearOnOutput{ get; set; } = false;
 
         // Private fields
         private List<T> list = new List<T>();

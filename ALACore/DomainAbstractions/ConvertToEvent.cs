@@ -12,7 +12,7 @@ namespace DomainAbstractions
     public class ConvertToEvent<T> : IDataFlow<T> // input
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private T data = default;

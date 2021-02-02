@@ -16,7 +16,7 @@ namespace DomainAbstractions
     public class Tab : IUI // child
     {
         // properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public double FontSize { set => tabItem.FontSize = value; }
         public double Height { set => stackPanel.Height = value; }
         public Thickness Margin { set => stackPanel.Margin = value; }

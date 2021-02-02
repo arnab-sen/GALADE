@@ -23,7 +23,7 @@ namespace Application
     public class DragRectMultiSelectNodes : IEventHandler, IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public VisualPortGraph Graph { get; set; }
         public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
         public VisualStyle DragRectStyle { get; set; } = new VisualStyle();

@@ -18,7 +18,7 @@ namespace DomainAbstractions
     public class Operation<T> : IEvent // start
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public delegate T OperationDelegate(List<T> operands);
         public OperationDelegate Lambda;
 

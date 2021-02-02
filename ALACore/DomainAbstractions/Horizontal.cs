@@ -20,7 +20,7 @@ namespace DomainAbstractions
     public class Horizontal : IUI, IDataFlow<bool>, IEvent // child, visible, clear
     {
         // properties ---------------------------------------------------------------------
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public int[] Ratios { get; set; }
         public Thickness Margin { set => gridPanel.Margin = value; }
         public Brush Background;

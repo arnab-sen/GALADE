@@ -20,7 +20,7 @@ namespace DomainAbstractions
     public class Select<T> : IDataFlow<IEnumerable<T>> // collectionInput
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Func<T, T> Lambda;
         
         // Private fields

@@ -21,7 +21,7 @@ namespace DomainAbstractions
     public class StringMap : IEvent // start
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         
         // Private fields
         private string _oldString = "";

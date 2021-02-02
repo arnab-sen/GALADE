@@ -15,7 +15,7 @@ namespace DomainAbstractions
     public class ConditionalData<T> : IDataFlow<T> // data
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public Predicate<T> Condition;
 
         // Private fields

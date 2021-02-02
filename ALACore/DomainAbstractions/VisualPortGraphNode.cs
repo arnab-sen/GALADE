@@ -29,7 +29,7 @@ namespace ProgrammingParadigms
     public class VisualPortGraphNode : IMemento, IVisualPortGraphNode, IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public string Type { get; set; } = "Default";
         public List<string> Types { get; set; }
         public List<string> PortTypes { get; set; }

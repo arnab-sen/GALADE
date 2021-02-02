@@ -20,7 +20,7 @@ namespace Application
     public class ParseProgrammingParadigmTemplates : IDataFlow<string>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields
         private string alaProgrammingParadigmFilePath = "";

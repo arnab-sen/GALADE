@@ -13,7 +13,7 @@ namespace DomainAbstractions
     public class MouseEvent : IEventHandler // sender
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public MouseEventHandler Lambda { get; set; }
         public Predicate<MouseEventArgs> Condition { get; set; }
         public Func<object, object> ExtractSender { get; set; } // The object to subscribe to

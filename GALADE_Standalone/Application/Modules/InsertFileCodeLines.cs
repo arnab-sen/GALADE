@@ -21,7 +21,7 @@ namespace Application
     public class InsertFileCodeLines : IEvent, IDataFlow<List<string>>, IDataFlow<string>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         public string StartLandmark
         {

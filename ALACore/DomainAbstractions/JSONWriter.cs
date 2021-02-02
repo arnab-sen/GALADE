@@ -19,7 +19,7 @@ namespace DomainAbstractions
     public class JSONWriter<T> : IDataFlow<T> // input
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public string FilePath { get; set; } = "";
 
         public bool IndentString { get; set; } = true;

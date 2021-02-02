@@ -39,7 +39,7 @@ namespace ProgrammingParadigms
     public class DataFlowConnector<T> : IDataFlow<T>, IDataFlowB<T> // input, returnDataB
     {
         // Properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public T Data;
 
         // Private fields

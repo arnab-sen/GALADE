@@ -22,7 +22,7 @@ namespace DomainAbstractions
     public class PopupWindow : IEvent, IDataFlow<bool> // toggleVisibility, visible
     {
         // properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         public double MinWidth
         {

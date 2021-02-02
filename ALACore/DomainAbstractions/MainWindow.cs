@@ -26,7 +26,7 @@ namespace DomainAbstractions
     public class MainWindow : IEvent, IDataFlow<bool>, IDataFlow<string> // shutdown, visible, title
     {
         // Properties -----------------------------------------------------------------
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
 
         // Private fields -----------------------------------------------------------------
         private Window window;

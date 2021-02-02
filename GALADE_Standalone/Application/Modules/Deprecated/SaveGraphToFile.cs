@@ -19,7 +19,7 @@ namespace Application
     public class SaveGraphToFile : IDataFlow<string>
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public VisualPortGraph Graph { get; set; }
 
         // Private fields

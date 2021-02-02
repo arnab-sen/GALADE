@@ -26,7 +26,7 @@ namespace Application
     public class NewVisualPortGraphNode : IEvent
     {
         // Public fields and properties
-        public string InstanceName = "Default";
+        public string InstanceName { get; set; } = "Default";
         public VisualStyle NodeStyle { get; set; }
         public VisualStyle PortStyle { get; set; }
         public VisualPortGraph Graph { get; set; }
