@@ -45,6 +45,7 @@ namespace RequirementsAbstractions
         public List<string> AvailableAbstractions { get; } = new List<string>();
         public List<string> AvailableRequirementsAbstractions { get; } = new List<string>();
         public System.Windows.Controls.ContextMenu ContextMenu { get; set; }
+        public System.Windows.Controls.ContextMenu WireContextMenu { get; set; }
 
         public JObject MetaData
         {
@@ -1385,14 +1386,17 @@ namespace RequirementsAbstractions
                     var source = this;
                     var wire = new ALAWire()
                     {
-                        Graph = Graph, 
-                        Canvas = Canvas, 
-                        Source = source, 
-                        Destination = null, 
-                        SourcePortBox = sourcePort, 
-                        DestinationPortBox = null, 
-                        StateTransition = StateTransition
+                        Graph = Graph,
+                        Canvas = Canvas,
+                        Source = source,
+                        Destination = null,
+                        SourcePortBox = sourcePort,
+                        DestinationPortBox = null,
+                        StateTransition = StateTransition,
+                        ContextMenu = WireContextMenu
                     };
+
+                    wire.Initialise();
 
                     Graph.AddEdge(wire);
                     wire.Paint();

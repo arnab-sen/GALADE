@@ -54,6 +54,7 @@ namespace DomainAbstractions
         public double RightMargin { get; set; } = double.NaN;
         public double BottomMargin { get; set; } = double.NaN;
         public bool AllowDrop { get; set; } = false;
+        public System.Windows.Controls.ContextMenu ContextMenu { get; set; }
 
         // Private fields
         private UIElement _uiElement = new UIElement();
@@ -85,9 +86,11 @@ namespace DomainAbstractions
         {
             if (ui is FrameworkElement fe)
             {
+                if (ContextMenu != null) fe.ContextMenu = ContextMenu;
+
                 if (contextMenuChildren.Any())
                 {
-                    fe.ContextMenu = new System.Windows.Controls.ContextMenu();
+                    if (fe.ContextMenu == null) fe.ContextMenu = new System.Windows.Controls.ContextMenu();
                     foreach (var contextMenuItem in contextMenuChildren)
                     {
                         fe.ContextMenu.Items.Add(contextMenuItem.GetWPFElement());

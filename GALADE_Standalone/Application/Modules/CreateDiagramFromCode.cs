@@ -566,8 +566,11 @@ namespace Application
                 Destination = destination,
                 SourcePortBox = sourcePort,
                 DestinationPortBox = destinationPort,
-                StateTransition = StateTransition
+                StateTransition = StateTransition,
+                ContextMenu = WireContextMenu
             };
+
+            wire.Initialise();
 
             return wire;
         }
