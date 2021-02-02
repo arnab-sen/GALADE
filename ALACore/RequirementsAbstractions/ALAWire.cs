@@ -462,7 +462,7 @@ namespace RequirementsAbstractions
             MouseEvent id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {InstanceName="id_375a4e94d9d34270a4a028096c72ccea",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
             EventLambda id_d22091c77e774610943606a3674e7ee5 = new EventLambda() {InstanceName="id_d22091c77e774610943606a3674e7ee5",Lambda=() =>{    if (!Mouse.Captured?.Equals(Render) ?? true)        return;    if (MovingSource)    {        _bezier.Point0 = Mouse.GetPosition(Canvas);    }    else if (MovingDestination)    {        _bezier.Point3 = Mouse.GetPosition(Canvas);    }}}; /* {"IsRoot":false} */
             MouseButtonEvent id_a3bafb1880ea4ae3b2825dee844c50b1 = new MouseButtonEvent(eventName:"MouseLeftButtonDown") {InstanceName="id_a3bafb1880ea4ae3b2825dee844c50b1",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
-            EventLambda id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {InstanceName="id_0959a4bad0bd41f4ba02c7725022dc05",Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))    {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }    Graph.Set("SelectedWire", this);    ToggleSelect();}}; /* {"IsRoot":false} */
+            EventLambda id_0959a4bad0bd41f4ba02c7725022dc05 = new EventLambda() {InstanceName="id_0959a4bad0bd41f4ba02c7725022dc05",Lambda=() =>{    AttachEndToMouse(detach: true);    if (StateTransition.CurrentStateMatches(Enums.DiagramMode.MovingConnection))    {        StateTransition.Update(Enums.DiagramMode.AwaitingPortSelection);    }    ToggleSelect();}}; /* {"IsRoot":false} */
             EventLambda id_5724d3f527eb4a69baaceb9929d0361c = new EventLambda() {InstanceName="id_5724d3f527eb4a69baaceb9929d0361c",Lambda=() =>{    Highlight();}}; /* {"IsRoot":false} */
             EventLambda id_f09af2cbf36c4a1f8b0f7d36707b5779 = new EventLambda() {InstanceName="id_f09af2cbf36c4a1f8b0f7d36707b5779",Lambda=() =>{    if (!IsSelected)        Unhighlight();}}; /* {"IsRoot":false} */
             UIConfig UIConfig_curvedWire = new UIConfig() {InstanceName="UIConfig_curvedWire",ToolTipShowDuration=60,ContextMenu=ContextMenu}; /* {"IsRoot":true} */
@@ -476,6 +476,8 @@ namespace RequirementsAbstractions
             IfElse id_b17b7a05e6a94403a88b872dac929eae = new IfElse() {InstanceName="id_b17b7a05e6a94403a88b872dac929eae"}; /* {"IsRoot":false} */
             FlowGate<object> id_a700ea30b2894d8f9c3ed466cedc47ab = new FlowGate<object>() {InstanceName="id_a700ea30b2894d8f9c3ed466cedc47ab",IsOpen=false}; /* {"IsRoot":false} */
             EventConnector id_dedab574624f47f6a769e36f92853c19 = new EventConnector() {InstanceName="id_dedab574624f47f6a769e36f92853c19"}; /* {"IsRoot":false} */
+            MouseButtonEvent id_ae07194d93f94cdb82ddd5d90cbd3d09 = new MouseButtonEvent(eventName:"MouseRightButtonDown") {InstanceName="id_ae07194d93f94cdb82ddd5d90cbd3d09",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
+            EventLambda id_b21c36d6b0044b74b47304738d8299a8 = new EventLambda() {InstanceName="id_b21c36d6b0044b74b47304738d8299a8",Lambda=() => {    Select();}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALAWireUI
@@ -499,6 +501,8 @@ namespace RequirementsAbstractions
             id_afe9b89a89b34fecaaa5798198d4a018.WireTo(id_b17b7a05e6a94403a88b872dac929eae, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false,"Description":"","SourceGenerics":["bool"],"DestinationGenerics":[]} */
             id_dedab574624f47f6a769e36f92853c19.WireTo(id_a700ea30b2894d8f9c3ed466cedc47ab, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"FlowGate","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["object"]} */
             id_375a4e94d9d34270a4a028096c72ccea.WireTo(id_dedab574624f47f6a769e36f92853c19, "eventHappened"); /* {"SourceType":"MouseEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            curvedWire.WireTo(id_ae07194d93f94cdb82ddd5d90cbd3d09, "eventHandlers"); /* {"SourceType":"CurvedLine","SourceIsReference":false,"DestinationType":"MouseButtonEvent","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_ae07194d93f94cdb82ddd5d90cbd3d09.WireTo(id_b21c36d6b0044b74b47304738d8299a8, "eventHappened"); /* {"SourceType":"MouseButtonEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR ALAWireUI
 
             _bezier = curvedWire;
