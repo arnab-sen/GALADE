@@ -64,8 +64,7 @@ namespace RequirementsAbstractions
             {
                 if (value != _isRoot)
                 {
-                    // _isRoot = value;
-                    // _nodeIsRootCheckBox.Change(_isRoot);
+                    _isRoot = value;
 
                     if (_isRoot)
                     {
@@ -88,7 +87,6 @@ namespace RequirementsAbstractions
             set
             {
                 _isReference = value;
-                // _nodeIsReferenceNodeCheckBox.Change(_isReference);
 
                 if (_nameTextBox != null)
                 {

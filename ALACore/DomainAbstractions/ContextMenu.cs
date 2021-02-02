@@ -22,6 +22,7 @@ namespace DomainAbstractions
 
         // Ports
         private List<IUI> children = new List<IUI>();
+        private IEvent opened;
 
         // IUI implementation
         UIElement IUI.GetWPFElement()
@@ -48,7 +49,7 @@ namespace DomainAbstractions
 
         public ContextMenu()
         {
-
+            Menu.Opened += (sender, args) => opened?.Execute();
         }
     }
 }
