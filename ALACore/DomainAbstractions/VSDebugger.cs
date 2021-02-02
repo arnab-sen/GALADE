@@ -22,10 +22,7 @@ namespace DomainAbstractions
 
         // Private fields
         private Debugger _debugger;
-
-        // Reference to this must be kept alive in order to use the events, so we define it here
-        private DebuggerEvents _debuggerEvents; 
-        private Tuple<string, int> _lastPair;
+        private DebuggerEvents _debuggerEvents; // Reference to this must be kept alive in order to use the events, so we define it here
         private Dictionary<string, string> _mappingVSToDTEVersion = new Dictionary<string, string>()
         {
             {"2019", "16"},
