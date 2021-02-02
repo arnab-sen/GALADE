@@ -38,14 +38,20 @@ namespace Application
         public ExampleDomainAbstraction(string arg0, string arg2 = "Main")
         {		
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram1
+            Apply<T1, T2> A = new Apply<T1, T2>() {InstanceName="A"}; /* {"IsRoot":false} */
+            Apply<T1, T2> B = new Apply<T1, T2>() {InstanceName="B"}; /* {"IsRoot":false} */
+            Apply<T1, T2> id_d1e3a25e3b83439e8a736097311d82a0 = new Apply<T1, T2>() {InstanceName="id_d1e3a25e3b83439e8a736097311d82a0"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Diagram1
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram1
+            A.WireTo(C, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":true,"Description":"A to @C","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+            A.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
+            id_d1e3a25e3b83439e8a736097311d82a0.WireTo(B, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["T1","T2"],"DestinationGenerics":["T1","T2"]} */
             // END AUTO-GENERATED WIRING FOR Diagram1
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram2
-            Apply<T1, T2> C = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> test1 = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> C = new Apply<T1, T2>() {InstanceName="C"}; /* {"IsRoot":false} */
+            Apply<T1, T2> test1 = new Apply<T1, T2>() {InstanceName="test1"}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram2
 			
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram2
@@ -53,8 +59,8 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR Diagram2
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram3
-            Apply<T1, T2> E = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
-            Apply<T1, T2> F = new Apply<T1, T2>() {}; /* {"IsRoot":false} */
+            Apply<T1, T2> E = new Apply<T1, T2>() {InstanceName="E"}; /* {"IsRoot":false} */
+            Apply<T1, T2> F = new Apply<T1, T2>() {InstanceName="F"}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram3
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram3

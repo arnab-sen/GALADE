@@ -639,7 +639,7 @@ namespace Application
             DataFlowConnector<string> id_6180563898dc46da87f68e3da6bc7aa8 = new DataFlowConnector<string>() {InstanceName="id_6180563898dc46da87f68e3da6bc7aa8"}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_6bc55844fa8f41db9a95118685504fd1 = new ConvertToEvent<string>() {InstanceName="id_6bc55844fa8f41db9a95118685504fd1"}; /* {"IsRoot":false} */
             UIConfig id_e372e7c636a14549bba7cb5992874716 = new UIConfig() {InstanceName="id_e372e7c636a14549bba7cb5992874716",Visible=false}; /* {"IsRoot":false} */
-            MenuItem id_ec06a192a3b9424e996af338bd0e1699 = new MenuItem(header:"Split selected wire") {InstanceName="id_ec06a192a3b9424e996af338bd0e1699"}; /* {"IsRoot":false} */
+            MenuItem id_ec06a192a3b9424e996af338bd0e1699 = new MenuItem(header:"Insert node") {InstanceName="id_ec06a192a3b9424e996af338bd0e1699"}; /* {"IsRoot":false} */
             Data<ALAWire> id_2c58e14cba984eb89065062bde6593be = new Data<ALAWire>() {InstanceName="id_2c58e14cba984eb89065062bde6593be",Lambda=() => mainGraph.Get("SelectedWire") as ALAWire}; /* {"IsRoot":false} */
             EventConnector id_110e0e17c17e481291e3a1669fd3edaf = new EventConnector() {InstanceName="id_110e0e17c17e481291e3a1669fd3edaf"}; /* {"IsRoot":false} */
             ApplyAction<ALAWire> id_887caaa328ff409aa0c37fbcf3fac2b4 = new ApplyAction<ALAWire>() {InstanceName="id_887caaa328ff409aa0c37fbcf3fac2b4",Lambda=wireToSplit =>{    var latestNode = latestAddedNode.Data;    wireToSplit.Source = latestNode as ALANode;    wireToSplit.SourcePortBox = wireToSplit.Source.GetPortBox("output");    wireToSplit.Refresh();}}; /* {"IsRoot":false} */
