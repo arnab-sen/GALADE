@@ -45,13 +45,13 @@ namespace DomainAbstractions
         /// <param name="VSVersion"></param>
         public void ConnectToVisualStudio(string VSVersion = "2019")
         {
+            if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
+            {
+                throw new ArgumentException($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
+            }
+
             try
             {
-                if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
-                {
-                    throw new ArgumentException($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
-                }
-
                 DTE2 dte = (DTE2)Marshal.GetActiveObject($"VisualStudio.DTE.{_mappingVSToDTEVersion[VSVersion]}.0");
                 _debugger = dte.Debugger;
                 _debuggerEvents = dte.Events.DebuggerEvents;
