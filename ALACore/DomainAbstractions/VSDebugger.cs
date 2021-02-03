@@ -47,7 +47,8 @@ namespace DomainAbstractions
         {
             if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
             {
-                throw new ArgumentException($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
+                Logging.Log($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
+                return;
             }
 
             try
