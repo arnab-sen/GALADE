@@ -32,6 +32,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TextEditor = DomainAbstractions.TextEditor;
 using Process = System.Diagnostics.Process;
 using Microsoft.CodeAnalysis.CSharp;
+using Expression = EnvDTE.Expression;
+using StackFrame = EnvDTE.StackFrame;
 
 namespace Application
 {
@@ -56,9 +58,6 @@ namespace Application
 
         private bool LOG_ALL_WIRING = false;
 
-        private EnvDTE.Debugger _debugger;
-        private EnvDTE.DebuggerEvents _debuggerEvents;
-
         // Methods
         private Application Initialize()
         {
@@ -80,9 +79,54 @@ namespace Application
             mainWindow.Run(windowApp);
         }
 
-        public async void InitTest()
+        public void InitTest()
         {
 
+        }
+
+        public void TestStackFrame()
+        {
+            var dte = new VSDebugger().ConnectToVisualStudio();
+            if (dte == null) return;
+
+            var debugger = dte.Debugger;
+
+            // if (debugger.CurrentMode != dbgDebugMode.dbgBreakMode) return;
+
+            var currentCall = debugger.CurrentStackFrame;
+
+            var callStack = new List<StackFrame>();
+
+            var enumerator = debugger.CurrentThread.StackFrames.GetEnumerator();
+
+            while (enumerator.MoveNext())
+            {
+                callStack.Add(enumerator.Current as StackFrame);
+            }
+
+
+            var localVars = currentCall.Locals;
+            var locals = new List<object>();
+
+            object classInstance = null;
+
+            var localsEnumerator = localVars.GetEnumerator();
+            while (localsEnumerator.MoveNext())
+            {
+                var current = localsEnumerator.Current as Expression; // can use "this" to get class type
+                locals.Add(current);
+
+                if (classInstance == null) classInstance = current;
+
+                var members = current.DataMembers;
+                var membersEnumerator = members.GetEnumerator();
+                while (membersEnumerator.MoveNext())
+                {
+                    var currentMember = membersEnumerator.Current;
+                }
+            }
+
+            var instanceName = classInstance.GetProperty<string>("InstanceName");
         }
 
         /// <summary>
@@ -755,9 +799,17 @@ namespace Application
             ApplyAction<string> id_2f6f900863cd48fea8dfbbd8c605a517 = new ApplyAction<string>() {InstanceName="id_2f6f900863cd48fea8dfbbd8c605a517",Lambda=path =>{    Logging.Message($"[{DateTime.Now:h:mm:ss tt}] Opened a project at \"{path}\"");}}; /* {"IsRoot":false} */
             DispatcherData<string> id_3ae2448b6e4b47b1b0f3c086a0c6f934 = new DispatcherData<string>() {InstanceName="id_3ae2448b6e4b47b1b0f3c086a0c6f934",Priority=DispatcherPriority.Loaded}; /* {"IsRoot":false} */
             KeyEvent id_c963a3327a224f4cad01826ebb4fb854 = new KeyEvent(eventName:"KeyDown") {InstanceName="id_c963a3327a224f4cad01826ebb4fb854",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected),Key=Key.F}; /* {"IsRoot":false} */
-            Data<ALANode> id_dd121405fe76492298383583482189ec = new Data<ALANode>() {InstanceName="id_dd121405fe76492298383583482189ec",Lambda=() => {    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;        return selectedNode;}}; /* {"IsRoot":false} */
+            Data<ALANode> id_dd121405fe76492298383583482189ec = new Data<ALANode>() {InstanceName="id_dd121405fe76492298383583482189ec",Lambda=() =>{    var selectedNode = mainGraph.Get("SelectedNode") as ALANode;    return selectedNode;}}; /* {"IsRoot":false} */
             ConditionalData<ALANode> id_1572419cd3e143778fce544228af6264 = new ConditionalData<ALANode>() {InstanceName="id_1572419cd3e143778fce544228af6264",Condition=node => node != null}; /* {"IsRoot":false} */
             ApplyAction<KeyEventArgs> id_4d4684fcc504419994fad6f259e51b46 = new ApplyAction<KeyEventArgs>() {InstanceName="id_4d4684fcc504419994fad6f259e51b46",Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
+            EventLambda startInitTest = new EventLambda() {InstanceName="startInitTest",Lambda=() =>{    InitTest();}}; /* {"IsRoot":false} */
+            MenuItem testStackFrame = new MenuItem(header:"Test Stack Frame") {InstanceName="testStackFrame"}; /* {"IsRoot":false} */
+            EventLambda id_ed0dd970f3ad4363be092a8d5e02cc0b = new EventLambda() {InstanceName="id_ed0dd970f3ad4363be092a8d5e02cc0b",Lambda=() =>{    TestStackFrame();}}; /* {"IsRoot":false} */
+            EventConnector id_f19bf6efb3524cb9bc41d1efcd54a594 = new EventConnector() {InstanceName="id_f19bf6efb3524cb9bc41d1efcd54a594"}; /* {"IsRoot":false} */
+            Data<Dictionary<string, object>> createInstanceDictionary = new Data<Dictionary<string, object>>() {InstanceName="createInstanceDictionary",Lambda=() => {    var instanceDict = new Dictionary<string, object>();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        var instanceName = node.Model.GetValue("InstanceName");        if (instanceName != null)         {            instanceDict[instanceName] = node;                }        else         {            Logging.Log($"Error when creating instanceDictionary: InstanceName not found for {node}");        }    }        return instanceDict;}}; /* {"IsRoot":false} */
+            DataFlowConnector<Dictionary<string, object>> instanceDictionary = new DataFlowConnector<Dictionary<string, object>>() {InstanceName="instanceDictionary"}; /* {"IsRoot":false} */
+            MenuItem openLog = new MenuItem(header:"Open Log") {InstanceName="openLog"}; /* {"IsRoot":false} */
+            EventLambda id_24598135e9354e288e13dae4dadf42b2 = new EventLambda() {InstanceName="id_24598135e9354e288e13dae4dadf42b2",Lambda=() => {    Process.Start(Path.Combine(APP_DIRECTORY, "runtimeLog.log"));}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -804,6 +856,7 @@ namespace Application
             id_368a7dc77fe24060b5d4017152492c1e.WireTo(id_2f4df1d9817246e5a9184857ec5a2bf8, "transitionOutput"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["Tuple<Enums.DiagramMode, Enums.DiagramMode>","bool"]} */
             id_2f4df1d9817246e5a9184857ec5a2bf8.WireTo(id_c80f46b08d894d4faa674408bf846b3f, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"IfElse","DestinationIsReference":false,"Description":"","SourceGenerics":["Tuple<Enums.DiagramMode, Enums.DiagramMode>","bool"],"DestinationGenerics":[]} */
             id_c80f46b08d894d4faa674408bf846b3f.WireTo(startRightTreeLayoutProcess, "ifOutput"); /* {"SourceType":"IfElse","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            appStartConnector.WireTo(startInitTest, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             appStartConnector.WireTo(id_cdeb94e2daee4057966eba31781ebd0d, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             appStartConnector.WireTo(getProjectFolderPath, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"GetSetting","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             appStartConnector.WireTo(id_368a7dc77fe24060b5d4017152492c1e, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1352,6 +1405,13 @@ namespace Application
             id_dd121405fe76492298383583482189ec.WireTo(id_1572419cd3e143778fce544228af6264, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             id_1572419cd3e143778fce544228af6264.WireTo(focusViewOnNode, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             id_c963a3327a224f4cad01826ebb4fb854.WireTo(id_4d4684fcc504419994fad6f259e51b46, "argsOutput"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["KeyEventArgs"]} */
+            menu_Tools.WireTo(testStackFrame, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_f19bf6efb3524cb9bc41d1efcd54a594.WireTo(createInstanceDictionary, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["Dictionary<string, object>"]} */
+            id_f19bf6efb3524cb9bc41d1efcd54a594.WireTo(id_ed0dd970f3ad4363be092a8d5e02cc0b, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            testStackFrame.WireTo(id_f19bf6efb3524cb9bc41d1efcd54a594, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            createInstanceDictionary.WireTo(instanceDictionary, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["Dictionary<string, object>"],"DestinationGenerics":["Dictionary<string, object>"]} */
+            menu_Tools.WireTo(openLog, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            openLog.WireTo(id_24598135e9354e288e13dae4dadf42b2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 

@@ -43,12 +43,12 @@ namespace DomainAbstractions
         /// Creates a hook to the debugger of the first opened VS process of a given version.
         /// </summary>
         /// <param name="VSVersion"></param>
-        public void ConnectToVisualStudio(string VSVersion = "2019")
+        public DTE2 ConnectToVisualStudio(string VSVersion = "2019")
         {
             if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
             {
                 Logging.Log($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
-                return;
+                return null;
             }
 
             try
@@ -56,11 +56,14 @@ namespace DomainAbstractions
                 DTE2 dte = (DTE2)Marshal.GetActiveObject($"VisualStudio.DTE.{_mappingVSToDTEVersion[VSVersion]}.0");
                 _debugger = dte.Debugger;
                 _debuggerEvents = dte.Events.DebuggerEvents;
+                return dte;
             }
             catch (Exception e)
             {
                 Logging.Log($"VSDebugger: No instance of Visual Studio {VSVersion} found... failed to connect.\nException: {e}");
+                return null;
             }
+
         }
 
         /// <summary>
