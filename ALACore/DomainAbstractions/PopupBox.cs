@@ -20,12 +20,10 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
         public Func<UIElement> GetPlacementObject { get; set; }
         public PlacementMode PlacementMode { get; set; } = PlacementMode.MousePoint;
+        public bool StaysOpen { get; set; } = true;
 
         // Private fields
-        private Popup _popup = new Popup()
-        {
-            StaysOpen = true
-        };
+        private Popup _popup = new Popup();
         private UIElement _childContent = null;
 
         // Ports
@@ -46,6 +44,7 @@ namespace DomainAbstractions
                 _popup.Placement = PlacementMode;
                 _popup.IsOpen = true;
                 _popup.PlacementRectangle = new Rect(new Point(), new Point(10, 10));
+                _popup.StaysOpen = StaysOpen;
             }
             else
             {

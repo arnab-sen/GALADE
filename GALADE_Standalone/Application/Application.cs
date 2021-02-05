@@ -81,7 +81,9 @@ namespace Application
 
         public void InitTest()
         {
-
+            var dte = new VSDebugger().ConnectToVisualStudio();
+            var dbgViewer = new DebugViewer();
+            // dbgViewer.LoadStackFrame(dte.Debugger.CurrentStackFrame);
         }
 
         public void TestStackFrame()
@@ -804,12 +806,17 @@ namespace Application
             ApplyAction<KeyEventArgs> id_4d4684fcc504419994fad6f259e51b46 = new ApplyAction<KeyEventArgs>() {InstanceName="id_4d4684fcc504419994fad6f259e51b46",Lambda=args => args.Handled = true}; /* {"IsRoot":false} */
             EventLambda startInitTest = new EventLambda() {InstanceName="startInitTest",Lambda=() =>{    InitTest();}}; /* {"IsRoot":false} */
             MenuItem testStackFrame = new MenuItem(header:"Test Stack Frame") {InstanceName="testStackFrame"}; /* {"IsRoot":false} */
-            EventLambda id_ed0dd970f3ad4363be092a8d5e02cc0b = new EventLambda() {InstanceName="id_ed0dd970f3ad4363be092a8d5e02cc0b",Lambda=() =>{    TestStackFrame();}}; /* {"IsRoot":false} */
+            EventLambda id_ed0dd970f3ad4363be092a8d5e02cc0b = new EventLambda() {InstanceName="id_ed0dd970f3ad4363be092a8d5e02cc0b",Lambda=() =>{    var dict = visualStudioDebugger.GetCallStackDictionary();}}; /* {"IsRoot":false} */
             EventConnector id_f19bf6efb3524cb9bc41d1efcd54a594 = new EventConnector() {InstanceName="id_f19bf6efb3524cb9bc41d1efcd54a594"}; /* {"IsRoot":false} */
-            Data<Dictionary<string, object>> createInstanceDictionary = new Data<Dictionary<string, object>>() {InstanceName="createInstanceDictionary",Lambda=() => {    var instanceDict = new Dictionary<string, object>();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        var instanceName = node.Model.GetValue("InstanceName");        if (instanceName != null)         {            instanceDict[instanceName] = node;                }        else         {            Logging.Log($"Error when creating instanceDictionary: InstanceName not found for {node}");        }    }        return instanceDict;}}; /* {"IsRoot":false} */
+            Data<Dictionary<string, object>> createInstanceDictionary = new Data<Dictionary<string, object>>() {InstanceName="createInstanceDictionary",Lambda=() =>{    var instanceDict = new Dictionary<string, object>();    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        var instanceName = node.Model.GetValue("InstanceName");        if (instanceName != null)        {            instanceDict[instanceName] = node;        }        else        {            Logging.Log($"Error when creating instanceDictionary: InstanceName not found for {node}");        }    }    return instanceDict;}}; /* {"IsRoot":false} */
             DataFlowConnector<Dictionary<string, object>> instanceDictionary = new DataFlowConnector<Dictionary<string, object>>() {InstanceName="instanceDictionary"}; /* {"IsRoot":false} */
             MenuItem openLog = new MenuItem(header:"Open Log") {InstanceName="openLog"}; /* {"IsRoot":false} */
-            EventLambda id_24598135e9354e288e13dae4dadf42b2 = new EventLambda() {InstanceName="id_24598135e9354e288e13dae4dadf42b2",Lambda=() => {    Process.Start(Path.Combine(APP_DIRECTORY, "runtimeLog.log"));}}; /* {"IsRoot":false} */
+            EventLambda id_24598135e9354e288e13dae4dadf42b2 = new EventLambda() {InstanceName="id_24598135e9354e288e13dae4dadf42b2",Lambda=() =>{    Process.Start(Path.Combine(APP_DIRECTORY, "runtimeLog.log"));}}; /* {"IsRoot":false} */
+            MenuItem id_6259538fdc6849079ba33cd82aab8a05 = new MenuItem(header:"Test Debug Viewer") {InstanceName="id_6259538fdc6849079ba33cd82aab8a05"}; /* {"IsRoot":false} */
+            Data<object> id_e078a0afe7c242df9f83f84273932345 = new Data<object>() {InstanceName="id_e078a0afe7c242df9f83f84273932345",Lambda=() =>{    var dte = new VSDebugger().ConnectToVisualStudio();    return dte.Debugger.CurrentStackFrame;}}; /* {"IsRoot":false} */
+            PopupBox id_4560bf4993ab45c4b2d7a08ffc6e2d26 = new PopupBox() {InstanceName="id_4560bf4993ab45c4b2d7a08ffc6e2d26",StaysOpen=false}; /* {"IsRoot":false} */
+            DebugViewer id_4c7216a6eba441c5994088194178c428 = new DebugViewer() {InstanceName="id_4c7216a6eba441c5994088194178c428"}; /* {"IsRoot":false} */
+            EventConnector id_9f7f877584624ce59a4ee20fc546162b = new EventConnector() {InstanceName="id_9f7f877584624ce59a4ee20fc546162b"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1408,10 +1415,16 @@ namespace Application
             menu_Tools.WireTo(testStackFrame, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_f19bf6efb3524cb9bc41d1efcd54a594.WireTo(createInstanceDictionary, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["Dictionary<string, object>"]} */
             id_f19bf6efb3524cb9bc41d1efcd54a594.WireTo(id_ed0dd970f3ad4363be092a8d5e02cc0b, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            testStackFrame.WireTo(id_f19bf6efb3524cb9bc41d1efcd54a594, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            testStackFrame.WireTo(id_f19bf6efb3524cb9bc41d1efcd54a594, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             createInstanceDictionary.WireTo(instanceDictionary, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["Dictionary<string, object>"],"DestinationGenerics":["Dictionary<string, object>"]} */
             menu_Tools.WireTo(openLog, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             openLog.WireTo(id_24598135e9354e288e13dae4dadf42b2, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            menu_Tools.WireTo(id_6259538fdc6849079ba33cd82aab8a05, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_9f7f877584624ce59a4ee20fc546162b.WireTo(id_e078a0afe7c242df9f83f84273932345, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["object"]} */
+            id_9f7f877584624ce59a4ee20fc546162b.WireTo(id_4560bf4993ab45c4b2d7a08ffc6e2d26, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"PopupBox","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_4560bf4993ab45c4b2d7a08ffc6e2d26.WireTo(id_4c7216a6eba441c5994088194178c428, "child"); /* {"SourceType":"PopupBox","SourceIsReference":false,"DestinationType":"DebugViewer","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_6259538fdc6849079ba33cd82aab8a05.WireTo(id_9f7f877584624ce59a4ee20fc546162b, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_e078a0afe7c242df9f83f84273932345.WireTo(id_4c7216a6eba441c5994088194178c428, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DebugViewer","DestinationIsReference":false,"Description":"","SourceGenerics":["object"],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 
