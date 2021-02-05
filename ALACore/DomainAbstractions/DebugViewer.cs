@@ -23,7 +23,6 @@ namespace DomainAbstractions
         // Private fields
         private Grid _mainGrid = new Grid()
         {
-            // ShowGridLines = true,
             Background = new SolidColorBrush(Colors.White),
         };
 
@@ -128,12 +127,20 @@ namespace DomainAbstractions
             // Add column labels
             _mainGrid.RowDefinitions.Add(new RowDefinition());
 
-            var nameColumnLabel = new Label() {Content = "Name"};
+            var nameColumnLabel = new Label()
+            {
+                Content = "Name",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Grid.SetRow(nameColumnLabel, 0);
             Grid.SetColumn(nameColumnLabel, 0);
             _mainGrid.Children.Add(nameColumnLabel);
 
-            var valueColumnLabel = new Label() {Content = "Value" };
+            var valueColumnLabel = new Label()
+            {
+                Content = "Value",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
             Grid.SetRow(valueColumnLabel, 0);
             Grid.SetColumn(valueColumnLabel, 1);
             _mainGrid.Children.Add(valueColumnLabel);
@@ -146,6 +153,7 @@ namespace DomainAbstractions
                 var nameText = new TextBlock()
                 {
                     Text = localExpression.Name,
+                    HorizontalAlignment = HorizontalAlignment.Center
                 };
                 Grid.SetRow(nameText, _mainGrid.RowDefinitions.Count - 1);
                 Grid.SetColumn(nameText, 0);
@@ -154,6 +162,7 @@ namespace DomainAbstractions
                 var valueText = new TextBlock()
                 {
                     Text = localExpression.Value,
+                    HorizontalAlignment = HorizontalAlignment.Center
                 };
                 Grid.SetRow(valueText, _mainGrid.RowDefinitions.Count - 1);
                 Grid.SetColumn(valueText, 1);
@@ -165,15 +174,8 @@ namespace DomainAbstractions
 
         public DebugViewer()
         {
-            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition()
-            {
-                DataContext = "Name"
-            });
-
-            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition()
-            {
-                DataContext = "Value"
-            });
+            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
         }
 
     }
