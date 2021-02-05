@@ -89,8 +89,10 @@ namespace Libraries
             firstPortName = null;
             foreach (var BimplementedInterface in BType.GetInterfaces()) // consider every interface implemented by B 
             {
-                var AfieldInfo = AfieldInfos.FirstOrDefault(f => f.FieldType == BimplementedInterface && f.GetValue(A) == null); // find the first field in A that matches the interface type of B
-                                                                                                                                 // TODO: the list case below should have the SamePort constraint as well
+                // find the first field in A that matches the interface type of B
+                var AfieldInfo = AfieldInfos.FirstOrDefault(f => f.FieldType == BimplementedInterface 
+                                                                 || f.FieldType.IsEquivalentTo(BimplementedInterface) 
+                                                                 && f.GetValue(A) == null); 
 
                 // look for normal private fields first
                 if (AfieldInfo != null)  // there is a match
@@ -316,8 +318,10 @@ namespace Libraries
 
             foreach (var BimplementedInterface in BType.GetInterfaces()) // consider every interface implemented by B 
             {
-                var AfieldInfo = AfieldInfos.FirstOrDefault(f => f.FieldType == BimplementedInterface && f.GetValue(A) != null); // find the first field in A that matches the interface type of B
-                                                                                                                                 // TODO: the list case below should have the SamePort constraint as well
+                // find the first field in A that matches the interface type of B
+                var AfieldInfo = AfieldInfos.FirstOrDefault(f => f.FieldType == BimplementedInterface
+                                                                 || f.FieldType.IsEquivalentTo(BimplementedInterface)
+                                                                 && f.GetValue(A) == null);
 
                 // look for normal private fields first
                 if (AfieldInfo != null)  // there is a match

@@ -15,7 +15,7 @@ using Expression = EnvDTE.Expression;
 
 namespace DomainAbstractions
 {
-    public class DebugViewer : IUI, IDataFlow<object> // child, stackFrame
+    public class DebugViewer : IUI, IDataFlow<StackFrame> // child, stackFrame
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -34,7 +34,7 @@ namespace DomainAbstractions
         UIElement IUI.GetWPFElement() => _mainGrid;
 
         // IDataFlow<StackFrame> implementation
-        object IDataFlow<object>.Data
+        StackFrame IDataFlow<StackFrame>.Data
         {
             get => _currentStackFrame;
             set
