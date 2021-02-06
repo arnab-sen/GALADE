@@ -91,6 +91,15 @@ namespace DomainAbstractions
             }
         }
 
+        /// <summary>
+        /// Brings the window to the foreground.
+        /// </summary>
+        public void BringToFront()
+        {
+            window.Activate();
+            window.Focus();
+        }
+
         // IEvent implementation -------------------------------------------------------
         void IEvent.Execute() => System.Windows.Application.Current.Shutdown();
 

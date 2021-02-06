@@ -25,7 +25,8 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
 
         /// <summary>
-        /// Only include StackFrames that meet a given condition. The input object should be cast as a StackFrame.
+        /// <para>Only include StackFrames that meet a given condition. The input object should be cast as a StackFrame.</para>
+        /// <para>It has been cast as an object because of a compilation issue with using interop interfaces in generic type parameters.</para>
         /// </summary>
         public Func<object, bool> Filter { get; set; }
 
@@ -38,6 +39,7 @@ namespace DomainAbstractions
         // Ports
         private IDataFlow<StackFrame> selectedStackFrame;
         private IDataFlow<string> selectedLabel;
+        private IEvent viewUpdated;
 
         // IUI implementation
         UIElement IUI.GetWPFElement() => _mainContainer;
@@ -71,6 +73,8 @@ namespace DomainAbstractions
             {
                 _latestStackFrame = value as StackFrame;
                 _stackFrames.Add(CreateNode(_latestStackFrame));
+                _mainContainer.UpdateLayout();
+                viewUpdated?.Execute();
             }
         }
 
@@ -78,12 +82,17 @@ namespace DomainAbstractions
         public void UpdateStackFrameViewer(ListView mainView, List<object> callStack, ObservableCollection<object> itemCollection)
         {
             mainView.ItemsSource = itemCollection;
-            foreach (StackFrame stackFrame in callStack)
+            if (callStack.Count == 0) return;
+
+            itemCollection.Add(CreateNode(callStack.First() as StackFrame, open: true));
+            
+            foreach (StackFrame stackFrame in callStack.Skip(1))
             {
-                itemCollection.Add(CreateNode(stackFrame));
+                itemCollection.Add(CreateNode(stackFrame, open: false));
             }
 
             mainView.UpdateLayout();
+            viewUpdated?.Execute();
         }
 
         public Grid CreateStackFrameGrid(StackFrame stackFrame)
@@ -185,7 +194,7 @@ namespace DomainAbstractions
             return sb.ToString();
         }
 
-        private StackPanel CreateNode(StackFrame stackFrame)
+        private StackPanel CreateNode(StackFrame stackFrame, bool open = false)
         {
             var vertPanel = new StackPanel()
             {
@@ -271,6 +280,12 @@ namespace DomainAbstractions
             {
                 if (selectedStackFrame != null) selectedStackFrame.Data = stackFrame;
             };
+
+            if (open && stackFrame.Locals.Count < 50)
+            {
+                vertPanel.Children.Add(CreateStackFrameGrid(stackFrame));
+                expandButtonContent.Content = "Collapse";
+            }
 
             return vertPanel;
         }

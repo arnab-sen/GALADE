@@ -57,6 +57,8 @@ namespace DomainAbstractions
                     await Task.Delay(Period);
                     eventHappened?.Execute();
                 }
+
+                _isRunning = false;
             }
 
         }
