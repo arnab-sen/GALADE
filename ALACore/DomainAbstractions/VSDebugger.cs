@@ -139,89 +139,12 @@ namespace DomainAbstractions
             }
         }
 
-        public List<StackFrame> GetCurrentCallStack()
-        {
-            var callStack = new List<StackFrame>();
-            var enumerator = _debugger.CurrentThread.StackFrames.GetEnumerator();
-
-            while (enumerator.MoveNext())
-            {
-                callStack.Add(enumerator.Current as StackFrame);
-            }
-
-            return callStack;
-        }
-
-        public Dictionary<string, string> GetVariablesFromStackFrame(StackFrame stackFrame)
-        {
-            var variablePairs = new Dictionary<string, string>();
-            var localVars = stackFrame.Locals;
-
-            Dictionary<string, string> classVariables = new Dictionary<string, string>();
-
-            var localsEnumerator = localVars.GetEnumerator();
-            while (localsEnumerator.MoveNext())
-            {
-                var current = localsEnumerator.Current as Expression;
-                if (current == null) continue;
-
-                variablePairs[current.Name] = current.Value;
-
-                if (current.Name == "this") classVariables = GetClassVariables(current);
-
-                if (current.Value.Contains("Count"))
-                {
-
-                }
-            }
-
-            foreach (var classVariable in classVariables)
-            {
-                variablePairs[classVariable.Key] = classVariable.Value;
-            }
-
-            return variablePairs;
-        }
-
         /// <summary>
-        /// Returns all non-local variables found in a class Expression.
+        /// Returns a List of EnvDTE.StackFrame objects representing the current call stack. They are cast as objects due to compatibility issues across assemblies for interop types.
+        /// The first element in the list is the most recent EnvDTE.StackFrame.
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, string> GetClassVariables(Expression thisVariable)
-        {
-            var dataMembers = new Dictionary<string, string>();
-
-            var members = thisVariable.DataMembers;
-            var membersEnumerator = members.GetEnumerator();
-            while (membersEnumerator.MoveNext())
-            {
-                var currentMember = membersEnumerator.Current as Expression;
-                if (currentMember == null) continue;
-
-                dataMembers[currentMember.Name] = currentMember.Value;
-
-                if (currentMember.Value.Contains("Count"))
-                {
-                    // Check currentMember.Collection and currentMember.DataMembers - should examine when the value is selected rather than combine it with the rest
-                }
-            }
-
-            return dataMembers;
-        }
-
-        public Dictionary<string, Dictionary<string, string>> GetCallStackDictionary()
-        {
-            var callStack = GetCurrentCallStack();
-            var callStackDictionary = new Dictionary<string, Dictionary<string, string>>();
-
-            foreach (var stackFrame in callStack)
-            {
-                var varDict = GetVariablesFromStackFrame(stackFrame);
-            }
-
-            return callStackDictionary;
-        }
-
+        public List<object> GetCurrentCallStack() => _debugger?.CurrentThread?.StackFrames.GetEnumerator().ToList<object>() ?? new List<object>();
 
         public VSDebugger()
         {

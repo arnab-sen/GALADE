@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -9,173 +10,202 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using Libraries;
 using ProgrammingParadigms;
 using EnvDTE;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
 using Expression = EnvDTE.Expression;
 
 namespace DomainAbstractions
 {
-    public class DebugViewer : IUI, IDataFlow<StackFrame> // child, stackFrame
+    public class DebugViewer : IUI, IDataFlow<List<object>>, IDataFlow<object> // child, stackFrames, addStackFrame
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
 
         // Private fields
-        private Grid _mainGrid = new Grid()
-        {
-            Background = new SolidColorBrush(Colors.White),
-        };
-
-        private StackFrame _currentStackFrame;
+        private ListView _mainContainer = new ListView() {};
+        private ObservableCollection<object> _stackFrames = new ObservableCollection<object>();
+        private List<object> _callStack;
+        private StackFrame _latestStackFrame;
 
         // Ports
 
         // IUI implementation
-        UIElement IUI.GetWPFElement() => _mainGrid;
+        UIElement IUI.GetWPFElement() => _mainContainer;
 
-        // IDataFlow<StackFrame> implementation
-        StackFrame IDataFlow<StackFrame>.Data
+        // IDataFlow<List<object>> implementation
+        List<object> IDataFlow<List<object>>.Data
         {
-            get => _currentStackFrame;
+            get => _callStack;
             set
             {
-                LoadStackFrame(value as StackFrame);
+                _callStack = value;
+                _stackFrames.Clear();
+                UpdateStackFrameViewer(_mainContainer, _callStack, _stackFrames);
+
+            }
+        }
+
+        // IDataFlow<StackFrame> implementation
+        object IDataFlow<object>.Data
+        {
+            get => _latestStackFrame;
+            set
+            {
+                _latestStackFrame = value as StackFrame;
+                _stackFrames.Add(CreateNode(_latestStackFrame));
             }
         }
 
         // Methods
-        public Dictionary<string, string> GetVariablesFromStackFrame(StackFrame stackFrame)
+        public void UpdateStackFrameViewer(ListView mainView, List<object> callStack, ObservableCollection<object> itemCollection)
         {
-            var variablePairs = new Dictionary<string, string>();
-            var localVars = stackFrame.Locals;
-
-            Dictionary<string, string> classVariables = new Dictionary<string, string>();
-
-            var localsEnumerator = localVars.GetEnumerator();
-            while (localsEnumerator.MoveNext())
+            mainView.ItemsSource = itemCollection;
+            foreach (StackFrame stackFrame in callStack)
             {
-                var current = localsEnumerator.Current as Expression;
-                if (current == null) continue;
-
-                variablePairs[current.Name] = current.Value;
-
-                if (current.Name == "this") classVariables = GetClassVariables(current);
-
-                if (current.Value.Contains("Count"))
-                {
-
-                }
+                itemCollection.Add(CreateNode(stackFrame));
             }
 
-            foreach (var classVariable in classVariables)
-            {
-                variablePairs[classVariable.Key] = classVariable.Value;
-            }
-
-            return variablePairs;
         }
 
-        /// <summary>
-        /// Returns all non-local variables found in a class Expression.
-        /// </summary>
-        /// <returns></returns>
-        public Dictionary<string, string> GetClassVariables(Expression thisVariable)
+        public Grid CreateStackFrameGrid(StackFrame stackFrame)
         {
-            var dataMembers = new Dictionary<string, string>();
-
-            var members = thisVariable.DataMembers;
-            var membersEnumerator = members.GetEnumerator();
-            while (membersEnumerator.MoveNext())
+            var grid = new Grid()
             {
-                var currentMember = membersEnumerator.Current as Expression;
-                if (currentMember == null) continue;
+                Background = Brushes.White
+            };
 
-                dataMembers[currentMember.Name] = currentMember.Value;
+            grid.RowDefinitions.Clear();
 
-                if (currentMember.Value.Contains("Count"))
-                {
-                    // Check currentMember.Collection and currentMember.DataMembers - should examine when the value is selected rather than combine it with the rest
-                }
-            }
-
-            return dataMembers;
-        }
-
-        private List<T> ToList<T>(IEnumerator enumerator)
-        {
-            var createdList = new List<T>();
-            while (enumerator.MoveNext())
+            // Local variables section
+            var localVarTitle = new Label()
             {
-                createdList.Add((T)enumerator.Current);
-            }
+                Content = "Local Variables",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
 
-            return createdList;
-        }
-
-        public void LoadStackFrame(StackFrame stackFrame)
-        {
-            _currentStackFrame = stackFrame;
-
-            var localExpressions = ToList<Expression>(stackFrame.Locals.GetEnumerator());
-
-            var thisVar = ToList<Expression>(stackFrame.Locals.GetEnumerator()).First(expr => expr.Name == "this");
-            var dataMemberExpressions = new List<Expression>();
-            dataMemberExpressions.AddRange(ToList<Expression>(thisVar.DataMembers.GetEnumerator()));
-
-            _mainGrid.RowDefinitions.Clear();
+            grid.AddRow(localVarTitle);
 
             // Add column labels
-            _mainGrid.RowDefinitions.Add(new RowDefinition());
-
             var nameColumnLabel = new Label()
             {
                 Content = "Name",
                 HorizontalAlignment = HorizontalAlignment.Center
             };
-            Grid.SetRow(nameColumnLabel, 0);
-            Grid.SetColumn(nameColumnLabel, 0);
-            _mainGrid.Children.Add(nameColumnLabel);
 
             var valueColumnLabel = new Label()
             {
                 Content = "Value",
                 HorizontalAlignment = HorizontalAlignment.Center
             };
-            Grid.SetRow(valueColumnLabel, 0);
-            Grid.SetColumn(valueColumnLabel, 1);
-            _mainGrid.Children.Add(valueColumnLabel);
+            
+            grid.AddRow(nameColumnLabel, valueColumnLabel);
 
             // Add rows
-            foreach (var localExpression in localExpressions)
-            {
-                _mainGrid.RowDefinitions.Add(new RowDefinition());
+            AddExpressionPairs(grid, stackFrame.GetAllLocalVariables());
 
+            // Non-local variables
+            var nonLocalVarTitle = new Label()
+            {
+                Content = "Non-local Variables",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            grid.AddRow(nonLocalVarTitle);
+
+            // Add rows
+            AddExpressionPairs(grid, stackFrame.GetAllNonLocalVariables());
+
+            return grid;
+        }
+
+        private void AddExpressionPairs(Grid grid, List<Expression> expressions)
+        {
+            foreach (var expression in expressions)
+            {
                 var nameText = new TextBlock()
                 {
-                    Text = localExpression.Name,
-                    HorizontalAlignment = HorizontalAlignment.Center
+                    Text = expression.Name,
+                    HorizontalAlignment = HorizontalAlignment.Left
                 };
-                Grid.SetRow(nameText, _mainGrid.RowDefinitions.Count - 1);
-                Grid.SetColumn(nameText, 0);
-                _mainGrid.Children.Add(nameText);
 
                 var valueText = new TextBlock()
                 {
-                    Text = localExpression.Value,
-                    HorizontalAlignment = HorizontalAlignment.Center
+                    Text = expression.Value,
+                    HorizontalAlignment = HorizontalAlignment.Left
                 };
-                Grid.SetRow(valueText, _mainGrid.RowDefinitions.Count - 1);
-                Grid.SetColumn(valueText, 1);
-                _mainGrid.Children.Add(valueText);
-            }
 
+                grid.AddRow(nameText, valueText);
+            }
+        }
+
+        private StackPanel CreateNode(StackFrame stackFrame)
+        {
+            var vertPanel = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                CanVerticallyScroll = true,
+                MinHeight = 50
+            };
+
+            var horizPanel = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal
+            };
+
+            vertPanel.Children.Add(horizPanel);
+
+            var nameTextBlock = new TextBlock()
+            {
+                Text = stackFrame.FunctionName
+            };
+
+            if (stackFrame.Locals.Count > 50)
+            {
+                nameTextBlock.Text = $"[Warning: Many items detected] {nameTextBlock.Text}";
+            } 
+
+            var expandButtonContent = new Label()
+            {
+                Content = "Expand",
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
+
+            var expandButton = new System.Windows.Controls.Button()
+            {
+                Content = expandButtonContent,
+                Height = 30,
+                Margin = new Thickness(5),
+                HorizontalAlignment = HorizontalAlignment.Right
+            };
+
+            horizPanel.Children.Add(nameTextBlock);
+            horizPanel.Children.Add(expandButton);
+
+            expandButton.Click += (sender, args) =>
+            {
+                if (vertPanel.Children.Count == 1)
+                {
+                    vertPanel.Children.Add(CreateStackFrameGrid(stackFrame));
+                    expandButtonContent.Content = "Collapse";
+                }
+                else if (vertPanel.Children.Count == 2)
+                {
+                    vertPanel.Children.RemoveAt(1);
+                    expandButtonContent.Content = "Expand";
+                }
+            };
+
+
+            return vertPanel;
         }
 
 
         public DebugViewer()
         {
-            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
-            _mainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
         }
 
     }

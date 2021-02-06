@@ -13,7 +13,6 @@ using System.Windows;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Media;
-using ProgrammingParadigms;
 
 namespace Libraries
 {
@@ -224,6 +223,120 @@ namespace Libraries
             {
                 dictionary[keyMap[kvp.Key]] = temp[kvp.Key];
             }
+        }
+
+        /// <summary>
+        /// An extension method that converts an IEnumerator (which casts its elements as objects) to a List of a specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerator"></param>
+        /// <returns></returns>
+        public static List<T> ToList<T>(this IEnumerator enumerator)
+        {
+            var createdList = new List<T>();
+            while (enumerator.MoveNext())
+            {
+                if (enumerator.Current is T converted) createdList.Add(converted);
+            }
+
+            return createdList;
+        }
+
+        /// <summary>
+        /// <para>An extension method that adds a new row containing a collection of given UIElements to the bottom of a System.Windows.Controls.Grid, and automatically arranged them in columns.</para>
+        /// <para>New columns will be added to accommodate the number of UIElements being added to the row.</para>
+        /// </summary>
+        public static void AddRow(this Grid grid, params UIElement[] uiElements)
+        {
+            grid.RowDefinitions.Add(new RowDefinition());
+
+            for (int i = 0; i < uiElements.Length; i++)
+            {
+                var uiElement = uiElements[i];
+
+                if (i > (grid.ColumnDefinitions.Count - 1)) grid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                Grid.SetRow(uiElement, grid.RowDefinitions.Count - 1);
+                Grid.SetColumn(uiElement, i);
+                grid.Children.Add(uiElement);
+            }
+        }
+
+        /// <summary>
+        /// An extension method that returns all EnvDTE.Expression objects found in an EnvDTE.StackFrame.
+        /// </summary>
+        /// <param name=""></param>
+        /// <param name="local"></param>
+        /// <returns></returns>
+        public static List<EnvDTE.Expression> GetAllVariables(this EnvDTE.StackFrame stackFrame)
+        {
+            var exps = new List<EnvDTE.Expression>();
+
+            exps.AddRange(stackFrame.GetAllLocalVariables());
+            exps.AddRange(stackFrame.GetAllNonLocalVariables());
+
+            return exps;
+        }
+
+        /// <summary>
+        /// An extension method that returns all EnvDTE.Expression objects representing local variables found in an EnvDTE.StackFrame.
+        /// <para>Warning: This causes a significant performance hit when the number of variables is in the hundreds.</para>
+        /// </summary>
+        /// <param name="stackFrame"></param>
+        /// <returns></returns>
+        public static List<EnvDTE.Expression> GetAllLocalVariables(this EnvDTE.StackFrame stackFrame)
+        {
+            var locals = stackFrame.Locals;
+            var expressions = locals.GetEnumerator().ToList<EnvDTE.Expression>();
+
+            return expressions;
+        }
+
+        /// <summary>
+        /// An extension method that returns all EnvDTE.Expression objects representing non-local variables found in an EnvDTE.StackFrame.
+        /// <para>Warning: This causes a significant performance hit when the number of variables is in the hundreds.</para>
+        /// </summary>
+        /// <param name="stackFrame"></param>
+        /// <returns></returns>
+        public static List<EnvDTE.Expression> GetAllNonLocalVariables(this EnvDTE.StackFrame stackFrame)
+        {
+            if (stackFrame.TryGetVariable("this", out Tuple<string, EnvDTE.Expression> thisVar, local: true))
+            {
+                return thisVar.Item2.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
+            }
+            else
+            {
+                return new List<EnvDTE.Expression>();
+            }
+        }
+
+        /// <summary>
+        /// An extension method that returns a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame.
+        /// </summary>
+        public static Tuple<string, EnvDTE.Expression> GetVariable(this EnvDTE.StackFrame stackFrame, string varName, bool local = true)
+        {
+            List<EnvDTE.Expression> vars;
+            if (local)
+            {
+                vars = stackFrame.Locals.GetEnumerator().ToList<EnvDTE.Expression>();
+            }
+            else
+            {
+                var thisVar = stackFrame.GetVariable("this", local: true);
+                vars = thisVar.Item2.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
+            }
+
+            var foundExpression = vars.FirstOrDefault(v => v.Name == varName);
+            return Tuple.Create(varName, foundExpression);
+        }
+
+        /// <summary>
+        /// An extension method that tries to find a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame, and returns whether such a pair could be found.
+        /// </summary>
+        public static bool TryGetVariable(this EnvDTE.StackFrame stackFrame, string varName, out Tuple<string, EnvDTE.Expression> foundExpression, bool local = true)
+        {
+            foundExpression = stackFrame.GetVariable(varName, local: local);
+            return foundExpression.Item2 != null;
         }
     }
 }
