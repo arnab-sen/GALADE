@@ -300,9 +300,9 @@ namespace Libraries
         /// <returns></returns>
         public static List<EnvDTE.Expression> GetAllNonLocalVariables(this EnvDTE.StackFrame stackFrame)
         {
-            if (stackFrame.TryGetVariable("this", out Tuple<string, EnvDTE.Expression> thisVar, local: true))
+            if (stackFrame.TryGetVariable("this", out EnvDTE.Expression thisVar, local: true))
             {
-                return thisVar.Item2.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
+                return thisVar.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
             }
             else
             {
@@ -313,7 +313,7 @@ namespace Libraries
         /// <summary>
         /// An extension method that returns a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame.
         /// </summary>
-        public static Tuple<string, EnvDTE.Expression> GetVariable(this EnvDTE.StackFrame stackFrame, string varName, bool local = true)
+        public static EnvDTE.Expression GetVariable(this EnvDTE.StackFrame stackFrame, string varName, bool local = true)
         {
             List<EnvDTE.Expression> vars;
             if (local)
@@ -323,20 +323,20 @@ namespace Libraries
             else
             {
                 var thisVar = stackFrame.GetVariable("this", local: true);
-                vars = thisVar.Item2.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
+                vars = thisVar.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
             }
 
             var foundExpression = vars.FirstOrDefault(v => v.Name == varName);
-            return Tuple.Create(varName, foundExpression);
+            return foundExpression;
         }
 
         /// <summary>
         /// An extension method that tries to find a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame, and returns whether such a pair could be found.
         /// </summary>
-        public static bool TryGetVariable(this EnvDTE.StackFrame stackFrame, string varName, out Tuple<string, EnvDTE.Expression> foundExpression, bool local = true)
+        public static bool TryGetVariable(this EnvDTE.StackFrame stackFrame, string varName, out EnvDTE.Expression foundExpression, bool local = true)
         {
             foundExpression = stackFrame.GetVariable(varName, local: local);
-            return foundExpression.Item2 != null;
+            return foundExpression != null;
         }
     }
 }

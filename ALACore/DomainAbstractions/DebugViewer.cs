@@ -31,6 +31,7 @@ namespace DomainAbstractions
         private StackFrame _latestStackFrame;
 
         // Ports
+        private IDataFlow<StackFrame> selectedStackFrame;
 
         // IUI implementation
         UIElement IUI.GetWPFElement() => _mainContainer;
@@ -76,6 +77,8 @@ namespace DomainAbstractions
             {
                 Background = Brushes.White
             };
+
+            ScrollViewer.SetCanContentScroll(grid, true);
 
             grid.RowDefinitions.Clear();
 
@@ -159,7 +162,9 @@ namespace DomainAbstractions
 
             var nameTextBlock = new TextBlock()
             {
-                Text = stackFrame.FunctionName
+                Text = stackFrame.FunctionName,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 500
             };
 
             if (stackFrame.Locals.Count > 50)
@@ -196,8 +201,13 @@ namespace DomainAbstractions
                     vertPanel.Children.RemoveAt(1);
                     expandButtonContent.Content = "Expand";
                 }
+
             };
 
+            vertPanel.MouseLeftButtonDown += (sender, args) =>
+            {
+                if (selectedStackFrame != null) selectedStackFrame.Data = stackFrame;
+            };
 
             return vertPanel;
         }
