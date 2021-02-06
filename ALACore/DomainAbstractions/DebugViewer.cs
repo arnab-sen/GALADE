@@ -77,7 +77,7 @@ namespace DomainAbstractions
         {
             var grid = new Grid()
             {
-                Background = Brushes.White
+                Background = Brushes.Transparent
             };
 
             ScrollViewer.SetCanContentScroll(grid, true);
@@ -87,26 +87,14 @@ namespace DomainAbstractions
             // Local variables section
             var localVarTitle = new Label()
             {
-                Content = "Local Variables",
+                Content = "Local Variables:",
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
             grid.AddRow(localVarTitle);
 
             // Add column labels
-            var nameColumnLabel = new Label()
-            {
-                Content = "Name",
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-
-            var valueColumnLabel = new Label()
-            {
-                Content = "Value",
-                HorizontalAlignment = HorizontalAlignment.Center
-            };
-            
-            grid.AddRow(nameColumnLabel, valueColumnLabel);
+            grid.AddRow(CreateCellBorder("Name", new Thickness(1, 1, 1, 0)), CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
 
             // Add rows
             AddExpressionPairs(grid, stackFrame.GetAllLocalVariables());
@@ -114,7 +102,7 @@ namespace DomainAbstractions
             // Non-local variables
             var nonLocalVarTitle = new Label()
             {
-                Content = "Non-local Variables",
+                Content = "Non-local Variables:",
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
@@ -128,22 +116,40 @@ namespace DomainAbstractions
 
         private void AddExpressionPairs(Grid grid, List<Expression> expressions)
         {
-            foreach (var expression in expressions)
+            for (int i = 0; i < expressions.Count; i++)
             {
-                var nameText = new TextBlock()
+                var expression = expressions[i];
+                if (i == expressions.Count - 1)
                 {
-                    Text = expression.Name,
-                    HorizontalAlignment = HorizontalAlignment.Left
-                };
-
-                var valueText = new TextBlock()
+                    grid.AddRow(CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 1)), CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 1)));
+                }
+                else
                 {
-                    Text = expression.Value,
-                    HorizontalAlignment = HorizontalAlignment.Left
-                };
-
-                grid.AddRow(nameText, valueText);
+                    grid.AddRow(CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 0)), CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 0)));
+                }
             }
+        }
+
+        private Border CreateCellBorder(string textContent, Thickness borderThickness)
+        {
+            var border = new Border()
+            {
+                BorderBrush = Brushes.Black,
+                BorderThickness = borderThickness
+            };
+
+            var textBlock = new TextBlock()
+            {
+                Text = textContent,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                TextWrapping = TextWrapping.Wrap,
+                MaxWidth = 300,
+                Margin = new Thickness(1)
+            };
+
+            border.Child = textBlock;
+
+            return border;
         }
 
         private StackPanel CreateNode(StackFrame stackFrame)
@@ -152,12 +158,14 @@ namespace DomainAbstractions
             {
                 Orientation = Orientation.Vertical,
                 CanVerticallyScroll = true,
-                MinHeight = 50
+                MinHeight = 50,
+                MaxWidth = 500
             };
 
             var horizPanel = new StackPanel()
             {
-                Orientation = Orientation.Horizontal
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             vertPanel.Children.Add(horizPanel);
@@ -166,13 +174,13 @@ namespace DomainAbstractions
             {
                 Text = stackFrame.FunctionName,
                 TextWrapping = TextWrapping.Wrap,
-                MaxWidth = 500
+                VerticalAlignment = VerticalAlignment.Center
             };
 
             if (stackFrame.Locals.Count > 50)
             {
                 nameTextBlock.Text = $"[Warning: Many items detected] {nameTextBlock.Text}";
-            } 
+            }
 
             var expandButtonContent = new Label()
             {
@@ -193,6 +201,17 @@ namespace DomainAbstractions
 
             expandButton.Click += (sender, args) =>
             {
+                if (stackFrame.Locals.Count > 50)
+                {
+                    var msgBoxText = "Warning: Many items detected. Expanding this section may take a long time. Continue?";
+                    var msgBoxButton = MessageBoxButton.YesNo;
+                    var msgBoxCaption = "Continue?";
+                    var msgBoxIcon = MessageBoxImage.Exclamation;
+
+                    var msgBoxResult = MessageBox.Show(msgBoxText, msgBoxCaption, msgBoxButton, msgBoxIcon);
+                    if (msgBoxResult == MessageBoxResult.No) return;
+                }
+
                 if (vertPanel.Children.Count == 1)
                 {
                     vertPanel.Children.Add(CreateStackFrameGrid(stackFrame));
