@@ -94,7 +94,10 @@ namespace DomainAbstractions
             grid.AddRow(localVarTitle);
 
             // Add column labels
-            grid.AddRow(CreateCellBorder("Name", new Thickness(1, 1, 1, 0)), CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
+            grid.AddRow(
+                CreateCellBorder("Name", new Thickness(1, 1, 1, 0)), 
+                CreateCellBorder("Type", new Thickness(0, 1, 1, 0)),
+                CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
 
             // Add rows
             AddExpressionPairs(grid, stackFrame.GetAllLocalVariables());
@@ -107,6 +110,12 @@ namespace DomainAbstractions
             };
 
             grid.AddRow(nonLocalVarTitle);
+
+            // Add column labels
+            grid.AddRow(
+                CreateCellBorder("Name", new Thickness(1, 1, 1, 0)),
+                CreateCellBorder("Type", new Thickness(0, 1, 1, 0)),
+                CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
 
             // Add rows
             AddExpressionPairs(grid, stackFrame.GetAllNonLocalVariables());
@@ -121,11 +130,17 @@ namespace DomainAbstractions
                 var expression = expressions[i];
                 if (i == expressions.Count - 1)
                 {
-                    grid.AddRow(CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 1)), CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 1)));
+                    grid.AddRow(
+                        CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 1)),
+                        CreateCellBorder(expression.Type.Split('.').LastOrDefault(), new Thickness(0, 1, 1, 1)),
+                        CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 1)));
                 }
                 else
                 {
-                    grid.AddRow(CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 0)), CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 0)));
+                    grid.AddRow(
+                        CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 0)), 
+                        CreateCellBorder(expression.Type.Split('.').LastOrDefault(), new Thickness(0, 1, 1, 0)),
+                        CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 0)));
                 }
             }
         }
@@ -143,7 +158,7 @@ namespace DomainAbstractions
                 Text = textContent,
                 HorizontalAlignment = HorizontalAlignment.Left,
                 TextWrapping = TextWrapping.Wrap,
-                MaxWidth = 300,
+                MaxWidth = 200,
                 Margin = new Thickness(1)
             };
 
@@ -159,7 +174,7 @@ namespace DomainAbstractions
                 Orientation = Orientation.Vertical,
                 CanVerticallyScroll = true,
                 MinHeight = 50,
-                MaxWidth = 500
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             var horizPanel = new StackPanel()
@@ -174,7 +189,8 @@ namespace DomainAbstractions
             {
                 Text = stackFrame.FunctionName,
                 TextWrapping = TextWrapping.Wrap,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
+                MaxWidth = 500
             };
 
             if (stackFrame.Locals.Count > 50)
@@ -196,8 +212,15 @@ namespace DomainAbstractions
                 HorizontalAlignment = HorizontalAlignment.Right
             };
 
+            var expandButtonContainer = new StackPanel()
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
+
+            expandButtonContainer.Children.Add(expandButton);
+
             horizPanel.Children.Add(nameTextBlock);
-            horizPanel.Children.Add(expandButton);
+            horizPanel.Children.Add(expandButtonContainer);
 
             expandButton.Click += (sender, args) =>
             {
