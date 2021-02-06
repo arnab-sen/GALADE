@@ -337,7 +337,16 @@ namespace Libraries
         /// </summary>
         public static bool TryGetVariable(this EnvDTE.StackFrame stackFrame, string varName, out EnvDTE.Expression foundExpression, bool local = true)
         {
-            foundExpression = stackFrame.GetVariable(varName, local: local);
+            try
+            {
+                foundExpression = stackFrame.GetVariable(varName, local: local);
+            }
+            catch (Exception e)
+            {
+                Logging.Log($"Utilities.TryGetVariable: Failed to retrieve variable {varName} from StackFrame.\nException:\n{e}");
+                foundExpression = null;
+            }
+
             return foundExpression != null;
         }
     }

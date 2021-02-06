@@ -173,7 +173,7 @@ namespace DomainAbstractions
                 HorizontalAlignment = HorizontalAlignment.Left,
                 TextWrapping = TextWrapping.Wrap,
                 MaxWidth = 200,
-                Margin = new Thickness(1)
+                Margin = new Thickness(2)
             };
 
             border.Child = textBlock;

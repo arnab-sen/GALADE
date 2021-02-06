@@ -257,30 +257,21 @@ namespace RequirementsAbstractions
 
             if (Source == null || Destination == null)
             {
-                ChangeColour(validWire: false);
+                ChangeColour(colour: Brushes.Red, highlightColour: Brushes.LightPink);
                 return;
             }
 
             var sourcePortType = Source.Model.GetPort(SourcePort.Name)?.Type ?? "";
             var destinationPortType = Destination.Model.GetPort(DestinationPort.Name)?.Type ?? "";
 
-            ChangeColour(validWire: !(string.IsNullOrEmpty(sourcePortType) 
-                                    || string.IsNullOrEmpty(destinationPortType) 
-                                    || !PortsMatch(sourcePortType, destinationPortType)));
-        }
+            var validWire = !(string.IsNullOrEmpty(sourcePortType) 
+                              || string.IsNullOrEmpty(destinationPortType) 
+                              || !PortsMatch(sourcePortType, destinationPortType));
 
-        private void ChangeColour(bool validWire = false)
-        {
-            if (validWire)
-            {
-                WireColour = Brushes.Black;
-                WireHighlightColour = Brushes.LightSkyBlue;
-            }
-            else
-            {
-                WireColour = Brushes.Red;
-                WireHighlightColour = Brushes.LightPink;
-            }
+            var newColour = validWire ? Brushes.Black : Brushes.Red;
+            var newHighlightColor = validWire ? Brushes.LightSkyBlue : Brushes.LightPink;
+
+            ChangeColour(colour: newColour, highlightColour: newHighlightColor);
 
             if (IsHighlighted)
             {
@@ -289,6 +280,20 @@ namespace RequirementsAbstractions
             else
             {
                 Unhighlight();
+            }
+
+        }
+
+        public void ChangeColour(SolidColorBrush colour = null, SolidColorBrush highlightColour = null)
+        {
+            if (colour != null)
+            {
+                WireColour = colour;
+                _bezier.Colour = WireColour;
+            }
+            if (highlightColour != null)
+            {
+                WireHighlightColour = highlightColour;
             }
         }
 
