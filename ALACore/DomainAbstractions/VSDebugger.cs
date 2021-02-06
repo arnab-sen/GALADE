@@ -182,6 +182,21 @@ namespace DomainAbstractions
             _debugger?.StepOver();
         }
 
+        public void StepInto()
+        {
+            _debugger?.StepInto();
+        }
+
+        public void StepOut()
+        {
+            _debugger?.StepOut();
+        }
+
+        public void Stop()
+        {
+            _debugger?.Stop();
+        }
+
         public void ExecuteStatement(string statement)
         {
             _debugger?.ExecuteStatement(statement);
