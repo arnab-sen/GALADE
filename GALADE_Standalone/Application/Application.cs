@@ -314,6 +314,7 @@ namespace Application
             Apply<StackFrame, ALANode> id_6e88a0df345b4d4282fe6ddac76d4af1 = new Apply<StackFrame, ALANode>() {InstanceName="",Lambda=stackFrame => {    var instanceName = stackFrame.GetVariable("InstanceName", local: false).Value.Trim('\"', '\\');    if (instanceDictionary.Data.ContainsKey(instanceName))    {        return instanceDictionary.Data[instanceName] as ALANode;    }    else     {        Logging.Log($"Could not find instance {instanceName} from the selected StackFrame.");        return null;    }}}; /* {"IsRoot":false} */
             EventConnector id_2349fd40ea5842a0ad957521e9653793 = new EventConnector() {InstanceName="id_2349fd40ea5842a0ad957521e9653793"}; /* {"IsRoot":false} */
             ConditionalData<ALANode> id_15ab4f895a9545e38f8213a39f827cc8 = new ConditionalData<ALANode>() {InstanceName="id_15ab4f895a9545e38f8213a39f827cc8",Condition=input => input != null}; /* {"IsRoot":false} */
+            DataFlowConnector<ALANode> id_332f15aefa244089a57483cf2e536e59 = new DataFlowConnector<ALANode>() {InstanceName="id_332f15aefa244089a57483cf2e536e59"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
@@ -1456,7 +1457,8 @@ namespace Application
             callStackViewer.WireTo(id_6e88a0df345b4d4282fe6ddac76d4af1, "selectedStackFrame"); /* {"SourceType":"DebugViewer","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["StackFrame","ALANode"]} */
             id_50556fa734d940a4a27ddcd4400ec384.WireTo(id_2349fd40ea5842a0ad957521e9653793, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_6e88a0df345b4d4282fe6ddac76d4af1.WireTo(id_15ab4f895a9545e38f8213a39f827cc8, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false,"Description":"","SourceGenerics":["StackFrame","ALANode"],"DestinationGenerics":["ALANode"]} */
-            id_15ab4f895a9545e38f8213a39f827cc8.WireTo(focusViewOnNode, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":true,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
+            id_332f15aefa244089a57483cf2e536e59.WireTo(focusViewOnNode, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":true,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
+            id_15ab4f895a9545e38f8213a39f827cc8.WireTo(id_332f15aefa244089a57483cf2e536e59, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             // END AUTO-GENERATED WIRING FOR Debugger
             //
             //

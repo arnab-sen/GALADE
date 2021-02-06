@@ -23,6 +23,7 @@ namespace DomainAbstractions
         // Private fields
         private Debugger _debugger;
         private DebuggerEvents _debuggerEvents; // Reference to this must be kept alive in order to use the events, so we define it here
+        private DTEEvents _dteEvents;
         private Dictionary<string, string> _mappingVSToDTEVersion = new Dictionary<string, string>()
         {
             {"2019", "16"},
@@ -56,6 +57,21 @@ namespace DomainAbstractions
                 DTE2 dte = (DTE2)Marshal.GetActiveObject($"VisualStudio.DTE.{_mappingVSToDTEVersion[VSVersion]}.0");
                 _debugger = dte.Debugger;
                 _debuggerEvents = dte.Events.DebuggerEvents;
+
+                _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
+                {
+
+                };
+
+                _dteEvents = dte.Events.DTEEvents;
+                _dteEvents.ModeChanged += mode =>
+                {
+                    if (mode == vsIDEMode.vsIDEModeDebug)
+                    {
+
+                    }
+                };
+
                 return dte;
             }
             catch (Exception e)

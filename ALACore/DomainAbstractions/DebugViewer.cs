@@ -128,6 +128,8 @@ namespace DomainAbstractions
             for (int i = 0; i < expressions.Count; i++)
             {
                 var expression = expressions[i];
+                if (string.IsNullOrEmpty(expression.Name) || string.IsNullOrEmpty(expression.Type) || string.IsNullOrEmpty(expression.Value)) continue;
+
                 if (i == expressions.Count - 1)
                 {
                     grid.AddRow(
@@ -174,6 +176,7 @@ namespace DomainAbstractions
                 Orientation = Orientation.Vertical,
                 CanVerticallyScroll = true,
                 MinHeight = 50,
+                MaxWidth = 400,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
@@ -190,7 +193,7 @@ namespace DomainAbstractions
                 Text = stackFrame.FunctionName,
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
-                MaxWidth = 500
+                MaxWidth = 300
             };
 
             if (stackFrame.Locals.Count > 50)
@@ -219,8 +222,8 @@ namespace DomainAbstractions
 
             expandButtonContainer.Children.Add(expandButton);
 
-            horizPanel.Children.Add(nameTextBlock);
             horizPanel.Children.Add(expandButtonContainer);
+            horizPanel.Children.Add(nameTextBlock);
 
             expandButton.Click += (sender, args) =>
             {
@@ -248,7 +251,7 @@ namespace DomainAbstractions
 
             };
 
-            vertPanel.MouseLeftButtonDown += (sender, args) =>
+            vertPanel.MouseLeftButtonUp += (sender, args) =>
             {
                 if (selectedStackFrame != null) selectedStackFrame.Data = stackFrame;
             };
