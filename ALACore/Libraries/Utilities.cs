@@ -243,7 +243,7 @@ namespace Libraries
         }
 
         /// <summary>
-        /// <para>An extension method that adds a new row containing a collection of given UIElements to the bottom of a System.Windows.Controls.Grid, and automatically arranged them in columns.</para>
+        /// <para>An extension method that adds a new row containing a collection of given UIElements to the bottom of a System.Windows.Controls.Grid, and automatically arranges them in columns.</para>
         /// <para>New columns will be added to accommodate the number of UIElements being added to the row.</para>
         /// </summary>
         public static void AddRow(this Grid grid, params UIElement[] uiElements)
@@ -311,7 +311,7 @@ namespace Libraries
         }
 
         /// <summary>
-        /// An extension method that returns a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame.
+        /// An extension method that returns an EnvDTE.Expression object for a given name in a given EnvDTE.StackFrame.
         /// </summary>
         public static EnvDTE.Expression GetVariable(this EnvDTE.StackFrame stackFrame, string varName, bool local = true)
         {
@@ -333,7 +333,7 @@ namespace Libraries
         }
 
         /// <summary>
-        /// An extension method that tries to find a pair representing a variable name and its EnvDTE.Expression object in a given EnvDTE.StackFrame, and returns whether such a pair could be found.
+        /// An extension method that tries to find an EnvDTE.Expression object for a given name in a given EnvDTE.StackFrame, and returns whether such an object could be found.
         /// </summary>
         public static bool TryGetVariable(this EnvDTE.StackFrame stackFrame, string varName, out EnvDTE.Expression foundExpression, bool local = true)
         {
