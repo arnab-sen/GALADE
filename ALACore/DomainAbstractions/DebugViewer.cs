@@ -23,6 +23,7 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public Func<StackFrame, bool> Exclude { get; set; }
 
         // Private fields
         private ListView _mainContainer = new ListView() {};
@@ -32,6 +33,7 @@ namespace DomainAbstractions
 
         // Ports
         private IDataFlow<StackFrame> selectedStackFrame;
+        private IDataFlow<string> selectedLabel;
 
         // IUI implementation
         UIElement IUI.GetWPFElement() => _mainContainer;
@@ -215,7 +217,7 @@ namespace DomainAbstractions
 
         public DebugViewer()
         {
-
+            ScrollViewer.SetCanContentScroll(_mainContainer, false);
         }
 
     }
