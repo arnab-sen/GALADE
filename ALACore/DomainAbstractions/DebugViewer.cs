@@ -83,6 +83,7 @@ namespace DomainAbstractions
                 itemCollection.Add(CreateNode(stackFrame));
             }
 
+            mainView.UpdateLayout();
         }
 
         public Grid CreateStackFrameGrid(StackFrame stackFrame)

@@ -9,6 +9,7 @@ using EnvDTE;
 using EnvDTE80;
 using Libraries;
 using System.IO;
+using System.Windows.Threading;
 
 namespace DomainAbstractions
 {
@@ -35,6 +36,7 @@ namespace DomainAbstractions
         };
 
         // Ports
+        private IDataFlow<List<object>> currentCallStack;
 
         // IEvent implementation
         void IEvent.Execute() => ConnectToVisualStudio();
@@ -158,9 +160,32 @@ namespace DomainAbstractions
         /// <summary>
         /// Returns a List of EnvDTE.StackFrame objects representing the current call stack. They are cast as objects due to compatibility issues across assemblies for interop types.
         /// The first element in the list is the most recent EnvDTE.StackFrame.
+        /// The list of StackFrames is also sent through the currentCallStack output port.
         /// </summary>
         /// <returns></returns>
-        public List<object> GetCurrentCallStack() => _debugger?.CurrentThread?.StackFrames.GetEnumerator().ToList<object>() ?? new List<object>();
+        public List<object> GetAndSendCurrentCallStack()
+        {
+            var callStack = _debugger?.CurrentThread?.StackFrames.GetEnumerator().ToList<object>() ?? new List<object>();
+
+            if (currentCallStack != null) currentCallStack.Data = callStack;
+
+            return callStack;
+        }
+
+        public void Continue()
+        {
+            _debugger?.Go();
+        }
+
+        public void StepOver()
+        {
+            _debugger?.StepOver();
+        }
+
+        public void ExecuteStatement(string statement)
+        {
+            _debugger?.ExecuteStatement(statement);
+        }
 
         public VSDebugger()
         {
