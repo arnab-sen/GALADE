@@ -95,9 +95,9 @@ namespace DomainAbstractions
 
             // Add column labels
             grid.AddRow(
-                CreateCellBorder("Name", new Thickness(1, 1, 1, 0)), 
-                CreateCellBorder("Type", new Thickness(0, 1, 1, 0)),
-                CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
+                CreateCellBorder("Name", new Thickness(1, 1, 1, 1)), 
+                CreateCellBorder("Type", new Thickness(0, 1, 1, 1)),
+                CreateCellBorder("Value", new Thickness(0, 1, 1, 1)));
 
             // Add rows
             AddExpressionPairs(grid, stackFrame.GetAllLocalVariables());
@@ -113,9 +113,9 @@ namespace DomainAbstractions
 
             // Add column labels
             grid.AddRow(
-                CreateCellBorder("Name", new Thickness(1, 1, 1, 0)),
-                CreateCellBorder("Type", new Thickness(0, 1, 1, 0)),
-                CreateCellBorder("Value", new Thickness(0, 1, 1, 0)));
+                CreateCellBorder("Name", new Thickness(1, 1, 1, 1)),
+                CreateCellBorder("Type", new Thickness(0, 1, 1, 1)),
+                CreateCellBorder("Value", new Thickness(0, 1, 1, 1)));
 
             // Add rows
             AddExpressionPairs(grid, stackFrame.GetAllNonLocalVariables());
@@ -130,20 +130,10 @@ namespace DomainAbstractions
                 var expression = expressions[i];
                 if (string.IsNullOrEmpty(expression.Name) || string.IsNullOrEmpty(expression.Type) || string.IsNullOrEmpty(expression.Value)) continue;
 
-                if (i == expressions.Count - 1)
-                {
-                    grid.AddRow(
-                        CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 1)),
-                        CreateCellBorder(expression.Type.Split('.').LastOrDefault(), new Thickness(0, 1, 1, 1)),
-                        CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 1)));
-                }
-                else
-                {
-                    grid.AddRow(
-                        CreateCellBorder(expression.Name, new Thickness(1, 1, 1, 0)), 
-                        CreateCellBorder(expression.Type.Split('.').LastOrDefault(), new Thickness(0, 1, 1, 0)),
-                        CreateCellBorder(expression.Value, new Thickness(0, 1, 1, 0)));
-                }
+                grid.AddRow(
+                    CreateCellBorder(FormatDottedName(expression.Name), new Thickness(1, 0, 1, 1)),
+                    CreateCellBorder(FormatDottedName(expression.Type), new Thickness(0, 0, 1, 1)),
+                    CreateCellBorder(expression.Value, new Thickness(0, 0, 1, 1)));
             }
         }
 
@@ -169,6 +159,19 @@ namespace DomainAbstractions
             return border;
         }
 
+        private string FormatDottedName(string unformatted)
+        {
+            var sb = new StringBuilder();
+            var split = unformatted.Split('.');
+            sb.AppendLine(split.FirstOrDefault());
+            foreach (var s in split.Skip(1))
+            {
+                sb.AppendLine($"    .{s}");
+            }
+
+            return sb.ToString();
+        }
+
         private StackPanel CreateNode(StackFrame stackFrame)
         {
             var vertPanel = new StackPanel()
@@ -190,7 +193,7 @@ namespace DomainAbstractions
 
             var nameTextBlock = new TextBlock()
             {
-                Text = stackFrame.FunctionName,
+                Text = FormatDottedName(stackFrame.FunctionName),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
                 MaxWidth = 300
@@ -198,7 +201,7 @@ namespace DomainAbstractions
 
             if (stackFrame.Locals.Count > 50)
             {
-                nameTextBlock.Text = $"[Warning: Many items detected] {nameTextBlock.Text}";
+                nameTextBlock.Text = $"[Warning: Many items detected]\n{nameTextBlock.Text}";
             }
 
             var expandButtonContent = new Label()
