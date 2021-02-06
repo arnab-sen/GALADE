@@ -323,6 +323,8 @@ namespace Libraries
             else
             {
                 var thisVar = stackFrame.GetVariable("this", local: true);
+                if (thisVar == null) return null;
+
                 vars = thisVar.DataMembers.GetEnumerator().ToList<EnvDTE.Expression>();
             }
 

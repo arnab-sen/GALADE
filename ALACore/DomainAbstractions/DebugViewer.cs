@@ -23,7 +23,11 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public Func<StackFrame, bool> Exclude { get; set; }
+
+        /// <summary>
+        /// Only include StackFrames that meet a given condition. The input object should be cast as a StackFrame.
+        /// </summary>
+        public Func<object, bool> Filter { get; set; }
 
         // Private fields
         private ListView _mainContainer = new ListView() {};
@@ -44,7 +48,15 @@ namespace DomainAbstractions
             get => _callStack;
             set
             {
-                _callStack = value;
+                if (Filter == null)
+                {
+                    _callStack = value; 
+                }
+                else
+                {
+                    _callStack = value.Where(Filter).ToList();
+                }
+
                 _stackFrames.Clear();
                 UpdateStackFrameViewer(_mainContainer, _callStack, _stackFrames);
 

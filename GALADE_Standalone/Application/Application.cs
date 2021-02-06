@@ -302,7 +302,7 @@ namespace Application
             DataFlowConnector<Dictionary<string, object>> instanceDictionary = new DataFlowConnector<Dictionary<string, object>>() { InstanceName = "instanceDictionary" }; /* {"IsRoot":false} */
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
-            DebugViewer callStackViewer = new DebugViewer() {InstanceName="callStackViewer"}; /* {"IsRoot":false} */
+            DebugViewer callStackViewer = new DebugViewer() {InstanceName="callStackViewer",Filter=obj => {    var stackFrame = obj as StackFrame;    var shouldInclude = stackFrame.Locals.Count < 50 && stackFrame.TryGetVariable("InstanceName", out EnvDTE.Expression expr, local: false);    return shouldInclude;}}; /* {"IsRoot":false} */
             UIConfig UIConfig_debuggerTab = new UIConfig() {InstanceName="UIConfig_debuggerTab"}; /* {"IsRoot":true} */
             Tab debuggerTab = new Tab(title:"Debugger") {InstanceName="debuggerTab"}; /* {"IsRoot":false} */
             MenuItem getCurrentStackFrame = new MenuItem(header:"Get Current Stack Frame") {InstanceName="getCurrentStackFrame"}; /* {"IsRoot":false} */
@@ -311,7 +311,7 @@ namespace Application
             UIConfig id_e7e83b88d68740d0b9147b29781a9190 = new UIConfig() {InstanceName="id_e7e83b88d68740d0b9147b29781a9190",MaxHeight=700}; /* {"IsRoot":false} */
             UIConfig id_fb9f6477c5754cfc8b5cd219672690c8 = new UIConfig() {InstanceName="id_fb9f6477c5754cfc8b5cd219672690c8",HorizAlignment="middle",UniformMargin=5}; /* {"IsRoot":false} */
             Button id_50556fa734d940a4a27ddcd4400ec384 = new Button(title:"Refresh Call Stack") {InstanceName="id_50556fa734d940a4a27ddcd4400ec384"}; /* {"IsRoot":false} */
-            Apply<StackFrame, ALANode> id_6e88a0df345b4d4282fe6ddac76d4af1 = new Apply<StackFrame, ALANode>() {InstanceName="",Lambda=stackFrame => {    var instanceName = stackFrame.GetVariable("InstanceName", local: false).Value.Trim('\"', '\\');    if (instanceDictionary.Data.ContainsKey(instanceName))    {        return instanceDictionary.Data[instanceName] as ALANode;    }    else     {        Logging.Log($"Could not find instance {instanceName} from the selected StackFrame.");        return null;    }}}; /* {"IsRoot":false} */
+            Apply<StackFrame, ALANode> id_6e88a0df345b4d4282fe6ddac76d4af1 = new Apply<StackFrame, ALANode>() {InstanceName="id_6e88a0df345b4d4282fe6ddac76d4af1",Lambda=stackFrame =>{    var instanceName = stackFrame.GetVariable("InstanceName", local: false).Value.Trim('\"', '\\');    if (instanceDictionary.Data.ContainsKey(instanceName))    {        return instanceDictionary.Data[instanceName] as ALANode;    }    else    {        Logging.Log($"Could not find instance {instanceName} from the selected StackFrame.");        return null;    }}}; /* {"IsRoot":false} */
             EventConnector id_2349fd40ea5842a0ad957521e9653793 = new EventConnector() {InstanceName="id_2349fd40ea5842a0ad957521e9653793"}; /* {"IsRoot":false} */
             ConditionalData<ALANode> id_15ab4f895a9545e38f8213a39f827cc8 = new ConditionalData<ALANode>() {InstanceName="id_15ab4f895a9545e38f8213a39f827cc8",Condition=input => input != null}; /* {"IsRoot":false} */
             DataFlowConnector<ALANode> id_332f15aefa244089a57483cf2e536e59 = new DataFlowConnector<ALANode>() {InstanceName="id_332f15aefa244089a57483cf2e536e59"}; /* {"IsRoot":false} */
