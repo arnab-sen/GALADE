@@ -61,7 +61,6 @@ namespace DomainAbstractions
 
                 _stackFrames.Clear();
                 UpdateStackFrameViewer(_mainContainer, _callStack, _stackFrames);
-
             }
         }
 
@@ -279,6 +278,7 @@ namespace DomainAbstractions
             vertPanel.MouseLeftButtonUp += (sender, args) =>
             {
                 if (selectedStackFrame != null) selectedStackFrame.Data = stackFrame;
+                if (selectedLabel != null) selectedLabel.Data = stackFrame.FunctionName;
             };
 
             if (open && stackFrame.Locals.Count < 50)

@@ -11,6 +11,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -349,5 +351,9 @@ namespace Libraries
 
             return foundExpression != null;
         }
+
+        // Native methods for interop services
+        [DllImport("ole32.dll")]
+        public static extern int CreateBindCtx(uint reserved, out IBindCtx bindCtx);
     }
 }

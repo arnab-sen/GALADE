@@ -9,7 +9,12 @@ using EnvDTE;
 using EnvDTE80;
 using Libraries;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
+
 
 namespace DomainAbstractions
 {
@@ -20,68 +25,137 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public DTE2 CurrentDTE => _dte;
 
         // Private fields
+        private DTE2 _dte;
         private Debugger _debugger;
         private DebuggerEvents _debuggerEvents; // Reference to this must be kept alive in order to use the events, so we define it here
         private DTEEvents _dteEvents;
-        private Dictionary<string, string> _mappingVSToDTEVersion = new Dictionary<string, string>()
-        {
-            {"2019", "16"},
-            {"2017", "15"},
-            {"2015", "14"},
-            {"2013", "12"},
-            {"2012", "11"},
-            {"2010", "10"},
-        };
 
         // Ports
         private IDataFlow<List<object>> currentCallStack;
 
         // IEvent implementation
-        void IEvent.Execute() => ConnectToVisualStudio();
+        void IEvent.Execute() => ConnectToVisualStudio(getUserSelection: true);
 
         // Methods
         /// <summary>
-        /// Creates a hook to the debugger of the first opened VS process of a given version.
+        /// First, all instances of Visual Studio are found. Then, if getUserSelection is true, the user will be
+        /// able to choose which instance to connect to, otherwise the first instance found will be connected to.
         /// </summary>
         /// <param name="VSVersion"></param>
-        public DTE2 ConnectToVisualStudio(string VSVersion = "2019")
+        public void ConnectToVisualStudio(bool getUserSelection = false)
         {
-            if (!_mappingVSToDTEVersion.ContainsKey(VSVersion))
+            var runningObjects = GetRunningObjects(@"VisualStudio.DTE", out IEnumerable<string> displayNames).OfType<DTE2>().ToList();
+
+            if (runningObjects.Count == 0)
             {
-                Logging.Log($"Invalid Visual Studio year provided: {VSVersion}. Must be one of: [2019, 2017, 2015, 2013, 2012, 2010].");
-                return null;
+                Logging.Log($"VSDebugger: No instances of Visual Studio found... failed to connect.");
+                return;
             }
 
-            try
+            if (getUserSelection)
             {
-                DTE2 dte = (DTE2)Marshal.GetActiveObject($"VisualStudio.DTE.{_mappingVSToDTEVersion[VSVersion]}.0");
-                _debugger = dte.Debugger;
-                _debuggerEvents = dte.Events.DebuggerEvents;
-
-                _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
-                {
-
-                };
-
-                _dteEvents = dte.Events.DTEEvents;
-                _dteEvents.ModeChanged += mode =>
-                {
-                    if (mode == vsIDEMode.vsIDEModeDebug)
-                    {
-
-                    }
-                };
-
-                return dte;
+                PresentVSChoice(runningObjects);
             }
-            catch (Exception e)
+            else
             {
-                Logging.Log($"VSDebugger: No instance of Visual Studio {VSVersion} found... failed to connect.\nException: {e}");
-                return null;
+                var firstNonActiveInstance = runningObjects.FirstOrDefault(obj => !obj.MainWindow.Caption.Contains("(Running) - Microsoft Visual Studio")) ?? runningObjects.First();
+                InitDTE(firstNonActiveInstance);
             }
+        }
 
+        private void InitDTE(DTE2 dte)
+        {
+            _dte = dte;
+            _debugger = dte.Debugger;
+            _debuggerEvents = dte.Events.DebuggerEvents;
+
+            Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
+
+            // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
+            // {
+            //
+            // };
+            //
+            // _dteEvents = dte.Events.DTEEvents;
+            // _dteEvents.ModeChanged += mode =>
+            // {
+            //     if (mode == vsIDEMode.vsIDEModeDebug)
+            //     {
+            //
+            //     }
+            // };
+        }
+
+        private void PresentVSChoice(List<DTE2> candidates)
+        {
+            if (candidates.Count == 0) return;
+
+            var selectionWindow = new System.Windows.Window()
+            {
+                Topmost = true,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Title = "GALADE"
+            };
+
+            var windowNames = candidates.Select(dte => dte.MainWindow.Caption).ToList();
+            
+
+            var mainPanel = new StackPanel()
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(5)
+            };
+
+            selectionWindow.Content = mainPanel;
+
+            var horizPanel = new StackPanel()
+            {
+                Orientation = Orientation.Horizontal
+            };
+
+            mainPanel.Children.Add(new TextBlock()
+            {
+                Text = "Multiple instances of Visual Studio detected.\nPlease select one from the dropdown below:",
+                Margin = new Thickness(1)
+            });
+
+            mainPanel.Children.Add(horizPanel);
+
+            var dropDown = new ComboBox()
+            {
+                ItemsSource = windowNames.ToList(),
+                Width = 250,
+                Height = 25,
+                IsEditable = true,
+                SelectedIndex = 0,
+                Text = windowNames.First(),
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(1)
+            };
+
+            var okButton = new System.Windows.Controls.Button()
+            {
+                Content = "OK",
+                Width = 50,
+                Height = 25,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(1)
+            };
+
+            okButton.Click += (sender, args) =>
+            {
+                selectionWindow.Close();
+                InitDTE(candidates[dropDown.SelectedIndex]);
+            };
+
+            horizPanel.Children.Add(dropDown);
+            horizPanel.Children.Add(okButton);
+
+            selectionWindow.Show();
         }
 
         /// <summary>
@@ -92,6 +166,8 @@ namespace DomainAbstractions
         /// <param name="lineNumber"></param>
         public void AddBreakpoint(string filePath, int lineNumber, int column = 1, string condition = "")
         {
+            if (_dte == null) ConnectToVisualStudio();
+
             if (string.IsNullOrEmpty(condition))
             {
                 _debugger?.Breakpoints.Add(File: filePath, Line: lineNumber, Column: column);
@@ -123,6 +199,8 @@ namespace DomainAbstractions
         /// <returns></returns>
         public Breakpoint GetBreakpoint(string filePath, int lineNumber, int column = -1)
         {
+            if (_dte == null) ConnectToVisualStudio();
+
             if (_debugger != null)
             {
                 var enumerator = _debugger.Breakpoints.GetEnumerator();
@@ -144,6 +222,8 @@ namespace DomainAbstractions
         /// <param name="filePath"></param>
         public void ClearAllBreakpoints(string filePath)
         {
+            if (_dte == null) ConnectToVisualStudio();
+
             if (_debugger != null)
             {
                 var enumerator = _debugger.Breakpoints.GetEnumerator();
@@ -165,6 +245,8 @@ namespace DomainAbstractions
         /// <returns></returns>
         public List<object> GetAndSendCurrentCallStack()
         {
+            if (_dte == null) ConnectToVisualStudio();
+
             var callStack = _debugger?.CurrentThread?.StackFrames.GetEnumerator().ToList<object>() ?? new List<object>();
 
             if (currentCallStack != null) currentCallStack.Data = callStack;
@@ -174,32 +256,100 @@ namespace DomainAbstractions
 
         public void Continue()
         {
-            _debugger?.Go();
+            if (_dte == null) ConnectToVisualStudio();
+
+            _debugger?.Go(WaitForBreakOrEnd: false);
         }
 
         public void StepOver()
         {
-            _debugger?.StepOver();
+            if (_dte == null) ConnectToVisualStudio();
+
+            _debugger?.StepOver(WaitForBreakOrEnd: false);
         }
 
         public void StepInto()
         {
-            _debugger?.StepInto();
+            if (_dte == null) ConnectToVisualStudio();
+
+            _debugger?.StepInto(WaitForBreakOrEnd: false);
         }
 
         public void StepOut()
         {
-            _debugger?.StepOut();
+            if (_dte == null) ConnectToVisualStudio();
+
+            _debugger?.StepOut(WaitForBreakOrEnd: false);
         }
 
         public void Stop()
         {
-            _debugger?.Stop();
+            if (_dte == null) ConnectToVisualStudio();
+
+            _debugger?.Stop(WaitForDesignMode: false);
         }
 
         public void ExecuteStatement(string statement)
         {
+            if (_dte == null) ConnectToVisualStudio();
+
             _debugger?.ExecuteStatement(statement);
+        }
+
+        /// <summary>
+        /// Returns
+        /// </summary>
+        /// <param name="regex"></param>
+        /// <param name="runningObjectDisplayNames"></param>
+        /// <returns></returns>
+        private static List<object> GetRunningObjects(string regex, out IEnumerable<string> runningObjectDisplayNames)
+        {
+            IBindCtx bindContext = null;
+            Utilities.CreateBindCtx(0, out bindContext);
+
+            IRunningObjectTable runningObjectTable = null;
+            bindContext.GetRunningObjectTable(out runningObjectTable);
+
+            IEnumMoniker monikerEnumerator = null;
+            runningObjectTable.EnumRunning(out monikerEnumerator);
+
+            object runningObject = null;
+            List<object> runningObjects = new List<object>();
+            List<string> runningObjectDisplayNameList = new List<string>();
+            IMoniker[] monikers = new IMoniker[1];
+            IntPtr numberFetched = IntPtr.Zero;
+            while (monikerEnumerator.Next(1, monikers, numberFetched) == 0)
+            {
+                IMoniker moniker = monikers[0];
+
+                string objectDisplayName = null;
+                try
+                {
+                    moniker.GetDisplayName(bindContext, null, out objectDisplayName);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // Some ROT objects require elevated permissions.
+                }
+
+                if (!string.IsNullOrWhiteSpace(objectDisplayName))
+                {
+                    runningObjectDisplayNameList.Add(objectDisplayName);
+                    if (Regex.IsMatch(objectDisplayName, regex))
+                    {
+                        runningObjectTable.GetObject(moniker, out runningObject);
+                        if (runningObject == null)
+                        {
+                            throw new InvalidOperationException($"Failed to get running object with display name {regex}");
+                        }
+
+                        runningObjects.Add(runningObject);
+                    }
+                }
+            }
+
+            runningObjectDisplayNames = runningObjectDisplayNameList;
+            return runningObjects;
         }
 
         public VSDebugger()
