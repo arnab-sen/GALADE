@@ -47,7 +47,7 @@ namespace DomainAbstractions
         /// <param name="VSVersion"></param>
         public void ConnectToVisualStudio(bool getUserSelection = false)
         {
-            var runningObjects = GetRunningObjects(@"VisualStudio.DTE", out IEnumerable<string> displayNames).OfType<DTE2>().ToList();
+            var runningObjects = GetRunningObjects(regex: @"VisualStudio.DTE").OfType<DTE2>().ToList();
 
             if (runningObjects.Count == 0)
             {
@@ -300,56 +300,54 @@ namespace DomainAbstractions
         /// <summary>
         /// Based on a snippet from https://docs.microsoft.com/en-us/visualstudio/extensibility/launch-visual-studio-dte?view=vs-2019.
         /// </summary>
-        /// <param name="regex"></param>
-        /// <param name="runningObjectDisplayNames"></param>
-        /// <returns></returns>
-        private static List<object> GetRunningObjects(string regex, out IEnumerable<string> runningObjectDisplayNames)
+        private static List<object> GetRunningObjects(string regex)
         {
-            IBindCtx bindContext = null;
-            Utilities.CreateBindCtx(0, out bindContext);
-
-            IRunningObjectTable runningObjectTable = null;
-            bindContext.GetRunningObjectTable(out runningObjectTable);
-
-            IEnumMoniker monikerEnumerator = null;
-            runningObjectTable.EnumRunning(out monikerEnumerator);
-
-            object runningObject = null;
             List<object> runningObjects = new List<object>();
-            List<string> runningObjectDisplayNameList = new List<string>();
-            IMoniker[] monikers = new IMoniker[1];
-            IntPtr numberFetched = IntPtr.Zero;
-            while (monikerEnumerator.Next(1, monikers, numberFetched) == 0)
+
+            try
             {
-                IMoniker moniker = monikers[0];
+                IBindCtx bindContext = null;
+                Utilities.CreateBindCtx(0, out bindContext);
 
-                string objectDisplayName = null;
-                try
-                {
-                    moniker.GetDisplayName(bindContext, null, out objectDisplayName);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                    // Some ROT objects require elevated permissions.
-                }
+                IRunningObjectTable runningObjectTable = null;
+                bindContext.GetRunningObjectTable(out runningObjectTable);
 
-                if (!string.IsNullOrWhiteSpace(objectDisplayName))
+                IEnumMoniker monikerEnumerator = null;
+                runningObjectTable.EnumRunning(out monikerEnumerator);
+
+                object runningObject = null;
+                IMoniker[] monikers = new IMoniker[1];
+                IntPtr numberFetched = IntPtr.Zero;
+                while (monikerEnumerator.Next(1, monikers, numberFetched) == 0)
                 {
-                    runningObjectDisplayNameList.Add(objectDisplayName);
-                    if (Regex.IsMatch(objectDisplayName, regex))
+                    IMoniker moniker = monikers[0];
+
+                    string objectDisplayName = null;
+                    try
                     {
-                        runningObjectTable.GetObject(moniker, out runningObject);
-                        if (runningObject == null)
-                        {
-                            throw new InvalidOperationException($"Failed to get running object with display name {regex}");
-                        }
+                        moniker.GetDisplayName(bindContext, null, out objectDisplayName);
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // Some ROT objects require elevated permissions.
+                    }
 
-                        runningObjects.Add(runningObject);
+                    if (!string.IsNullOrWhiteSpace(objectDisplayName))
+                    {
+                        if (Regex.IsMatch(objectDisplayName, regex))
+                        {
+                            runningObjectTable.GetObject(moniker, out runningObject);
+                            if (runningObject != null) runningObjects.Add(runningObject);
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Logging.Log($"Exception thrown in VSDebugger.GetRunningObjects:\n{e}");
+                return runningObjects;
+            }
 
-            runningObjectDisplayNames = runningObjectDisplayNameList;
             return runningObjects;
         }
 
