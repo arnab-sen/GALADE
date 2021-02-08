@@ -101,7 +101,24 @@ namespace DomainAbstractions
                 Title = "GALADE"
             };
 
-            var descriptors = candidates.Select(dte => dte.ActiveDocument.FullName).ToList();
+            var descriptors = new List<string>();
+            var sb = new StringBuilder();
+            foreach (var dte in candidates)
+            {
+                sb.Clear();
+                sb.Append(dte.MainWindow?.Caption);
+
+                if (string.IsNullOrEmpty(dte.ActiveDocument?.FullName))
+                {
+                    sb.Append(" (No document open)");
+                }
+                else
+                {
+                    sb.Append(dte.ActiveDocument?.FullName);
+                }
+
+                descriptors.Add(sb.ToString());
+            }
 
             var mainPanel = new StackPanel()
             {
@@ -119,7 +136,7 @@ namespace DomainAbstractions
 
             mainPanel.Children.Add(new TextBlock()
             {
-                Text = "Multiple instances of Visual Studio detected.\nPlease select one from the dropdown below, which shows the currently opened document path in each instance:",
+                Text = "Multiple instances of Visual Studio detected.\nPlease select one from the dropdown below, which shows the window name and currently opened document path in each instance:",
                 Margin = new Thickness(1)
             });
 
