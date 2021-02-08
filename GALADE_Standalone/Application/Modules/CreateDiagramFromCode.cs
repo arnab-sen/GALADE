@@ -579,7 +579,8 @@ namespace Application
         {
             var node = new ALANode()
             {
-                ContextMenu = NodeContextMenu
+                ContextMenu = NodeContextMenu,
+                WireContextMenu = WireContextMenu
             };
 
             if (model.Name.StartsWith("id_"))
