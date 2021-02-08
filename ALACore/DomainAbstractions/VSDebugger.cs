@@ -297,7 +297,7 @@ namespace DomainAbstractions
         }
 
         /// <summary>
-        /// Returns
+        /// Based on a snippet from https://docs.microsoft.com/en-us/visualstudio/extensibility/launch-visual-studio-dte?view=vs-2019.
         /// </summary>
         /// <param name="regex"></param>
         /// <param name="runningObjectDisplayNames"></param>
