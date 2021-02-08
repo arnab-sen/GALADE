@@ -276,42 +276,84 @@ namespace DomainAbstractions
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.Go(WaitForBreakOrEnd: false);
+            try
+            {
+                _debugger?.Go(WaitForBreakOrEnd: false);
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.Continue() failed to execute.");
+            }
         }
 
         public void StepOver()
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.StepOver(WaitForBreakOrEnd: false);
+            try
+            {
+                _debugger?.StepOver(WaitForBreakOrEnd: false);
+            }
+            catch (Exception)
+            {
+                Logging.Log("VSDebugger.StepOver() failed to execute.");
+            }
         }
 
         public void StepInto()
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.StepInto(WaitForBreakOrEnd: false);
+            try
+            {
+                _debugger?.StepInto(WaitForBreakOrEnd: false);
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.StepInto() failed to execute.");
+            }
         }
 
         public void StepOut()
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.StepOut(WaitForBreakOrEnd: false);
+            try
+            {
+                _debugger?.StepOut(WaitForBreakOrEnd: false);
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.StepInto() failed to execute.");
+            }
         }
 
         public void Stop()
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.Stop(WaitForDesignMode: false);
+            try
+            {
+                _debugger?.Stop(WaitForDesignMode: false);
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.Stop() failed to execute.");
+            }
         }
 
         public void ExecuteStatement(string statement)
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            _debugger?.ExecuteStatement(statement);
+            try
+            {
+                _debugger?.ExecuteStatement(statement);
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.ExecuteStatement() failed to execute.");
+            }
         }
 
         /// <summary>
