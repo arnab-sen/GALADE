@@ -101,8 +101,7 @@ namespace DomainAbstractions
                 Title = "GALADE"
             };
 
-            var windowNames = candidates.Select(dte => dte.MainWindow.Caption).ToList();
-            
+            var descriptors = candidates.Select(dte => dte.ActiveDocument.FullName).ToList();
 
             var mainPanel = new StackPanel()
             {
@@ -114,12 +113,13 @@ namespace DomainAbstractions
 
             var horizPanel = new StackPanel()
             {
-                Orientation = Orientation.Horizontal
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
             mainPanel.Children.Add(new TextBlock()
             {
-                Text = "Multiple instances of Visual Studio detected.\nPlease select one from the dropdown below:",
+                Text = "Multiple instances of Visual Studio detected.\nPlease select one from the dropdown below, which shows the currently opened document path in each instance:",
                 Margin = new Thickness(1)
             });
 
@@ -127,12 +127,13 @@ namespace DomainAbstractions
 
             var dropDown = new ComboBox()
             {
-                ItemsSource = windowNames.ToList(),
-                Width = 250,
+                ItemsSource = descriptors.ToList(),
+                // Width = 250,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 Height = 25,
                 IsEditable = true,
                 SelectedIndex = 0,
-                Text = windowNames.First(),
+                Text = descriptors.First(),
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(1)
             };
