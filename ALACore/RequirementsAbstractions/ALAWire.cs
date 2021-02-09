@@ -94,7 +94,6 @@ namespace RequirementsAbstractions
         private Canvas _previewCanvas = new Canvas();
         private Border _previewBlock = new Border() { Width = 500, Height = 150, Background = Brushes.White, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
 
-
         // Ports
 
         // Methods
@@ -295,6 +294,16 @@ namespace RequirementsAbstractions
             {
                 WireHighlightColour = highlightColour;
             }
+        }
+
+        public void AddTempHighlight(SolidColorBrush colour)
+        {
+            _bezier.Colour = colour;
+        }
+
+        public void RemoveTempHighlight()
+        {
+            _bezier.Colour = WireColour;
         }
 
         public void AttachEndToMouse(bool source = true, bool detach = false)
