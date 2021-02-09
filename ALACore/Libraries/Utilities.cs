@@ -355,5 +355,10 @@ namespace Libraries
         // Native methods for interop services
         [DllImport("ole32.dll")]
         public static extern int CreateBindCtx(uint reserved, out IBindCtx bindCtx);
+
+        public static async Task Delay(int milliseconds)
+        {
+            await Task.Delay(milliseconds);
+        }
     }
 }

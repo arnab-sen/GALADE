@@ -114,7 +114,7 @@ namespace DomainAbstractions
                 }
                 else
                 {
-                    sb.Append(dte.ActiveDocument?.FullName);
+                    sb.Append(" " + dte.ActiveDocument?.FullName);
                 }
 
                 descriptors.Add(sb.ToString());
@@ -261,15 +261,29 @@ namespace DomainAbstractions
         /// The list of StackFrames is also sent through the currentCallStack output port.
         /// </summary>
         /// <returns></returns>
-        public List<object> GetAndSendCurrentCallStack()
+        public void SendCurrentCallStack()
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            var callStack = _debugger?.CurrentThread?.StackFrames.GetEnumerator().ToList<object>() ?? new List<object>();
+            // _debugger.CurrentThread.Freeze();
+            var thread = _debugger?.CurrentThread;
+            // _debugger.CurrentThread.Thaw();
+            // var thread = await GetCurrentThreadAsync(_debugger);
+            var stackFrames = thread?.StackFrames;
+            if (stackFrames == null) return;
+            var enumerator = stackFrames.GetEnumerator();
 
+            var callStack = enumerator.ToList<object>() ?? new List<object>();
             if (currentCallStack != null) currentCallStack.Data = callStack;
+        }
 
-            return callStack;
+        private async Task<Thread> GetCurrentThreadAsync(Debugger debugger)
+        {
+            var task = new Task<Thread>(() => Dispatcher.CurrentDispatcher.Invoke(() => debugger.CurrentThread));
+
+            await task;
+
+            return task.Result;
         }
 
         public void Continue()
@@ -278,7 +292,7 @@ namespace DomainAbstractions
 
             try
             {
-                _debugger?.Go(WaitForBreakOrEnd: false);
+                _debugger?.Go(WaitForBreakOrEnd: true);
             }
             catch (Exception e)
             {

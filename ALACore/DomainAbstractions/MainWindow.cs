@@ -68,6 +68,7 @@ namespace DomainAbstractions
         public void CreateUI()
         {
             window.Content = iuiStructure?.GetWPFElement();
+
         }
 
         public System.Windows.Application CreateApp()
