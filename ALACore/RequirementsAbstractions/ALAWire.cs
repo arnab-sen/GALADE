@@ -93,6 +93,7 @@ namespace RequirementsAbstractions
         private bool _isPreviewingDest = false;
         private Canvas _previewCanvas = new Canvas();
         private Border _previewBlock = new Border() { Width = 500, Height = 150, Background = Brushes.White, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
+        private Brush _tempColour;
 
         // Ports
 
@@ -298,11 +299,14 @@ namespace RequirementsAbstractions
 
         public void AddTempHighlight(SolidColorBrush colour)
         {
+            _tempColour = WireColour;
+            WireColour = colour;
             _bezier.Colour = colour;
         }
 
         public void RemoveTempHighlight()
         {
+            if (_tempColour != null) WireColour = _tempColour;
             _bezier.Colour = WireColour;
         }
 

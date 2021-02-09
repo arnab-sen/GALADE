@@ -34,6 +34,7 @@ namespace DomainAbstractions
         private DTEEvents _dteEvents;
 
         // Ports
+        private IEvent connected;
         private IDataFlow<List<object>> currentCallStack;
         private IEvent breakPointsChanged;
 
@@ -74,6 +75,7 @@ namespace DomainAbstractions
             _debuggerEvents = dte.Events.DebuggerEvents;
 
             Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
+            connected?.Execute();
 
             // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
             // {

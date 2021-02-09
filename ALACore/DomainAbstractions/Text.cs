@@ -15,12 +15,12 @@ namespace DomainAbstractions
     {
         // properties
         public string InstanceName { get; set; } = "Default";
-        public Brush Color = Brushes.Black;
-        public Brush Background;
-        public double HeightRatio;
-        public Thickness Margin;
-        public Thickness Padding;
-        public bool ShowBorder = false;
+        public Brush Color { get; set; } = Brushes.Black;
+        public Brush Background { get; set; }
+        public double HeightRatio { get; set; }
+        public Thickness Margin { get; set; }
+        public Thickness Padding { get; set; }
+        public bool ShowBorder { get; set; } = false;
 
         // Properties for customizing UI
         public string InnerText

@@ -666,7 +666,7 @@ namespace RequirementsAbstractions
             var background = new Border()
             {
                 Background = Brushes.White,
-                Opacity = 0.5,
+                Opacity = 0.8,
                 Width = Width,
                 Height = Height
             };
@@ -689,6 +689,7 @@ namespace RequirementsAbstractions
                 FontSize = 40,
                 FontWeight = FontWeights.Bold,
                 HorizAlignment = HorizontalAlignment.Center,
+                Color = _hasBreakpoint ? Brushes.MediumVioletRed : Brushes.Black
             };
 
             var textUI = (_textMask as IUI).GetWPFElement();
