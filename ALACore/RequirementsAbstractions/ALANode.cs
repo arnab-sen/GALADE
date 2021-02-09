@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
@@ -113,6 +114,16 @@ namespace RequirementsAbstractions
             }
         }
 
+        public bool HasBreakpoint
+        {
+            get => _hasBreakpoint;
+            set
+            {
+                _hasBreakpoint = value;
+                _hasBreakpointImage.Fill = _hasBreakpoint ? Brushes.Red : Brushes.DarkGray;
+            }
+        }
+
         public Graph Graph { get; set; }
         // public List<object> Edges { get; } = new List<object>();
         public Canvas Canvas { get; set; }
@@ -203,6 +214,18 @@ namespace RequirementsAbstractions
         private System.Windows.Controls.Button _descPopupButton = null;
         private System.Windows.Controls.TextBox _popupText = null;
         private bool _canMove = true;
+        private bool _hasBreakpoint = false;
+
+        // Fill should be either Brushes.Red or Brushes.DarkGray to symbolise that it does/doesn't have a breakpoint in its source file
+        private Ellipse _hasBreakpointImage = new Ellipse()
+        {
+            Width = 20,
+            Height = 20,
+            Fill = Brushes.DarkGray,
+            Stroke = Brushes.Black,
+            StrokeThickness = 2,
+            HorizontalAlignment = HorizontalAlignment.Left
+        };
 
         // Global instances
         public Vertical _inputPortsVert;
@@ -1315,6 +1338,11 @@ namespace RequirementsAbstractions
             addNewParameterRow.WireTo(new UIFactory()
             {
                 GetUIElement = () => _descPopupButton
+            });
+
+            addNewParameterRow.WireTo(new UIFactory()
+            {
+                GetUIElement = () => _hasBreakpointImage
             });
 
             return addNewParameterRow;

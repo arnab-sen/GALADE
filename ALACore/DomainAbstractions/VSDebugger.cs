@@ -35,6 +35,7 @@ namespace DomainAbstractions
 
         // Ports
         private IDataFlow<List<object>> currentCallStack;
+        private IEvent breakPointsChanged;
 
         // IEvent implementation
         void IEvent.Execute() => ConnectToVisualStudio(getUserSelection: true);
@@ -206,6 +207,7 @@ namespace DomainAbstractions
                 }
             }
             
+            breakPointsChanged?.Execute();
         }
 
         /// <summary>
@@ -253,6 +255,8 @@ namespace DomainAbstractions
                     }
                 }
             }
+
+            breakPointsChanged?.Execute();
         }
 
         /// <summary>
