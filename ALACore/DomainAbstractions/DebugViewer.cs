@@ -29,6 +29,7 @@ namespace DomainAbstractions
         /// <para>It has been cast as an object because of a compilation issue with using interop interfaces in generic type parameters.</para>
         /// </summary>
         public Func<object, bool> Filter { get; set; }
+        public Func<object, string> GetNameFromStackFrame { get; set; }
 
         // Private fields
         private ListView _mainContainer = new ListView() {};
@@ -193,6 +194,17 @@ namespace DomainAbstractions
             return sb.ToString();
         }
 
+        private string GetName(StackFrame stackFrame)
+        {
+            if (GetNameFromStackFrame != null)
+            {
+                var name = GetNameFromStackFrame(stackFrame);
+                if (!string.IsNullOrEmpty(name)) return name;
+            }
+
+            return FormatDottedName(stackFrame.FunctionName);
+        }
+
         private StackPanel CreateNode(StackFrame stackFrame, bool open = false)
         {
             var vertPanel = new StackPanel()
@@ -214,10 +226,11 @@ namespace DomainAbstractions
 
             var nameTextBlock = new TextBlock()
             {
-                Text = FormatDottedName(stackFrame.FunctionName),
+                Text = GetName(stackFrame),
                 TextWrapping = TextWrapping.Wrap,
                 VerticalAlignment = VerticalAlignment.Center,
-                MaxWidth = 300
+                MaxWidth = 300,
+                FontSize = 14
             };
 
             if (stackFrame.Locals.Count > 50)
