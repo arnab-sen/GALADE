@@ -78,33 +78,14 @@ namespace DomainAbstractions
 
         private void InitDTE(DTE2 dte)
         {
-            try
-            {
-                _dte = dte;
-                _debugger = dte.Debugger;
-                _debuggerEvents = dte.Events.DebuggerEvents;
+            _dte = dte;
+            if (dte == null) return;
 
-                Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
-                connected?.Execute();
-            }
-            catch (Exception e)
-            {
-                Logging.Log("VSDebugger.InitDTE Failed to connect: DTE was null.");
-            }
+            _debugger = dte.Debugger;
+            _debuggerEvents = dte.Events.DebuggerEvents;
 
-            // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
-            // {
-            //
-            // };
-            //
-            // _dteEvents = dte.Events.DTEEvents;
-            // _dteEvents.ModeChanged += mode =>
-            // {
-            //     if (mode == vsIDEMode.vsIDEModeDebug)
-            //     {
-            //
-            //     }
-            // };
+            Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
+            connected?.Execute();
         }
 
         private void PresentVSChoice(List<DTE2> candidates)
@@ -286,25 +267,13 @@ namespace DomainAbstractions
         {
             if (_dte == null) ConnectToVisualStudio();
 
-            // _debugger.CurrentThread.Freeze();
             var thread = _debugger?.CurrentThread;
-            // _debugger.CurrentThread.Thaw();
-            // var thread = await GetCurrentThreadAsync(_debugger);
             var stackFrames = thread?.StackFrames;
             if (stackFrames == null) return;
             var enumerator = stackFrames.GetEnumerator();
 
             var callStack = enumerator.ToList<object>() ?? new List<object>();
             if (currentCallStack != null) currentCallStack.Data = callStack;
-        }
-
-        private async Task<Thread> GetCurrentThreadAsync(Debugger debugger)
-        {
-            var task = new Task<Thread>(() => Dispatcher.CurrentDispatcher.Invoke(() => debugger.CurrentThread));
-
-            await task;
-
-            return task.Result;
         }
 
         public void Continue()
@@ -359,7 +328,7 @@ namespace DomainAbstractions
             }
             catch (Exception e)
             {
-                Logging.Log("VSDebugger.StepInto() failed to execute.");
+                Logging.Log("VSDebugger.StepOut() failed to execute.");
             }
         }
 
