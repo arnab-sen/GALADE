@@ -57,25 +57,40 @@ namespace DomainAbstractions
                 return;
             }
 
-            if (getUserSelection)
+            try
             {
-                PresentVSChoice(runningObjects);
+                if (getUserSelection)
+                {
+                    PresentVSChoice(runningObjects);
+                }
+                else
+                {
+                    var firstNonActiveInstance = runningObjects.FirstOrDefault(obj => !obj.MainWindow.Caption.Contains("(Running) - Microsoft Visual Studio")) ?? runningObjects.First();
+                    InitDTE(firstNonActiveInstance);
+                }
             }
-            else
+            catch (Exception e)
             {
-                var firstNonActiveInstance = runningObjects.FirstOrDefault(obj => !obj.MainWindow.Caption.Contains("(Running) - Microsoft Visual Studio")) ?? runningObjects.First();
-                InitDTE(firstNonActiveInstance);
+                Logging.Log($"VSDebugger: No instances of Visual Studio found... failed to connect.\nException:\n{e}");
+                return;
             }
         }
 
         private void InitDTE(DTE2 dte)
         {
-            _dte = dte;
-            _debugger = dte.Debugger;
-            _debuggerEvents = dte.Events.DebuggerEvents;
+            try
+            {
+                _dte = dte;
+                _debugger = dte.Debugger;
+                _debuggerEvents = dte.Events.DebuggerEvents;
 
-            Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
-            connected?.Execute();
+                Logging.Message($"Connected to Visual Studio Instance \"{dte.MainWindow.Caption}\"");
+                connected?.Execute();
+            }
+            catch (Exception e)
+            {
+                Logging.Log("VSDebugger.InitDTE Failed to connect: DTE was null.");
+            }
 
             // _debuggerEvents.OnEnterBreakMode += (dbgEventReason reason, ref dbgExecutionAction action) =>
             // {
