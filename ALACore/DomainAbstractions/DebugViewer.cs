@@ -218,7 +218,7 @@ namespace DomainAbstractions
             return FormatDottedName(stackFrame.FunctionName);
         }
 
-        private StackPanel CreateNode(StackFrame stackFrame, bool open = false)
+        private UIElement CreateNode(StackFrame stackFrame, bool open = false)
         {
             var vertPanel = new StackPanel()
             {
@@ -301,19 +301,24 @@ namespace DomainAbstractions
 
             };
 
-            vertPanel.MouseLeftButtonUp += (sender, args) =>
+            var listViewItem = new ListViewItem()
+            {
+                Content = vertPanel
+            };
+
+            listViewItem.MouseLeftButtonUp += (sender, args) =>
             {
                 if (selectedStackFrame != null) selectedStackFrame.Data = stackFrame;
                 if (selectedLabel != null) selectedLabel.Data = stackFrame.FunctionName;
             };
-
+            
             if (open && stackFrame.Locals.Count < 50)
             {
                 vertPanel.Children.Add(CreateStackFrameGrid(stackFrame));
                 expandButtonContent.Content = "Collapse";
             }
 
-            return vertPanel;
+            return listViewItem;
         }
 
 
