@@ -311,7 +311,54 @@ namespace Application
             EventConnector id_5099fe631fca42768789ea7f9c3600a4 = new EventConnector() {InstanceName="id_5099fe631fca42768789ea7f9c3600a4"}; /* {"IsRoot":false} */
             DataFlowConnector<EnvDTE.StackFrame> id_b27dd863e96249ed8e73ee0a7f884a39 = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_b27dd863e96249ed8e73ee0a7f884a39"}; /* {"IsRoot":false} */
             DataFlowConnector<EnvDTE.StackFrame> id_933c988c711f458490a6b38c42449f1c = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_933c988c711f458490a6b38c42449f1c"}; /* {"IsRoot":false} */
-            ApplyAction<List<object>> highlightTracedWires = new ApplyAction<List<object>>() {InstanceName="highlightTracedWires",Lambda=input =>{    if (input == null)        return;    var callStack = input.OfType<EnvDTE.StackFrame>().ToList();    var wires = mainGraph.Edges.OfType<ALAWire>();    var tracedWires = new List<ALAWire>();    for (var i = 0; i < callStack.Count - 1; i++)    {        var destSF = callStack[i];        var sourceSF = callStack[i + 1];        EnvDTE.Expression destExpr, sourceExpr;        if (!destSF.TryGetVariable("InstanceName", out destExpr, local: false))            continue;        if (!sourceSF.TryGetVariable("InstanceName", out sourceExpr, local: false))            continue;        var destName = destExpr.Value.Trim('\"', '\\');        var sourceName = sourceExpr.Value.Trim('\"', '\\');        if (!instanceDictionary.Data.ContainsKey(destName) || !instanceDictionary.Data.ContainsKey(sourceName))            continue;        var destNode = instanceDictionary.Data[destName] as ALANode;        var sourceNode = instanceDictionary.Data[sourceName] as ALANode;        var tracedWire = wires.FirstOrDefault(w => w.Source == sourceNode && w.Destination == destNode);        if (tracedWire != null)            tracedWires.Add(tracedWire);    }    if (tracedWires.Count == 0)        return;    tracedWires.First().AddTempHighlight(Brushes.LimeGreen);    foreach (var wire in tracedWires.Skip(1))    {        wire.AddTempHighlight(Brushes.Orange);    }}}; /* {"IsRoot":false} */
+            ApplyAction<List<object>> highlightTracedWires = new ApplyAction<List<object>>()
+            {
+                InstanceName = "highlightTracedWires", Lambda = input =>
+                {
+                    if (input == null) return;
+                    var callStack = input.OfType<EnvDTE.StackFrame>().ToList();
+                    var wires = mainGraph.Edges.OfType<ALAWire>();
+                    var tracedWires = new List<ALAWire>();
+                    int iA = 0;
+                    int iB = 1;
+                    while (iB < callStack.Count)
+                    {
+                        var destSF = callStack[iA];
+                        var sourceSF = callStack[iB];
+                        EnvDTE.Expression destExpr, sourceExpr;
+                        if (!destSF.TryGetVariable("InstanceName", out destExpr, local: false)) continue;
+                        if (!sourceSF.TryGetVariable("InstanceName", out sourceExpr, local: false)) continue;
+                        var destName = destExpr.Value.Trim('\"', '\\');
+                        var sourceName = sourceExpr.Value.Trim('\"', '\\');
+                        if (!instanceDictionary.Data.ContainsKey(destName))
+                        {
+                            iB++;
+                            continue;
+                        }
+
+                        if (!instanceDictionary.Data.ContainsKey(sourceName))
+                        {
+                            iA++;
+                            iB++;
+                            continue;
+                        }
+
+                        var destNode = instanceDictionary.Data[destName] as ALANode;
+                        var sourceNode = instanceDictionary.Data[sourceName] as ALANode;
+                        var tracedWire = wires.FirstOrDefault(w => w.Source == sourceNode && w.Destination == destNode);
+                        if (tracedWire != null) tracedWires.Add(tracedWire);
+                        iA++;
+                        iB++;
+                    }
+
+                    if (tracedWires.Count == 0) return;
+                    tracedWires.First().AddTempHighlight(Brushes.LimeGreen);
+                    foreach (var wire in tracedWires.Skip(1))
+                    {
+                        wire.AddTempHighlight(Brushes.Orange);
+                    }
+                }
+            }; /* {"IsRoot":false} */
             EventConnector id_66d57a319da04571acdbd1dc2f0baa57 = new EventConnector() {InstanceName="id_66d57a319da04571acdbd1dc2f0baa57"}; /* {"IsRoot":false} */
             EventLambda updateAllNodeBreakpointImages = new EventLambda() {InstanceName="updateAllNodeBreakpointImages",Lambda=() =>{    var debugger = visualStudioDebugger.CurrentDTE?.Debugger;    if (debugger == null)        return;    var breakpoints = debugger.Breakpoints.GetEnumerator().ToList<Breakpoint>();    var instanceNameBreakpoints = breakpoints.Where(bp => bp.Condition.Contains("InstanceName"));    var instanceNames = new HashSet<string>();    foreach (var breakpoint in instanceNameBreakpoints)    {        var names = Regex.Matches(breakpoint.Condition, @"(?<=(InstanceName == ))[^\s]+");        foreach (Match match in names)        {            instanceNames.Add(match.Value.Trim('\\', '"', ' '));        }    }    var allNodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in allNodes)    {        node.HasBreakpoint = false;    }    foreach (var instanceName in instanceNames)    {        if (instanceDictionary.Data.ContainsKey(instanceName))        {            (instanceDictionary.Data[instanceName] as ALANode).HasBreakpoint = true;        }    }}}; /* {"IsRoot":false} */
             DataFlowConnector<List<object>> id_0f449fdd7cf84a429d900943135aed74 = new DataFlowConnector<List<object>>() {InstanceName="id_0f449fdd7cf84a429d900943135aed74"}; /* {"IsRoot":false} */
