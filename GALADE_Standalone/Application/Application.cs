@@ -1617,7 +1617,7 @@ namespace Application
             Text id_3629c1dbc29e4a2282285560cb27d971 = new Text(text:"Enter class name:") {InstanceName="id_3629c1dbc29e4a2282285560cb27d971",FontSize=14}; /* {"IsRoot":false} */
             TextBox id_569c535e52484f4ca74be092a7ca730c = new TextBox() {InstanceName="id_569c535e52484f4ca74be092a7ca730c"}; /* {"IsRoot":false} */
             TextClipboard id_b60ef51462014e04b0b4e22b0f490fd9 = new TextClipboard() {InstanceName="id_b60ef51462014e04b0b4e22b0f490fd9"}; /* {"IsRoot":false} */
-            UIConfig id_1709960878c24c728c2f6b32bd1ebe71 = new UIConfig() {InstanceName="id_1709960878c24c728c2f6b32bd1ebe71",Width=50,Height=20,HorizAlignment="right",VertAlignment="middle",RightMargin=5,BottomMargin=5}; /* {"IsRoot":false} */
+            UIConfig id_1709960878c24c728c2f6b32bd1ebe71 = new UIConfig() {InstanceName="id_1709960878c24c728c2f6b32bd1ebe71",Width=50,HorizAlignment="right",VertAlignment="middle",RightMargin=5,BottomMargin=5}; /* {"IsRoot":false} */
             Button id_66486246f9044ee5b720fe644968f1fd = new Button(title:"OK") {InstanceName="id_66486246f9044ee5b720fe644968f1fd"}; /* {"IsRoot":false} */
             EventConnector id_0471b27159524869b87b38c9ad71050c = new EventConnector() {InstanceName="id_0471b27159524869b87b38c9ad71050c"}; /* {"IsRoot":false} */
             EventLambda id_24b640caa27c4fcbadcfc70544144a9b = new EventLambda() {InstanceName="id_24b640caa27c4fcbadcfc70544144a9b",Lambda=() => Logging.Message("Successfully copied template to clipboard!")}; /* {"IsRoot":false} */
