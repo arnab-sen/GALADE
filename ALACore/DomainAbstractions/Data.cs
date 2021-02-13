@@ -26,7 +26,7 @@ namespace DomainAbstractions
         public Func<T> Lambda;
 
         // Public fields
-        public T storedData = default(T);
+        public T StoredData = default(T);
 
         // Private fields
         private int numTimesSent = 0;
@@ -54,22 +54,22 @@ namespace DomainAbstractions
             numTimesSent++;
             if (dataOutput != null)
             {
-                // dataOutput.LogDataChange($"Data<{typeof(T)}> {InstanceName}", "dataOutput", , storedData);
-                if (inputDataB != null && inputDataB.Data != null) storedData = inputDataB.Data;
-                // storedData.LogDataChange($"IDataFlow<{typeof(T)}>");
-                if (Lambda != null) storedData = Lambda();
-                dataOutput.Data = storedData;
+                // dataOutput.LogDataChange($"Data<{typeof(T)}> {InstanceName}", "dataOutput", , StoredData);
+                if (inputDataB != null && inputDataB.Data != null) StoredData = inputDataB.Data;
+                // StoredData.LogDataChange($"IDataFlow<{typeof(T)}>");
+                if (Lambda != null) StoredData = Lambda();
+                dataOutput.Data = StoredData;
             }
         }
 
         // IDataFlow<T> implementation
         T IDataFlow<T>.Data
         {
-            get => storedData;
+            get => StoredData;
             set
             {
-                // storedData.LogDataChange($"IDataFlow<{typeof(T)}>");
-                storedData = value;
+                // StoredData.LogDataChange($"IDataFlow<{typeof(T)}>");
+                StoredData = value;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DomainAbstractions
                 if (!(Perishable && numTimesSent >= PerishCount))
                 {
                     numTimesSent++;
-                    return storedData;
+                    return StoredData;
                 }
                 else
                 {

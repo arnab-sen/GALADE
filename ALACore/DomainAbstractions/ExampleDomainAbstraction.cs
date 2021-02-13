@@ -24,7 +24,7 @@ namespace DomainAbstractions
         private string _ignoreStringField = "";
 		private Data<int> _testData = new Data<int>()
         {
-            storedData = 10
+            StoredData = 10
         };
 
         // Ports

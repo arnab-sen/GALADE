@@ -58,11 +58,11 @@ namespace Application
             Cast<string,object> id_6a02d97e013846a7ac73170b934c84a3 = new Cast<string,object>() { InstanceName = "Default" };
             Cast<string,object> id_9a2293c11d764a44b694651d1dcd7fc5 = new Cast<string,object>() { InstanceName = "Default" };
             Cast<string,object> id_acc12278de0348eabf94be1432df7afc = new Cast<string,object>() { InstanceName = "Default" };
-            Data<object> clearAllObjects = new Data<object>() { InstanceName = "clearAllObjects", storedData = null };
+            Data<object> clearAllObjects = new Data<object>() { InstanceName = "clearAllObjects", StoredData = null };
             Data<object> id_df3bcd486adc49768032a6b241c4c404 = new Data<object>() { InstanceName = "Default" };
             Data<object> id_f0fe1e2db08a44c7942351cf25e107e9 = new Data<object>() { InstanceName = "Default" };
-            Data<string> clearAllFields = new Data<string>() { InstanceName = "clearAllFields", storedData = "" };
-            Data<string> id_5d3449d2c2c441aabaff3476a4b591d9 = new Data<string>() { InstanceName = "Default", storedData = "<Type>" };
+            Data<string> clearAllFields = new Data<string>() { InstanceName = "clearAllFields", StoredData = "" };
+            Data<string> id_5d3449d2c2c441aabaff3476a4b591d9 = new Data<string>() { InstanceName = "Default", StoredData = "<Type>" };
             DataFlowConnector<object> abstractionType = new DataFlowConnector<object>() { InstanceName = "abstractionType" };
             DataFlowConnector<object> acceptedPortName = new DataFlowConnector<object>() { InstanceName = "acceptedPortName" };
             DataFlowConnector<object> acceptedPorts = new DataFlowConnector<object>() { InstanceName = "acceptedPorts" };

@@ -15,7 +15,7 @@ namespace DomainAbstractions
     ///     AppStartEventConnector
     ///            .WireTo(new Data<string>()
     ///            {
-    ///                storedData = "{" +
+    ///                StoredData = "{" +
     ///                             "\"message\":\"The request is invalid.\"," +
     ///                             "\"modelState\":" +
     ///                                "{" +

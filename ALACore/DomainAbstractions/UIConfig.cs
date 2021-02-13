@@ -20,6 +20,9 @@ namespace DomainAbstractions
         public string InstanceDescription { get; set; } = "";
         public string ToolTipText { get; set; } = "";
         public Func<string> UpdateToolTip { get; set; }
+        
+        // Apply a custom action onto the UIElement, to e.g. configure it in ways that aren't accounted for in UIConfig.
+        public Action<UIElement> CustomConfig { get; set; }
         public double Width { get; set; } = double.NaN;
         public double Height { get; set; } = double.NaN;
         public double MinWidth { get; set; } = double.NaN;
