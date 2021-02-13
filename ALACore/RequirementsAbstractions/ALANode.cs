@@ -215,6 +215,8 @@ namespace RequirementsAbstractions
         private System.Windows.Controls.TextBox _popupText = null;
         private bool _canMove = true;
         private bool _hasBreakpoint = false;
+        private Brush _tempBorderColour;
+        private Thickness _tempBorderThickness;
 
         // Fill should be either Brushes.Red or Brushes.DarkGray to symbolise that it does/doesn't have a breakpoint in its source file
         private Ellipse _hasBreakpointImage = new Ellipse()
@@ -1652,6 +1654,23 @@ namespace RequirementsAbstractions
             }
 
             return jObj.ToString();
+        }
+
+        public void AddTempBorder(Brush colour, int thickness)
+        {
+            _tempBorderColour = _rootUI.BorderColour;
+            _tempBorderThickness = _rootUI.BorderThickness;
+            _rootUI.BorderColour = colour;
+            _rootUI.BorderThickness = new Thickness(thickness);
+        }
+
+        public void RemoveTempBorder()
+        {
+            if (_tempBorderColour != default) _rootUI.BorderColour = _tempBorderColour;
+            if (_tempBorderThickness != default) _rootUI.BorderThickness = _tempBorderThickness;
+
+            _tempBorderColour = default;
+            _tempBorderThickness = default;
         }
 
         private void CreateWiring()
