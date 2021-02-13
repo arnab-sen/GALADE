@@ -1577,7 +1577,7 @@ namespace RequirementsAbstractions
                     toMatch = toMatch.ToLower();
                 }
 
-                return toMatch.Contains(searchToken);
+                return Regex.IsMatch(toMatch,searchToken);
             }
             catch (Exception e)
             {
