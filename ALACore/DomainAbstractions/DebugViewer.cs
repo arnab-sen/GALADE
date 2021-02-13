@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,11 +26,20 @@ namespace DomainAbstractions
         public string InstanceName { get; set; } = "Default";
 
         /// <summary>
-        /// <para>Only include StackFrames that meet a given condition. The input object should be cast as a StackFrame.</para>
+        /// <para>Optional - Only include StackFrames that meet a given condition. The input object should be cast as a StackFrame.</para>
         /// <para>It has been cast as an object because of a compilation issue with using interop interfaces in generic type parameters.</para>
         /// </summary>
         public Func<object, bool> Filter { get; set; }
+
+        /// <summary>
+        /// Optional - Get the type from a StackFrame.
+        /// </summary>
         public Func<object, string> GetNameFromStackFrame { get; set; }
+
+        /// <summary>
+        /// Optional - This will be applied to the type found for any variable in each StackFrame.
+        /// </summary>
+        public Func<string, string> ProcessType { get; set; }
 
         // Private fields
         private ListView _mainContainer = new ListView() {};
@@ -184,6 +194,9 @@ namespace DomainAbstractions
         private string FormatDottedName(string unformatted)
         {
             var sb = new StringBuilder();
+
+            if (ProcessType != null) unformatted = ProcessType(unformatted);
+
             var split = unformatted.Split('.');
             sb.AppendLine(split.FirstOrDefault());
             foreach (var s in split.Skip(1))
