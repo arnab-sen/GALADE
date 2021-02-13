@@ -670,7 +670,9 @@ namespace RequirementsAbstractions
                 Background = Brushes.White,
                 Opacity = 0.8,
                 Width = Width,
-                Height = Height
+                Height = Height,
+                BorderBrush = _rootUI.BorderColour,
+                BorderThickness = _rootUI.BorderThickness
             };
 
             // var foreground = new Border()
@@ -1660,6 +1662,8 @@ namespace RequirementsAbstractions
         {
             _tempBorderColour = _rootUI.BorderColour;
             _tempBorderThickness = _rootUI.BorderThickness;
+            NodeBorder = colour;
+
             _rootUI.BorderColour = colour;
             _rootUI.BorderThickness = new Thickness(thickness);
         }
@@ -1669,6 +1673,7 @@ namespace RequirementsAbstractions
             if (_tempBorderColour != default) _rootUI.BorderColour = _tempBorderColour;
             if (_tempBorderThickness != default) _rootUI.BorderThickness = _tempBorderThickness;
 
+            NodeBorder = _rootUI.BorderColour;
             _tempBorderColour = default;
             _tempBorderThickness = default;
         }
