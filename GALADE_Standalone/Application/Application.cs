@@ -311,54 +311,7 @@ namespace Application
             EventConnector id_5099fe631fca42768789ea7f9c3600a4 = new EventConnector() {InstanceName="id_5099fe631fca42768789ea7f9c3600a4"}; /* {"IsRoot":false} */
             DataFlowConnector<EnvDTE.StackFrame> id_b27dd863e96249ed8e73ee0a7f884a39 = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_b27dd863e96249ed8e73ee0a7f884a39"}; /* {"IsRoot":false} */
             DataFlowConnector<EnvDTE.StackFrame> id_933c988c711f458490a6b38c42449f1c = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_933c988c711f458490a6b38c42449f1c"}; /* {"IsRoot":false} */
-            ApplyAction<List<object>> highlightTracedWires = new ApplyAction<List<object>>()
-            {
-                InstanceName = "highlightTracedWires", Lambda = input =>
-                {
-                    if (input == null) return;
-                    var callStack = input.OfType<EnvDTE.StackFrame>().ToList();
-                    var wires = mainGraph.Edges.OfType<ALAWire>();
-                    var tracedWires = new List<ALAWire>();
-                    int iA = 0;
-                    int iB = 1;
-                    while (iB < callStack.Count)
-                    {
-                        var destSF = callStack[iA];
-                        var sourceSF = callStack[iB];
-                        EnvDTE.Expression destExpr, sourceExpr;
-                        if (!destSF.TryGetVariable("InstanceName", out destExpr, local: false)) continue;
-                        if (!sourceSF.TryGetVariable("InstanceName", out sourceExpr, local: false)) continue;
-                        var destName = destExpr.Value.Trim('\"', '\\');
-                        var sourceName = sourceExpr.Value.Trim('\"', '\\');
-                        if (!instanceDictionary.Data.ContainsKey(destName))
-                        {
-                            iB++;
-                            continue;
-                        }
-
-                        if (!instanceDictionary.Data.ContainsKey(sourceName))
-                        {
-                            iA++;
-                            iB++;
-                            continue;
-                        }
-
-                        var destNode = instanceDictionary.Data[destName] as ALANode;
-                        var sourceNode = instanceDictionary.Data[sourceName] as ALANode;
-                        var tracedWire = wires.FirstOrDefault(w => w.Source == sourceNode && w.Destination == destNode);
-                        if (tracedWire != null) tracedWires.Add(tracedWire);
-                        iA++;
-                        iB++;
-                    }
-
-                    if (tracedWires.Count == 0) return;
-                    tracedWires.First().AddTempHighlight(Brushes.LimeGreen);
-                    foreach (var wire in tracedWires.Skip(1))
-                    {
-                        wire.AddTempHighlight(Brushes.Orange);
-                    }
-                }
-            }; /* {"IsRoot":false} */
+            ApplyAction<List<object>> highlightTracedWires = new ApplyAction<List<object>>() {InstanceName="highlightTracedWires",Lambda=input =>{    if (input == null)        return;    var callStack = input.OfType<EnvDTE.StackFrame>().ToList();    var wires = mainGraph.Edges.OfType<ALAWire>();    var tracedWires = new List<ALAWire>();    int iA = 0;    int iB = 1;    while (iB < callStack.Count)    {        var destSF = callStack[iA];        var sourceSF = callStack[iB];        EnvDTE.Expression destExpr, sourceExpr;        if (!destSF.TryGetVariable("InstanceName", out destExpr, local: false))            continue;        if (!sourceSF.TryGetVariable("InstanceName", out sourceExpr, local: false))            continue;        var destName = destExpr.Value.Trim('\"', '\\');        var sourceName = sourceExpr.Value.Trim('\"', '\\');        if (!instanceDictionary.Data.ContainsKey(destName))        {            iB++;            continue;        }        if (!instanceDictionary.Data.ContainsKey(sourceName))        {            iA++;            iB++;            continue;        }        var destNode = instanceDictionary.Data[destName] as ALANode;        var sourceNode = instanceDictionary.Data[sourceName] as ALANode;        var tracedWire = wires.FirstOrDefault(w => w.Source == sourceNode && w.Destination == destNode);        if (tracedWire != null)            tracedWires.Add(tracedWire);        iA++;        iB++;    }    if (tracedWires.Count == 0)        return;    tracedWires.First().AddTempHighlight(Brushes.LimeGreen);    foreach (var wire in tracedWires.Skip(1))    {        wire.AddTempHighlight(Brushes.Orange);    }}}; /* {"IsRoot":false} */
             EventConnector id_66d57a319da04571acdbd1dc2f0baa57 = new EventConnector() {InstanceName="id_66d57a319da04571acdbd1dc2f0baa57"}; /* {"IsRoot":false} */
             EventLambda updateAllNodeBreakpointImages = new EventLambda() {InstanceName="updateAllNodeBreakpointImages",Lambda=() =>{    var debugger = visualStudioDebugger.CurrentDTE?.Debugger;    if (debugger == null)        return;    var breakpoints = debugger.Breakpoints.GetEnumerator().ToList<Breakpoint>();    var instanceNameBreakpoints = breakpoints.Where(bp => bp.Condition.Contains("InstanceName"));    var instanceNames = new HashSet<string>();    foreach (var breakpoint in instanceNameBreakpoints)    {        var names = Regex.Matches(breakpoint.Condition, @"(?<=(InstanceName == ))[^\s]+");        foreach (Match match in names)        {            instanceNames.Add(match.Value.Trim('\\', '"', ' '));        }    }    var allNodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in allNodes)    {        node.HasBreakpoint = false;    }    foreach (var instanceName in instanceNames)    {        if (instanceDictionary.Data.ContainsKey(instanceName))        {            (instanceDictionary.Data[instanceName] as ALANode).HasBreakpoint = true;        }    }}}; /* {"IsRoot":false} */
             DataFlowConnector<List<object>> id_0f449fdd7cf84a429d900943135aed74 = new DataFlowConnector<List<object>>() {InstanceName="id_0f449fdd7cf84a429d900943135aed74"}; /* {"IsRoot":false} */
@@ -366,7 +319,7 @@ namespace Application
             EventConnector id_b2f75c51cfe64602ae57ffb73ba7206f = new EventConnector() {InstanceName="id_b2f75c51cfe64602ae57ffb73ba7206f"}; /* {"IsRoot":false} */
             EventConnector id_432cb89b02be40dd9dba5f8231c80971 = new EventConnector() {InstanceName="id_432cb89b02be40dd9dba5f8231c80971"}; /* {"IsRoot":false} */
             MenuItem id_28905829b0834a9289888c6aa3f1014f = new MenuItem(header:"Clear All Breakpoints in All Diagrams") {InstanceName="id_28905829b0834a9289888c6aa3f1014f"}; /* {"IsRoot":false} */
-            EventLambda id_f5c80c21f1384b42b4525b28e030ff69 = new EventLambda() {InstanceName="id_f5c80c21f1384b42b4525b28e030ff69",Lambda=() => {    if (visualStudioDebugger.CurrentDTE == null) visualStudioDebugger.ConnectToVisualStudio();    var breakpoints = visualStudioDebugger.CurrentDTE.Debugger.Breakpoints.GetEnumerator().ToList<Breakpoint>();    foreach (var bp in breakpoints)    {        bp.Delete();    }}}; /* {"IsRoot":false} */
+            EventLambda id_f5c80c21f1384b42b4525b28e030ff69 = new EventLambda() {InstanceName="id_f5c80c21f1384b42b4525b28e030ff69",Lambda=() =>{    if (visualStudioDebugger.CurrentDTE == null)        visualStudioDebugger.ConnectToVisualStudio();    var breakpoints = visualStudioDebugger.CurrentDTE.Debugger.Breakpoints.GetEnumerator().ToList<Breakpoint>();    foreach (var bp in breakpoints)    {        bp.Delete();    }}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
@@ -1607,6 +1560,7 @@ namespace Application
             menu_Debugger.WireTo(id_28905829b0834a9289888c6aa3f1014f, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_28905829b0834a9289888c6aa3f1014f.WireTo(id_f5c80c21f1384b42b4525b28e030ff69, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_f5c80c21f1384b42b4525b28e030ff69.WireTo(id_66d57a319da04571acdbd1dc2f0baa57, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_66d57a319da04571acdbd1dc2f0baa57.WireTo(resetWiresAndFloatingText, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR Debugger
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateAbstractionTemplateFile
