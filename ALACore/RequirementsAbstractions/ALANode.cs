@@ -185,6 +185,7 @@ namespace RequirementsAbstractions
 
         public event SomethingChangedDelegate PositionChanged;
         public Func<Port, Point> GetAttachmentPoint { get; set; }
+        public bool IsSelected => IsFocusedWithin();
 
         // Private fields
         private Box _rootUI;
@@ -309,7 +310,7 @@ namespace RequirementsAbstractions
                 if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
                 _textMaskRender = CreateTextMask();
 
-                if (IsSelected())
+                if (IsSelected)
                 {
                     HighlightNode();
                 }
@@ -334,7 +335,7 @@ namespace RequirementsAbstractions
             }
         }
 
-        private bool IsSelected()
+        private bool IsFocusedWithin()
         {
             return _rootUI.Render.IsKeyboardFocusWithin;
         }
@@ -1486,7 +1487,7 @@ namespace RequirementsAbstractions
             HighlightNode();
             Graph.Set("SelectedNode", this);
 
-            if (!IsSelected()) _rootUI.Render.Focus();
+            if (!IsFocusedWithin()) _rootUI.Render.Focus();
 
             StateTransition.Update(Enums.DiagramMode.IdleSelected);
         }
