@@ -1616,11 +1616,19 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR CreateAbstractionTemplateFile
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CutDiagram
-
+            MenuItem id_5d765020fe304748b69ae678a2f9b22c = new MenuItem(header:"Generate Code for Selected Nodes") {InstanceName="id_5d765020fe304748b69ae678a2f9b22c"}; /* {"IsRoot":false} */
+            Data<string> id_d5c0d46073984152a16a6398e4578838 = new Data<string>() {InstanceName="id_d5c0d46073984152a16a6398e4578838",Lambda=() => {       var sb = new StringBuilder();        var nodes = mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsSelected);    foreach (var node in nodes)     {        sb.AppendLine(node.ToInstantiation());    }        sb.AppendLine("");        var wires = mainGraph.Edges.OfType<ALAWire>().Where(w => nodes.Contains(w.Source) || nodes.Contains(w.Destination));    foreach (var wire in wires)    {        sb.AppendLine(wire.ToWireTo());    }        return sb.ToString();}}; /* {"IsRoot":false} */
+            DataFlowConnector<string> id_610bc1b763c54b96a5451275d58b413c = new DataFlowConnector<string>() {InstanceName="id_610bc1b763c54b96a5451275d58b413c"}; /* {"IsRoot":false} */
+            TextClipboard id_7a4fe3822ce74e848277b07df1ff2568 = new TextClipboard() {InstanceName="id_7a4fe3822ce74e848277b07df1ff2568"}; /* {"IsRoot":false} */
+            ApplyAction<string> id_63d5607b34974a38a8706906b625021a = new ApplyAction<string>() {InstanceName="id_63d5607b34974a38a8706906b625021a",Lambda=code => Logging.Log($"Saved {code.Split('\n').Length} lines of code to the clipboard!")}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR CutDiagram
 
             // BEGIN AUTO-GENERATED WIRING FOR CutDiagram
-
+            menu_Tools.WireTo(id_5d765020fe304748b69ae678a2f9b22c, "children"); /* {"SourceType":"MenuItem","SourceIsReference":true,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_5d765020fe304748b69ae678a2f9b22c.WireTo(id_d5c0d46073984152a16a6398e4578838, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            id_d5c0d46073984152a16a6398e4578838.WireTo(id_610bc1b763c54b96a5451275d58b413c, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string"]} */
+            id_610bc1b763c54b96a5451275d58b413c.WireTo(id_7a4fe3822ce74e848277b07df1ff2568, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"TextClipboard","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":[]} */
+            id_610bc1b763c54b96a5451275d58b413c.WireTo(id_63d5607b34974a38a8706906b625021a, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string"]} */
             // END AUTO-GENERATED WIRING FOR CutDiagram
 
 
