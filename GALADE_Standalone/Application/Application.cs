@@ -247,13 +247,9 @@ namespace Application
 
             (startTesting as IEvent).Execute();
 
-            #region instantiations
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             DataFlowConnector<Dictionary<string, object>> instanceDictionary = new DataFlowConnector<Dictionary<string, object>>() { InstanceName = "instanceDictionary" }; /* {"IsRoot":false} */
             MainWindow mainWindow = new MainWindow(title: "GALADE") { InstanceName = "mainWindow" }; /* {"IsRoot":true} */
-
-            
-
-            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             ContextMenu alaNodeContextMenu = new ContextMenu() {InstanceName="alaNodeContextMenu"}; /* {"IsRoot":false} */
             ContextMenu alaWireContextMenu = new ContextMenu() {InstanceName="alaWireContextMenu"}; /* {"IsRoot":false} */
             DataFlowConnector<string> currentDiagramName = new DataFlowConnector<string>() {InstanceName="currentDiagramName"}; /* {"IsRoot":false} */
@@ -754,11 +750,6 @@ namespace Application
             EventLambda deselectAllNodesButLatestSelected = new EventLambda() {InstanceName="deselectAllNodesButLatestSelected",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    var selectedNode = mainGraph.Get("SelectedNode");    if (selectedNode == null)        return;    foreach (var node in nodes)    {        if (node != selectedNode)            node.Deselect();    }}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
-
-
-            #endregion
-
-            #region wiring
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
             UIConfig_mainWindowVertical.WireTo(mainWindowVertical, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Vertical","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             mainWindow.WireTo(UIConfig_mainWindowVertical, "iuiStructure"); /* {"SourceType":"MainWindow","SourceIsReference":true,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1341,7 +1332,6 @@ namespace Application
             id_4ed11222676e42cfae927c4278b45719.WireTo(id_1a7262b162b54d2e97590033d14e4175, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_1a7262b162b54d2e97590033d14e4175.WireTo(deselectAllNodesButLatestSelected, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
-            #endregion
 
             _mainWindow = mainWindow;
 
