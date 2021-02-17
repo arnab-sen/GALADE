@@ -185,7 +185,7 @@ namespace RequirementsAbstractions
 
         public event SomethingChangedDelegate PositionChanged;
         public Func<Port, Point> GetAttachmentPoint { get; set; }
-        public bool IsSelected => IsFocusedWithin();
+        public bool IsSelected { get; set; }
 
         // Private fields
         private Box _rootUI;
@@ -309,15 +309,6 @@ namespace RequirementsAbstractions
             {
                 if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
                 _textMaskRender = CreateTextMask();
-
-                if (IsSelected)
-                {
-                    HighlightNode();
-                }
-                else
-                {
-                    UnhighlightNode();
-                }
 
                 if (IsReferenceNode && !_nameTextBox.Text.StartsWith("@")) _nameTextBox.Text = "@" + Model.Name;
             }, DispatcherPriority.Loaded);
@@ -578,7 +569,9 @@ namespace RequirementsAbstractions
 	        var deleteButton = new Button("-") 
 	        {
 		        Width = 20,
-		        Height = 20
+		        Height = 20,
+                Margin = new Thickness(5, 0, 5, 0),
+                HorizAlignment = HorizontalAlignment.Left
 	        };
 	        
 
@@ -1106,10 +1099,19 @@ namespace RequirementsAbstractions
 
             render.GotFocus += (sender, args) =>
             {
+
                 portBox.Background = PortHighlightedBackground;
                 portBox.BorderColour = PortHighlightedBorder;
                 _selectedPort = portBox;
-                StateTransition.Update(Enums.DiagramMode.IdleSelected);
+                if(!Keyboard.IsKeyDown(Key.LeftCtrl)) 
+                {
+                    StateTransition.Update(Enums.DiagramMode.IdleSelected);
+                }
+                else 
+                {
+                    StateTransition.Update(Enums.DiagramMode.MultiNodeSelect);
+                    Select();
+                }
             };
 
             render.LostFocus += (sender, args) =>
@@ -1388,12 +1390,15 @@ namespace RequirementsAbstractions
 
             render.MouseLeave += (sender, args) =>
             {
-                if (!render.IsKeyboardFocusWithin) UnhighlightNode();
+                if (!IsSelected) UnhighlightNode();
             };
 
             render.LostFocus += (sender, args) =>
             {
-                UnhighlightNode();
+                if(!Keyboard.IsKeyDown(Key.LeftCtrl)) 
+                {
+                    UnhighlightNode();
+                }
             };
             
             render.MouseMove += (sender, args) =>
@@ -1484,16 +1489,26 @@ namespace RequirementsAbstractions
 
         public void Select()
         {
+            IsSelected = true;
+
             HighlightNode();
             Graph.Set("SelectedNode", this);
+            _rootUI.Render.Focus();
 
-            if (!IsFocusedWithin()) _rootUI.Render.Focus();
-
-            StateTransition.Update(Enums.DiagramMode.IdleSelected);
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                StateTransition.Update(Enums.DiagramMode.MultiNodeSelect);
+            }
+            else
+            {
+                StateTransition.Update(Enums.DiagramMode.IdleSelected);
+            }
         }
 
         public void Deselect()
         {
+            IsSelected = false;
+
             UnhighlightNode();
             if (Graph.Get("SelectedNode")?.Equals(this) ?? false) Graph.Set("SelectedNode", null);
 
@@ -1511,8 +1526,6 @@ namespace RequirementsAbstractions
 
             // Get focus on inner TextBox, must use the dispatcher to ensure that the internal TextBox is loaded and ready to be focused
             dropDown.Dispatcher.Invoke(() => dropDown.Focus(), DispatcherPriority.ApplicationIdle);
-
-            dropDown.LostFocus += (sender, args) => { };
         }
 
         public void LoadDefaultModel(AbstractionModel model)

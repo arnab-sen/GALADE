@@ -29,6 +29,8 @@ namespace ProgrammingParadigms
         {
             LatestTransition = Tuple.Create(CurrentState, newState);
 
+            CurrentState = newState;
+
             if (!newState.Equals(CurrentState))
             {
                 StateChanged?.Invoke(LatestTransition);
@@ -39,8 +41,6 @@ namespace ProgrammingParadigms
                 StateRefreshed?.Invoke(LatestTransition);
                 // Logging.Log($"StateTransition: State {LatestTransition.Item2} refreshed");
             }
-
-            CurrentState = newState;
         }
 
         public bool CurrentStateMatches(T flag)
