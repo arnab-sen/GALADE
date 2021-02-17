@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Application.Application" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAgAAAAAAQAABAABABAgBAAAAAAAAAAARAAAAAA=</HashCode>
+      <FileName>Application\Application.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Application.CreateDiagramFromCode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RCQOCAAkAAIwBJCEAhMEAAAAAAAYAEgACACgQAEwkAA=</HashCode>
+      <FileName>Application\Modules\CreateDiagramFromCode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.AddConnectionToGraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAFEAAAAgAAAAAAQIAgAAAAAECQAogEAABABAABgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\AddConnectionToGraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.ConfigWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAQAAAAAAAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\ConfigWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.CreateAbstraction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAAEAAAAAAKEAAAAQAAAAAAAABAQQsAEAABACAAAAIA=</HashCode>
+      <FileName>Application\Modules\Deprecated\CreateAbstraction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.CreateConnectionsFromJSON" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAQCAAAAAAAAAQAEgAAAIAAAAAAAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\CreateConnectionsFromJSON.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.CreateVPGNsFromJSON" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgEAEAgIAEBAAAQCAAAIAAAAAQCAgAAAAAAAAAgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\CreateVPGNsFromJSON.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.DragRectMultiSelectNodes" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAQAIAAAQABAAAABAQASQIgQUEBAEAAIwBA=</HashCode>
+      <FileName>Application\Modules\Deprecated\DragRectMultiSelectNodes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.GenerateCode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAQAAABAQAQAQBAAAAAQAMgAAAAAAAAAACA=</HashCode>
+      <FileName>Application\Modules\Deprecated\GenerateCode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.LoadGraphFromFile" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAEAEAAIAABAAAQAAAAMAAQAEYCAgAAAAAAAAAgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\LoadGraphFromFile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.NewAbstractionTemplateTab" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAgAIAAACABAABAAQAAAAAIAAAAQAAAAAIEAAAAAgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\NewAbstractionTemplateTab.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.NewVisualPortGraphNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBCEEAEIAKAABAAIQAoBAIAAAAAQqIgBAAAAEAAAgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\NewVisualPortGraphNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.OutputTab" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAABBAAQAAAAAAQAAAQAIAAAAAAAAABAAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\OutputTab.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.ParseProgrammingParadigmTemplates" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAhAAAQQAAAAAAAAAQIAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\ParseProgrammingParadigmTemplates.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.SaveGraphToFile" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABAAAQAAAAAAAAAFQAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\SaveGraphToFile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.VPGNContextMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAAgAAAAAAAAAAAQAIAIAAIAAgQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Application\Modules\Deprecated\VPGNContextMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.GenerateALACode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAgAAAAAAAAAEQIAAAAAACAwAIgQAAAAAAAAAAA=</HashCode>
+      <FileName>Application\Modules\GenerateALACode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Application.InsertFileCodeLines" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAkAEBAAIQACAAAAYAAAQAIAAAAAAAAAEACA=</HashCode>
+      <FileName>Application\Modules\InsertFileCodeLines.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GALADE_Standalone.Properties.Resources" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GALADE_Standalone.Properties.Settings" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
