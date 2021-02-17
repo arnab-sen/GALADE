@@ -569,9 +569,7 @@ namespace RequirementsAbstractions
 	        var deleteButton = new Button("-") 
 	        {
 		        Width = 20,
-		        Height = 20,
-                Margin = new Thickness(5, 0, 5, 0),
-                HorizAlignment = HorizontalAlignment.Left
+		        Height = 20
 	        };
 	        
 
