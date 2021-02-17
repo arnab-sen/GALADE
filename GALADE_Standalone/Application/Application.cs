@@ -454,7 +454,7 @@ namespace Application
             Button id_0d4d34a2cd6749759ac0c2708ddf0cbc = new Button(title:"Open diagram from file") {InstanceName="id_0d4d34a2cd6749759ac0c2708ddf0cbc"}; /* {"IsRoot":false} */
             StateChangeListener id_08a51a5702e34a38af808db65a3a6eb3 = new StateChangeListener() {InstanceName="id_08a51a5702e34a38af808db65a3a6eb3",StateTransition=stateTransition,PreviousStateShouldMatch=Enums.DiagramMode.Any,CurrentStateShouldMatch=Enums.DiagramMode.Idle}; /* {"IsRoot":false} */
             EventConnector id_9d14914fdf0647bb8b4b20ea799e26c8 = new EventConnector() {InstanceName="id_9d14914fdf0647bb8b4b20ea799e26c8"}; /* {"IsRoot":false} */
-            EventLambda unhighlightAllWires = new EventLambda() {InstanceName="unhighlightAllWires",Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}}; /* {"IsRoot":false} */
+            EventLambda deselectAllWires = new EventLambda() {InstanceName="deselectAllWires",Lambda=() =>{    var wires = mainGraph.Edges.OfType<ALAWire>();    foreach (var wire in wires)    {        wire.Deselect();    }}}; /* {"IsRoot":false} */
             DataFlowConnector<MouseWheelEventArgs> id_6d789ff1a0bc4a2d8e88733adc266be8 = new DataFlowConnector<MouseWheelEventArgs>() {InstanceName="id_6d789ff1a0bc4a2d8e88733adc266be8"}; /* {"IsRoot":false} */
             EventConnector id_a236bd13c516401eb5a83a451a875dd0 = new EventConnector() {InstanceName="id_a236bd13c516401eb5a83a451a875dd0"}; /* {"IsRoot":false} */
             EventLambda id_6fdaaf997d974e30bbb7c106c40e997c = new EventLambda() {InstanceName="id_6fdaaf997d974e30bbb7c106c40e997c",Lambda=() => createDiagramFromCode.Update = true}; /* {"IsRoot":false} */
@@ -844,6 +844,9 @@ namespace Application
             MenuItem menu_Sync = new MenuItem(header:"Sync") {InstanceName="menu_Sync"}; /* {"IsRoot":false} */
             MenuItem menu_GitHub = new MenuItem(header:"GitHub") {InstanceName="menu_GitHub"}; /* {"IsRoot":false} */
             EventConnector refreshDiagram = new EventConnector() {InstanceName="refreshDiagram"}; /* {"IsRoot":false} */
+            EventLambda deselectAllNodes = new EventLambda() {InstanceName="deselectAllNodes",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();    }}}; /* {"IsRoot":false} */
+            EventConnector id_1a7262b162b54d2e97590033d14e4175 = new EventConnector() {InstanceName="id_1a7262b162b54d2e97590033d14e4175"}; /* {"IsRoot":false} */
+            EventLambda deselectAllNodesButLatestSelected = new EventLambda() {InstanceName="deselectAllNodesButLatestSelected",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    var selectedNode = mainGraph.Get("SelectedNode");    if (selectedNode == null) return;        foreach (var node in nodes)    {        if (node != selectedNode) node.Deselect();    }}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
 
@@ -977,7 +980,8 @@ namespace Application
             id_e8a68acda2aa4d54add689bd669589d3.WireTo(projectDirectoryTreeHoriz, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             appStartConnector.WireTo(id_08a51a5702e34a38af808db65a3a6eb3, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"StateChangeListener","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_08a51a5702e34a38af808db65a3a6eb3.WireTo(id_9d14914fdf0647bb8b4b20ea799e26c8, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(unhighlightAllWires, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(deselectAllNodes, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_9d14914fdf0647bb8b4b20ea799e26c8.WireTo(deselectAllWires, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_2a7c8f3b6b5e4879ad5a35ff6d8538fd.WireTo(id_6d789ff1a0bc4a2d8e88733adc266be8, "argsOutput"); /* {"SourceType":"MouseWheelEvent","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["MouseWheelEventArgs"]} */
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(mouseWheelArgs, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["MouseWheelEventArgs"],"DestinationGenerics":["MouseWheelEventArgs"]} */
             id_6d789ff1a0bc4a2d8e88733adc266be8.WireTo(id_33990435606f4bbc9ba1786ed05672ab, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["MouseWheelEventArgs"],"DestinationGenerics":["MouseWheelEventArgs","bool"]} */
@@ -1461,6 +1465,8 @@ namespace Application
             menu_GitHub.WireTo(id_4aff82900db2498e8b46be4a18b9fa8e, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_83c3db6e4dfa46518991f706f8425177.WireTo(refreshDiagram, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             R_KeyPressed.WireTo(refreshDiagram, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_4ed11222676e42cfae927c4278b45719.WireTo(id_1a7262b162b54d2e97590033d14e4175, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_1a7262b162b54d2e97590033d14e4175.WireTo(deselectAllNodesButLatestSelected, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
             #endregion
 
@@ -1608,6 +1614,14 @@ namespace Application
             id_7136a32c8d4c44e1a935de30b56f439d.WireTo(id_6cca5faaa7ed483a8241c313562417ae, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_7136a32c8d4c44e1a935de30b56f439d.WireTo(id_c688b0bc8d1547e1889a52ed3dc0c65f, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR CreateAbstractionTemplateFile
+
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CutDiagram
+
+            // END AUTO-GENERATED INSTANTIATIONS FOR CutDiagram
+
+            // BEGIN AUTO-GENERATED WIRING FOR CutDiagram
+
+            // END AUTO-GENERATED WIRING FOR CutDiagram
 
 
 
