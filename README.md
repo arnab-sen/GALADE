@@ -7,9 +7,10 @@ At the moment, only ALA applications written in C# are supported.
 See https://abstractionlayeredarchitecture.com/ for more details on ALA.
 
 
-## Getting Started Guide
+## Getting Started
+This guide will help you get started with using GALADE, and will use the following project as an example: https://github.com/arnab-sen/ALASandbox
 
-This guide will use the following project as an example: https://github.com/arnab-sen/ALASandbox
+This guide was made using GALADE v1.13.0.
 
 ### Visualising an Existing ALA Project
 First, use `File > Open Project` to locate the ALASandbox folder. This will cause GALADE to look through the `ALACore/ProgrammingParadigms` and `ALACore/DomainAbstractions` folders, parse any C# classes and interfaces found, and create internal models of abstractions that can be visualised.
@@ -18,9 +19,13 @@ Next, open `ALASandbox/Application.cs`. This file contains the code necessary to
 
 ![](https://i.gyazo.com/63ed8e346133a9e1a4086cf0fabc91e0.png)
 
-Opening it via GALADE should show the following diagram:
+Opening it via GALADE should show the following diagram (click on the image to get a bigger view in a new tab):
 
 ![](https://i.gyazo.com/fe4ad1a50837fd67a8ba214601539748.png)
+
+This diagram represents an application that shows a window, and opens a new window when the `A` key is pressed.
+
+The diagram can be reopened at any time through `File > Open Diagram...`, which will examine the `Application.cs` file at its current state. This can be useful for undoing mistakes in the diagram.
 
 ### General Movement
 Scroll the mouse wheel to zoom in and out to/from the cursor's position. Hold down right click and drag to move around the diagram. You'll notice that when zoomed out far enough, each node will show an overlay containing its type and name.
@@ -38,7 +43,7 @@ The following video showcases everything mentioned in this section:
 ![](https://i.gyazo.com/edffe43b3a634dd16c2c3039eb34b094.gif)
 
 
-#### Editing Properties
+### Editing Properties
 A node can be modified in the following ways:
 
 * Modify its type by using the type dropdown. Any changes made to the current type will be saved in the node in the current session, so if you accidentally change its type, you can change back without losing any information.
@@ -54,12 +59,28 @@ A node can be modified in the following ways:
     ![](https://i.gyazo.com/93ce2af380ceaa15ae843b27536c7951.gif)
 
 
-#### Adding a New Wire
+### Adding a New Wire
 You can add a new wire between any two existing nodes by selecting the source port, pressing `Ctrl + Q`, then selecting the destination port.
     ![](https://i.gyazo.com/4fcbe6782989017194ebb338842da4b0.gif)
 
-#### Deleting Nodes and Wires
+### Deleting Nodes and Wires
 A node can be deleted by clicking on it and pressing the `Delete` key, or through its context menu. In its context menu, you can also opt to delete both the node and every node attached to it.
 
 A wire can be deleted through its context menu. Deleting a wire will not delete the connected nodes.
 ![](https://i.gyazo.com/6604cf165b2804713768a6f496c456bd.gif)
+
+### Rearranging the Graph
+Nodes can be moved with a standard left click and drag, however their positions will be reset by the layout manager.
+
+A wire's source and destination can be changed through their context menus.
+
+The index of a node in its tree parent's list of children can be change by selecting that node, then pressing `Ctrl + Up/Down` to decrease/increase its index.
+
+A cross connection can be turned into a tree connection through the wire's context menu.
+![](https://i.gyazo.com/3cd73406acb3a541ac49eeab6627b064.gif)
+
+### Generating Code
+The diagram itself is saved as code in `Application.cs`. The diagram is not saved elsewhere.
+
+Pressing `Ctrl + S` will "save" the diagram, which really just means that the current diagram will be converted into C# code and inserted between the appropriate code generation landmarks. In the following clip, the source code was temporarily deleted just to make the code generation clearer.
+![](https://i.gyazo.com/437500b83453d141d03222799a2764e7.gif)
