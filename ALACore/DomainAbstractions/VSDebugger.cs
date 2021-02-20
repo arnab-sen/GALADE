@@ -276,13 +276,13 @@ namespace DomainAbstractions
             if (currentCallStack != null) currentCallStack.Data = callStack;
         }
 
-        public void Continue()
+        public void Continue(bool wait = false)
         {
             if (_dte == null) ConnectToVisualStudio();
 
             try
             {
-                _debugger?.Go(WaitForBreakOrEnd: true);
+                _debugger?.Go(WaitForBreakOrEnd: wait);
             }
             catch (Exception e)
             {
