@@ -1097,19 +1097,10 @@ namespace RequirementsAbstractions
 
             render.GotFocus += (sender, args) =>
             {
-
                 portBox.Background = PortHighlightedBackground;
                 portBox.BorderColour = PortHighlightedBorder;
                 _selectedPort = portBox;
-                if(!Keyboard.IsKeyDown(Key.LeftCtrl)) 
-                {
-                    StateTransition.Update(Enums.DiagramMode.IdleSelected);
-                }
-                else 
-                {
-                    StateTransition.Update(Enums.DiagramMode.MultiNodeSelect);
-                    Select();
-                }
+                Select();
             };
 
             render.LostFocus += (sender, args) =>
