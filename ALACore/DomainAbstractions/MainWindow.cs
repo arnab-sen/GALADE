@@ -40,7 +40,7 @@ namespace DomainAbstractions
         /// Generates the main UI window of the application and emits a signal that the Application starts running.
         /// </summary>
         /// <param name="title">title of the window</param>
-        public MainWindow(string title = null)
+        public MainWindow(string title = "")
         {
             window = new Window()
             {
@@ -51,7 +51,7 @@ namespace DomainAbstractions
                 // MinWidth = 750,
                 Background = Brushes.White,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                WindowState = WindowState.Maximized
+                WindowState = WindowState.Normal
             };
 
             window.Loaded += (object sender, RoutedEventArgs e) =>

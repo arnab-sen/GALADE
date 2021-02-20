@@ -74,7 +74,7 @@ namespace RequirementsAbstractions
                     else
                     {
                         Graph.Roots.RemoveAll(o => o.Equals(this));
-                    } 
+                    }
                 }
             }
         }
@@ -287,7 +287,7 @@ namespace RequirementsAbstractions
             if (useDefault)
             {
                 if (_outputPortBoxes.Any()) return _outputPortBoxes.First();
-                if (_inputPortBoxes.Any()) return _inputPortBoxes.First(); 
+                if (_inputPortBoxes.Any()) return _inputPortBoxes.First();
             }
 
             return null;
@@ -304,7 +304,7 @@ namespace RequirementsAbstractions
                 Model.RefreshGenerics();
                 // RefreshParameterRows();
             }, DispatcherPriority.Loaded);
-            
+
             Render.Dispatcher.Invoke(() =>
             {
                 if (_nodeMask.Children.Contains(_textMaskRender)) _nodeMask.Children.Remove(_textMaskRender);
@@ -363,7 +363,7 @@ namespace RequirementsAbstractions
                         };
 
                         box.Render.Child = (newText as IUI).GetWPFElement();
-                        
+
                         inputIndex++;
                     }
                     else
@@ -388,7 +388,7 @@ namespace RequirementsAbstractions
                         };
 
                         box.Render.Child = (newText as IUI).GetWPFElement();
-                        
+
                         outputIndex++;
                     }
                     else
@@ -407,7 +407,7 @@ namespace RequirementsAbstractions
                     for (int i = numInputsUpdated; i < _inputPortBoxes.Count; i++)
                     {
                         _inputPortBoxes[i].Render.Visibility = Visibility.Collapsed;
-                    } 
+                    }
                 }
 
                 var numOutputsUpdated = newPorts.Count(p => !p.IsInputPort);
@@ -416,7 +416,7 @@ namespace RequirementsAbstractions
                     for (int i = numOutputsUpdated; i < _outputPortBoxes.Count; i++)
                     {
                         _outputPortBoxes[i].Render.Visibility = Visibility.Collapsed;
-                    }  
+                    }
                 }
             }
 
@@ -460,7 +460,7 @@ namespace RequirementsAbstractions
 
             return model;
         }
-        
+
         public void CreateInternals()
         {
             if (Model == null) Model = CreateDummyAbstractionModel();
@@ -509,8 +509,8 @@ namespace RequirementsAbstractions
 
             // Convert to edgesToDelete list to avoid issue with enumeration being modified (when an edge is deleted from Graph.Edges) within the loop over edgesToDelete
             var edgesToDelete = Graph.Edges
-                .Where(e => e is ALAWire wire 
-                            && (wire.Source == this || wire.Destination == this) 
+                .Where(e => e is ALAWire wire
+                            && (wire.Source == this || wire.Destination == this)
                             && Graph.ContainsEdge(wire))
                 .Select(e => e as ALAWire).ToList();
 
@@ -524,24 +524,24 @@ namespace RequirementsAbstractions
 
         private void CreateNodeParameterRow(string type, string name)
         {
-	        var dropDown = new DropDownMenu() 
-	        {
-		        Text = type,
+            var dropDown = new DropDownMenu()
+            {
+                Text = type,
                 Items = NodeParameters,
-		        Width = 100,
+                Width = 100,
                 Height = 25
-	        };
+            };
 
             SubscribeTextEditingEvent(dropDown);
-		    
-	        var textBox = new TextBox() 
-	        {
-		        Text = name,
+
+            var textBox = new TextBox()
+            {
+                Text = name,
                 Width = 100,
-		        TrackIndent = true,
-		        Font = "Consolas",
+                TrackIndent = true,
+                Font = "Consolas",
                 TabString = "    "
-	        };
+            };
 
             var UIConfig_textBox = new UIConfig()
             {
@@ -549,7 +549,7 @@ namespace RequirementsAbstractions
             };
 
             UIConfig_textBox.WireTo(textBox, "child");
-            
+
             // var textBox = new TextEditor()
             // {
             //     Text = name,
@@ -565,20 +565,20 @@ namespace RequirementsAbstractions
                     Model.SetValue(dropDown.Text, text, initialise: true);
                 }
             }, "textOutput");
-	        
-	        var deleteButton = new Button("-") 
-	        {
-		        Width = 20,
-		        Height = 20,
+
+            var deleteButton = new Button("-")
+            {
+                Width = 20,
+                Height = 20,
                 Margin = new Thickness(5, 0, 5, 0),
                 HorizAlignment = HorizontalAlignment.Left
-	        };
-	        
+            };
 
-	        var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;
-	        
-	        var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
-	        dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
+
+            var dropDownUI = (dropDown as IUI).GetWPFElement() as ComboBox;
+
+            var toolTipLabel = new System.Windows.Controls.Label() { Content = "" };
+            dropDownUI.ToolTip = new System.Windows.Controls.ToolTip() { Content = toolTipLabel };
             ToolTipService.SetShowDuration(dropDownUI, 60000); // Show tooltip for 60 seconds
 
             dropDownUI.MouseEnter += (sender, args) =>
@@ -605,10 +605,10 @@ namespace RequirementsAbstractions
             // Only show uninitialised fields and properties
             dropDownUI.DropDownOpened += (sender, args) =>
             {
-                dropDown.Items = dropDown.Items.Where(item => dropDownUI.SelectedItem is string str && str  == item || !Model.GetInitialisedVariables().Contains(item));
+                dropDown.Items = dropDown.Items.Where(item => dropDownUI.SelectedItem is string str && str == item || !Model.GetInitialisedVariables().Contains(item));
             };
-	        
-	        dropDownUI.SelectionChanged += (sender, args) =>
+
+            dropDownUI.SelectionChanged += (sender, args) =>
             {
                 // Deinitialise previous selection
                 if (args.RemovedItems.Count > 0 && args.RemovedItems[0] is string)
@@ -623,24 +623,24 @@ namespace RequirementsAbstractions
                 textBox.Text = Model.GetValue(varName);
                 Model.Initialise(varName);
             };
-	        
-	        var horiz = new Horizontal();
-	        horiz.WireTo(dropDown, "children");
-	        horiz.WireTo(UIConfig_textBox, "children");
-	        horiz.WireTo(deleteButton, "children");
-	        
-	        var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;
-	        
-	        buttonUI.Click += (sender, args) => 
-	        {
-		        var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));
+
+            var horiz = new Horizontal();
+            horiz.WireTo(dropDown, "children");
+            horiz.WireTo(UIConfig_textBox, "children");
+            horiz.WireTo(deleteButton, "children");
+
+            var buttonUI = (deleteButton as IUI).GetWPFElement() as System.Windows.Controls.Button;
+
+            buttonUI.Click += (sender, args) =>
+            {
+                var row = _nodeParameterRows.FirstOrDefault(tuple => tuple.Item4.Equals(deleteButton));
                 var varName = row?.Item2.Text ?? "";
                 Model.Deinitialise(varName);
-		        _nodeParameterRows.Remove(row);
-		        RefreshParameterRows();
-	        };
-	        
-	        _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
+                _nodeParameterRows.Remove(row);
+                RefreshParameterRows();
+            };
+
+            _nodeParameterRows.Add(Tuple.Create(horiz, dropDown, textBox, deleteButton));
         }
 
         private UIElement CreateTextMask(string text = "")
@@ -650,13 +650,13 @@ namespace RequirementsAbstractions
                 text = $"{Model.Type}";
                 var description = Model.Name;
 
-                if (!string.IsNullOrEmpty(Model.Name) && !Model.Name.StartsWith("id_")) 
+                if (!string.IsNullOrEmpty(Model.Name) && !Model.Name.StartsWith("id_"))
                     text = text + "\n" + description;
             }
 
             var maskContainer = new Canvas()
             {
-                
+
             };
 
             var background = new Border()
@@ -693,7 +693,7 @@ namespace RequirementsAbstractions
             var textUI = (_textMask as IUI).GetWPFElement();
             textUI.ClipToBounds = false;
             foreground.Child = textUI;
-            
+
             maskContainer.Children.Add(background);
             maskContainer.Children.Add(foreground);
 
@@ -737,7 +737,7 @@ namespace RequirementsAbstractions
             sb.Append(trimmedName);
             sb.Append(" = new ");
             sb.Append(Model.FullType);
-            
+
 
             var initialised = Model.GetInitialisedVariables();
             var constructorArgs = Model.GetConstructorArgs()
@@ -747,8 +747,8 @@ namespace RequirementsAbstractions
 
             var propertiesAndFields = new List<KeyValuePair<string, string>>();
 
-            if (!initialised.Contains("InstanceName") 
-                && (Model.ContainsField("InstanceName") || Model.ContainsProperty("InstanceName")) ) 
+            if (!initialised.Contains("InstanceName")
+                && (Model.ContainsField("InstanceName") || Model.ContainsProperty("InstanceName")))
                 propertiesAndFields.Add(new KeyValuePair<string, string>("InstanceName", $"\"{trimmedName}\""));
 
             propertiesAndFields.AddRange(Model.GetProperties()
@@ -858,15 +858,15 @@ namespace RequirementsAbstractions
                 ArgumentSyntax argNode;
                 if (!argName.StartsWith("~")) // If the arg is not an unnamed constructor arg
                 {
-                    argNode = 
+                    argNode =
                         Argument(IdentifierName(argValue))
                             .WithNameColon(
                                 NameColon(
-                                    IdentifierName(argName))); 
+                                    IdentifierName(argName)));
                 }
                 else
                 {
-                    argNode = Argument(IdentifierName(argValue)); 
+                    argNode = Argument(IdentifierName(argValue));
                 }
 
                 if (list.Count > 0)
@@ -932,7 +932,7 @@ namespace RequirementsAbstractions
 
             for (int i = 0; i < generics.Count; i++)
             {
-                var dropDown = new DropDownMenu() 
+                var dropDown = new DropDownMenu()
                 {
                     Text = generics[i],
                     Items = GenericTypeOptions,
@@ -1091,7 +1091,7 @@ namespace RequirementsAbstractions
                 portBox.BorderColour = PortBorder;
             };
 
-            render.MouseDown += (sender, args) =>
+            render.MouseUp += (sender, args) =>
             {
                 _selectedPort = portBox;
                 _selectedPort.Render.Focus();
@@ -1099,19 +1099,11 @@ namespace RequirementsAbstractions
 
             render.GotFocus += (sender, args) =>
             {
-
                 portBox.Background = PortHighlightedBackground;
                 portBox.BorderColour = PortHighlightedBorder;
                 _selectedPort = portBox;
-                if(!Keyboard.IsKeyDown(Key.LeftCtrl)) 
-                {
-                    StateTransition.Update(Enums.DiagramMode.IdleSelected);
-                }
-                else 
-                {
-                    StateTransition.Update(Enums.DiagramMode.MultiNodeSelect);
-                    Select();
-                }
+
+                Select(focus: false);
             };
 
             render.LostFocus += (sender, args) =>
@@ -1158,21 +1150,24 @@ namespace RequirementsAbstractions
 
             _nameTextBox = nodeNameTextBox;
             var typeChanged = new ApplyAction<string>() { Lambda = input => TypeChanged?.Invoke(input) };
-            var nameChanged = new ApplyAction<string>() { Lambda = input =>
+            var nameChanged = new ApplyAction<string>()
             {
-                if (input.StartsWith("@"))
+                Lambda = input =>
                 {
-                    if (!IsReferenceNode) IsReferenceNode = true;
-                }
-                else
-                {
-                    if (IsReferenceNode) IsReferenceNode = false;
-                }
+                    if (input.StartsWith("@"))
+                    {
+                        if (!IsReferenceNode) IsReferenceNode = true;
+                    }
+                    else
+                    {
+                        if (IsReferenceNode) IsReferenceNode = false;
+                    }
 
-                Model.Name = input;
+                    Model.Name = input;
 
-                Model.SetValue("InstanceName", $"\"{input}\"");
-            } };
+                    Model.SetValue("InstanceName", $"\"{input}\"");
+                }
+            };
 
             nodeIdRow.WireTo(nodeTypeDropDownMenu, "children");
             nodeIdRow.WireTo(createGenericDropDownMenus, "children");
@@ -1231,7 +1226,7 @@ namespace RequirementsAbstractions
                     {
                         CreateNodeParameterRow(initialised, Model.GetValue(initialised));
                     }
-            
+
                     RefreshParameterRows();
                     return new Text("");
                 }
@@ -1395,15 +1390,15 @@ namespace RequirementsAbstractions
 
             render.LostFocus += (sender, args) =>
             {
-                if(!Keyboard.IsKeyDown(Key.LeftCtrl)) 
+                if (!Keyboard.IsKeyDown(Key.LeftCtrl))
                 {
                     UnhighlightNode();
                 }
             };
-            
+
             render.MouseMove += (sender, args) =>
             {
-                if (Mouse.LeftButton == MouseButtonState.Pressed 
+                if (Mouse.LeftButton == MouseButtonState.Pressed
                     // && (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     && _canMove
                     && StateTransition.CurrentStateMatches(Enums.DiagramMode.IdleSelected))
@@ -1543,7 +1538,7 @@ namespace RequirementsAbstractions
             _loadedModels[Model.Type] = loadedModel;
 
             // Reuse a previously loaded model if possible, otherwise use the new model
-            if (_loadedModels.ContainsKey(model.Type)) 
+            if (_loadedModels.ContainsKey(model.Type))
             {
                 Model.CloneFrom(_loadedModels[model.Type]);
             }
@@ -1591,7 +1586,7 @@ namespace RequirementsAbstractions
                     toMatch = toMatch.ToLower();
                 }
 
-                return Regex.IsMatch(toMatch,searchToken);
+                return Regex.IsMatch(toMatch, searchToken);
             }
             catch (Exception e)
             {
@@ -1664,7 +1659,7 @@ namespace RequirementsAbstractions
                     addedNodes.Add(wire.Destination.Id);
                     instantiations.Add(wire.Destination.ToFlatInstantiation());
                 }
-                
+
                 wireTos.Add(wire.ToWireTo());
                 addedWires.Add(wire.Id);
             }
@@ -1698,11 +1693,11 @@ namespace RequirementsAbstractions
             Vertical outputPortsVert = null;
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
-            Box rootUI = new Box() {InstanceName="rootUI",Background=NodeBackground}; /* {"IsRoot":true} */
-            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() {InstanceName="id_a38c965bdcac4123bb22c40a31b04de5"}; /* {"IsRoot":false} */
-            UIFactory createInputPortsVertical = new UIFactory() {InstanceName="createInputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: true)}; /* {"IsRoot":false} */
-            UIFactory createNodeMiddleVertical = new UIFactory() {InstanceName="createNodeMiddleVertical",GetUIContainer=CreateNodeMiddleVertical}; /* {"IsRoot":false} */
-            UIFactory createOutputPortsVertical = new UIFactory() {InstanceName="createOutputPortsVertical",GetUIContainer=() => CreatePortsVertical(inputPorts: false)}; /* {"IsRoot":false} */
+            Box rootUI = new Box() { InstanceName = "rootUI", Background = NodeBackground }; /* {"IsRoot":true} */
+            Horizontal id_a38c965bdcac4123bb22c40a31b04de5 = new Horizontal() { InstanceName = "id_a38c965bdcac4123bb22c40a31b04de5" }; /* {"IsRoot":false} */
+            UIFactory createInputPortsVertical = new UIFactory() { InstanceName = "createInputPortsVertical", GetUIContainer = () => CreatePortsVertical(inputPorts: true) }; /* {"IsRoot":false} */
+            UIFactory createNodeMiddleVertical = new UIFactory() { InstanceName = "createNodeMiddleVertical", GetUIContainer = CreateNodeMiddleVertical }; /* {"IsRoot":false} */
+            UIFactory createOutputPortsVertical = new UIFactory() { InstanceName = "createOutputPortsVertical", GetUIContainer = () => CreatePortsVertical(inputPorts: false) }; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR ALANodeUI
 
             // BEGIN AUTO-GENERATED WIRING FOR ALANodeUI

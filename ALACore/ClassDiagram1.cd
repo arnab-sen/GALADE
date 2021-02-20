@@ -1,0 +1,1094 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DomainAbstractions.AbstractionModel" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQ4BCAQE4EAxGwQkBACiQQSCIAAaaQEIEQKCgERwAwA=</HashCode>
+      <FileName>DomainAbstractions\AbstractionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DomainAbstractions.Apply&lt;T1, T2&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAgAAAAAAQAAAACAAACAAQAAACAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Apply.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ApplyAction&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAIAACAAAAAAQAAAAAAAAAAABAAA=</HashCode>
+      <FileName>DomainAbstractions\ApplyAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Box" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAACAAABAAAAAAgABAQAEABAAIRABABABCgBAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Box.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Button" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAABABAAAAAABAAAAAkAAAAEQAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Button.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.CanvasDisplay" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hASICwAAhLQAgSABQAKAAEAAgEgQAJAACAAgAAAAgAI=</HashCode>
+      <FileName>DomainAbstractions\CanvasDisplay.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Cast&lt;T1, T2&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAQAAAAAAAACAAQAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>DomainAbstractions\Cast.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.CheckBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAACIAQAAABIAAAAQAAAAAAAAAIQAJAAAIAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\CheckBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ClassFileGenerator" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBgABQAEAACgAACBAAACAQACAAATIAgIECAAAQAAAAA=</HashCode>
+      <FileName>DomainAbstractions\ClassFileGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DomainAbstractions.Clock" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAgAAAAQIAAABAAAAAwAIAAAAgAAAAAAAI=</HashCode>
+      <FileName>DomainAbstractions\Clock.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.CodeParser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QJKACBAAgCAQJAABeAAABAAAAAgUIIQUAAIAyECAAAQ=</HashCode>
+      <FileName>DomainAbstractions\CodeParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Collection&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAgAAAAAAAAAAEAAAAAAAAAAQAIAAAAAAAAgJAAA=</HashCode>
+      <FileName>DomainAbstractions\Collection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ConditionalData&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABACAAAAAAAAAAAAAAAQQAAAAAAAAAAAJAAA=</HashCode>
+      <FileName>DomainAbstractions\ConditionalData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ContextMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAIAQAAAAAAAAAAAAYAJAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\ContextMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ConvertToEvent&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAQAAAAAAAQAAABAAA=</HashCode>
+      <FileName>DomainAbstractions\ConvertToEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.CurvedLine" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAKoAHACACgAEACAAAAAABACAYABAACBAAgDAEAAA=</HashCode>
+      <FileName>DomainAbstractions\CurvedLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Data&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCAiAACAAAAAAAAABAAAAACACQAIAAAAAACAABAAA=</HashCode>
+      <FileName>DomainAbstractions\Data.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DebugViewer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAFAAAAIAACAAAAOCBAAIAJARABAAAAIAAAADBAA=</HashCode>
+      <FileName>DomainAbstractions\DebugViewer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DirectorySearch" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAEAABAAAAAAIgAAAAAAQAAAAAQgAgAAgEBA=</HashCode>
+      <FileName>DomainAbstractions\DirectorySearch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DirectoryTree" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAoAAACDAAQBAAIAAQIAkAAAAAQIAEAAAAABAAiABI=</HashCode>
+      <FileName>DomainAbstractions\DirectoryTree.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DispatcherData&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAEAAAAAAAAAAAQAAAAAAAAAAABAAA=</HashCode>
+      <FileName>DomainAbstractions\DispatcherData.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DispatcherEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAEAAAAAAAAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\DispatcherEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DragEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\DragEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DropDownMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgAAAABAAADQAAAAAIAEAQAFAQIAEAAAAACAAQAAA=</HashCode>
+      <FileName>DomainAbstractions\DropDownMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.DynamicWiring&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAACAAAAAIAAAAAEAQAKAAAAACAAAACAA=</HashCode>
+      <FileName>DomainAbstractions\DynamicWiring.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.EventLambda" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAgAAAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\EventLambda.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.EventSubscriber" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\EventSubscriber.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ExampleDomainAbstraction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CQAAAAAAAAAABAAAAAhAAAAAAAAQAIAAEAAAMAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\ExampleDomainAbstraction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FileBrowser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAQAAAIAAAAABAQBIAAAgAAAAAAAQA=</HashCode>
+      <FileName>DomainAbstractions\FileBrowser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FileReader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAIAAAACAAAAAAAQAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\FileReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FileSplit" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAgAAACAABAAAAAACAAAAAAAQAEAAAAIAQAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\FileSplit.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FileWriter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABAAAAAACAAAAAAAQAQAQAABAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\FileWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FlowGate&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAACAQABIAAAAAAQIAAAAAAAACQBIAAAAAAASABBAA=</HashCode>
+      <FileName>DomainAbstractions\FlowGate.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FolderBrowser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAgAAAAAAAAAAAAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\FolderBrowser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.FolderWatcher" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAABAAAgAAYAABAABIUAAgAAAAAAAAAAgQ=</HashCode>
+      <FileName>DomainAbstractions\FolderWatcher.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ForEach&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAgAAAAAAAEAAAAAAAAAQAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>DomainAbstractions\ForEach.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Graph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="DomainAbstractions.Graph.GraphChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\Graph.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAggAEAAAAARABACCAAAAAkAAATAAAAABABAABIAAQ=</HashCode>
+      <FileName>DomainAbstractions\Graph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Horizontal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAAAAAAAAAAAAQAQAACAAAAAAEQALEAAEAgAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Horizontal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.HttpRequest" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBAAMIAAAAQRAggQMFIAAHAACAYgIAAQACEBwAAUAA=</HashCode>
+      <FileName>DomainAbstractions\HttpRequest.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.IfElse" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAACAAAAAAAACAAAAAAgQAIAAAAAgAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\IfElse.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.InverseStringFormat" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBAAAAAAAAAAAAAgQACAAAAAAAgAAAAA=</HashCode>
+      <FileName>DomainAbstractions\InverseStringFormat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.JSONEditor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgCAAAAAAACCAAAAAABAAAAAAQAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\JSONEditor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.JSONParser" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAACAAAAAAARAAAAgAAACAAAAAQAACAgAACCAAACAA=</HashCode>
+      <FileName>DomainAbstractions\JSONParser.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.JSONWriter&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgEAAAAAAAAAAAAAAQAAEEAEBCAAABAAA=</HashCode>
+      <FileName>DomainAbstractions\JSONWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.KeyEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgABAEAAECAAASEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\KeyEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ListDisplay" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAQAAAAAgAAAAAAIgAAAEAAQgAAAAgAAAAAQAAA=</HashCode>
+      <FileName>DomainAbstractions\ListDisplay.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.LookupTable&lt;T1, T2&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAIAAQAQAAAAIAAAAAAQAQAAAAQgAAAAgAA=</HashCode>
+      <FileName>DomainAbstractions\LookupTable.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Loop&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAQCAAAAAAAAABAAQAJAAAAAAQACAAAA=</HashCode>
+      <FileName>DomainAbstractions\Loop.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAABAAIQAACAAAAAAAQAJAJAAAAgAAABAI=</HashCode>
+      <FileName>DomainAbstractions\MainWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MenuBar" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\MenuBar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MenuItem" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAQQAAAAAAAAAAAAQAAAAAQAAAAAAAgA=</HashCode>
+      <FileName>DomainAbstractions\MenuItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MouseButtonEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\MouseButtonEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MouseEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\MouseEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MouseWheelEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\MouseWheelEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MultilineSegmenter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="6.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="DomainAbstractions.MultilineSegmenter.SegmentationMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\MultilineSegmenter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAgAABAAAIBAAAAAAAIAAABAAQAAAAAAAAgAQAAAA=</HashCode>
+      <FileName>DomainAbstractions\MultilineSegmenter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.MultiMenu" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgBAAAEAAAQAAAAAAAAAAQAAAQABAACAAAAIAAAAA=</HashCode>
+      <FileName>DomainAbstractions\MultiMenu.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ObjectFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\ObjectFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Operation&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="6.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="DomainAbstractions.Operation&lt;T&gt;.OperationDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\Operation.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAEAAIAAAAAAAAAYAIAAAgAAAAAACAA=</HashCode>
+      <FileName>DomainAbstractions\Operation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Placeholder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAACQAAIAAAAAAAAAAAIAAAAAAAQAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Placeholder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.PopupBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAFAABAAAAACAEAAAAAAQAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\PopupBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.PopupWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAFAAAAAQCYAACAMAAAAEQAIAIAAAQAAFAAAA=</HashCode>
+      <FileName>DomainAbstractions\PopupWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.PortGraphConnection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="6.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="DomainAbstractions.PortGraphConnection.HandleSelectedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\PortGraphConnection.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="DomainAbstractions.PortGraphConnection.Handle" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\PortGraphConnection.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>RRgHEBSEpMCCAgAEQAQAgARAAGmQCIhBABBEQqAAiJo=</HashCode>
+      <FileName>DomainAbstractions\PortGraphConnection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.RightTreeLayout&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAiAAAyAVAIYgAABAiAhAAAMRQIAAAAIAAEAAAAE=</HashCode>
+      <FileName>DomainAbstractions\RightTreeLayout.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.RoutedEventSubscriber" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAECAAACEAAAAAQAAAgASAACAAAgAAAAIAAA=</HashCode>
+      <FileName>DomainAbstractions\RoutedEventSubscriber.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Scale" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIAIAAAAABAABgAACABAAAQAAAAQAAAQAAAAAAAAQAA=</HashCode>
+      <FileName>DomainAbstractions\Scale.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Select&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAACACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgIAA=</HashCode>
+      <FileName>DomainAbstractions\Select.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.SelectMany&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAACACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgIAA=</HashCode>
+      <FileName>DomainAbstractions\SelectMany.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.SimulateKeyboard" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAACDAAAAAAAAAAQAIAAAAIAQAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\SimulateKeyboard.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.SourceFileGenerator" Collapsed="true">
+    <Position X="7.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\SourceFileGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DomainAbstractions.StateChangeListener" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAASAAAAQAAIAAAAAAAUAIAAAAAQAAABgAA=</HashCode>
+      <FileName>DomainAbstractions\StateChangeListener.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.StateTransitionEvent&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAACCAAAEAQAAAAAAAAASAAABAAgAAAAIgAA=</HashCode>
+      <FileName>DomainAbstractions\StateTransitionEvent.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Stopwatch" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAQAAAAAAAAAAAAQAAAAAAAQBIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Stopwatch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.StringMap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAQAAAQAIQAACAACAAAQAA=</HashCode>
+      <FileName>DomainAbstractions\StringMap.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.StringSequenceExtractor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAgAIAAAAIABAAAJAAAAACQAAARABAAAAAAAAAAACA=</HashCode>
+      <FileName>DomainAbstractions\StringSequenceExtractor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Tab" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAABAAAAAQAAAAAAgAAAAAQAAEAIAAAABAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Tab.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.TabContainer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAgAAAAIQAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\TabContainer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Text" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAAAAAABgAABwAAUAACAkAAAAEQAAMAQAIggACAEAA=</HashCode>
+      <FileName>DomainAbstractions\Text.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.TextBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ggAABAAABAABBAAAAAAAIEAAAEAQAIEAAAAECAACQAA=</HashCode>
+      <FileName>DomainAbstractions\TextBox.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.TextClipboard" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAABAAAAAAAAAAAQAIAAAAAAAAgAQAA=</HashCode>
+      <FileName>DomainAbstractions\TextClipboard.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.TextEditor" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAABAgBAAAAAAAAAEAACAAQAAAAAAAACAAAQAA=</HashCode>
+      <FileName>DomainAbstractions\TextEditor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.ToolTip" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAEAAAAAAAAgAAAAAQAAAQABAAAAAAAAAAACA=</HashCode>
+      <FileName>DomainAbstractions\ToolTip.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.UIConfig" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oCAABAwAFAAAACgIQADUBEAABQEQIBEIAAgQAAAAEBg=</HashCode>
+      <FileName>DomainAbstractions\UIConfig.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.UIFactory" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQAAAAAAAAAAAAAAAAEAAAABAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\UIFactory.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Vertical" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAgAACABAAAAAQAQAACAAAEAAEQBJEAAEAAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\Vertical.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.VisualEdge" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAQAAAAAAIQAAAEABCAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\VisualEdge.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.VisualNode" Collapsed="true">
+    <Position X="4" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAQAAAIAAAAAARCAAAAAAAA=</HashCode>
+      <FileName>DomainAbstractions\VisualNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DomainAbstractions.VSDebugger" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAADAFBAAgQAAQQAgBAABAACwAQAIAgIAAQAEABAAA=</HashCode>
+      <FileName>DomainAbstractions\VSDebugger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DomainAbstractions.Where&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAgIAA=</HashCode>
+      <FileName>DomainAbstractions\Where.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.VisualPortGraphNode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.5" Y="9.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="ProgrammingParadigms.VisualPortGraphNode.TextChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\VisualPortGraphNode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="ProgrammingParadigms.VisualPortGraphNode.GenericEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\VisualPortGraphNode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="ProgrammingParadigms.VisualPortGraphNode.NodeNameTextBoxPair" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\VisualPortGraphNode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="ProgrammingParadigms.VisualPortGraphNode.ParameterTextBoxPair" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DomainAbstractions\VisualPortGraphNode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BhaXAYEJDaAABYgkTQgEYMQQJCRzKMgLI7KCciBBgAk=</HashCode>
+      <FileName>DomainAbstractions\VisualPortGraphNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.DataFlowConnector&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAEAABAAAAAAAAQABAAAAAAAAABEAA=</HashCode>
+      <FileName>ProgrammingParadigms\DataFlowConnector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.Enums" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ProgrammingParadigms.Enums.ALALayer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProgrammingParadigms\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="ProgrammingParadigms.Enums.ParameterType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProgrammingParadigms\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="ProgrammingParadigms.Enums.DiagramMode" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProgrammingParadigms\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgrammingParadigms.EventConnector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAQAIAAAAAAAAAIEAA=</HashCode>
+      <FileName>ProgrammingParadigms\EventConnector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.EventHandlerConnector" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAAACAgAAIBAA=</HashCode>
+      <FileName>ProgrammingParadigms\EventHandlerConnector.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.Port" Collapsed="true">
+    <Position X="12.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEATAAAAAAAgAIAEAAAAAAQAACAAAAAAAQsAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\Port.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgrammingParadigms.StateTransition&lt;T&gt;" Collapsed="true">
+    <Position X="11" Y="7.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="ProgrammingParadigms.StateTransition&lt;T&gt;.StateTransitionedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProgrammingParadigms\StateTransition.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>CBQAAAAAAAAAAAAAAAAAACEAAAAQAAAAgAAAAAAAACA=</HashCode>
+      <FileName>ProgrammingParadigms\StateTransition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgrammingParadigms.UndoHistory" Collapsed="true">
+    <Position X="16.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAQAAAAADAAAwAAAAAAAAAAAACAA=</HashCode>
+      <FileName>ProgrammingParadigms\UndoHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ProgrammingParadigms.VisualPortGraph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="9.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="ProgrammingParadigms.VisualPortGraph.ZIndex" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ProgrammingParadigms\VisualPortGraph.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gMkTJSKDABgQEioCAIAEACIEMSAQQAASAEUEEFhYRIA=</HashCode>
+      <FileName>ProgrammingParadigms\VisualPortGraph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ProgrammingParadigms.VisualStyle" Collapsed="true">
+    <Position X="9.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACBABAAAAAAAAFAAAEAAAAAQAAAAAAAkAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\VisualStyle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Libraries.Logging" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Libraries.Logging.LogDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Libraries\Logging.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Libraries.Logging.MessageDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Libraries\Logging.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAABAAAAAAAAgAAAAAAAgAIAIAAAA=</HashCode>
+      <FileName>Libraries\Logging.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Libraries.Utilities" Collapsed="true">
+    <Position X="18" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>lAAAAEAAAAAAAAIAAAAAACAAAIkIEIcBUAwAAAgEQAA=</HashCode>
+      <FileName>Libraries\Utilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Libraries.Wiring" Collapsed="true">
+    <Position X="14.5" Y="9.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Libraries.Wiring.InitializeDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Libraries\Wiring.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Libraries.Wiring.OutputDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Libraries\Wiring.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABAAAQAAAgAgAAAgQgAIAABAAAAKAAAAgAgAIAAAAAA=</HashCode>
+      <FileName>Libraries\Wiring.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RequirementsAbstractions.AbstractionModelManager" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAIAIgAAJBAIAAABAAAAAQQAJAQAEQQBigCAARCAAE=</HashCode>
+      <FileName>RequirementsAbstractions\AbstractionModelManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RequirementsAbstractions.ALANode" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="RequirementsAbstractions.ALANode.SomethingChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>RequirementsAbstractions\ALANode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="RequirementsAbstractions.ALANode.TextChangedDelegate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>RequirementsAbstractions\ALANode.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>Swk+WAxlRKwAXMCkMKMT03U8QGu5TU6IUVqHwMcEiRg=</HashCode>
+      <FileName>RequirementsAbstractions\ALANode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RequirementsAbstractions.ALAWire" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQGEQECEsjQESAEoAOOgIA3AEGwQMgEEhJAQIAIkBo=</HashCode>
+      <FileName>RequirementsAbstractions\ALAWire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RequirementsAbstractions.EditSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAECgAAACAAQAAAAAAAAAAQAAAQAAAAAAAIACA=</HashCode>
+      <FileName>RequirementsAbstractions\EditSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RequirementsAbstractions.ExtractALACode" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAKAAgBCAgABBAAAQAAIAAAAAAAQAAEAoAAKAAAQQhA=</HashCode>
+      <FileName>RequirementsAbstractions\ExtractALACode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RequirementsAbstractions.GetSetting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAQAAAAAAAAAAQAoAQAAAAAAAAICA=</HashCode>
+      <FileName>RequirementsAbstractions\GetSetting.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="RequirementsAbstractions.InsertStatements" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAAAQAAAAAAAgAAAQggAQBAAAAAACAAAAAAI=</HashCode>
+      <FileName>RequirementsAbstractions\InsertStatements.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="ProgrammingParadigms.IDataFlow&lt;T&gt;" Collapsed="true">
+    <Position X="2.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\DataFlowConnector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IDataFlowB&lt;T&gt;" Collapsed="true">
+    <Position X="4" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\DataFlowConnector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IEvent" Collapsed="true">
+    <Position X="7.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\EventConnector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IEventB" Collapsed="true">
+    <Position X="9.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ProgrammingParadigms\EventConnector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IAttachable" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAIAIAAAAQAAgAAAAAAQ=</HashCode>
+      <FileName>ProgrammingParadigms\IAttachable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IEdge" Collapsed="true">
+    <Position X="5.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IEdge.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IEventHandler" Collapsed="true">
+    <Position X="11" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IGraph" Collapsed="true">
+    <Position X="12.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggAAAAAAAAAAACCAAAAAEAAACAAAAABAAAAAIAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IGraph.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IMemento" Collapsed="true">
+    <Position X="14.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAQAAAAAAAAAAAAAAAAAAIAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IMemento.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IPortConnection" Collapsed="true">
+    <Position X="16.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAQAAMCAAAAAAAAAAABAAGCAAAhAABAAQCAAAAI=</HashCode>
+      <FileName>ProgrammingParadigms\IPortConnection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IUI" Collapsed="true">
+    <Position X="18" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IUI.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ProgrammingParadigms.IVisualPortGraphNode" Collapsed="true">
+    <Position X="0.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAQAAAIAAAAAgBAAAIAAAACABAAgAABAAQAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IVisualPortGraphNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="ProgrammingParadigms.DataChangedDelegate" Collapsed="true">
+    <Position X="4" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\DataFlowConnector.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="ProgrammingParadigms.CallBackDelegate" Collapsed="true">
+    <Position X="2.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\EventConnector.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="ProgrammingParadigms.ActionPerformedDelegate" Collapsed="true">
+    <Position X="0.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IMemento.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="ProgrammingParadigms.NodePositionChangedDelegate" Collapsed="true">
+    <Position X="5.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProgrammingParadigms\IVisualPortGraphNode.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="ProgrammingParadigms.PortConnectionRequestedDelegate" Collapsed="true">
+    <Position X="7.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ProgrammingParadigms\IVisualPortGraphNode.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

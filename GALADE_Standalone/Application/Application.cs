@@ -145,7 +145,7 @@ namespace Application
                     // Parse and update existing settings
                     var settings = File.ReadAllText(SETTINGS_FILEPATH);
                     settingsObj = JObject.Parse(settings);
-                    
+
                 }
                 catch (Exception e)
                 {
@@ -165,9 +165,9 @@ namespace Application
             settingsIncomplete |= InitialiseMissingJObjectProperty(settingsObj, "RecentProjectPaths", new JArray());
 
             if (settingsIncomplete) File.WriteAllText(SETTINGS_FILEPATH, settingsObj.ToString());
-#endregion
+            #endregion
 
-#region Diagram constants and singletons
+            #region Diagram constants and singletons
 
             StateTransition<Enums.DiagramMode> stateTransition = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.Idle)
             {
@@ -175,9 +175,9 @@ namespace Application
                 Matches = (flag, currentState) => (flag & currentState) != 0
             };
 
-#endregion
+            #endregion
 
-#region Set up logging
+            #region Set up logging
             if (LOG_ALL_WIRING) Wiring.Output += output => Logging.Log(output, WIRING_LOG_FILEPATH); // Print all WireTos to a log file
             Logging.LogOutput += output =>
             {
@@ -216,7 +216,7 @@ namespace Application
                 Logging.Log(message);
             };
 
-#endregion
+            #endregion
 
             Graph mainGraph = new Graph();
 
@@ -241,7 +241,7 @@ namespace Application
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR testDiagram
             // END AUTO-GENERATED INSTANTIATIONS FOR testDiagram
-            
+
             // BEGIN AUTO-GENERATED WIRING FOR testDiagram
             // END AUTO-GENERATED WIRING FOR testDiagram
 
@@ -250,6 +250,10 @@ namespace Application
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             DataFlowConnector<Dictionary<string, object>> instanceDictionary = new DataFlowConnector<Dictionary<string, object>>() { InstanceName = "instanceDictionary" }; /* {"IsRoot":false} */
             MainWindow mainWindow = new MainWindow(title: "GALADE") { InstanceName = "mainWindow" }; /* {"IsRoot":true} */
+
+            
+
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
             ContextMenu alaNodeContextMenu = new ContextMenu() {InstanceName="alaNodeContextMenu"}; /* {"IsRoot":false} */
             ContextMenu alaWireContextMenu = new ContextMenu() {InstanceName="alaWireContextMenu"}; /* {"IsRoot":false} */
             DataFlowConnector<string> currentDiagramName = new DataFlowConnector<string>() {InstanceName="currentDiagramName"}; /* {"IsRoot":false} */
@@ -1349,8 +1353,8 @@ namespace Application
             DataFlowConnector<ALANode> currentStackFrameNode = new DataFlowConnector<ALANode>() {InstanceName="currentStackFrameNode"}; /* {"IsRoot":false} */
             Text id_986a138ae419437fb48527304d95b9f5 = new Text(text:"Current Call Stack:") {InstanceName="id_986a138ae419437fb48527304d95b9f5"}; /* {"IsRoot":false} */
             MenuItem menu_Debugger = new MenuItem(header:"Debugger") {InstanceName="menu_Debugger"}; /* {"IsRoot":false} */
-            MenuItem id_ac302270e71b4fe3b598eaaf2a47d2a1 = new MenuItem(header:"Build and Run/Continue (F5)") {InstanceName="id_ac302270e71b4fe3b598eaaf2a47d2a1"}; /* {"IsRoot":false,"Description":"Continues execution in debug mode until a breakpoint is hit. Also doubles for building and running the application."} */
-            EventLambda id_1178770bbaf3473aab7d6afd02c7d593 = new EventLambda() {InstanceName="id_1178770bbaf3473aab7d6afd02c7d593",Lambda=() =>{    visualStudioDebugger.Continue();}}; /* {"IsRoot":false} */
+            MenuItem id_ac302270e71b4fe3b598eaaf2a47d2a1 = new MenuItem(header:"Build and Run (F5)") {InstanceName="id_ac302270e71b4fe3b598eaaf2a47d2a1"}; /* {"IsRoot":false,"Description":"Continues execution in debug mode until a breakpoint is hit. Also doubles for building and running the application."} */
+            EventLambda id_1178770bbaf3473aab7d6afd02c7d593 = new EventLambda() {InstanceName="id_1178770bbaf3473aab7d6afd02c7d593",Lambda=() =>{    visualStudioDebugger.Continue(wait: false);}}; /* {"IsRoot":false} */
             MenuItem id_fe685b064eca4537a3997e071243ff8c = new MenuItem(header:"Step Over (F10)") {InstanceName="id_fe685b064eca4537a3997e071243ff8c"}; /* {"IsRoot":false} */
             EventLambda id_b0e0f3800ecd4c6fbe95f532c1bbb5cc = new EventLambda() {InstanceName="id_b0e0f3800ecd4c6fbe95f532c1bbb5cc",Lambda=() =>{    visualStudioDebugger.StepOver();}}; /* {"IsRoot":false} */
             EventLambda id_e8f384b9889f47c2830203395bdf0480 = new EventLambda() {InstanceName="id_e8f384b9889f47c2830203395bdf0480",Lambda=() => visualStudioDebugger.SendCurrentCallStack()}; /* {"IsRoot":false} */
@@ -1393,7 +1397,6 @@ namespace Application
             Apply<List<object>, List<object>> getAbstractionFrames = new Apply<List<object>, List<object>>() {InstanceName="getAbstractionFrames",Lambda=callStack =>{    return callStack.Where(obj => obj is EnvDTE.StackFrame sf && sf.Locals.Count < 50 && sf.TryGetVariable("InstanceName", out EnvDTE.Expression expr, local: false)).ToList();}}; /* {"IsRoot":false} */
             MenuItem id_d160405767f14e518fb37276d1f4d0ba = new MenuItem(header:"Connect to Visual Studio Instance") {InstanceName="id_d160405767f14e518fb37276d1f4d0ba"}; /* {"IsRoot":false} */
             EventConnector id_5099fe631fca42768789ea7f9c3600a4 = new EventConnector() {InstanceName="id_5099fe631fca42768789ea7f9c3600a4"}; /* {"IsRoot":false} */
-            DataFlowConnector<EnvDTE.StackFrame> id_b27dd863e96249ed8e73ee0a7f884a39 = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_b27dd863e96249ed8e73ee0a7f884a39"}; /* {"IsRoot":false} */
             DataFlowConnector<EnvDTE.StackFrame> id_933c988c711f458490a6b38c42449f1c = new DataFlowConnector<EnvDTE.StackFrame>() {InstanceName="id_933c988c711f458490a6b38c42449f1c"}; /* {"IsRoot":false} */
             ApplyAction<List<object>> highlightTracedWires = new ApplyAction<List<object>>() {InstanceName="highlightTracedWires",Lambda=input =>{    if (input == null)        return;    var callStack = input.OfType<EnvDTE.StackFrame>().ToList();    var wires = mainGraph.Edges.OfType<ALAWire>();    var tracedWires = new List<ALAWire>();    int iA = 0;    int iB = 1;    while (iB < callStack.Count)    {        var destSF = callStack[iA];        var sourceSF = callStack[iB];        EnvDTE.Expression destExpr, sourceExpr;        if (!destSF.TryGetVariable("InstanceName", out destExpr, local: false))            continue;        if (!sourceSF.TryGetVariable("InstanceName", out sourceExpr, local: false))            continue;        var destName = destExpr.Value.Trim('\"', '\\');        var sourceName = sourceExpr.Value.Trim('\"', '\\');        if (!instanceDictionary.Data.ContainsKey(destName))        {            iB++;            continue;        }        if (!instanceDictionary.Data.ContainsKey(sourceName))        {            iA++;            iB++;            continue;        }        var destNode = instanceDictionary.Data[destName] as ALANode;        var sourceNode = instanceDictionary.Data[sourceName] as ALANode;        var tracedWire = wires.FirstOrDefault(w => w.Source == sourceNode && w.Destination == destNode);        if (tracedWire != null)            tracedWires.Add(tracedWire);        iA++;        iB++;    }    if (tracedWires.Count == 0)        return;    tracedWires.First().AddTempHighlight(Brushes.LimeGreen);    foreach (var wire in tracedWires.Skip(1))    {        wire.AddTempHighlight(Brushes.Orange);    }}}; /* {"IsRoot":false} */
             EventConnector id_66d57a319da04571acdbd1dc2f0baa57 = new EventConnector() {InstanceName="id_66d57a319da04571acdbd1dc2f0baa57"}; /* {"IsRoot":false} */
@@ -1413,8 +1416,11 @@ namespace Application
             ApplyAction<string> id_defa271deca54e258e852a5977ea5e46 = new ApplyAction<string>() {InstanceName="id_defa271deca54e258e852a5977ea5e46",Lambda=name =>{    var node = mainGraph.Get("SelectedNode") as ALANode;    var parser = new CodeParser();    var propertyNodes = parser.GetProperties(node.Model.SourceCode).Where(n => n.Identifier.ToString() == name);    var filePath = node.Model.CodeFilePath;    foreach (var propertyNode in propertyNodes)    {        var accessors = propertyNode.DescendantNodes().OfType<AccessorDeclarationSyntax>();        var condition = !string.IsNullOrEmpty(node.Model.GetValue("InstanceName")) ? $"InstanceName == {node.Model.GetValue("InstanceName")}" : $"InstanceName == \"{node.Model.Name}\"";        foreach (var acc in accessors)        {            var span = acc.SyntaxTree.GetLineSpan(acc.Span);            if (acc.Body != null)                span = acc.SyntaxTree.GetLineSpan(acc.Body.Span);            var lineNumber = span.StartLinePosition.Line + 1;            var column = span.StartLinePosition.Character;            try            {                visualStudioDebugger.AddBreakpoint(filePath, lineNumber, column, condition: condition);            }            catch (Exception e)            {                Logging.Log($"Failed to set breakpoint at {filePath} on line {lineNumber}.\nException: {e}");            }        }    }}}; /* {"IsRoot":false} */
             MenuItem id_892a525479834bc8a7080287cf96c3d8 = new MenuItem(header:"Clear all breakpoints") {InstanceName="id_892a525479834bc8a7080287cf96c3d8"}; /* {"IsRoot":false} */
             EventLambda id_c9c6a5dc1f46498ebb3ed35dbc7de601 = new EventLambda() {InstanceName="id_c9c6a5dc1f46498ebb3ed35dbc7de601",Lambda=() =>{    visualStudioDebugger.ClearAllBreakpoints((mainGraph.Get("SelectedNode") as ALANode).Model.CodeFilePath);}}; /* {"IsRoot":false} */
+            MenuItem id_abde305299524fb98c416d8982976aeb = new MenuItem(header:"Continue to Next Breakpoint (Ctrl + F5)") {InstanceName="id_abde305299524fb98c416d8982976aeb"}; /* {"IsRoot":false} */
+            EventLambda id_50d2942b023c4f1bb3dc645cb95e2525 = new EventLambda() {InstanceName="id_50d2942b023c4f1bb3dc645cb95e2525",Lambda=() =>{    visualStudioDebugger.Continue(wait: true);}}; /* {"IsRoot":false} */
+            KeyEvent id_a66e8354268041a6820481b1d195afa9 = new KeyEvent(eventName:"KeyUp") {InstanceName="id_a66e8354268041a6820481b1d195afa9",Key=Key.F5,Modifiers=new Key[]{Key.LeftCtrl}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR Debugger
-            
+
             // BEGIN AUTO-GENERATED WIRING FOR Debugger
             sidePanelTabContainer.WireTo(UIConfig_debuggerTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":true,"DestinationType":"UIConfig","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             UIConfig_debuggerTab.WireTo(debuggerTab, "child"); /* {"SourceType":"UIConfig","SourceIsReference":false,"DestinationType":"Tab","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1430,6 +1436,7 @@ namespace Application
             id_15ab4f895a9545e38f8213a39f827cc8.WireTo(currentStackFrameNode, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["ALANode"],"DestinationGenerics":["ALANode"]} */
             menu_Debugger.WireTo(id_d160405767f14e518fb37276d1f4d0ba, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             menu_Debugger.WireTo(id_ac302270e71b4fe3b598eaaf2a47d2a1, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            menu_Debugger.WireTo(id_abde305299524fb98c416d8982976aeb, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_432cb89b02be40dd9dba5f8231c80971.WireTo(id_1178770bbaf3473aab7d6afd02c7d593, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             menu_Debugger.WireTo(id_fe685b064eca4537a3997e071243ff8c, "children"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_fe685b064eca4537a3997e071243ff8c.WireTo(id_b0e0f3800ecd4c6fbe95f532c1bbb5cc, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
@@ -1491,7 +1498,6 @@ namespace Application
             id_42ae8941c4e6444ea45d5ab13ef1e48c.WireTo(id_5099fe631fca42768789ea7f9c3600a4, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             callStackViewer.WireTo(id_d5d28c3a37454da29140cb42922ad348, "selectedStackFrame"); /* {"SourceType":"DebugViewer","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["EnvDTE.StackFrame"]} */
             getLatestStackFrame.WireTo(id_bc00faddd6b04a6eb10724be33d1fd14, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"ConditionalData","DestinationIsReference":false,"Description":"","SourceGenerics":["List<object>","EnvDTE.StackFrame"],"DestinationGenerics":["EnvDTE.StackFrame"]} */
-            id_b27dd863e96249ed8e73ee0a7f884a39.WireTo(getSelectedNode, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["EnvDTE.StackFrame"],"DestinationGenerics":["EnvDTE.StackFrame","ALANode"]} */
             id_c3296fdea30b4fdfb54152c0355773b6.WireTo(id_4584f2f5ab58469c92798d270a67c064, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["List<object>"]} */
             id_bc00faddd6b04a6eb10724be33d1fd14.WireTo(id_933c988c711f458490a6b38c42449f1c, "conditionMetOutput"); /* {"SourceType":"ConditionalData","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["EnvDTE.StackFrame"],"DestinationGenerics":["EnvDTE.StackFrame"]} */
             latestStackFrame.WireTo(getSelectedNode, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["EnvDTE.StackFrame"],"DestinationGenerics":["EnvDTE.StackFrame","ALANode"]} */
@@ -1520,27 +1526,31 @@ namespace Application
             id_159865d27c234bc7a0acec04ee4b7674.WireTo(id_defa271deca54e258e852a5977ea5e46, "selectedLabel"); /* {"SourceType":"MultiMenu","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
             alaNodeContextMenu.WireTo(id_892a525479834bc8a7080287cf96c3d8, "children"); /* {"SourceType":"ContextMenu","SourceIsReference":true,"DestinationType":"MenuItem","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_892a525479834bc8a7080287cf96c3d8.WireTo(id_c9c6a5dc1f46498ebb3ed35dbc7de601, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_abde305299524fb98c416d8982976aeb.WireTo(id_50d2942b023c4f1bb3dc645cb95e2525, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_50d2942b023c4f1bb3dc645cb95e2525.WireTo(id_c3296fdea30b4fdfb54152c0355773b6, "complete"); /* {"SourceType":"EventLambda","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            UIConfig_mainWindowVertical.WireTo(id_a66e8354268041a6820481b1d195afa9, "eventHandlers"); /* {"SourceType":"UIConfig","SourceIsReference":true,"DestinationType":"KeyEvent","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_a66e8354268041a6820481b1d195afa9.WireTo(id_50d2942b023c4f1bb3dc645cb95e2525, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR Debugger
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateAbstractionTemplateFile
-            MenuItem id_59370ffd33a04152981d73c24f492e39 = new MenuItem(header:"Create Abstraction Template") {InstanceName="id_59370ffd33a04152981d73c24f492e39"}; /* {"IsRoot":false} */
-            Data<string> abstractionFileTemplate = new Data<string>() {InstanceName="abstractionFileTemplate",StoredData="using System;\r\nusing System.Text;\r\nusing System.Linq;\r\nusing System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\nusing System.Windows;\r\nusing Libraries;\r\nusing ProgrammingParadigms;\r\n\r\nnamespace DomainAbstractions\r\n{\r\n    /// <summary>\r\n    /// <para>[Add documentation here]</para>\r\n    /// <para>Ports:</para>\r\n    /// <para></para>\r\n    /// </summary>\r\n    public class $ClassName$\r\n    {\r\n        // Public fields and properties\r\n        public string InstanceName { get; set; } = \"Default\";\r\n\r\n        // Private fields\r\n\r\n        // Ports\r\n        \r\n        // Methods\r\n        \r\n        public $ClassName$()\r\n        {\r\n            \r\n        }\r\n    }\r\n}\r\n"}; /* {"IsRoot ":false} */
-            PopupWindow id_5c02bb4b50884657ad8abca2fd5bb321 = new PopupWindow() {InstanceName="id_5c02bb4b50884657ad8abca2fd5bb321",Height=300,Width=300,Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
-            Horizontal id_7136a32c8d4c44e1a935de30b56f439d = new Horizontal() {InstanceName="id_7136a32c8d4c44e1a935de30b56f439d"}; /* {"IsRoot":false} */
-            Text id_3629c1dbc29e4a2282285560cb27d971 = new Text(text:"Enter class name:") {InstanceName="id_3629c1dbc29e4a2282285560cb27d971",FontSize=14}; /* {"IsRoot":false} */
-            TextBox id_569c535e52484f4ca74be092a7ca730c = new TextBox() {InstanceName="id_569c535e52484f4ca74be092a7ca730c"}; /* {"IsRoot":false} */
-            TextClipboard id_b60ef51462014e04b0b4e22b0f490fd9 = new TextClipboard() {InstanceName="id_b60ef51462014e04b0b4e22b0f490fd9"}; /* {"IsRoot":false} */
-            UIConfig id_1709960878c24c728c2f6b32bd1ebe71 = new UIConfig() {InstanceName="id_1709960878c24c728c2f6b32bd1ebe71",Width=50,HorizAlignment="right",VertAlignment="middle",RightMargin=5,BottomMargin=5}; /* {"IsRoot":false} */
-            Button id_66486246f9044ee5b720fe644968f1fd = new Button(title:"OK") {InstanceName="id_66486246f9044ee5b720fe644968f1fd"}; /* {"IsRoot":false} */
-            EventConnector id_0471b27159524869b87b38c9ad71050c = new EventConnector() {InstanceName="id_0471b27159524869b87b38c9ad71050c"}; /* {"IsRoot":false} */
-            EventLambda id_24b640caa27c4fcbadcfc70544144a9b = new EventLambda() {InstanceName="id_24b640caa27c4fcbadcfc70544144a9b",Lambda=() => Logging.Message("Successfully copied template to clipboard!")}; /* {"IsRoot":false} */
-            TextBox id_eff8bf5c40394d38bd9a0e0f65bd87be = new TextBox() {InstanceName="id_eff8bf5c40394d38bd9a0e0f65bd87be",Text=abstractionFileTemplate.StoredData,AcceptsReturn=true,AcceptsTab=true,Font="Consolas"}; /* {"IsRoot":false} */
-            Apply<string, string> id_169b9c31997f4f94b8df178350223b41 = new Apply<string, string>() {InstanceName="id_169b9c31997f4f94b8df178350223b41",Lambda=name => abstractionFileTemplate.StoredData.Replace("$ClassName$", name)}; /* {"IsRoot":false} */
-            Data<string> id_a90f46d2755f4bf0bbf9f8780bb0d48a = new Data<string>() {InstanceName="id_a90f46d2755f4bf0bbf9f8780bb0d48a"}; /* {"IsRoot":false} */
-            UIConfig id_e33384651f0841c0bcd380e58baf7ccb = new UIConfig() {InstanceName="id_e33384651f0841c0bcd380e58baf7ccb",UniformMargin=5}; /* {"IsRoot":false} */
-            UIConfig id_0266eed738aa471fbeeeb64434a5b753 = new UIConfig() {InstanceName="id_0266eed738aa471fbeeeb64434a5b753",HorizAlignment="left",LeftMargin=5,TopMargin=5,RightMargin=5}; /* {"IsRoot":false} */
-            UIConfig id_6cca5faaa7ed483a8241c313562417ae = new UIConfig() {InstanceName="id_6cca5faaa7ed483a8241c313562417ae",HorizAlignment="left",RightMargin=5}; /* {"IsRoot":false} */
-            UIConfig id_c688b0bc8d1547e1889a52ed3dc0c65f = new UIConfig() {InstanceName="id_c688b0bc8d1547e1889a52ed3dc0c65f",Width=200,Height=25}; /* {"IsRoot":false} */
+            MenuItem id_59370ffd33a04152981d73c24f492e39 = new MenuItem(header: "Create Abstraction Template") { InstanceName = "id_59370ffd33a04152981d73c24f492e39" }; /* {"IsRoot":false} */
+            Data<string> abstractionFileTemplate = new Data<string>() { InstanceName = "abstractionFileTemplate", StoredData = "using System;\r\nusing System.Text;\r\nusing System.Linq;\r\nusing System.Collections.Generic;\r\nusing System.Threading.Tasks;\r\nusing System.Windows;\r\nusing Libraries;\r\nusing ProgrammingParadigms;\r\n\r\nnamespace DomainAbstractions\r\n{\r\n    /// <summary>\r\n    /// <para>[Add documentation here]</para>\r\n    /// <para>Ports:</para>\r\n    /// <para></para>\r\n    /// </summary>\r\n    public class $ClassName$\r\n    {\r\n        // Public fields and properties\r\n        public string InstanceName { get; set; } = \"Default\";\r\n\r\n        // Private fields\r\n\r\n        // Ports\r\n        \r\n        // Methods\r\n        \r\n        public $ClassName$()\r\n        {\r\n            \r\n        }\r\n    }\r\n}\r\n" }; /* {"IsRoot ":false} */
+            PopupWindow id_5c02bb4b50884657ad8abca2fd5bb321 = new PopupWindow() { InstanceName = "id_5c02bb4b50884657ad8abca2fd5bb321", Height = 300, Width = 300, Resize = SizeToContent.WidthAndHeight }; /* {"IsRoot":false} */
+            Horizontal id_7136a32c8d4c44e1a935de30b56f439d = new Horizontal() { InstanceName = "id_7136a32c8d4c44e1a935de30b56f439d" }; /* {"IsRoot":false} */
+            Text id_3629c1dbc29e4a2282285560cb27d971 = new Text(text: "Enter class name:") { InstanceName = "id_3629c1dbc29e4a2282285560cb27d971", FontSize = 14 }; /* {"IsRoot":false} */
+            TextBox id_569c535e52484f4ca74be092a7ca730c = new TextBox() { InstanceName = "id_569c535e52484f4ca74be092a7ca730c" }; /* {"IsRoot":false} */
+            TextClipboard id_b60ef51462014e04b0b4e22b0f490fd9 = new TextClipboard() { InstanceName = "id_b60ef51462014e04b0b4e22b0f490fd9" }; /* {"IsRoot":false} */
+            UIConfig id_1709960878c24c728c2f6b32bd1ebe71 = new UIConfig() { InstanceName = "id_1709960878c24c728c2f6b32bd1ebe71", Width = 50, HorizAlignment = "right", VertAlignment = "middle", RightMargin = 5, BottomMargin = 5 }; /* {"IsRoot":false} */
+            Button id_66486246f9044ee5b720fe644968f1fd = new Button(title: "OK") { InstanceName = "id_66486246f9044ee5b720fe644968f1fd" }; /* {"IsRoot":false} */
+            EventConnector id_0471b27159524869b87b38c9ad71050c = new EventConnector() { InstanceName = "id_0471b27159524869b87b38c9ad71050c" }; /* {"IsRoot":false} */
+            EventLambda id_24b640caa27c4fcbadcfc70544144a9b = new EventLambda() { InstanceName = "id_24b640caa27c4fcbadcfc70544144a9b", Lambda = () => Logging.Message("Successfully copied template to clipboard!") }; /* {"IsRoot":false} */
+            TextBox id_eff8bf5c40394d38bd9a0e0f65bd87be = new TextBox() { InstanceName = "id_eff8bf5c40394d38bd9a0e0f65bd87be", Text = abstractionFileTemplate.StoredData, AcceptsReturn = true, AcceptsTab = true, Font = "Consolas" }; /* {"IsRoot":false} */
+            Apply<string, string> id_169b9c31997f4f94b8df178350223b41 = new Apply<string, string>() { InstanceName = "id_169b9c31997f4f94b8df178350223b41", Lambda = name => abstractionFileTemplate.StoredData.Replace("$ClassName$", name) }; /* {"IsRoot":false} */
+            Data<string> id_a90f46d2755f4bf0bbf9f8780bb0d48a = new Data<string>() { InstanceName = "id_a90f46d2755f4bf0bbf9f8780bb0d48a" }; /* {"IsRoot":false} */
+            UIConfig id_e33384651f0841c0bcd380e58baf7ccb = new UIConfig() { InstanceName = "id_e33384651f0841c0bcd380e58baf7ccb", UniformMargin = 5 }; /* {"IsRoot":false} */
+            UIConfig id_0266eed738aa471fbeeeb64434a5b753 = new UIConfig() { InstanceName = "id_0266eed738aa471fbeeeb64434a5b753", HorizAlignment = "left", LeftMargin = 5, TopMargin = 5, RightMargin = 5 }; /* {"IsRoot":false} */
+            UIConfig id_6cca5faaa7ed483a8241c313562417ae = new UIConfig() { InstanceName = "id_6cca5faaa7ed483a8241c313562417ae", HorizAlignment = "left", RightMargin = 5 }; /* {"IsRoot":false} */
+            UIConfig id_c688b0bc8d1547e1889a52ed3dc0c65f = new UIConfig() { InstanceName = "id_c688b0bc8d1547e1889a52ed3dc0c65f", Width = 200, Height = 25 }; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR CreateAbstractionTemplateFile
 
             // BEGIN AUTO-GENERATED WIRING FOR CreateAbstractionTemplateFile
@@ -1569,16 +1579,16 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR CreateAbstractionTemplateFile
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR SubDiagramTools
-            MenuItem id_5d765020fe304748b69ae678a2f9b22c = new MenuItem(header:"Generate Code for Selected Nodes and Associated Wires") {InstanceName="id_5d765020fe304748b69ae678a2f9b22c"}; /* {"IsRoot":false} */
-            Data<string> id_d5c0d46073984152a16a6398e4578838 = new Data<string>() {InstanceName="id_d5c0d46073984152a16a6398e4578838",Lambda=() =>{    var sb = new StringBuilder();    var nodes = mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsSelected);    foreach (var node in nodes)    {        sb.AppendLine(node.ToInstantiation());    }    sb.AppendLine("");    var wires = mainGraph.Edges.OfType<ALAWire>().Where(w => nodes.Contains(w.Source) || nodes.Contains(w.Destination));    foreach (var wire in wires)    {        var metaData = new JObject();        if (!nodes.Contains(wire.Source)) metaData["SourceIsReference"] = true;        if (!nodes.Contains(wire.Destination)) metaData["DestinationIsReference"] = true;        sb.AppendLine(wire.ToWireTo(metaData: metaData));    }    return sb.ToString();}}; /* {"IsRoot":false} */
-            DataFlowConnector<string> id_610bc1b763c54b96a5451275d58b413c = new DataFlowConnector<string>() {InstanceName="id_610bc1b763c54b96a5451275d58b413c"}; /* {"IsRoot":false} */
-            TextClipboard id_7a4fe3822ce74e848277b07df1ff2568 = new TextClipboard() {InstanceName="id_7a4fe3822ce74e848277b07df1ff2568"}; /* {"IsRoot":false} */
-            ApplyAction<string> id_63d5607b34974a38a8706906b625021a = new ApplyAction<string>() {InstanceName="id_63d5607b34974a38a8706906b625021a",Lambda=code =>{    var split = code.Split(new[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);    var numLines = split.Length;    Logging.Message($"Saved {numLines} lines of code to the clipboard!");}}; /* {"IsRoot":false} */
-            MenuItem id_e58b70038b6f4e2fb259da959117c21b = new MenuItem(header:"Subdiagram Tools...") {InstanceName="id_e58b70038b6f4e2fb259da959117c21b"}; /* {"IsRoot":false} */
-            MenuItem id_82de335d5fd84b5b8090681f94a00749 = new MenuItem(header:"Delete Selected Nodes and Associated Wires") {InstanceName="id_82de335d5fd84b5b8090681f94a00749"}; /* {"IsRoot":false} */
-            EventLambda id_732ef8aea0be429891295f990b010292 = new EventLambda() {InstanceName="id_732ef8aea0be429891295f990b010292",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsSelected).ToList();    var wires = mainGraph.Edges.OfType<ALAWire>().Where(w => nodes.Contains(w.Source) || nodes.Contains(w.Destination)).ToList();    foreach (var wire in wires)    {        wire.Delete();    }    foreach (var node in nodes)    {        node.Delete();    }}}; /* {"IsRoot":false} */
-            MenuItem id_261da690dcbe4c2fa863f58211e7edc9 = new MenuItem(header:"Cut Selected Nodes and Associated Wires") {InstanceName="id_261da690dcbe4c2fa863f58211e7edc9"}; /* {"IsRoot":false} */
-            EventConnector id_1ae4bff52e464193adb0a262283a9052 = new EventConnector() {InstanceName="id_1ae4bff52e464193adb0a262283a9052"}; /* {"IsRoot":false} */
+            MenuItem id_5d765020fe304748b69ae678a2f9b22c = new MenuItem(header: "Generate Code for Selected Nodes and Associated Wires") { InstanceName = "id_5d765020fe304748b69ae678a2f9b22c" }; /* {"IsRoot":false} */
+            Data<string> id_d5c0d46073984152a16a6398e4578838 = new Data<string>() { InstanceName = "id_d5c0d46073984152a16a6398e4578838", Lambda = () => { var sb = new StringBuilder(); var nodes = mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsSelected); foreach (var node in nodes) { sb.AppendLine(node.ToInstantiation()); } sb.AppendLine(""); var wires = mainGraph.Edges.OfType<ALAWire>().Where(w => nodes.Contains(w.Source) || nodes.Contains(w.Destination)); foreach (var wire in wires) { var metaData = new JObject(); if (!nodes.Contains(wire.Source)) metaData["SourceIsReference"] = true; if (!nodes.Contains(wire.Destination)) metaData["DestinationIsReference"] = true; sb.AppendLine(wire.ToWireTo(metaData: metaData)); } return sb.ToString(); } }; /* {"IsRoot":false} */
+            DataFlowConnector<string> id_610bc1b763c54b96a5451275d58b413c = new DataFlowConnector<string>() { InstanceName = "id_610bc1b763c54b96a5451275d58b413c" }; /* {"IsRoot":false} */
+            TextClipboard id_7a4fe3822ce74e848277b07df1ff2568 = new TextClipboard() { InstanceName = "id_7a4fe3822ce74e848277b07df1ff2568" }; /* {"IsRoot":false} */
+            ApplyAction<string> id_63d5607b34974a38a8706906b625021a = new ApplyAction<string>() { InstanceName = "id_63d5607b34974a38a8706906b625021a", Lambda = code => { var split = code.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries); var numLines = split.Length; Logging.Message($"Saved {numLines} lines of code to the clipboard!"); } }; /* {"IsRoot":false} */
+            MenuItem id_e58b70038b6f4e2fb259da959117c21b = new MenuItem(header: "Subdiagram Tools...") { InstanceName = "id_e58b70038b6f4e2fb259da959117c21b" }; /* {"IsRoot":false} */
+            MenuItem id_82de335d5fd84b5b8090681f94a00749 = new MenuItem(header: "Delete Selected Nodes and Associated Wires") { InstanceName = "id_82de335d5fd84b5b8090681f94a00749" }; /* {"IsRoot":false} */
+            EventLambda id_732ef8aea0be429891295f990b010292 = new EventLambda() { InstanceName = "id_732ef8aea0be429891295f990b010292", Lambda = () => { var nodes = mainGraph.Nodes.OfType<ALANode>().Where(n => n.IsSelected).ToList(); var wires = mainGraph.Edges.OfType<ALAWire>().Where(w => nodes.Contains(w.Source) || nodes.Contains(w.Destination)).ToList(); foreach (var wire in wires) { wire.Delete(); } foreach (var node in nodes) { node.Delete(); } } }; /* {"IsRoot":false} */
+            MenuItem id_261da690dcbe4c2fa863f58211e7edc9 = new MenuItem(header: "Cut Selected Nodes and Associated Wires") { InstanceName = "id_261da690dcbe4c2fa863f58211e7edc9" }; /* {"IsRoot":false} */
+            EventConnector id_1ae4bff52e464193adb0a262283a9052 = new EventConnector() { InstanceName = "id_1ae4bff52e464193adb0a262283a9052" }; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR SubDiagramTools
 
             // BEGIN AUTO-GENERATED WIRING FOR SubDiagramTools
@@ -1598,7 +1608,7 @@ namespace Application
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateCodeGenerationLandmarks
             MenuItem id_eeaef5bfff254a4f850d013288ef44fa = new MenuItem(header:"Create Code Generation Landmarks") {InstanceName="id_eeaef5bfff254a4f850d013288ef44fa"}; /* {"IsRoot":false} */
-            PopupWindow id_c7ff61bc312843019dde00238832d5a1 = new PopupWindow() {InstanceName="id_c7ff61bc312843019dde00238832d5a1"}; /* {"IsRoot":false} */
+            PopupWindow id_c7ff61bc312843019dde00238832d5a1 = new PopupWindow() {InstanceName="id_c7ff61bc312843019dde00238832d5a1",Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
             UIConfig id_56042a0e94ed4d599965f1f9c4fb7b8c = new UIConfig() {InstanceName="id_56042a0e94ed4d599965f1f9c4fb7b8c",UniformMargin=3}; /* {"IsRoot":false} */
             Text id_a1e3c8eca2ee4f75ab41465c2bc1a9a9 = new Text(text:"Diagram name: ") {InstanceName="id_a1e3c8eca2ee4f75ab41465c2bc1a9a9"}; /* {"IsRoot":false} */
             Horizontal id_f32979c2ffca4ab1b028ced3255bb68d = new Horizontal() {InstanceName="id_f32979c2ffca4ab1b028ced3255bb68d"}; /* {"IsRoot":false} */
