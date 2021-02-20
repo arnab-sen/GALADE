@@ -1482,13 +1482,13 @@ namespace RequirementsAbstractions
             }
         }
 
-        public void Select()
+        public void Select(bool focus = true)
         {
             IsSelected = true;
 
             HighlightNode();
             Graph.Set("SelectedNode", this);
-            _rootUI.Render.Focus();
+            if (focus) _rootUI.Render.Focus();
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
