@@ -1089,7 +1089,7 @@ namespace RequirementsAbstractions
                 portBox.BorderColour = PortBorder;
             };
 
-            render.MouseDown += (sender, args) =>
+            render.MouseUp += (sender, args) =>
             {
                 _selectedPort = portBox;
                 _selectedPort.Render.Focus();
@@ -1100,7 +1100,8 @@ namespace RequirementsAbstractions
                 portBox.Background = PortHighlightedBackground;
                 portBox.BorderColour = PortHighlightedBorder;
                 _selectedPort = portBox;
-                Select();
+
+                Select(focus: false);
             };
 
             render.LostFocus += (sender, args) =>
@@ -1476,13 +1477,13 @@ namespace RequirementsAbstractions
             }
         }
 
-        public void Select()
+        public void Select(bool focus = true)
         {
             IsSelected = true;
 
             HighlightNode();
             Graph.Set("SelectedNode", this);
-            _rootUI.Render.Focus();
+            if (focus) _rootUI.Render.Focus();
 
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
