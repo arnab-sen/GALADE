@@ -1595,22 +1595,22 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR SubDiagramTools
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateCodeGenerationLandmarks
-            MenuItem id_eeaef5bfff254a4f850d013288ef44fa = new MenuItem(header: "Create Code Generation Landmarks") { InstanceName = "id_eeaef5bfff254a4f850d013288ef44fa" }; /* {"IsRoot":false} */
-            PopupWindow id_c7ff61bc312843019dde00238832d5a1 = new PopupWindow() { InstanceName = "id_c7ff61bc312843019dde00238832d5a1" }; /* {"IsRoot":false} */
-            UIConfig id_56042a0e94ed4d599965f1f9c4fb7b8c = new UIConfig() { InstanceName = "id_56042a0e94ed4d599965f1f9c4fb7b8c", UniformMargin = 3 }; /* {"IsRoot":false} */
-            Text id_a1e3c8eca2ee4f75ab41465c2bc1a9a9 = new Text(text: "Diagram name: ") { InstanceName = "id_a1e3c8eca2ee4f75ab41465c2bc1a9a9" }; /* {"IsRoot":false} */
-            Horizontal id_f32979c2ffca4ab1b028ced3255bb68d = new Horizontal() { InstanceName = "id_f32979c2ffca4ab1b028ced3255bb68d" }; /* {"IsRoot":false} */
-            UIConfig id_55aaae3200544344b396fd2e8a63a03c = new UIConfig() { InstanceName = "id_55aaae3200544344b396fd2e8a63a03c", Height = 20, MinWidth = 200, UniformMargin = 3 }; /* {"IsRoot":false} */
-            TextBox id_f736325c8e074ccf92f128ffa9b3d68f = new TextBox() { InstanceName = "id_f736325c8e074ccf92f128ffa9b3d68f" }; /* {"IsRoot":false} */
-            Horizontal id_9bf12baaecbe45658c5861327b37fcde = new Horizontal() { InstanceName = "id_9bf12baaecbe45658c5861327b37fcde" }; /* {"IsRoot":false} */
-            UIConfig id_13ee0053aac24b538d4b0bc94606974f = new UIConfig() { InstanceName = "id_13ee0053aac24b538d4b0bc94606974f", Width = 50, HorizAlignment = "right", UniformMargin = 3 }; /* {"IsRoot":false} */
-            Button id_509962caea7b49198c21f0b4c3f7db66 = new Button(title: "OK") { InstanceName = "id_509962caea7b49198c21f0b4c3f7db66" }; /* {"IsRoot":false} */
-            Vertical id_f73625a393984a259b173f4d60d92b60 = new Vertical() { InstanceName = "id_f73625a393984a259b173f4d60d92b60" }; /* {"IsRoot":false} */
-            DataFlowConnector<string> id_f0902adcccf946fe9050b5d783af0277 = new DataFlowConnector<string>() { InstanceName = "id_f0902adcccf946fe9050b5d783af0277" }; /* {"IsRoot":false} */
-            Data<string> id_c10e8ba484d44b708f02664b52e48a25 = new Data<string>() { InstanceName = "id_c10e8ba484d44b708f02664b52e48a25" }; /* {"IsRoot":false} */
-            Apply<string, string> id_d5a44d60211d4434a97b6e04f4c44887 = new Apply<string, string>() { InstanceName = "id_d5a44d60211d4434a97b6e04f4c44887", Lambda = diagramName => { var sb = new StringBuilder(); sb.AppendLine($"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {diagramName}\n"); sb.AppendLine($"// END AUTO-GENERATED INSTANTIATIONS FOR {diagramName}\n"); sb.AppendLine($"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}\n"); sb.AppendLine($"// END AUTO-GENERATED WIRING FOR {diagramName}\n"); return sb.ToString(); } }; /* {"IsRoot":false} */
-            TextClipboard id_b49ee56548054b7b91bc4a6863b68112 = new TextClipboard() { InstanceName = "id_b49ee56548054b7b91bc4a6863b68112" }; /* {"IsRoot":false} */
-            EventConnector id_6fd8927aa820450b8b1e04638661d9ce = new EventConnector() { InstanceName = "id_6fd8927aa820450b8b1e04638661d9ce" }; /* {"IsRoot":false} */
+            MenuItem id_eeaef5bfff254a4f850d013288ef44fa = new MenuItem(header:"Create Code Generation Landmarks") {InstanceName="id_eeaef5bfff254a4f850d013288ef44fa"}; /* {"IsRoot":false} */
+            PopupWindow id_c7ff61bc312843019dde00238832d5a1 = new PopupWindow() {InstanceName="id_c7ff61bc312843019dde00238832d5a1",Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
+            UIConfig id_56042a0e94ed4d599965f1f9c4fb7b8c = new UIConfig() {InstanceName="id_56042a0e94ed4d599965f1f9c4fb7b8c",UniformMargin=3}; /* {"IsRoot":false} */
+            Text id_a1e3c8eca2ee4f75ab41465c2bc1a9a9 = new Text(text:"Diagram name: ") {InstanceName="id_a1e3c8eca2ee4f75ab41465c2bc1a9a9"}; /* {"IsRoot":false} */
+            Horizontal id_f32979c2ffca4ab1b028ced3255bb68d = new Horizontal() {InstanceName="id_f32979c2ffca4ab1b028ced3255bb68d"}; /* {"IsRoot":false} */
+            UIConfig id_55aaae3200544344b396fd2e8a63a03c = new UIConfig() {InstanceName="id_55aaae3200544344b396fd2e8a63a03c",Height=20,MinWidth=200,UniformMargin=3}; /* {"IsRoot":false} */
+            TextBox id_f736325c8e074ccf92f128ffa9b3d68f = new TextBox() {InstanceName="id_f736325c8e074ccf92f128ffa9b3d68f"}; /* {"IsRoot":false} */
+            Horizontal id_9bf12baaecbe45658c5861327b37fcde = new Horizontal() {InstanceName="id_9bf12baaecbe45658c5861327b37fcde"}; /* {"IsRoot":false} */
+            UIConfig id_13ee0053aac24b538d4b0bc94606974f = new UIConfig() {InstanceName="id_13ee0053aac24b538d4b0bc94606974f",Width=50,HorizAlignment="right",UniformMargin=3}; /* {"IsRoot":false} */
+            Button id_509962caea7b49198c21f0b4c3f7db66 = new Button(title:"OK") {InstanceName="id_509962caea7b49198c21f0b4c3f7db66"}; /* {"IsRoot":false} */
+            Vertical id_f73625a393984a259b173f4d60d92b60 = new Vertical() {InstanceName="id_f73625a393984a259b173f4d60d92b60"}; /* {"IsRoot":false} */
+            DataFlowConnector<string> id_f0902adcccf946fe9050b5d783af0277 = new DataFlowConnector<string>() {InstanceName="id_f0902adcccf946fe9050b5d783af0277"}; /* {"IsRoot":false} */
+            Data<string> id_c10e8ba484d44b708f02664b52e48a25 = new Data<string>() {InstanceName="id_c10e8ba484d44b708f02664b52e48a25"}; /* {"IsRoot":false} */
+            Apply<string, string> id_d5a44d60211d4434a97b6e04f4c44887 = new Apply<string, string>() {InstanceName="id_d5a44d60211d4434a97b6e04f4c44887",Lambda=diagramName =>{    var sb = new StringBuilder();    sb.AppendLine($"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {diagramName}\n");    sb.AppendLine($"// END AUTO-GENERATED INSTANTIATIONS FOR {diagramName}\n");    sb.AppendLine($"// BEGIN AUTO-GENERATED WIRING FOR {diagramName}\n");    sb.AppendLine($"// END AUTO-GENERATED WIRING FOR {diagramName}\n");    return sb.ToString();}}; /* {"IsRoot":false} */
+            TextClipboard id_b49ee56548054b7b91bc4a6863b68112 = new TextClipboard() {InstanceName="id_b49ee56548054b7b91bc4a6863b68112"}; /* {"IsRoot":false} */
+            EventConnector id_6fd8927aa820450b8b1e04638661d9ce = new EventConnector() {InstanceName="id_6fd8927aa820450b8b1e04638661d9ce"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR CreateCodeGenerationLandmarks
 
             // BEGIN AUTO-GENERATED WIRING FOR CreateCodeGenerationLandmarks
