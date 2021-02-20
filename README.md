@@ -22,7 +22,11 @@ Opening it via GALADE should show the following diagram:
 
 ![](https://i.gyazo.com/fe4ad1a50837fd67a8ba214601539748.png)
 
-### Modifying the Diagram
+### General Movement
+Scroll the mouse wheel to zoom in and out to/from the cursor's position. Hold down right click and drag to move around the diagram. You'll notice that when zoomed out far enough, each node will show an overlay containing its type and name.
+![](https://i.gyazo.com/04a06976473ddc92a8c3d277c818637c.gif)
+
+### Adding a New Node
 There are two ways to add a new node:
 
 1. Right click > `Add node`: This will add a floating node to the diagram. They will be treated as roots when the layout manager calls an update (which can be manually done by middle clicking on the background and pressing R).
@@ -44,8 +48,18 @@ A node can be modified in the following ways:
 * If the node's class requires type parameters, dropdowns for them will appear beside the type drop down, and can be modified to your liking.
 * Press the `+` button to add a new member row, and any `-` button to delete its member row. Any changes made to that member will also be saved and can be returned to in case it was hidden by accident.
     
-    ![](https://i.gyazo.com/62970f0d0980c8b0e2e208ccd0f7713a.gif)
+    ![](https://i.gyazo.com/9abd41e0729e82fef044224c37c24360.gif)
+* Each node can be given a description that is saved when generating code and persists after GALADE is closed. Simply click the `?` button on a node and start typing, then click out of the popup box to save. Nodes with descriptions will have the `?` button be highlighted blue.
 
-#### Adding, Removing, and Moving Nodes
+    ![](https://i.gyazo.com/93ce2af380ceaa15ae843b27536c7951.gif)
 
-#### Adding, Removing, and Moving Wires
+
+#### Adding a New Wire
+You can add a new wire between any two existing nodes by selecting the source port, pressing `Ctrl + Q`, then selecting the destination port.
+    ![](https://i.gyazo.com/4fcbe6782989017194ebb338842da4b0.gif)
+
+#### Deleting Nodes and Wires
+A node can be deleted by clicking on it and pressing the `Delete` key, or through its context menu. In its context menu, you can also opt to delete both the node and every node attached to it.
+
+A wire can be deleted through its context menu. Deleting a wire will not delete the connected nodes.
+![](https://i.gyazo.com/6604cf165b2804713768a6f496c456bd.gif)
