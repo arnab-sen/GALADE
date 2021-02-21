@@ -31,6 +31,8 @@ The diagram can be reopened at any time through `File > Open Diagram...`, which 
 Scroll the mouse wheel to zoom in and out to/from the cursor's position. Hold down right click and drag to move around the diagram. You'll notice that when zoomed out far enough, each node will show an overlay containing its type and name.
 ![](https://i.gyazo.com/04a06976473ddc92a8c3d277c818637c.gif)
 
+Middle click (click the mouse scroll button) on the blank area of the canvas to bring focus to it. This can help resolve issues with commands from key presses not being executed properly.
+
 ### Adding a New Node
 There are two ways to add a new node:
 
