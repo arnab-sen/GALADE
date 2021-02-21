@@ -27,7 +27,7 @@ This diagram represents an application that shows a window, and opens a new wind
 
 The diagram can be reopened at any time through `File > Open Diagram...`, which will examine the `Application.cs` file at its current state. This can be useful for undoing mistakes in the diagram.
 
-### General Movement
+### General Tips
 Scroll the mouse wheel to zoom in and out to/from the cursor's position. Hold down right click and drag to move around the diagram. You'll notice that when zoomed out far enough, each node will show an overlay containing its type and name.
 ![](https://i.gyazo.com/04a06976473ddc92a8c3d277c818637c.gif)
 
