@@ -87,3 +87,4 @@ Pressing `Ctrl + S` or using `Sync > Diagram to Code` will "save" the diagram, w
 
 ### Searching the Diagram
 Press `Ctrl + F` to navigate to the Search tab. Type in a query and press `Enter` to search through the types, names, and member rows of each node. Any results that show up can be clicked on to navigate to that node.
+![](https://i.gyazo.com/046cd074857f321445f626b4f96b6edc.gif)
