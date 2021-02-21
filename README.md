@@ -75,12 +75,12 @@ Nodes can be moved with a standard left click and drag, however their positions 
 
 A wire's source and destination can be changed through their context menus.
 
+A cross connection can be turned into a tree connection through the wire's context menu.
+![](https://i.gyazo.com/3cd73406acb3a541ac49eeab6627b064.gif)
+
 The index of a node in its tree parent's list of children can be change by selecting that node, then pressing `Ctrl + Up/Down` to decrease/increase its index. This will also automatically rearrange the subtree of the moved node.
 
 ![](https://i.gyazo.com/221388a8b354bae4b665a3a444fe79f6.gif)
-
-A cross connection can be turned into a tree connection through the wire's context menu.
-![](https://i.gyazo.com/3cd73406acb3a541ac49eeab6627b064.gif)
 
 ### Generating Code
 The diagram itself is saved as code in `Application.cs`. The diagram is not saved elsewhere.
