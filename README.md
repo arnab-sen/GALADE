@@ -82,5 +82,8 @@ A cross connection can be turned into a tree connection through the wire's conte
 ### Generating Code
 The diagram itself is saved as code in `Application.cs`. The diagram is not saved elsewhere.
 
-Pressing `Ctrl + S` will "save" the diagram, which really just means that the current diagram will be converted into C# code and inserted between the appropriate code generation landmarks. In the following clip, the source code was temporarily deleted just to make the code generation clearer.
+Pressing `Ctrl + S` or using `Sync > Diagram to Code` will "save" the diagram, which really just means that the current diagram will be converted into C# code and inserted between the appropriate code generation landmarks. In the following clip, the source code was temporarily deleted just to make the code generation clearer.
 ![](https://i.gyazo.com/437500b83453d141d03222799a2764e7.gif)
+
+### Searching the Diagram
+Press `Ctrl + F` to navigate to the Search tab. Type in a query and press `Enter` to search through the types, names, and member rows of each node. Any results that show up can be clicked on to navigate to that node.
