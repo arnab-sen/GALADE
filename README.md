@@ -38,9 +38,10 @@ There are two ways to add a new node:
 2. Select a port, then press `A` to add a new node as a child, connected to that port.
 
 Then, all abstraction models found can be loaded into the new node by selecting from, or typed into, the type drop down menu.
-
-The following video showcases everything mentioned in this section:
 ![](https://i.gyazo.com/edffe43b3a634dd16c2c3039eb34b094.gif)
+
+If you want to know what an abstraction does, simply hover over it to view its documentation (pulled from the source code). Alternatively, you can right click on an abstraction and open its source file in your default editor for `.cs` files.
+![](https://i.gyazo.com/fcc68e2bce3b929f87ea689e0d43fce3.gif)
 
 
 ### Editing Properties
