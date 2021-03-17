@@ -10,7 +10,7 @@ See https://abstractionlayeredarchitecture.com/ for more details on ALA.
 ## Getting Started
 This guide will help you get started with using GALADE, and will use the following project as an example: https://github.com/arnab-sen/ALASandbox
 
-This guide was made using GALADE v1.13.0.
+This guide was made using GALADE v1.13.0. To download the latest release, head over to https://github.com/arnab-sen/GALADE/releases and download the zip file related to the latest release. For example, to download GALADE v1.13.0, select `GALADE_v1.3.0.zip` under the Assets section of that release. Simply extract that zip file and run `GALADE_v1.3.0.exe` to begin using it. No installation is necessary.
 
 ### Visualising an Existing ALA Project
 First, use `File > Open Project` to locate the ALASandbox folder. This will cause GALADE to look through the `ALACore/ProgrammingParadigms` and `ALACore/DomainAbstractions` folders, parse any C# classes and interfaces found, and create internal models of abstractions that can be visualised.
