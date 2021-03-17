@@ -222,7 +222,7 @@ namespace RequirementsAbstractions
                     if (portNodeList == null) return;
                     var portSyntaxNodes = portNodeList.Where(n => MatchStartOfString(n.ToString(), ProgrammingParadigms));
 
-                    var docLines = model.SourceCode.Split(new [] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    var docLines = model.SourceCode.Split(new [] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
                     var classDeclaration = docLines.First(line => line.Trim().Contains($"class {model.Type}"));
 
                     var implementedPortNames = new List<string>();
@@ -474,7 +474,7 @@ namespace RequirementsAbstractions
 
         private string ParseDocumentation(string rawText)
         {
-            var lines = rawText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
+            var lines = rawText.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(line => line.Trim('/', ' ')).ToList();
 
             var sb = new StringBuilder();
 

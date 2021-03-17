@@ -87,7 +87,7 @@ namespace RequirementsAbstractions
 
         public void ExtractCode(string code, string chosenDiagramName = "")
         {
-            var codeLines = code.Split(new []{ Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var codeLines = code.Split(new []{ Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
             var unnamedInstantiationsCounter = 0;
             var unnamedWireTosCounter = 0;
             var instantiations = new Dictionary<string, List<string>>();
