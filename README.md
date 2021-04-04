@@ -4,7 +4,7 @@ GALADE is a self-generating diagramming tool and code generator that handles the
 
 At the moment, only ALA applications written in C# are supported.
 
-See https://abstractionlayeredarchitecture.com/ for more details on ALA.
+See https://abstractionlayeredarchitecture.com for more details on ALA.
 
 
 ## Getting Started
