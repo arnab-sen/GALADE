@@ -77,6 +77,8 @@ Nodes can be moved with a standard left click and drag, however their positions 
 
 A wire's source and destination can be changed through their context menus.
 
+The layout can be refreshed manually by pressing the `R` key.
+
 A cross connection can be turned into a tree connection through the wire's context menu.
 ![](https://i.gyazo.com/3cd73406acb3a541ac49eeab6627b064.gif)
 
