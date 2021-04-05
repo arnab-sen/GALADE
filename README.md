@@ -36,8 +36,10 @@ Middle click (click the mouse scroll button) on the blank area of the canvas to 
 ### Adding a New Node
 There are two ways to add a new node:
 
-1. Right click > `Add node`: This will add a floating node to the diagram. They will be treated as roots when the layout manager calls an update (which can be manually done by middle clicking on the background and pressing R).
+1. Right click > `Add node`: This will add a floating node to the diagram. They will be treated as roots when the layout manager calls an update.
 2. Select a port, then press `A` to add a new node as a child, connected to that port.
+
+Note: The layout can be refreshed manually by middle clicking on the background and pressing `R`.
 
 Then, all abstraction models found can be loaded into the new node by selecting from, or typed into, the type drop down menu.
 ![](https://i.gyazo.com/edffe43b3a634dd16c2c3039eb34b094.gif)
@@ -76,8 +78,6 @@ A wire can be deleted through its context menu. Deleting a wire will not delete 
 Nodes can be moved with a standard left click and drag, however their positions will be reset by the layout manager.
 
 A wire's source and destination can be changed through their context menus.
-
-The layout can be refreshed manually by pressing the `R` key.
 
 A cross connection can be turned into a tree connection through the wire's context menu.
 ![](https://i.gyazo.com/3cd73406acb3a541ac49eeab6627b064.gif)
