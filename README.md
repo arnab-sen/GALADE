@@ -4,7 +4,7 @@ GALADE is a self-generating diagramming tool and code generator that handles the
 
 At the moment, only ALA applications written in C# are supported.
 
-See https://abstractionlayeredarchitecture.com/ for more details on ALA.
+See https://abstractionlayeredarchitecture.com for more details on ALA.
 
 
 ## Getting Started
@@ -36,8 +36,10 @@ Middle click (click the mouse scroll button) on the blank area of the canvas to 
 ### Adding a New Node
 There are two ways to add a new node:
 
-1. Right click > `Add node`: This will add a floating node to the diagram. They will be treated as roots when the layout manager calls an update (which can be manually done by middle clicking on the background and pressing R).
+1. Right click > `Add node`: This will add a floating node to the diagram. They will be treated as roots when the layout manager calls an update.
 2. Select a port, then press `A` to add a new node as a child, connected to that port.
+
+Note: The layout can be refreshed manually by middle clicking on the background and pressing `R`.
 
 Then, all abstraction models found can be loaded into the new node by selecting from, or typed into, the type drop down menu.
 ![](https://i.gyazo.com/edffe43b3a634dd16c2c3039eb34b094.gif)
