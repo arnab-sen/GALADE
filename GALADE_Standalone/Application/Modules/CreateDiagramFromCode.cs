@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
-using RequirementsAbstractions;
+using StoryAbstractions;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 using System.Windows.Threading;
