@@ -1,6 +1,6 @@
 # GALADE: The Graphical Abstraction Layered Architecture Development Environment
 
-GALADE is a self-generating diagramming tool and code generator that handles the creation, development, and maintenance of ALA applications.
+GALADE is a self-generating diagramming tool and code generator that handles the development and maintenance of ALA applications.
 
 At the moment, only ALA applications written in C# are supported.
 
