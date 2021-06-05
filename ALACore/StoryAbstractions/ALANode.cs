@@ -35,7 +35,7 @@ namespace StoryAbstractions
     /// <para>Note: This class used to define all of its UI and UI events through wiring, but for performance reasons,
     /// many of those definitions were moved into methods.</para>
     /// </summary>
-    public class ALANode
+    public class ALANode : IALANode
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -179,11 +179,11 @@ namespace StoryAbstractions
             }
         }
 
-        public delegate void SomethingChangedDelegate();
         public delegate void TextChangedDelegate(string text);
         public TextChangedDelegate TypeChanged;
 
         public event SomethingChangedDelegate PositionChanged;
+
         public Func<Port, Point> GetAttachmentPoint { get; set; }
         public bool IsSelected { get; set; }
 
@@ -1599,7 +1599,7 @@ namespace StoryAbstractions
         {
             var connectedWires = new List<ALAWire>();
 
-            var q = new Queue<ALANode>();
+            var q = new Queue<IALANode>();
             q.Enqueue(this);
             var visited = new HashSet<string>();
             if (treeParents == null) treeParents = new Dictionary<string, string>();
@@ -1651,13 +1651,13 @@ namespace StoryAbstractions
                 if (!addedNodes.Contains(wire.Source.Id))
                 {
                     addedNodes.Add(wire.Source.Id);
-                    instantiations.Add(wire.Source.ToFlatInstantiation());
+                    instantiations.Add(wire.Source.ToInstantiation());
                 }
 
                 if (!addedNodes.Contains(wire.Destination.Id))
                 {
                     addedNodes.Add(wire.Destination.Id);
-                    instantiations.Add(wire.Destination.ToFlatInstantiation());
+                    instantiations.Add(wire.Destination.ToInstantiation());
                 }
 
                 wireTos.Add(wire.ToWireTo());

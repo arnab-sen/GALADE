@@ -39,7 +39,7 @@ namespace StoryAbstractions
         public int DefaultZIndex { get; set; } = 10;
         public bool IsTreeConnection { get; set; } = false;
 
-        public ALANode Source
+        public IALANode Source
         {
             get => _source;
             set
@@ -49,7 +49,7 @@ namespace StoryAbstractions
             }
         }
 
-        public ALANode Destination
+        public IALANode Destination
         {
             get => _destination;
             set
@@ -82,8 +82,8 @@ namespace StoryAbstractions
         private Box rootUI;
         private CurvedLine _bezier;
         private UIConfig _bezierConfig;
-        private ALANode _source;
-        private ALANode _destination;
+        private IALANode _source;
+        private IALANode _destination;
         private StateTransition<Enums.DiagramMode> _stateTransition;
         private double _sourceX;
         private double _sourceY;
@@ -337,7 +337,7 @@ namespace StoryAbstractions
 
         }
 
-        private void UpdateEndpointEvents(ALANode oldNode, ALANode newNode)
+        private void UpdateEndpointEvents(IALANode oldNode, IALANode newNode)
         {
             if (oldNode != null) oldNode.PositionChanged -= Refresh;
             if (newNode != null) newNode.PositionChanged += Refresh;
@@ -370,7 +370,7 @@ namespace StoryAbstractions
 
             if (sourcePort.IsReversePort)
             {
-                ALANode _temp1 = source;
+                IALANode _temp1 = source;
                 source = destination;
                 destination = _temp1;
 
