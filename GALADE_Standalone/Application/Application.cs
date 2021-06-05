@@ -35,6 +35,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Expression = EnvDTE.Expression;
 using StackFrame = EnvDTE.StackFrame;
 using System.Text.RegularExpressions;
+using Button = DomainAbstractions.Button;
+using CheckBox = DomainAbstractions.CheckBox;
+using ContextMenu = DomainAbstractions.ContextMenu;
+using MenuItem = DomainAbstractions.MenuItem;
+using TextBox = DomainAbstractions.TextBox;
 
 namespace Application
 {
@@ -227,6 +232,28 @@ namespace Application
             var nodeSearchResults = new List<ALANode>();
             var nodeSearchTextResults = new System.Collections.ObjectModel.ObservableCollection<string>();
 
+            Action<Graph, WPFCanvas, IALANode, IALANode, Box, Box, StateTransition<Enums.DiagramMode>, System.Windows.Controls.ContextMenu> CreateWireFromNode = 
+                (Graph graph, WPFCanvas canvas, IALANode source, IALANode destination, Box sourcePort, Box destinationPort, StateTransition<Enums.DiagramMode> st, System.Windows.Controls.ContextMenu contextMenu) =>
+            {
+                var wire = new ALAWire()
+                {
+                    Graph = graph,
+                    Canvas = canvas,
+                    Source = source,
+                    Destination = destination,
+                    SourcePortBox = sourcePort,
+                    DestinationPortBox = destinationPort,
+                    StateTransition = st,
+                    ContextMenu = contextMenu
+                };
+
+                wire.Initialise();
+
+                graph.AddEdge(wire);
+                wire.Paint();
+                wire.StartMoving(source: false);
+            };
+
 #if DEBUG
             var versionCheckSendInitialPulse = false;
             var showDebugMenu = true;
@@ -267,7 +294,20 @@ namespace Application
             RightTreeLayout<ALANode> layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),Roots=mainGraph.Roots.OfType<ALANode>().ToList(),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50}; /* {"IsRoot":false} */
             EventConnector startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"}; /* {"IsRoot":false} */
             KeyEvent R_KeyPressed = new KeyEvent(eventName:"KeyDown") {InstanceName="R_KeyPressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
-            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.ContextMenu = alaNodeContextMenu.Menu;    node.WireContextMenu = alaWireContextMenu.Menu;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode(); node.OnDeleteChildNodes += () =>
+            {
+                var edgesToDelete = mainGraph.Edges
+                    .Where(e => e is ALAWire wire
+                                && (wire.Source == node || wire.Destination == node)
+                                && mainGraph.ContainsEdge(wire))
+                    .Select(e => e as ALAWire).ToList();
+
+                foreach (var edge in edgesToDelete)
+                {
+                    edge?.Delete(deleteDestination: true);
+                }
+            };
+                node.CreateWireFromNode = CreateWireFromNode; node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.ContextMenu = alaNodeContextMenu.Menu;    node.WireContextMenu = alaWireContextMenu.Menu;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"}; /* {"IsRoot":false} */
             MenuItem menu_File = new MenuItem(header:"File") {InstanceName="menu_File"}; /* {"IsRoot":false} */
             MenuItem menu_OpenProject = new MenuItem(header:"Open Project") {InstanceName="menu_OpenProject"}; /* {"IsRoot":false} */

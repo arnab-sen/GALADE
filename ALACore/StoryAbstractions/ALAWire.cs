@@ -20,7 +20,7 @@ using TextBox = DomainAbstractions.TextBox;
 
 namespace StoryAbstractions
 {
-    public class ALAWire
+    public class ALAWire : IALAWire
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
@@ -39,6 +39,12 @@ namespace StoryAbstractions
         public int DefaultZIndex { get; set; } = 10;
         public bool IsTreeConnection { get; set; } = false;
 
+        object IALAWire.SourceNode
+        {
+            get => Source;
+            set => Source = value as IALANode;
+        }
+
         public IALANode Source
         {
             get => _source;
@@ -47,6 +53,12 @@ namespace StoryAbstractions
                 UpdateEndpointEvents(_source, value);
                 _source = value;
             }
+        }
+
+        object IALAWire.DestinationNode
+        {
+            get => Destination;
+            set => Destination = value as IALANode;
         }
 
         public IALANode Destination
@@ -74,6 +86,18 @@ namespace StoryAbstractions
                     Validate();
                 };
             }
+        }
+
+        void IALAWire.SetSourceNodeAndPort(object source, object port)
+        {
+            Source = source as IALANode;
+            SourcePortBox = port as Box;
+        }
+
+        void IALAWire.SetDestinationNodeAndPort(object destination, object port)
+        {
+            Destination = destination as IALANode;
+            DestinationPortBox = port as Box;
         }
 
         public bool IsSelected { get; set; } = false;
@@ -261,8 +285,8 @@ namespace StoryAbstractions
                 return;
             }
 
-            var sourcePortType = Source.Model.GetPort(SourcePort.Name)?.Type ?? "";
-            var destinationPortType = Destination.Model.GetPort(DestinationPort.Name)?.Type ?? "";
+            var sourcePortType = (Source.NodeModel as AbstractionModel).GetPort(SourcePort.Name)?.Type ?? "";
+            var destinationPortType = (Destination.NodeModel as AbstractionModel).GetPort(DestinationPort.Name)?.Type ?? "";
 
             var validWire = !(string.IsNullOrEmpty(sourcePortType) 
                               || string.IsNullOrEmpty(destinationPortType) 
@@ -385,13 +409,16 @@ namespace StoryAbstractions
 
             if (metaData == null) metaData = new JObject();
 
-            if (!metaData.ContainsKey("SourceType")) metaData["SourceType"] = source.Model.Type;
+            var sourceModel = (AbstractionModel)source.NodeModel;
+            var destModel = (AbstractionModel)destination.NodeModel;
+
+            if (!metaData.ContainsKey("SourceType")) metaData["SourceType"] = sourceModel.Type;
             if (!metaData.ContainsKey("SourceIsReference")) metaData["SourceIsReference"] = source.IsReferenceNode;
-            if (!metaData.ContainsKey("DestinationType")) metaData["DestinationType"] = destination.Model.Type;
+            if (!metaData.ContainsKey("DestinationType")) metaData["DestinationType"] = destModel.Type;
             if (!metaData.ContainsKey("DestinationIsReference")) metaData["DestinationIsReference"] = destination.IsReferenceNode;
             if (!metaData.ContainsKey("Description")) metaData["Description"] = GetDescription();
-            if (!metaData.ContainsKey("SourceGenerics")) metaData["SourceGenerics"] = new JArray(source.Model.GetGenerics());
-            if (!metaData.ContainsKey("DestinationGenerics")) metaData["DestinationGenerics"] = new JArray(destination.Model.GetGenerics());
+            if (!metaData.ContainsKey("SourceGenerics")) metaData["SourceGenerics"] = new JArray(sourceModel.GetGenerics());
+            if (!metaData.ContainsKey("DestinationGenerics")) metaData["DestinationGenerics"] = new JArray(destModel.GetGenerics());
 
             sb.Append(metaData.ToString(Newtonsoft.Json.Formatting.None));
 
@@ -460,9 +487,9 @@ namespace StoryAbstractions
         {
             var obj = new JObject()
             {
-                ["SourceType"] = Source.Model.Type,
+                ["SourceType"] = (Source.NodeModel as AbstractionModel).Type,
                 ["SourceIsReference"] = Source.IsReferenceNode,
-                ["DestinationType"] = Destination.Model.Type,
+                ["DestinationType"] = (Destination.NodeModel as AbstractionModel).Type,
                 ["DestinationIsReference"] = Destination.IsReferenceNode,
                 ["Description"] = ""
             };
@@ -474,7 +501,10 @@ namespace StoryAbstractions
         {
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR ALAWireUI
             CurvedLine curvedWire = new CurvedLine() {InstanceName="curvedWire"}; /* {"IsRoot":true} */
-            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    var sb = new StringBuilder();    sb.Append($"{Source?.Model.Type}{" " + Source?.Model.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {Destination?.Model.Type}{" " + Destination?.Model.Name}");    if (MetaData != null && MetaData.ContainsKey("Description") && !string.IsNullOrWhiteSpace(MetaData["Description"].Value<string>()))        sb.AppendLine("\n\n" + MetaData["Description"].Value<string>());    return sb.ToString();}}; /* {"IsRoot":false} */
+            ToolTip wireToolTip = new ToolTip() {InstanceName="wireToolTip",GetLabel=() =>{    var sb = new StringBuilder();
+                var sourceModel = (Source?.NodeModel as AbstractionModel); 
+                var destModel = (Destination?.NodeModel as AbstractionModel); 
+                sb.Append($"{sourceModel?.Type}{" " + sourceModel?.Name} [{SourcePort?.Type ?? ""} {SourcePort?.Name ?? ""}] -> [{DestinationPort?.Type ?? ""} {DestinationPort?.Name ?? ""}] {destModel?.Type}{" " + destModel?.Name}");    if (MetaData != null && MetaData.ContainsKey("Description") && !string.IsNullOrWhiteSpace(MetaData["Description"].Value<string>()))        sb.AppendLine("\n\n" + MetaData["Description"].Value<string>());    return sb.ToString();}}; /* {"IsRoot":false} */
             MouseEvent id_bd225a8fef8e4e2c895b2e67ba4a99f6 = new MouseEvent(eventName:"MouseEnter") {InstanceName="id_bd225a8fef8e4e2c895b2e67ba4a99f6",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
             MouseEvent id_b7877b330b854e33a1cb9ab810091c7f = new MouseEvent(eventName:"MouseLeave") {InstanceName="id_b7877b330b854e33a1cb9ab810091c7f",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */
             MouseEvent id_375a4e94d9d34270a4a028096c72ccea = new MouseEvent(eventName:"MouseMove") {InstanceName="id_375a4e94d9d34270a4a028096c72ccea",ExtractSender=input => (input as CurvedLine).Render}; /* {"IsRoot":false} */

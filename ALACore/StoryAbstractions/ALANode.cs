@@ -48,6 +48,15 @@ namespace StoryAbstractions
         public System.Windows.Controls.ContextMenu ContextMenu { get; set; }
         public System.Windows.Controls.ContextMenu WireContextMenu { get; set; }
 
+        public delegate void DeleteChildNodes();
+
+        public event DeleteChildNodes OnDeleteChildNodes;
+        public Action<Graph, System.Windows.Controls.Canvas, IALANode, IALANode, Box, Box, StateTransition<Enums.DiagramMode>, System.Windows.Controls.ContextMenu> CreateWireFromNode
+        {
+            get;
+            set;
+        }
+
         public JObject MetaData
         {
             get => _metaData;
@@ -155,6 +164,12 @@ namespace StoryAbstractions
 
         public double Width => _detailedRender.ActualWidth;
         public double Height => _detailedRender.ActualHeight;
+
+        object IALANode.NodeModel
+        {
+            get => Model;
+            set => Model = value as AbstractionModel;
+        }
 
         public AbstractionModel Model { get; set; }
         public bool ShowName { get; set; } = true;
@@ -507,17 +522,7 @@ namespace StoryAbstractions
             Graph.DeleteNode(this);
             if (Canvas.Children.Contains(Render)) Canvas.Children.Remove(Render);
 
-            // Convert to edgesToDelete list to avoid issue with enumeration being modified (when an edge is deleted from Graph.Edges) within the loop over edgesToDelete
-            var edgesToDelete = Graph.Edges
-                .Where(e => e is ALAWire wire
-                            && (wire.Source == this || wire.Destination == this)
-                            && Graph.ContainsEdge(wire))
-                .Select(e => e as ALAWire).ToList();
-
-            foreach (var edge in edgesToDelete)
-            {
-                edge?.Delete(deleteDestination: deleteChildren);
-            }
+            if (deleteChildren) OnDeleteChildNodes();
         }
 
         private void CreateNodeParameterRow() => CreateNodeParameterRow("", "");
@@ -1068,18 +1073,16 @@ namespace StoryAbstractions
 
                 if (StateTransition.CurrentStateMatches(Enums.DiagramMode.AwaitingPortSelection))
                 {
-                    var wire = Graph.Get("SelectedWire") as ALAWire;
+                    var wire = Graph.Get("SelectedWire") as IALAWire;
                     if (wire == null)
                         return;
-                    if (wire.Source == null)
+                    if (wire.SourceNode == null)
                     {
-                        wire.Source = this;
-                        wire.SourcePortBox = portBox;
+                        wire.SetSourceNodeAndPort(this, portBox);
                     }
-                    else if (wire.Destination == null)
+                    else if (wire.DestinationNode == null)
                     {
-                        wire.Destination = this;
-                        wire.DestinationPortBox = portBox;
+                        wire.SetDestinationNodeAndPort(this, portBox);
                     }
 
                     StateTransition.Update(Enums.DiagramMode.Idle);
@@ -1432,23 +1435,7 @@ namespace StoryAbstractions
                     if (sourcePort == null) return;
 
                     var source = this;
-                    var wire = new ALAWire()
-                    {
-                        Graph = Graph,
-                        Canvas = Canvas,
-                        Source = source,
-                        Destination = null,
-                        SourcePortBox = sourcePort,
-                        DestinationPortBox = null,
-                        StateTransition = StateTransition,
-                        ContextMenu = WireContextMenu
-                    };
-
-                    wire.Initialise();
-
-                    Graph.AddEdge(wire);
-                    wire.Paint();
-                    wire.StartMoving(source: false);
+                    CreateWireFromNode(Graph, Canvas, source, null, sourcePort, null, StateTransition, WireContextMenu);
                 }
             };
 
@@ -1462,7 +1449,7 @@ namespace StoryAbstractions
             _isHighlighted = true;
 
             Canvas.SetZIndex(Render, 99);
-            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (w.Source?.Equals(this) ?? false) || (w.Destination?.Equals(this) ?? false)))
+            foreach (var wire in Graph.Edges.OfType<IALAWire>().Where(w => (w.SourceNode?.Equals(this) ?? false) || (w.DestinationNode?.Equals(this) ?? false)))
             {
                 if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, 100);
@@ -1475,7 +1462,7 @@ namespace StoryAbstractions
             _isHighlighted = false;
 
             Canvas.SetZIndex(Render, DefaultZIndex);
-            foreach (var wire in Graph.Edges.OfType<ALAWire>().Where(w => (!w.IsHighlighted && (w.Source?.Equals(this) ?? false) || (w.Destination?.Equals(this) ?? false))))
+            foreach (var wire in Graph.Edges.OfType<IALAWire>().Where(w => (!w.IsHighlighted && (w.SourceNode?.Equals(this) ?? false) || (w.DestinationNode?.Equals(this) ?? false))))
             {
                 if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, wire.DefaultZIndex);
@@ -1595,9 +1582,9 @@ namespace StoryAbstractions
             }
         }
 
-        public List<ALAWire> GetConnectedWires(Dictionary<string, string> treeParents = null)
+        public List<IALAWire> GetConnectedWires(Dictionary<string, string> treeParents = null)
         {
-            var connectedWires = new List<ALAWire>();
+            var connectedWires = new List<IALAWire>();
 
             var q = new Queue<IALANode>();
             q.Enqueue(this);
@@ -1612,9 +1599,9 @@ namespace StoryAbstractions
                 {
                     visited.Add(parent.Id);
 
-                    var directWires = Graph.Edges.OfType<ALAWire>().Where(wire => wire.Source == parent).ToList();
+                    var directWires = Graph.Edges.OfType<IALAWire>().Where(wire => wire.SourceNode == parent).ToList();
                     connectedWires.AddRange(directWires);
-                    var children = directWires.Select(wire => wire.Destination);
+                    var children = directWires.Select(wire => wire.DestinationNode).OfType<IALANode>();
 
                     foreach (var child in children)
                     {
@@ -1646,18 +1633,21 @@ namespace StoryAbstractions
             var wires = GetConnectedWires(treeParents);
             foreach (var wire in wires)
             {
-                if (addedWires.Contains(wire.Id) || wire.Source == null || wire.Destination == null || wire.Source.Equals(wire.Destination)) continue;
+                var sourceNode = wire.SourceNode as IALANode;
+                var destNode = wire.DestinationNode as IALANode;
 
-                if (!addedNodes.Contains(wire.Source.Id))
+                if (addedWires.Contains(wire.Id) || sourceNode == null || destNode == null || sourceNode.Equals(destNode)) continue;
+
+                if (!addedNodes.Contains(sourceNode.Id))
                 {
-                    addedNodes.Add(wire.Source.Id);
-                    instantiations.Add(wire.Source.ToInstantiation());
+                    addedNodes.Add(sourceNode.Id);
+                    instantiations.Add(sourceNode.ToInstantiation());
                 }
 
-                if (!addedNodes.Contains(wire.Destination.Id))
+                if (!addedNodes.Contains(destNode.Id))
                 {
-                    addedNodes.Add(wire.Destination.Id);
-                    instantiations.Add(wire.Destination.ToInstantiation());
+                    addedNodes.Add(destNode.Id);
+                    instantiations.Add(destNode.ToInstantiation());
                 }
 
                 wireTos.Add(wire.ToWireTo());

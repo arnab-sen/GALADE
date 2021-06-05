@@ -16,7 +16,7 @@ namespace DomainAbstractions
     {
         string Name { get; }
         string Id { get; set; }
-        AbstractionModel Model { get; set; }
+        object NodeModel { get; set; }
         UIElement Render { get; set; }
         event SomethingChangedDelegate PositionChanged;
         void Delete(bool deleteChildren = false);

@@ -37,6 +37,11 @@ namespace Application
         public IEvent RefreshLayout { get; set; }
         public System.Windows.Controls.ContextMenu NodeContextMenu { get; set; }
         public System.Windows.Controls.ContextMenu WireContextMenu { get; set; }
+        public Action<Graph, System.Windows.Controls.Canvas, IALANode, IALANode, Box, Box, StateTransition<Enums.DiagramMode>, System.Windows.Controls.ContextMenu> CreateWireFromNode
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Determines whether to update the existing graph or to create a new one.
@@ -580,7 +585,22 @@ namespace Application
             var node = new ALANode()
             {
                 ContextMenu = NodeContextMenu,
-                WireContextMenu = WireContextMenu
+                WireContextMenu = WireContextMenu,
+                CreateWireFromNode = CreateWireFromNode
+            };
+
+            node.OnDeleteChildNodes += () =>
+            {
+                var edgesToDelete = Graph.Edges
+                    .Where(e => e is ALAWire wire
+                                && (wire.Source == node || wire.Destination == node)
+                                && Graph.ContainsEdge(wire))
+                    .Select(e => e as ALAWire).ToList();
+
+                foreach (var edge in edgesToDelete)
+                {
+                    edge?.Delete(deleteDestination: true);
+                }
             };
 
             if (model.Name.StartsWith("id_"))
