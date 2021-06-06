@@ -54,7 +54,7 @@ namespace DomainAbstractions
             {
                 if (!matchFound)
                 {
-                    if (!line.TrimStart().StartsWith(match))
+                    if (!(line.Trim() == match))
                     {
                         upperSB.AppendLine(line);
                     }
