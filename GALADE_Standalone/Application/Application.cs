@@ -294,20 +294,7 @@ namespace Application
             RightTreeLayout<ALANode> layoutDiagram = new RightTreeLayout<ALANode>() {InstanceName="layoutDiagram",GetID=n => n.Id,GetWidth=n => n.Width,GetHeight=n => n.Height,SetX=(n, x) => n.PositionX = x,SetY=(n, y) => n.PositionY = y,GetChildren=n => mainGraph.Edges.Where(e => e is ALAWire wire && wire.Source != null && wire.Destination != null && wire.Source == n).Select(e => ((e as ALAWire).Destination) as ALANode),Roots=mainGraph.Roots.OfType<ALANode>().ToList(),HorizontalGap=100,VerticalGap=20,InitialX=50,InitialY=50}; /* {"IsRoot":false} */
             EventConnector startRightTreeLayoutProcess = new EventConnector() {InstanceName="startRightTreeLayoutProcess"}; /* {"IsRoot":false} */
             KeyEvent R_KeyPressed = new KeyEvent(eventName:"KeyDown") {InstanceName="R_KeyPressed",Condition=args => stateTransition.CurrentStateMatches(Enums.DiagramMode.Idle | Enums.DiagramMode.IdleSelected),Key=Key.R}; /* {"IsRoot":false} */
-            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode(); node.OnDeleteChildNodes += () =>
-            {
-                var edgesToDelete = mainGraph.Edges
-                    .Where(e => e is ALAWire wire
-                                && (wire.Source == node || wire.Destination == node)
-                                && mainGraph.ContainsEdge(wire))
-                    .Select(e => e as ALAWire).ToList();
-
-                foreach (var edge in edgesToDelete)
-                {
-                    edge?.Delete(deleteDestination: true);
-                }
-            };
-                node.CreateWireFromNode = CreateWireFromNode; node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.ContextMenu = alaNodeContextMenu.Menu;    node.WireContextMenu = alaWireContextMenu.Menu;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
+            Apply<AbstractionModel, object> createNewALANode = new Apply<AbstractionModel, object>() {InstanceName="createNewALANode",Lambda=input =>{    var node = new ALANode();    node.OnDeleteChildNodes += () =>    {        var edgesToDelete = mainGraph.Edges.Where(e => e is ALAWire wire && (wire.Source == node || wire.Destination == node) && mainGraph.ContainsEdge(wire)).Select(e => e as ALAWire).ToList();        foreach (var edge in edgesToDelete)        {            edge?.Delete(deleteDestination: true);        }    }    ;    node.CreateWireFromNode = CreateWireFromNode;    node.Model = input;    node.Graph = mainGraph;    node.Canvas = mainCanvas;    node.StateTransition = stateTransition;    node.ContextMenu = alaNodeContextMenu.Menu;    node.WireContextMenu = alaWireContextMenu.Menu;    if (!availableAbstractions.Any())        availableAbstractions = abstractionModelManager.GetAbstractionTypes().OrderBy(s => s).ToList();    node.AvailableAbstractions.AddRange(availableAbstractions);    node.TypeChanged += newType =>    {        if (node.Model.Type == newType)            return;        node.LoadDefaultModel(abstractionModelManager.GetAbstractionModel(newType));        node.UpdateUI();        Dispatcher.CurrentDispatcher.Invoke(() =>        {            var edges = mainGraph.Edges;            foreach (var edge in edges)            {                (edge as ALAWire).Refresh();            }            (startGuaranteedLayoutProcess as IEvent).Execute();        }        , DispatcherPriority.ContextIdle);    }    ;    mainGraph.AddNode(node);    node.CreateInternals();    mainCanvas.Children.Add(node.Render);    node.FocusOnTypeDropDown();    return node;}}; /* {"IsRoot":false} */
             MenuBar id_42967d39c2334aab9c23697d04177f8a = new MenuBar() {InstanceName="id_42967d39c2334aab9c23697d04177f8a"}; /* {"IsRoot":false} */
             MenuItem menu_File = new MenuItem(header:"File") {InstanceName="menu_File"}; /* {"IsRoot":false} */
             MenuItem menu_OpenProject = new MenuItem(header:"Open Project") {InstanceName="menu_OpenProject"}; /* {"IsRoot":false} */
@@ -708,7 +695,7 @@ namespace Application
             DataFlowConnector<string> id_4543ca6d3d6a47789f52e4cc7d841ee5 = new DataFlowConnector<string>() {InstanceName="id_4543ca6d3d6a47789f52e4cc7d841ee5"}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_8398ff1988b344c1841ea38cde6e1ce3 = new ConvertToEvent<string>() {InstanceName="id_8398ff1988b344c1841ea38cde6e1ce3"}; /* {"IsRoot":false} */
             Data<ALANode> getMatchingNodeInNewGraph = new Data<ALANode>() {InstanceName="getMatchingNodeInNewGraph",Lambda=() =>{    var oldSelectedNode = mainGraph.Get("SelectedNode") as ALANode;    var newSelectedNode = mainGraph.Nodes.OfType<ALANode>().First(node => node.Name == oldSelectedNode.Name);    return newSelectedNode;}}; /* {"IsRoot":false} */
-            UIConfig id_24f0cee4833c4971b8c9cb2bdbb1c868 = new UIConfig() {InstanceName="id_24f0cee4833c4971b8c9cb2bdbb1c868",Visible=false}; /* {"IsRoot":false} */
+            UIConfig id_24f0cee4833c4971b8c9cb2bdbb1c868 = new UIConfig() {InstanceName="id_24f0cee4833c4971b8c9cb2bdbb1c868"}; /* {"IsRoot":false} */
             MenuItem id_25ed8d5621754358bb15633274ef191a = new MenuItem(header:"Create Abstraction") {InstanceName="id_25ed8d5621754358bb15633274ef191a"}; /* {"IsRoot":false} */
             ConvertToEvent<string> id_782197630669407095b6042ba91bbc4b = new ConvertToEvent<string>() {InstanceName="id_782197630669407095b6042ba91bbc4b"}; /* {"IsRoot":false} */
             Data<string> id_a808288fa4ae48b0a33de1fda8e4b58a = new Data<string>() {InstanceName="id_a808288fa4ae48b0a33de1fda8e4b58a"}; /* {"IsRoot":false} */
@@ -783,6 +770,7 @@ namespace Application
             EventLambda deselectAllNodes = new EventLambda() {InstanceName="deselectAllNodes",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    foreach (var node in nodes)    {        node.Deselect();    }}}; /* {"IsRoot":false} */
             EventConnector id_1a7262b162b54d2e97590033d14e4175 = new EventConnector() {InstanceName="id_1a7262b162b54d2e97590033d14e4175"}; /* {"IsRoot":false} */
             EventLambda deselectAllNodesButLatestSelected = new EventLambda() {InstanceName="deselectAllNodesButLatestSelected",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    var selectedNode = mainGraph.Get("SelectedNode");    if (selectedNode == null)        return;    foreach (var node in nodes)    {        if (node != selectedNode)            node.Deselect();    }}}; /* {"IsRoot":false} */
+            PopupWindow createAbstractionPopupWindow = new PopupWindow() {InstanceName="createAbstractionPopupWindow",Height=500,Width=500,Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1362,6 +1350,7 @@ namespace Application
             R_KeyPressed.WireTo(refreshDiagram, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_4ed11222676e42cfae927c4278b45719.WireTo(id_1a7262b162b54d2e97590033d14e4175, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_1a7262b162b54d2e97590033d14e4175.WireTo(deselectAllNodesButLatestSelected, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_25ed8d5621754358bb15633274ef191a.WireTo(createAbstractionPopupWindow, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
@@ -1671,6 +1660,26 @@ namespace Application
             id_509962caea7b49198c21f0b4c3f7db66.WireTo(id_6fd8927aa820450b8b1e04638661d9ce, "eventButtonClicked"); /* {"SourceType":"Button","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_6fd8927aa820450b8b1e04638661d9ce.WireTo(id_c7ff61bc312843019dde00238832d5a1, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR CreateCodeGenerationLandmarks
+
+            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
+            Vertical id_012460210b964d56bbac37a93853f141 = new Vertical() {InstanceName="id_012460210b964d56bbac37a93853f141"}; /* {"IsRoot":false} */
+            Horizontal id_4292ec21d15a47bf96ef660f363d9511 = new Horizontal() {InstanceName="id_4292ec21d15a47bf96ef660f363d9511"}; /* {"IsRoot":false} */
+            Horizontal id_fd0875236aa44ca795c196c0f830a83c = new Horizontal() {InstanceName="id_fd0875236aa44ca795c196c0f830a83c"}; /* {"IsRoot":false} */
+            Text id_b7464a12a7354c07b559d2f6ede4b7ac = new Text(text:"Layer:") {InstanceName="id_b7464a12a7354c07b559d2f6ede4b7ac"}; /* {"IsRoot":false} */
+            DropDownMenu id_d2f43061556a45a08c70fedd0ad47637 = new DropDownMenu() {InstanceName="id_d2f43061556a45a08c70fedd0ad47637",Items=new List<string>(){"Programming Paradigms", "Domain Abstractions", "Story Abstractions"}}; /* {"IsRoot":false} */
+            DataFlowConnector<string> selectedAbstractionLayer = new DataFlowConnector<string>() {InstanceName="selectedAbstractionLayer"}; /* {"IsRoot":false} */
+            EditableGrid id_8407d60191fa467d82e1113871bca938 = new EditableGrid() {InstanceName="id_8407d60191fa467d82e1113871bca938"}; /* {"IsRoot":false} */
+            // END AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
+
+            // BEGIN AUTO-GENERATED WIRING FOR CreateCustomAbstraction
+            createAbstractionPopupWindow.WireTo(id_012460210b964d56bbac37a93853f141, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":true,"DestinationType":"Vertical","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_012460210b964d56bbac37a93853f141.WireTo(id_4292ec21d15a47bf96ef660f363d9511, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_012460210b964d56bbac37a93853f141.WireTo(id_fd0875236aa44ca795c196c0f830a83c, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_4292ec21d15a47bf96ef660f363d9511.WireTo(id_b7464a12a7354c07b559d2f6ede4b7ac, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_4292ec21d15a47bf96ef660f363d9511.WireTo(id_d2f43061556a45a08c70fedd0ad47637, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"DropDownMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_d2f43061556a45a08c70fedd0ad47637.WireTo(selectedAbstractionLayer, "selectedItem"); /* {"SourceType":"DropDownMenu","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            id_fd0875236aa44ca795c196c0f830a83c.WireTo(id_8407d60191fa467d82e1113871bca938, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"EditableGrid","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            // END AUTO-GENERATED WIRING FOR CreateCustomAbstraction
 
 
 

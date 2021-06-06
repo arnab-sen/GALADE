@@ -293,6 +293,7 @@
     <Compile Include="DomainAbstractions\DispatcherData.cs" />
     <Compile Include="DomainAbstractions\DispatcherEvent.cs" />
     <Compile Include="DomainAbstractions\DragEvent.cs" />
+    <Compile Include="DomainAbstractions\EditableGrid.cs" />
     <Compile Include="DomainAbstractions\ExampleDomainAbstraction.cs" />
     <Compile Include="DomainAbstractions\IALANode.cs" />
     <Compile Include="DomainAbstractions\IALAWire.cs" />
