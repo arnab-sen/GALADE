@@ -93,5 +93,5 @@ Pressing `Ctrl + S` or using `Sync > Diagram to Code` will "save" the diagram, w
 ![](https://i.gyazo.com/437500b83453d141d03222799a2764e7.gif)
 
 ### Searching the Diagram
-Press `Ctrl + F` to navigate to the Search tab. Type in a query and press `Enter` to search through the types, names, and member rows of each node. Any results that show up can be clicked on to navigate to that node. The query will be treated as a type-insensitive regex pattern.
+Press `Ctrl + F` to navigate to the Search tab. Type in a query and press `Enter` to search through the types, names, and member rows of each node. Any results that show up can be clicked on to navigate to that node. The query will be treated as a case-insensitive regex pattern.
 ![](https://i.gyazo.com/8e21cc19903090b1b306128296a685dd.gif)
