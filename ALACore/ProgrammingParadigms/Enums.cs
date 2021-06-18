@@ -26,6 +26,15 @@ namespace ProgrammingParadigms
             Property = 1
         }
 
+        public enum AccessLevel
+        {
+            Public,
+            Private,
+            Protected,
+            Internal,
+            None
+        }
+
         [Flags]
         public enum DiagramMode
         {

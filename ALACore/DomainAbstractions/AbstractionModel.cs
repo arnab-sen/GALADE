@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Libraries;
 using ProgrammingParadigms;
 
@@ -453,6 +451,15 @@ namespace DomainAbstractions
 
             return sb.ToString();
         }
+
+        public string CreateSourceFile()
+        {
+
+
+
+            return "";
+        }
+
 
         public AbstractionModel(AbstractionModel source = null)
         {

@@ -385,6 +385,7 @@
     <Compile Include="ProgrammingParadigms\VisualStyle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoryAbstractions\AbstractionModelManager.cs" />
+    <Compile Include="StoryAbstractions\AbstractionTemplateCreator.cs" />
     <Compile Include="StoryAbstractions\ALAWire.cs" />
     <Compile Include="StoryAbstractions\ALANode.cs" />
     <Compile Include="StoryAbstractions\EditSetting.cs" />

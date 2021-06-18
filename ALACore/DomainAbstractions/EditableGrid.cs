@@ -35,14 +35,14 @@ namespace DomainAbstractions
         // Methods
         private void PostWiringInitialize()
         {
-            newRow.EventHappened += CreateNewRow;
-            clear.EventHappened += Clear;
+            if (newRow != null) newRow.EventHappened += CreateNewRow;
+            if (clear != null) clear.EventHappened += Clear;
 
         }
 
         UIElement IUI.GetWPFElement()
         {
-            var _innerGrid = new Grid()
+            _innerGrid = new Grid()
             {
                 Background = Brushes.White
             };

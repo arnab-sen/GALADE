@@ -86,6 +86,27 @@ namespace Application
 
         public void InitTest()
         {
+            var gen = new SourceFileGenerator();
+            gen.Namespace = "DomainAbstractions";
+            gen.ClassName = "MyNewAbstraction";
+            gen.Usings = new List<string>()
+            {
+                "System",
+                "Libraries",
+                "ProgrammingParadigms"
+            };
+
+            gen.AddMethod(
+                "TestMethod", 
+                Enums.AccessLevel.Public, 
+                "void", 
+                true, 
+                new SourceFileGenerator.Variable() {Type = "string", Name = "arg0"},
+                new SourceFileGenerator.Variable() {Type = "int", Name = "arg1"},
+                new SourceFileGenerator.Variable() {Type = "CustomType", Name = "arg2"}
+                );
+
+            var contents = gen.Generate();
         }
 
         public void TestStackFrame()
@@ -1662,23 +1683,11 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR CreateCodeGenerationLandmarks
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
-            Vertical id_012460210b964d56bbac37a93853f141 = new Vertical() {InstanceName="id_012460210b964d56bbac37a93853f141"}; /* {"IsRoot":false} */
-            Horizontal id_4292ec21d15a47bf96ef660f363d9511 = new Horizontal() {InstanceName="id_4292ec21d15a47bf96ef660f363d9511"}; /* {"IsRoot":false} */
-            Horizontal id_fd0875236aa44ca795c196c0f830a83c = new Horizontal() {InstanceName="id_fd0875236aa44ca795c196c0f830a83c"}; /* {"IsRoot":false} */
-            Text id_b7464a12a7354c07b559d2f6ede4b7ac = new Text(text:"Layer:") {InstanceName="id_b7464a12a7354c07b559d2f6ede4b7ac"}; /* {"IsRoot":false} */
-            DropDownMenu id_d2f43061556a45a08c70fedd0ad47637 = new DropDownMenu() {InstanceName="id_d2f43061556a45a08c70fedd0ad47637",Items=new List<string>(){"Programming Paradigms", "Domain Abstractions", "Story Abstractions"}}; /* {"IsRoot":false} */
-            DataFlowConnector<string> selectedAbstractionLayer = new DataFlowConnector<string>() {InstanceName="selectedAbstractionLayer"}; /* {"IsRoot":false} */
-            EditableGrid id_8407d60191fa467d82e1113871bca938 = new EditableGrid() {InstanceName="id_8407d60191fa467d82e1113871bca938"}; /* {"IsRoot":false} */
+            AbstractionTemplateCreator id_e2e1f095c1334824b861b0c76451b4b4 = new AbstractionTemplateCreator() {InstanceName="id_e2e1f095c1334824b861b0c76451b4b4"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
 
             // BEGIN AUTO-GENERATED WIRING FOR CreateCustomAbstraction
-            createAbstractionPopupWindow.WireTo(id_012460210b964d56bbac37a93853f141, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":true,"DestinationType":"Vertical","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_012460210b964d56bbac37a93853f141.WireTo(id_4292ec21d15a47bf96ef660f363d9511, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_012460210b964d56bbac37a93853f141.WireTo(id_fd0875236aa44ca795c196c0f830a83c, "children"); /* {"SourceType":"Vertical","SourceIsReference":false,"DestinationType":"Horizontal","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_4292ec21d15a47bf96ef660f363d9511.WireTo(id_b7464a12a7354c07b559d2f6ede4b7ac, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_4292ec21d15a47bf96ef660f363d9511.WireTo(id_d2f43061556a45a08c70fedd0ad47637, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"DropDownMenu","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_d2f43061556a45a08c70fedd0ad47637.WireTo(selectedAbstractionLayer, "selectedItem"); /* {"SourceType":"DropDownMenu","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
-            id_fd0875236aa44ca795c196c0f830a83c.WireTo(id_8407d60191fa467d82e1113871bca938, "children"); /* {"SourceType":"Horizontal","SourceIsReference":false,"DestinationType":"EditableGrid","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            createAbstractionPopupWindow.WireTo(id_e2e1f095c1334824b861b0c76451b4b4, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":true,"DestinationType":"AbstractionTemplateCreator","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR CreateCustomAbstraction
 
 
