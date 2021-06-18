@@ -68,9 +68,12 @@ namespace Application
 			// END AUTO-GENERATED WIRING FOR Diagram3
 			
 			// BEGIN AUTO-GENERATED INSTANTIATIONS FOR Diagram4
+            PopupWindow testPopupWindow = new PopupWindow(title:"Test Popup Window") {InstanceName="testPopupWindow",Width=1280,Height=720,Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
+            Text id_ace5d19caec84d898c251b9a4e0172d6 = new Text(text:"") {InstanceName="id_ace5d19caec84d898c251b9a4e0172d6"}; /* {"IsRoot":false} */
 			// END AUTO-GENERATED INSTANTIATIONS FOR Diagram4
 
 			// BEGIN AUTO-GENERATED WIRING FOR Diagram4
+            testPopupWindow.WireTo(id_ace5d19caec84d898c251b9a4e0172d6, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"Text","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
 			// END AUTO-GENERATED WIRING FOR Diagram4
 
 
