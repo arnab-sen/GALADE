@@ -392,6 +392,7 @@ namespace StoryAbstractions
             ClassName = model.FullType;
             ImplementedPorts = model.GetImplementedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
             AcceptedPorts = model.GetAcceptedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
+            Layer = model.Layer;
 
             Create();
         }

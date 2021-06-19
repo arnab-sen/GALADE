@@ -63,6 +63,12 @@ namespace DomainAbstractions
             set => _dropDown.Height = value;
         }
 
+        public bool CanEdit
+        {
+            get => _dropDown.IsEditable;
+            set => _dropDown.IsEditable = value;
+        }
+
         // Private fields
         private ComboBox _dropDown = new ComboBox();
         private IEnumerable<string> _items = new List<string>();

@@ -52,6 +52,24 @@ namespace StoryAbstractions
 
             userConfigPanel.Children.Add(new WPF.Label()
             {
+                Content = "Layer:"
+            });
+
+            var layerDropDown = new DropDownMenu()
+            {
+                Items = new List<string>()
+                {
+                    "Domain Abstractions",
+                    "Story Abstractions"
+                },
+                CanEdit = false,
+                Text = "Domain Abstractions"
+            };
+
+            userConfigPanel.Children.Add((layerDropDown as IUI).GetWPFElement());
+
+            userConfigPanel.Children.Add(new WPF.Label()
+            {
                 Content = "Class name:"
             });
 
@@ -127,7 +145,11 @@ namespace StoryAbstractions
                 implementedPortData = implementedPortBundle.GetRowData();
                 acceptedPortData = acceptedPortBundle.GetRowData();
 
-                var model = CreateAbstractionModel(classNameTextBox.Text, implementedPortData, acceptedPortData);
+                var layer = layerDropDown.Text == "Story Abstractions"
+                    ? Enums.ALALayer.StoryAbstractions
+                    : Enums.ALALayer.DomainAbstractions;
+
+                var model = CreateAbstractionModel(layer, classNameTextBox.Text, implementedPortData, acceptedPortData);
                 GeneratedModel = model;
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;                
@@ -148,7 +170,11 @@ namespace StoryAbstractions
                 implementedPortData = implementedPortBundle.GetRowData();
                 acceptedPortData = acceptedPortBundle.GetRowData();
 
-                var model = CreateAbstractionModel(classNameTextBox.Text, implementedPortData, acceptedPortData);
+                var layer = layerDropDown.Text == "Story Abstractions"
+                    ? Enums.ALALayer.StoryAbstractions
+                    : Enums.ALALayer.DomainAbstractions;
+
+                var model = CreateAbstractionModel(layer, classNameTextBox.Text, implementedPortData, acceptedPortData);
                 GeneratedModel = model;
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;
@@ -179,10 +205,11 @@ namespace StoryAbstractions
 
         }
 
-        private AbstractionModel CreateAbstractionModel(string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
+        private AbstractionModel CreateAbstractionModel(Enums.ALALayer layer, string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
         {
             var model = new AbstractionModel();
 
+            model.Layer = layer;
             model.FullType = type;
             model.Type = type;
 

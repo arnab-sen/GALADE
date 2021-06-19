@@ -29,6 +29,7 @@ namespace DomainAbstractions
         public string Description { get; set; } = "";
         public string SourceCode { get; set; }
         public string CodeFilePath { get; set; }
+        public Enums.ALALayer Layer { get; set; } = Enums.ALALayer.DomainAbstractions;
 
         // Private fields
         private Dictionary<string, string> _constructorArgs = new Dictionary<string, string>(); // name : value
