@@ -18,6 +18,7 @@ namespace DomainAbstractions
         public HashSet<string> Regions { get; set; } = new HashSet<string>();
         public string ClassAccessLevel { get; set; } = "public";
         public List<string> ImplementedInterfaces { get; set; } = new List<string>();
+        public string BaseListInlineComment { get; set; } = "";
         public bool IsInterface { get; set; } = false;
         public List<string> Description { get; set; } = new List<string>();
         public List<string> ConstructorBody { get; set; } = new List<string>();
@@ -209,6 +210,8 @@ namespace DomainAbstractions
                     lineBuffer.Append($", {implementedInterface}");
                 }
             }
+
+            if (!string.IsNullOrEmpty(BaseListInlineComment)) lineBuffer.Append(" " + BaseListInlineComment);
 
             AddLine(fileBuilder, lineBuffer.ToString());
             lineBuffer.Clear();

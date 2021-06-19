@@ -145,11 +145,21 @@ namespace StoryAbstractions
         {
             try
             {
+                var baseListInlineComment = "";
+
+                if (ImplementedPorts.Any())
+                {
+                    baseListInlineComment = $"// {ImplementedPorts.First().Split()[1]}";
+                }
+
+                baseListInlineComment = ImplementedPorts.Skip(1).Aggregate(baseListInlineComment, (current, port) => current + $", {port.Split()[1]}");
+
                 var cfg = new ClassFileGenerator()
                 {
                     Namespace = $"{NamespacePrefix}{Enum.GetName(typeof(Enums.ALALayer), Layer)}",
                     ClassName = ClassName,
                     ImplementedInterfaces = ImplementedPorts.Select(s => s.Split().First()).ToList(), // Just get interface types
+                    BaseListInlineComment = baseListInlineComment, // Port names combined into a comment
                     IsInterface = Layer == Enums.ALALayer.ProgrammingParadigms
                 };
 
