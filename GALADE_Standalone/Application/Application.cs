@@ -86,53 +86,7 @@ namespace Application
 
         public void InitTest()
         {
-            var abstr = new CreateAbstraction();
-            abstr.ClassName = "MyNewAbstraction";
-            abstr.ImplementedPorts = new List<string>()
-            {
-                "IEvent inputEvent",
-                "IDataFlow<bool> inputBool",
-                "IUI ui",
-                "IEventHandler sender"
-            };
-
-            abstr.AcceptedPorts = new List<string>()
-            {
-                "IEvent outputEvent",
-                "IDataFlow<int> outputInt",
-                "IDataFlowB<int> Binput",
-                "List<IEventHandler> handlers"
-            };
-
-            abstr.Layer = Enums.ALALayer.DomainAbstractions;
-
-            var da = abstr.Create();
-
-            abstr.Layer = Enums.ALALayer.StoryAbstractions;
-            var sa = abstr.Create();
-
-
-            var gen = new SourceFileGenerator();
-            gen.Namespace = "DomainAbstractions";
-            gen.ClassName = "MyNewAbstraction";
-            gen.Usings = new List<string>()
-            {
-                "System",
-                "Libraries",
-                "ProgrammingParadigms"
-            };
-
-            gen.AddMethod(
-                "TestMethod", 
-                Enums.AccessLevel.Public, 
-                "void", 
-                true, 
-                new SourceFileGenerator.ParsedVariable() {Type = "string", Name = "arg0"},
-                new SourceFileGenerator.ParsedVariable() {Type = "int", Name = "arg1"},
-                new SourceFileGenerator.ParsedVariable() {Type = "CustomType", Name = "arg2"}
-                );
-
-            var contents = gen.Generate();
+            
         }
 
         public void TestStackFrame()

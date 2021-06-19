@@ -281,6 +281,23 @@ namespace StoryAbstractions
         public List<Port> GetImplementedPorts() => Model.GetImplementedPorts();
         public List<Port> GetAcceptedPorts() => Model.GetAcceptedPorts();
 
+        public List<Port> GetInputPorts()
+        {
+            var ports = new List<Port>();
+            ports.AddRange(Model.GetImplementedPorts().Where(p => p.IsInputPort));
+            ports.AddRange(Model.GetAcceptedPorts().Where(p => p.IsInputPort));
+
+            return ports;
+        }
+        public List<Port> GetOutputPorts()
+        {
+            var ports = new List<Port>();
+            ports.AddRange(Model.GetImplementedPorts().Where(p => !p.IsInputPort));
+            ports.AddRange(Model.GetAcceptedPorts().Where(p => !p.IsInputPort));
+
+            return ports;
+        }
+
         /// <summary>
         /// Finds the first port box that matches the input name.
         /// </summary>
@@ -352,7 +369,7 @@ namespace StoryAbstractions
         /// existing instantiated Boxes.
         /// </summary>
         /// <param name="newPorts"></param>
-        private List<Port> UpdatePorts(IEnumerable<Port> newPorts)
+        private List<Port> UpdatePorts(List<Port> newPorts)
         {
             var notUpdated = new List<Port>();
             int inputIndex = 0;
@@ -470,8 +487,8 @@ namespace StoryAbstractions
                 Name = ""
             };
 
-            model.AddImplementedPort("Port", "input");
-            model.AddAcceptedPort("Port", "output");
+            // model.AddImplementedPort("Port", "input");
+            // model.AddAcceptedPort("Port", "output");
 
             return model;
         }
@@ -993,7 +1010,7 @@ namespace StoryAbstractions
 
         private void RefreshPorts(bool inputPorts = true)
         {
-            var ports = inputPorts ? GetImplementedPorts() : GetAcceptedPorts();
+            var ports = inputPorts ? GetInputPorts() : GetOutputPorts();
 
             var notUpdated = UpdatePorts(ports);
 

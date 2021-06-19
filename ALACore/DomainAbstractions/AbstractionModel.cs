@@ -100,14 +100,14 @@ namespace DomainAbstractions
             _types[name] = type;
         }
 
-        public void AddImplementedPort(string type, string name, bool isReversePort = false, string description = "")
+        public void AddImplementedPort(string type, string name, bool isReversePort = false, string description = "", bool IsInputPort = true)
         {
             var port = new Port()
             {
                 Type = type,
                 Name = name,
                 Description = description,
-                IsInputPort = true,
+                IsInputPort = IsInputPort,
                 IsReversePort = isReversePort
             };
 
@@ -118,14 +118,14 @@ namespace DomainAbstractions
             _portBaseTypes[port.Id] = type;
         }
 
-        public void AddAcceptedPort(string type, string name, bool isReversePort = false, string description = "")
+        public void AddAcceptedPort(string type, string name, bool isReversePort = false, string description = "", bool IsInputPort = false)
         {
             var port = new Port()
             {
                 Type = type,
                 Name = name,
                 Description = description,
-                IsInputPort = false,
+                IsInputPort = IsInputPort,
                 IsReversePort = isReversePort
             };
 
@@ -259,7 +259,7 @@ namespace DomainAbstractions
             foreach (var pair in source._implementedPorts)
             {
                 var port = pair.Value;
-                AddImplementedPort(port.Type, port.Name,port.IsReversePort, port.Description);
+                AddImplementedPort(port.Type, port.Name,port.IsReversePort, port.Description, port.IsInputPort);
                 AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 
@@ -267,7 +267,7 @@ namespace DomainAbstractions
             foreach (var pair in source._acceptedPorts)
             {
                 var port = pair.Value;
-                AddAcceptedPort(port.Type, port.Name, port.IsReversePort, port.Description);
+                AddAcceptedPort(port.Type, port.Name, port.IsReversePort, port.Description, port.IsInputPort);
                 AddPortGenericIndices(port.Name, source.GetPortGenericIndices(port.Name));
             }
 

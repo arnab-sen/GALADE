@@ -107,12 +107,12 @@ namespace StoryAbstractions
             // Implemented ports
             userConfigPanel.Children.Add(new WPF.Label()
             {
-                Content = "Implemented ports:"
+                Content = "Input ports:"
             });
 
-            var implementedPortBundle = new RowBundle();
+            var inputPortBundle = new RowBundle();
 
-            userConfigPanel.Children.Add(implementedPortBundle);
+            userConfigPanel.Children.Add(inputPortBundle);
 
             var addImplementedPortButton = new WPF.Button()
             {
@@ -122,19 +122,19 @@ namespace StoryAbstractions
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            addImplementedPortButton.Click += (sender, args) => implementedPortBundle.AddRow();
+            addImplementedPortButton.Click += (sender, args) => inputPortBundle.AddRow();
 
             userConfigPanel.Children.Add(addImplementedPortButton);
 
             // Accepted ports
             userConfigPanel.Children.Add(new WPF.Label()
             {
-                Content = "Accepted ports:"
+                Content = "Output ports:"
             });
 
-            var acceptedPortBundle = new RowBundle();
+            var outputPortBundle = new RowBundle();
 
-            userConfigPanel.Children.Add(acceptedPortBundle);
+            userConfigPanel.Children.Add(outputPortBundle);
 
             var addAcceptedPortButton = new WPF.Button()
             {
@@ -144,7 +144,7 @@ namespace StoryAbstractions
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            addAcceptedPortButton.Click += (sender, args) => acceptedPortBundle.AddRow();
+            addAcceptedPortButton.Click += (sender, args) => outputPortBundle.AddRow();
 
             userConfigPanel.Children.Add(addAcceptedPortButton);
 
@@ -157,19 +157,19 @@ namespace StoryAbstractions
                 Margin = new Thickness(0, 2, 2, 0)
             };
 
-            List<Tuple<string, string>> implementedPortData;
-            List<Tuple<string, string>> acceptedPortData;
+            List<Tuple<string, string>> inputPortData;
+            List<Tuple<string, string>> outputPortData;
 
             previewButton.Click += (sender, args) =>
             {
-                implementedPortData = implementedPortBundle.GetRowData();
-                acceptedPortData = acceptedPortBundle.GetRowData();
+                inputPortData = inputPortBundle.GetRowData();
+                outputPortData = outputPortBundle.GetRowData();
 
                 var layer = layerDropDown.Text == "Story Abstractions"
                     ? Enums.ALALayer.StoryAbstractions
                     : Enums.ALALayer.DomainAbstractions;
 
-                var model = CreateAbstractionModel(layer, classNameTextBox.Text, implementedPortData, acceptedPortData);
+                var model = CreateAbstractionModel(layer, classNameTextBox.Text, inputPortData, outputPortData);
                 GeneratedModel = model;
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;                
@@ -188,14 +188,14 @@ namespace StoryAbstractions
 
             getDataButton.Click += (sender, args) =>
             {
-                implementedPortData = implementedPortBundle.GetRowData();
-                acceptedPortData = acceptedPortBundle.GetRowData();
+                inputPortData = inputPortBundle.GetRowData();
+                outputPortData = outputPortBundle.GetRowData();
 
                 var layer = layerDropDown.Text == "Story Abstractions"
                     ? Enums.ALALayer.StoryAbstractions
                     : Enums.ALALayer.DomainAbstractions;
 
-                var model = CreateAbstractionModel(layer, classNameTextBox.Text, implementedPortData, acceptedPortData);
+                var model = CreateAbstractionModel(layer, classNameTextBox.Text, inputPortData, outputPortData);
                 GeneratedModel = model;
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;
@@ -270,7 +270,7 @@ namespace StoryAbstractions
             return isReverse;
         }
 
-        private AbstractionModel CreateAbstractionModel(Enums.ALALayer layer, string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
+        private AbstractionModel CreateAbstractionModel(Enums.ALALayer layer, string type, List<Tuple<string, string>> inputPorts, List<Tuple<string, string>> outputPorts)
         {
             var model = new AbstractionModel
             {
@@ -279,27 +279,27 @@ namespace StoryAbstractions
                 Type = type
             };
 
-            foreach (var inputPort in implementedPorts)
+            foreach (var inputPort in inputPorts)
             {
                 if (IsReversePort(inputPort.Item1))
                 {
-                    model.AddAcceptedPort(inputPort.Item1, inputPort.Item2, isReversePort: true);
+                    model.AddAcceptedPort(inputPort.Item1, inputPort.Item2, isReversePort: true, IsInputPort: true);
                 }
                 else
                 {
-                    model.AddImplementedPort(inputPort.Item1, inputPort.Item2, isReversePort: false);
+                    model.AddImplementedPort(inputPort.Item1, inputPort.Item2, IsInputPort: true);
                 }
             }
 
-            foreach (var outputPort in acceptedPorts)
+            foreach (var outputPort in outputPorts)
             {
                 if (IsReversePort(outputPort.Item1))
                 {
-                    model.AddImplementedPort(outputPort.Item1, outputPort.Item2, isReversePort: true);
+                    model.AddImplementedPort(outputPort.Item1, outputPort.Item2, isReversePort: true, IsInputPort: false);
                 }
                 else
                 {
-                    model.AddAcceptedPort(outputPort.Item1, outputPort.Item2, isReversePort: false);
+                    model.AddAcceptedPort(outputPort.Item1, outputPort.Item2, IsInputPort: false);
                 }
             }
 

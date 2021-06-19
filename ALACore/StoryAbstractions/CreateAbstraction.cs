@@ -31,8 +31,8 @@ namespace StoryAbstractions
         public string InstanceName { get; set; } = "Default";
         public Enums.ALALayer Layer { get; set; } = Enums.ALALayer.DomainAbstractions;
         public string ClassName { get; set; }
-        public List<string> ImplementedPorts { get; set; } = new List<string>();
-        public List<string> AcceptedPorts { get; set; } = new List<string>();
+        public List<Port> ImplementedPorts { get; set; } = new List<Port>();
+        public List<Port> AcceptedPorts { get; set; } = new List<Port>();
         public string NamespacePrefix { get; set; } = "";
 
         // Private fields
@@ -55,10 +55,10 @@ namespace StoryAbstractions
 
         }
 
-        private void AddSupportedPortDetails(ClassFileGenerator cfg, string implementedPort, bool isImplemented = true)
+        private void AddSupportedPortDetails(ClassFileGenerator cfg, Port port, bool isImplemented = true)
         {
-            var type = implementedPort.Split()[0];
-            var name = implementedPort.Split()[1];
+            var type = port.Type;
+            var name = port.Name;
 
             if (type == "IEvent")
             {
@@ -157,16 +157,16 @@ namespace StoryAbstractions
 
                 if (ImplementedPorts.Any())
                 {
-                    baseListInlineComment = $"// {ImplementedPorts.First().Split()[1]}";
+                    baseListInlineComment = $"// {ImplementedPorts.First().Name}";
                 }
 
-                baseListInlineComment = ImplementedPorts.Skip(1).Aggregate(baseListInlineComment, (current, port) => current + $", {port.Split()[1]}");
+                baseListInlineComment = ImplementedPorts.Skip(1).Aggregate(baseListInlineComment, (current, port) => current + $", {port.Name}");
 
                 var cfg = new ClassFileGenerator()
                 {
                     Namespace = $"{NamespacePrefix}{Enum.GetName(typeof(Enums.ALALayer), Layer)}",
                     ClassName = ClassName,
-                    ImplementedInterfaces = ImplementedPorts.Select(s => s.Split().First()).ToList(), // Just get interface types
+                    ImplementedInterfaces = ImplementedPorts.Select(s => s.Name).ToList(), // Just get interface types
                     BaseListInlineComment = baseListInlineComment, // Port names combined into a comment
                     IsInterface = Layer == Enums.ALALayer.ProgrammingParadigms
                 };
@@ -219,21 +219,18 @@ namespace StoryAbstractions
                     // Create implementation stubs
                     foreach (var implementedPort in ImplementedPorts)
                     {
-                        var type = implementedPort.Split()[0];
+                        var type = implementedPort.Type;
                         cfg.Regions.Add($"{type} implementation");
                         AddSupportedPortDetails(cfg, implementedPort, isImplemented: true);
 
-                        description.Add($"{portCounter}. {implementedPort.Replace("<", "&lt;").Replace(">", "&gt;")}:");
+                        description.Add($"{portCounter}. {implementedPort.FullName.Replace(">", "&gt;")}:");
                         portCounter++;
                     }
 
                     foreach (var providedPort in AcceptedPorts)
                     {
-                        var split = providedPort.Split();
-                        if (split.Length < 2) continue;
-
-                        var type = split[0];
-                        var name = split[1];
+                        var type = providedPort.Type;
+                        var name = providedPort.Name;
 
                         if (type.StartsWith("List<"))
                         {
@@ -244,7 +241,7 @@ namespace StoryAbstractions
                             cfg.AddField(type, name, accessLevel: "private", region: "Ports"); 
                         }
 
-                        description.Add($"{portCounter}. {providedPort.Replace("<", "&lt;").Replace(">", "&gt;")}:");
+                        description.Add($"{portCounter}. {providedPort.FullName.Replace("<", "&lt;").Replace(">", "&gt;")}:");
                         portCounter++;
 
                         AddSupportedPortDetails(cfg, providedPort, isImplemented: false);
@@ -252,6 +249,44 @@ namespace StoryAbstractions
                 }
 
                 cfg.Description = description;
+
+                // Add PostWiringInitialize
+                List<string> postWiringInitializeBody = new List<string>();
+
+                bool postWiringHeaderAdded = false;
+                // postWiringInitializeBody.Add("// if (inputDataFlowBPort != null)");
+                // postWiringInitializeBody.Add("// {");
+                // postWiringInitializeBody.Add("//     inputDataFlowBPort.DataChanged += () => (inputInstance as IDataFlow<T>).Data = inputDataFlowBPort.Data;");
+                // postWiringInitializeBody.Add("// }");
+                foreach (var accepted in AcceptedPorts.Where(p => p.IsReversePort))
+                {
+                    if (!postWiringHeaderAdded)
+                    {
+                        postWiringInitializeBody.Add("// IDataFlowB and IEventB event handlers");
+                        postWiringHeaderAdded = true;
+                    }
+
+                    var type = accepted.Type;
+                    var name = accepted.Name;
+
+                    if (type.StartsWith("IDataFlowB"))
+                    {
+                        postWiringInitializeBody.Add($"if ({name} != null)");
+                        postWiringInitializeBody.Add($"{{");
+                        postWiringInitializeBody.Add($"    {name}.DataChanged += () => {{ }}");
+                        postWiringInitializeBody.Add($"}}");
+                        postWiringInitializeBody.Add("");
+                    }
+                    else if (type.StartsWith("IEventB"))
+                    {
+                        postWiringInitializeBody.Add($"if ({name} != null)");
+                        postWiringInitializeBody.Add($"{{");
+                        postWiringInitializeBody.Add($"    {name}.EventHappened += () => {{ }}");
+                        postWiringInitializeBody.Add($"}}");
+                        postWiringInitializeBody.Add("");
+                    }
+                }
+
 
                 if (Layer == Enums.ALALayer.StoryAbstractions)
                 {
@@ -274,16 +309,14 @@ namespace StoryAbstractions
 
                     cfg.ConstructorBody = constructorBody;
 
-                    // Add PostWiringInitialize
-                    List<string> postWiringInitializeBody = new List<string>();
                     postWiringInitializeBody.Add("// Mapping to virtual ports");
                     // postWiringInitializeBody.Add("// Utilities.ConnectToVirtualPort(outputInstance, \"portOnOutputInstance\", portInStoryAbstraction);");
                     // postWiringInitializeBody.Add("");
 
-                    foreach (var providedPort in AcceptedPorts)
+                    foreach (var acceptedPort in ImplementedPorts)
                     {
-                        var type = providedPort.Split()[0];
-                        var name = providedPort.Split()[1];
+                        var type = acceptedPort.Type;
+                        var name = acceptedPort.Name;
 
                         // Connector should be an Apply<type, type>
                         if (type.StartsWith("IDataFlow") && !type.StartsWith("IDataFlowB"))
@@ -299,44 +332,14 @@ namespace StoryAbstractions
                     }
                     postWiringInitializeBody.Add(""); 
 
-                    postWiringInitializeBody.Add("// IDataFlowB and IEventB event handlers");
-                    // postWiringInitializeBody.Add("// if (inputDataFlowBPort != null)");
-                    // postWiringInitializeBody.Add("// {");
-                    // postWiringInitializeBody.Add("//     inputDataFlowBPort.DataChanged += () => (inputInstance as IDataFlow<T>).Data = inputDataFlowBPort.Data;");
-                    // postWiringInitializeBody.Add("// }");
-                    foreach (var providedPort in AcceptedPorts)
-                    {
-                        var type = providedPort.Split()[0];
-                        var name = providedPort.Split()[1];
-
-                        // Connector should be an Apply<type, type>
-                        if (type.StartsWith("IDataFlowB"))
-                        {
-                            postWiringInitializeBody.Add($"if ({name} != null)");
-                            postWiringInitializeBody.Add($"{{");
-                            postWiringInitializeBody.Add($"    {name}.DataChanged += () => ({name}Connector as IDataFlow<T>).Data = {name}.Data;");
-                            postWiringInitializeBody.Add($"}}");
-                            postWiringInitializeBody.Add("");
-                        }
-                        else if (type.StartsWith("IEventB"))
-                        {
-                            postWiringInitializeBody.Add($"if ({name} != null)");
-                            postWiringInitializeBody.Add($"{{");
-                            postWiringInitializeBody.Add($"    {name}.EventHappened += () => ({name}Connector as IEvent).Execute();");
-                            postWiringInitializeBody.Add($"}}");
-                            postWiringInitializeBody.Add("");
-                        }
-                    }
-
                     postWiringInitializeBody.Add("// Send out initial values");
                     postWiringInitializeBody.Add("// (instanceNeedingInitialValue as IDataFlow<T>).Data = defaultValue;");
-
-                    cfg.Regions.Add("PostWiringInitialize");
-                    cfg.AddMethod("PostWiringInitialize", accessLevel: "private", methodBody: postWiringInitializeBody, region: "PostWiringInitialize");
                 }
 
-                var classFileTemplateContents = cfg.BuildFile();
+                cfg.Regions.Add("PostWiringInitialize");
+                cfg.AddMethod("PostWiringInitialize", accessLevel: "private", methodBody: postWiringInitializeBody, region: "PostWiringInitialize");
 
+                var classFileTemplateContents = cfg.BuildFile();
 
                 if (baseFolderPathInput != null)
                 {
@@ -363,17 +366,6 @@ namespace StoryAbstractions
             return "";
         }
 
-        private void PostWiringInitialize()
-        {
-            // Mapping to virtual ports
-            
-            // DataChanged lambdas
-            if (classNameInput != null) classNameInput.DataChanged += () => ClassName = classNameInput.Data;
-            if (implementedPortsInput != null) implementedPortsInput.DataChanged += () => ImplementedPorts = implementedPortsInput.Data;
-            if (providedPortsInput != null) providedPortsInput.DataChanged += () => AcceptedPorts = providedPortsInput.Data;
-
-        }
-
         // IEvent implementation
         void IEvent.Execute()
         {
@@ -390,8 +382,8 @@ namespace StoryAbstractions
         private void CreateFromAbstractionModel(AbstractionModel model)
         {
             ClassName = model.FullType;
-            ImplementedPorts = model.GetImplementedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
-            AcceptedPorts = model.GetAcceptedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
+            ImplementedPorts = model.GetImplementedPorts().ToList();
+            AcceptedPorts = model.GetAcceptedPorts().ToList();
             Layer = model.Layer;
 
             Create();
