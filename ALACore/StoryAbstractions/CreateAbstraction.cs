@@ -58,7 +58,7 @@ namespace StoryAbstractions
             var type = implementedPort.Split()[0];
             var name = implementedPort.Split()[1];
 
-            if (type.StartsWith("IEvent") && !type.StartsWith("IEventB"))
+            if (type == "IEvent")
             {
                 if (isImplemented)
                 {
@@ -76,7 +76,7 @@ namespace StoryAbstractions
                         methodBody.Add($"({name}Connector as IEvent).Execute();"); 
                     }
 
-                    cfg.AddMethod("IEvent.Execute", region: $"{type} implementation", methodBody: methodBody);  
+                    cfg.AddMethod("IEvent.Execute", region: "IEvent implementation", methodBody: methodBody);  
                 }
                 else
                 {
@@ -131,7 +131,13 @@ namespace StoryAbstractions
             }
             else if (type.StartsWith("IUI"))
             {
-                cfg.AddMethod("IUI.GetWPFElement", returnType: "UIElement", region: $"{type} implementation");
+                cfg.AddMethod("IUI.GetWPFElement", returnType: "UIElement", region: "IUI implementation");
+            }
+            else if (type == "IEventHandler")
+            {
+                cfg.AddProperty("object", $"Sender", region: "IEventHandler implementation");
+
+                cfg.AddMethod("IEventHandler.Subscribe", region: "IEventHandler implementation");
             }
 
         }

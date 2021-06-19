@@ -92,14 +92,16 @@ namespace Application
             {
                 "IEvent inputEvent",
                 "IDataFlow<bool> inputBool",
-                "IUI ui"
+                "IUI ui",
+                "IEventHandler sender"
             };
 
             abstr.AcceptedPorts = new List<string>()
             {
                 "IEvent outputEvent",
                 "IDataFlow<int> outputInt",
-                "IDataFlowB<int> Binput"
+                "IDataFlowB<int> Binput",
+                "List<IEventHandler> handlers"
             };
 
             abstr.Layer = Enums.ALALayer.DomainAbstractions;

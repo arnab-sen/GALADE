@@ -233,7 +233,10 @@ namespace DomainAbstractions
                             var methodName = regionVariable.Replace("method:", "");
 
                             if (methodPreStubComments.ContainsKey(methodName)) AddLine(fileBuilder, $"// {methodPreStubComments[methodName]}");
-                        
+
+                            // Different types of region variables should be separated by spaces
+                            if (regionVariables[region].Count > 1) AddLine(fileBuilder, "");
+
                             AddLine(fileBuilder, methodStubs[methodName]);
                             if (!IsInterface)
                             {
