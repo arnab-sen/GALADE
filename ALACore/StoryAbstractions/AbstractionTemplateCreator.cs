@@ -181,7 +181,7 @@ namespace StoryAbstractions
             {
                 Width = 100,
                 Height = 20,
-                Content = "Create",
+                Content = "Add to project",
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Margin = new Thickness(0, 2, 2, 0)
             };
