@@ -135,7 +135,7 @@ namespace DomainAbstractions
             }
             else
             {
-                sb.Append($"get {{ return default; }}");
+                sb.Append($"get {{ return default; }} ");
             }
 
             if (!string.IsNullOrEmpty(getterBody))

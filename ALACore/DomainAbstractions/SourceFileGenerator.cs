@@ -40,7 +40,7 @@ namespace DomainAbstractions
         };
 
 
-        public void AddMethod(string name, Enums.AccessLevel accessLevel, string returnType, bool hasBody = true, params Variable[] arguments)
+        public void AddMethod(string name, Enums.AccessLevel accessLevel, string returnType, bool hasBody = true, params ParsedVariable[] arguments)
         {
             var method = MethodDeclaration(
                     IdentifierName(returnType),
@@ -56,7 +56,7 @@ namespace DomainAbstractions
             _mainClassMembers.Add(method);
         }
 
-        private ParameterListSyntax GetParameterList(List<Variable> variables)
+        private ParameterListSyntax GetParameterList(List<ParsedVariable> variables)
         {
             var tokens = new List<SyntaxNodeOrToken>();
 
@@ -146,12 +146,32 @@ namespace DomainAbstractions
 
         }
 
-        public class Variable
+        /// <summary>
+        /// Container for parsed fields and properties.
+        /// </summary>
+        public class ParsedVariable
         {
             public Enums.AccessLevel AccessLevel { get; set; } = Enums.AccessLevel.None;
             public string Type { get; set; }
             public string Name { get; set; }
             public string InitialValue { get; set; }
+            public bool HasSetter { get; set; }
+            public bool HasGetter { get; set; }
+        }
+
+        public class ParsedMethod
+        {
+
+        }
+
+        public class ParsedClass
+        {
+
+        }
+
+        public class ParsedInterface
+        {
+
         }
     }
 }

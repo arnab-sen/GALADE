@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using ProgrammingParadigms;
 using DomainAbstractions;
 using System.Windows;
 using WPF = System.Windows.Controls;
+using static DomainAbstractions.SourceFileGenerator;
 
 namespace StoryAbstractions
 {
@@ -16,11 +18,10 @@ namespace StoryAbstractions
     /// <para>Ports:</para>
     /// <para></para>
     /// </summary>
-    public class AbstractionTemplateCreator : IUI
+    public class AbstractionTemplateCreator : IUI, IDataFlow<List<string>> // ui, programmingParadigmFiles
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public List<string> AvailablePortTypes { get; set; }
 
         // Private fields
         private TabContainer _tabContainer;
@@ -30,6 +31,8 @@ namespace StoryAbstractions
 
         private List<RowBundle> _domainAbstractionInputPortBundles = new List<RowBundle>();
         private List<RowBundle> _domainAbstractionOutputPortBundles = new List<RowBundle>();
+
+        private Dictionary<string, string> _portSourceFiles = new Dictionary<string, string>();
 
         // Ports
 
@@ -119,6 +122,54 @@ namespace StoryAbstractions
             return model;
         }
 
+        private void GetPortFiles(List<string> sourceLocations)
+        {
+            var reader = new FileReader();
+
+            foreach (var sourceLocation in sourceLocations)
+            {
+                var raw = reader.ReadFile(sourceLocation);
+                var interfaceSource = ExtractInterfaces(raw);
+
+
+                var content = reader.ReadFile(sourceLocation);
+                _portSourceFiles[Path.GetFileNameWithoutExtension(sourceLocation)] = content;
+            }
+        }
+
+        /// <summary>
+        /// Extracts interface definitions from a file that may contain multiple.
+        /// </summary>
+        /// <param name="sourceFile"></param>
+        /// <returns></returns>
+        private Dictionary<string, ParsedInterface> ExtractInterfaces(string sourceFile)
+        {
+            var extracted = new Dictionary<string, ParsedInterface>();
+            var parser = new CodeParser();
+            var interfaceDefinitions = parser.ExtractStrings(parser.GetInterfaces(sourceFile));
+
+            foreach (var interfaceDefinition in interfaceDefinitions)
+            {
+                var parsedInterface = ParseInterface(interfaceDefinition);
+            }
+
+
+
+            return extracted;
+        }
+
+        private ParsedInterface ParseInterface(string source)
+        {
+            var parsedInterface = new ParsedInterface();
+            var parser = new CodeParser();
+            var declaration = parser.GetInterfaces(source).First();
+
+            var name = declaration;
+
+
+            return parsedInterface;
+        }
+
 
         private void CreateStoryAbstractionTabContents()
         {
@@ -153,6 +204,17 @@ namespace StoryAbstractions
 
             return (_tabContainer as IUI).GetWPFElement();
         }
+
+        List<string> IDataFlow<List<string>>.Data
+        {
+            get => default;
+            set
+            {
+                _portSourceFiles.Clear();
+                GetPortFiles(value);
+            }
+        }
+
 
         public AbstractionTemplateCreator()
         {

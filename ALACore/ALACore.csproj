@@ -378,6 +378,7 @@
     <Compile Include="ProgrammingParadigms\IPortConnection.cs" />
     <Compile Include="ProgrammingParadigms\IUI.cs" />
     <Compile Include="ProgrammingParadigms\IVisualPortGraphNode.cs" />
+    <Compile Include="ProgrammingParadigms\ParsedUnits.cs" />
     <Compile Include="ProgrammingParadigms\Port.cs" />
     <Compile Include="ProgrammingParadigms\StateTransition.cs" />
     <Compile Include="ProgrammingParadigms\UndoHistory.cs" />
@@ -388,6 +389,7 @@
     <Compile Include="StoryAbstractions\AbstractionTemplateCreator.cs" />
     <Compile Include="StoryAbstractions\ALAWire.cs" />
     <Compile Include="StoryAbstractions\ALANode.cs" />
+    <Compile Include="StoryAbstractions\CreateAbstraction.cs" />
     <Compile Include="StoryAbstractions\EditSetting.cs" />
     <Compile Include="StoryAbstractions\ExtractALACode.cs" />
     <Compile Include="StoryAbstractions\GetSetting.cs" />

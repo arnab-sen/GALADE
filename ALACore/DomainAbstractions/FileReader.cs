@@ -35,23 +35,27 @@ namespace DomainAbstractions
 
         }
 
+        public string ReadFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                filePath = path;
+                fileContent = File.ReadAllText(filePath);
+                if (fileContentOutput != null) fileContentOutput.Data = fileContent;
+                return fileContent;
+            }
+            else
+            {
+                Logging.Log($"File does not exist at {path}");
+                return "";
+            }
+        }
+
         // IDataFlow<string> implementation
         string IDataFlow<string>.Data
         {
             get => filePath;
-            set
-            {
-                if (File.Exists(value))
-                {
-                    filePath = value;
-                    fileContent = File.ReadAllText(filePath);
-                    if (fileContentOutput != null) fileContentOutput.Data = fileContent;
-                }
-                else
-                {
-                    Logging.Log($"File does not exist at {value}");
-                }
-            }
+            set => ReadFile(value);
         }
     }
 }

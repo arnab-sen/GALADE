@@ -13,10 +13,11 @@ namespace ProgrammingParadigms
         // Enums
         public enum ALALayer
         {
-            Libraries = 0,
-            ProgrammingParadigms = 1,
-            DomainAbstractions = 2,
-            Application = 3
+            Libraries,
+            ProgrammingParadigms,
+            DomainAbstractions,
+            StoryAbstractions,
+            Application
         }
 
         [JsonConverter(typeof(StringEnumConverter))]

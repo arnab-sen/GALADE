@@ -285,7 +285,6 @@
     <Compile Include="Application\Modules\CreateDiagramFromCode.cs" />
     <Compile Include="Application\Modules\Deprecated\AddConnectionToGraph.cs" />
     <Compile Include="Application\Modules\Deprecated\ConfigWindow.cs" />
-    <Compile Include="Application\Modules\Deprecated\CreateAbstraction.cs" />
     <Compile Include="Application\Modules\Deprecated\CreateConnectionsFromJSON.cs" />
     <Compile Include="Application\Modules\Deprecated\CreateVPGNsFromJSON.cs" />
     <Compile Include="Application\Modules\Deprecated\DragRectMultiSelectNodes.cs" />

@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.IO;
 
-namespace Application
+namespace StoryAbstractions
 {
     /// <summary>
     /// <para>Creates the contents of a class file for an ALA abstraction. Fields, properties, method stubs, and comment regions are all added based on the abstraction's ports.
@@ -31,7 +31,7 @@ namespace Application
         public bool WriteFile { get; set; } = false;
         public string ClassName { get; set; }
         public List<string> ImplementedPorts { get; set; } = new List<string>();
-        public List<string> ProvidedPorts { get; set; } = new List<string>();
+        public List<string> AcceptedPorts { get; set; } = new List<string>();
         public string FilePath { get; set; } = "";
         public string NamespacePrefix { get; set; } = "";
 
@@ -50,11 +50,7 @@ namespace Application
 
         public CreateAbstraction()
         {
-            // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateAbstraction.xmind
-            // END AUTO-GENERATED INSTANTIATIONS FOR CreateAbstraction.xmind
 
-            // BEGIN AUTO-GENERATED WIRING FOR CreateAbstraction.xmind
-            // END AUTO-GENERATED WIRING FOR CreateAbstraction.xmind
         }
 
         private void AddSupportedPortDetails(ClassFileGenerator cfg, string implementedPort, bool isImplemented = true)
@@ -66,24 +62,32 @@ namespace Application
             {
                 if (isImplemented)
                 {
-                    cfg.AddField("EventConnector",
-                        $"{name}Connector",
-                        accessLevel: "private",
-                        defaultValue: $"new EventConnector() {{ InstanceName = \"{name}Connector\" }}",
-                        region: "Input instances");
-
                     List<string> methodBody = new List<string>();
-                    methodBody.Add($"({name}Connector as IEvent).Execute();");
+
+                    if (Layer == Enums.ALALayer.StoryAbstractions)
+                    {
+                        cfg.AddField("EventConnector",
+                                        $"{name}Connector",
+                                        accessLevel: "private",
+                                        defaultValue: $"new EventConnector() {{ InstanceName = \"{name}Connector\" }}",
+                                        region: "Input instances");
+
+
+                        methodBody.Add($"({name}Connector as IEvent).Execute();"); 
+                    }
 
                     cfg.AddMethod("IEvent.Execute", region: $"{type} implementation", methodBody: methodBody);  
                 }
                 else
                 {
-                    cfg.AddField("EventConnector",
-                        $"{name}Connector",
-                        accessLevel: "private",
-                        defaultValue: $"new EventConnector() {{ InstanceName = \"{name}Connector\" }}",
-                        region: "Output instances");
+                    if (Layer == Enums.ALALayer.StoryAbstractions)
+                    {
+                        cfg.AddField("EventConnector",
+                                        $"{name}Connector",
+                                        accessLevel: "private",
+                                        defaultValue: $"new EventConnector() {{ InstanceName = \"{name}Connector\" }}",
+                                        region: "Output instances"); 
+                    }
                 }
             }
             else if (type.StartsWith("IDataFlow"))
@@ -99,21 +103,29 @@ namespace Application
 
                     if (isImplemented)
                     {
-                        cfg.AddField($"DataFlowConnector<{internalDataType}>", $"{name}Connector",
-                            accessLevel: "private",
-                            defaultValue: $"new DataFlowConnector<{internalDataType}>() {{ InstanceName = \"{name}Connector\" }}",
-                            region: "Input instances");
+                        var setterBody = "";
 
-                        string setterBody = $"{{({name}Connector as IDataFlow<{internalDataType}>).Data = value;}}";
+                        if (Layer == Enums.ALALayer.StoryAbstractions)
+                        {
+                            cfg.AddField($"DataFlowConnector<{internalDataType}>", $"{name}Connector",
+                                                accessLevel: "private",
+                                                defaultValue: $"new DataFlowConnector<{internalDataType}>() {{ InstanceName = \"{name}Connector\" }}",
+                                                region: "Input instances");
+
+                            setterBody = $"{{({name}Connector as IDataFlow<{internalDataType}>).Data = value;}}"; 
+                        }
 
                         cfg.AddProperty(internalDataType, $"{type}.Data", region: $"{type} implementation", setterBody: setterBody);
                     }
                     else
                     {
-                        cfg.AddField($"Apply<{internalDataType}, {internalDataType}>", $"{name}Connector",
-                            accessLevel: "private",
-                            defaultValue: $"new Apply<{internalDataType}, {internalDataType}>() {{ InstanceName = \"{name}Connector\", Lambda = input => input }}",
-                            region: "Output instances");
+                        if (Layer == Enums.ALALayer.StoryAbstractions)
+                        {
+                            cfg.AddField($"Apply<{internalDataType}, {internalDataType}>", $"{name}Connector",
+                                                accessLevel: "private",
+                                                defaultValue: $"new Apply<{internalDataType}, {internalDataType}>() {{ InstanceName = \"{name}Connector\", Lambda = input => input }}",
+                                                region: "Output instances"); 
+                        }
                     }
                 }
             }
@@ -129,7 +141,7 @@ namespace Application
             return name.Replace("<", ";").Split(new[] {';'})[0];
         }
 
-        private void Create()
+        public string Create()
         {
             try
             {
@@ -166,7 +178,7 @@ namespace Application
                     cfg.Usings.Add($"{NamespacePrefix}Libraries");
                     cfg.Usings.Add($"{NamespacePrefix}ProgrammingParadigms");
                 }
-                else if (Layer == Enums.ALALayer.Application)
+                else if (Layer == Enums.ALALayer.StoryAbstractions)
                 {
                     cfg.Usings.Add($"{NamespacePrefix}Libraries");
                     cfg.Usings.Add($"{NamespacePrefix}ProgrammingParadigms");
@@ -176,9 +188,9 @@ namespace Application
                 List<string> description = new List<string> { "" };
                 int portCounter = 1;
 
-                if (!(Layer == Enums.ALALayer.ProgrammingParadigms))
+                if (Layer != Enums.ALALayer.ProgrammingParadigms)
                 {
-                    if (Layer == Enums.ALALayer.Application)
+                    if (Layer == Enums.ALALayer.StoryAbstractions)
                     {
                         cfg.Regions.Add("Input instances");
                         cfg.Regions.Add("Output instances");
@@ -197,7 +209,7 @@ namespace Application
                         portCounter++;
                     }
 
-                    foreach (var providedPort in ProvidedPorts)
+                    foreach (var providedPort in AcceptedPorts)
                     {
                         var split = providedPort.Split();
                         if (split.Length < 2) continue;
@@ -223,24 +235,24 @@ namespace Application
 
                 cfg.Description = description;
 
-                if (Layer == Enums.ALALayer.Application)
+                if (Layer == Enums.ALALayer.StoryAbstractions)
                 {
                     // Add landmarks for wiring code insertion
                     List<string> constructorBody = new List<string>();
-                    constructorBody.Add($"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {ClassName}.xmind");
-                    constructorBody.Add($"// END AUTO-GENERATED INSTANTIATIONS FOR {ClassName}.xmind");
+                    constructorBody.Add($"// BEGIN AUTO-GENERATED INSTANTIATIONS FOR {ClassName}");
+                    constructorBody.Add($"// END AUTO-GENERATED INSTANTIATIONS FOR {ClassName}");
                     constructorBody.Add($"");
 
-                    constructorBody.Add($"// BEGIN AUTO-GENERATED WIRING FOR {ClassName}.xmind");
-                    constructorBody.Add($"// END AUTO-GENERATED WIRING FOR {ClassName}.xmind");
+                    constructorBody.Add($"// BEGIN AUTO-GENERATED WIRING FOR {ClassName}");
+                    constructorBody.Add($"// END AUTO-GENERATED WIRING FOR {ClassName}");
                     constructorBody.Add($"");
 
-                    constructorBody.Add($"// BEGIN MANUAL INSTANTIATIONS FOR {ClassName}.xmind");
-                    constructorBody.Add($"// END MANUAL INSTANTIATIONS FOR {ClassName}.xmind");
+                    constructorBody.Add($"// BEGIN MANUAL INSTANTIATIONS FOR {ClassName}");
+                    constructorBody.Add($"// END MANUAL INSTANTIATIONS FOR {ClassName}");
                     constructorBody.Add($"");
 
-                    constructorBody.Add($"// BEGIN MANUAL WIRING FOR {ClassName}.xmind");
-                    constructorBody.Add($"// END MANUAL WIRING FOR {ClassName}.xmind");
+                    constructorBody.Add($"// BEGIN MANUAL WIRING FOR {ClassName}");
+                    constructorBody.Add($"// END MANUAL WIRING FOR {ClassName}");
 
                     cfg.ConstructorBody = constructorBody;
 
@@ -250,7 +262,7 @@ namespace Application
                     // postWiringInitializeBody.Add("// Utilities.ConnectToVirtualPort(outputInstance, \"portOnOutputInstance\", portInStoryAbstraction);");
                     // postWiringInitializeBody.Add("");
 
-                    foreach (var providedPort in ProvidedPorts)
+                    foreach (var providedPort in AcceptedPorts)
                     {
                         var type = providedPort.Split()[0];
                         var name = providedPort.Split()[1];
@@ -274,7 +286,7 @@ namespace Application
                     // postWiringInitializeBody.Add("// {");
                     // postWiringInitializeBody.Add("//     inputDataFlowBPort.DataChanged += () => (inputInstance as IDataFlow<T>).Data = inputDataFlowBPort.Data;");
                     // postWiringInitializeBody.Add("// }");
-                    foreach (var providedPort in ProvidedPorts)
+                    foreach (var providedPort in AcceptedPorts)
                     {
                         var type = providedPort.Split()[0];
                         var name = providedPort.Split()[1];
@@ -313,7 +325,7 @@ namespace Application
 
                     File.WriteAllText(Path.Combine(FilePath, $"{classNameWithoutTypes}.cs"), classFileTemplateContents);
 
-                    if (Layer == Enums.ALALayer.Application && File.Exists(Path.Combine(FilePath, $"baseStoryAbstraction.xmind")))
+                    if (Layer == Enums.ALALayer.StoryAbstractions && File.Exists(Path.Combine(FilePath, $"baseStoryAbstraction.xmind")))
                     {
                         // Create xmind diagram 
                         File.Copy(Path.Combine(FilePath, $"baseStoryAbstraction.xmind"), Path.Combine(FilePath, $"{classNameWithoutTypes}.xmind"));
@@ -322,11 +334,14 @@ namespace Application
                 }
 
                 if (fileContentsOutput != null) fileContentsOutput.Data = classFileTemplateContents;
+                return classFileTemplateContents;
             }
             catch (Exception e)
             {
 
             }
+
+            return "";
         }
 
         private void PostWiringInitialize()
@@ -336,7 +351,7 @@ namespace Application
             // DataChanged lambdas
             if (classNameInput != null) classNameInput.DataChanged += () => ClassName = classNameInput.Data;
             if (implementedPortsInput != null) implementedPortsInput.DataChanged += () => ImplementedPorts = implementedPortsInput.Data;
-            if (providedPortsInput != null) providedPortsInput.DataChanged += () => ProvidedPorts = providedPortsInput.Data;
+            if (providedPortsInput != null) providedPortsInput.DataChanged += () => AcceptedPorts = providedPortsInput.Data;
 
         }
 

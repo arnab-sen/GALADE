@@ -86,6 +86,30 @@ namespace Application
 
         public void InitTest()
         {
+            var abstr = new CreateAbstraction();
+            abstr.ClassName = "MyNewAbstraction";
+            abstr.ImplementedPorts = new List<string>()
+            {
+                "IEvent inputEvent",
+                "IDataFlow<bool> inputBool",
+                "IUI ui"
+            };
+
+            abstr.AcceptedPorts = new List<string>()
+            {
+                "IEvent outputEvent",
+                "IDataFlow<int> outputInt",
+                "IDataFlowB<int> Binput"
+            };
+
+            abstr.Layer = Enums.ALALayer.DomainAbstractions;
+
+            var da = abstr.Create();
+
+            abstr.Layer = Enums.ALALayer.StoryAbstractions;
+            var sa = abstr.Create();
+
+
             var gen = new SourceFileGenerator();
             gen.Namespace = "DomainAbstractions";
             gen.ClassName = "MyNewAbstraction";
@@ -101,9 +125,9 @@ namespace Application
                 Enums.AccessLevel.Public, 
                 "void", 
                 true, 
-                new SourceFileGenerator.Variable() {Type = "string", Name = "arg0"},
-                new SourceFileGenerator.Variable() {Type = "int", Name = "arg1"},
-                new SourceFileGenerator.Variable() {Type = "CustomType", Name = "arg2"}
+                new SourceFileGenerator.ParsedVariable() {Type = "string", Name = "arg0"},
+                new SourceFileGenerator.ParsedVariable() {Type = "int", Name = "arg1"},
+                new SourceFileGenerator.ParsedVariable() {Type = "CustomType", Name = "arg2"}
                 );
 
             var contents = gen.Generate();
@@ -792,6 +816,11 @@ namespace Application
             EventConnector id_1a7262b162b54d2e97590033d14e4175 = new EventConnector() {InstanceName="id_1a7262b162b54d2e97590033d14e4175"}; /* {"IsRoot":false} */
             EventLambda deselectAllNodesButLatestSelected = new EventLambda() {InstanceName="deselectAllNodesButLatestSelected",Lambda=() =>{    var nodes = mainGraph.Nodes.OfType<ALANode>();    var selectedNode = mainGraph.Get("SelectedNode");    if (selectedNode == null)        return;    foreach (var node in nodes)    {        if (node != selectedNode)            node.Deselect();    }}}; /* {"IsRoot":false} */
             PopupWindow createAbstractionPopupWindow = new PopupWindow() {InstanceName="createAbstractionPopupWindow",Height=500,Width=500,Resize=SizeToContent.WidthAndHeight}; /* {"IsRoot":false} */
+            AbstractionTemplateCreator id_540ff570baaa41f093c2d4ee34b6f740 = new AbstractionTemplateCreator() {InstanceName="id_540ff570baaa41f093c2d4ee34b6f740"}; /* {"IsRoot":false} */
+            EventConnector id_d455f8590c234fbca1f78725bc3baafa = new EventConnector() {InstanceName="id_d455f8590c234fbca1f78725bc3baafa"}; /* {"IsRoot":false} */
+            GetSetting id_e09ae2c7844042f8bfebad35607c0472 = new GetSetting(name:"ProjectFolderPath") {InstanceName="id_e09ae2c7844042f8bfebad35607c0472"}; /* {"IsRoot":false} */
+            DirectorySearch id_58cf115398a0492689bccb60b4b2c4b5 = new DirectorySearch(directoriesToFind:new string[] { "ProgrammingParadigms" }) {InstanceName="id_58cf115398a0492689bccb60b4b2c4b5",FilenameFilter="*.cs"}; /* {"IsRoot":false} */
+            Apply<Dictionary<string, List<string>>, List<string>> id_1af41ee6ebfe49c5b9995970fa2f74d5 = new Apply<Dictionary<string, List<string>>, List<string>>() {InstanceName="id_1af41ee6ebfe49c5b9995970fa2f74d5",Lambda=input => input["ProgrammingParadigms"].ToList()}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1371,7 +1400,14 @@ namespace Application
             R_KeyPressed.WireTo(refreshDiagram, "eventHappened"); /* {"SourceType":"KeyEvent","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_4ed11222676e42cfae927c4278b45719.WireTo(id_1a7262b162b54d2e97590033d14e4175, "stateChanged"); /* {"SourceType":"StateChangeListener","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_1a7262b162b54d2e97590033d14e4175.WireTo(deselectAllNodesButLatestSelected, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"EventLambda","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_25ed8d5621754358bb15633274ef191a.WireTo(createAbstractionPopupWindow, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_d455f8590c234fbca1f78725bc3baafa.WireTo(id_e09ae2c7844042f8bfebad35607c0472, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"GetSetting","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_d455f8590c234fbca1f78725bc3baafa.WireTo(createAbstractionPopupWindow, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            createAbstractionPopupWindow.WireTo(id_540ff570baaa41f093c2d4ee34b6f740, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":false,"DestinationType":"AbstractionTemplateCreator","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_25ed8d5621754358bb15633274ef191a.WireTo(id_d455f8590c234fbca1f78725bc3baafa, "clickedEvent"); /* {"SourceType":"MenuItem","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_e09ae2c7844042f8bfebad35607c0472.WireTo(id_ecfbf0b7599e4340b8b2f79b7d1e29cb, "filePathInput"); /* {"SourceType":"GetSetting","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            id_e09ae2c7844042f8bfebad35607c0472.WireTo(id_58cf115398a0492689bccb60b4b2c4b5, "settingJsonOutput"); /* {"SourceType":"GetSetting","SourceIsReference":false,"DestinationType":"DirectorySearch","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
+            id_1af41ee6ebfe49c5b9995970fa2f74d5.WireTo(id_540ff570baaa41f093c2d4ee34b6f740, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"AbstractionTemplateCreator","DestinationIsReference":false,"Description":"","SourceGenerics":["Dictionary<string, List<string>>","List<string>"],"DestinationGenerics":[]} */
+            id_58cf115398a0492689bccb60b4b2c4b5.WireTo(id_1af41ee6ebfe49c5b9995970fa2f74d5, "foundFiles"); /* {"SourceType":"DirectorySearch","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["Dictionary<string, List<string>>","List<string>"]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
@@ -1683,11 +1719,9 @@ namespace Application
             // END AUTO-GENERATED WIRING FOR CreateCodeGenerationLandmarks
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
-            AbstractionTemplateCreator id_e2e1f095c1334824b861b0c76451b4b4 = new AbstractionTemplateCreator() {InstanceName="id_e2e1f095c1334824b861b0c76451b4b4"}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR CreateCustomAbstraction
 
             // BEGIN AUTO-GENERATED WIRING FOR CreateCustomAbstraction
-            createAbstractionPopupWindow.WireTo(id_e2e1f095c1334824b861b0c76451b4b4, "children"); /* {"SourceType":"PopupWindow","SourceIsReference":true,"DestinationType":"AbstractionTemplateCreator","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR CreateCustomAbstraction
 
 
