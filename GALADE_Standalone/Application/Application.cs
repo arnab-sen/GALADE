@@ -1423,6 +1423,7 @@ namespace Application
             id_883ae58e7ce04cf4823099b91856d9df.WireTo(id_eff37028c6144b45a849e5b625e064c2, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"Apply","DestinationIsReference":false,"Description":"","SourceGenerics":["string"],"DestinationGenerics":["string","string"]} */
             id_eff37028c6144b45a849e5b625e064c2.WireTo(id_7f855649f4394ebf99e86812f27f2840, "output"); /* {"SourceType":"Apply","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["string","string"],"DestinationGenerics":["string"]} */
             id_ce8f6be887a643b5b0a91e5f8bdab424.WireTo(id_7f855649f4394ebf99e86812f27f2840, "baseFolderPathInput"); /* {"SourceType":"CreateAbstraction","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["string"]} */
+            id_540ff570baaa41f093c2d4ee34b6f740.WireTo(createAbstractionPopupWindow, "createdButtonPressed"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger

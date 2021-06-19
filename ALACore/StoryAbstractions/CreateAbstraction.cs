@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -347,6 +348,8 @@ namespace StoryAbstractions
                     File.WriteAllText(filePath, classFileTemplateContents);
 
                     if (filePathOutput != null) filePathOutput.Data = filePath;
+
+                    Process.Start(filePath);
                 }
 
                 if (fileContentsOutput != null) fileContentsOutput.Data = classFileTemplateContents;

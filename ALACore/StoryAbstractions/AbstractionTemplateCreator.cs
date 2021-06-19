@@ -37,6 +37,7 @@ namespace StoryAbstractions
 
         // Ports
         private IDataFlow<AbstractionModel> generatedModel;
+        private IEvent createdButtonPressed;
 
 
         // Methods
@@ -131,10 +132,12 @@ namespace StoryAbstractions
                 GeneratedModel = model;
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;
+
+                createdButtonPressed?.Execute();
             };
 
             panel.Children.Add(getDataButton);
-
+            
         }
 
         private AbstractionModel CreateAbstractionModel(string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
