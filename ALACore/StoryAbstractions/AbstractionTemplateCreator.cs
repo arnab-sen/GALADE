@@ -31,9 +31,6 @@ namespace StoryAbstractions
             Margin = new Thickness(5)
         };
 
-        private List<RowBundle> _domainAbstractionInputPortBundles = new List<RowBundle>();
-        private List<RowBundle> _domainAbstractionOutputPortBundles = new List<RowBundle>();
-
         private Dictionary<string, string> _portSourceFiles = new Dictionary<string, string>();
 
         // Ports
@@ -76,7 +73,6 @@ namespace StoryAbstractions
             });
 
             var implementedPortBundle = new RowBundle();
-            _domainAbstractionInputPortBundles.Add(implementedPortBundle);
 
             userConfigPanel.Children.Add(implementedPortBundle);
 
@@ -100,7 +96,6 @@ namespace StoryAbstractions
             });
 
             var acceptedPortBundle = new RowBundle();
-            _domainAbstractionInputPortBundles.Add(acceptedPortBundle);
 
             userConfigPanel.Children.Add(acceptedPortBundle);
 
@@ -283,6 +278,9 @@ namespace StoryAbstractions
 
         }
 
+        /// <summary>
+        /// A container that can store multiple rows of TextBox pairs.
+        /// </summary>
         private class RowBundle : WPF.StackPanel
         {
             private List<Tuple<TextBox, TextBox>> _rows = new List<Tuple<TextBox, TextBox>>();
@@ -296,7 +294,6 @@ namespace StoryAbstractions
                 {
                     Orientation = WPF.Orientation.Horizontal
                 };
-
 
                 var typeTextBox = new TextBox()
                 {
@@ -312,8 +309,23 @@ namespace StoryAbstractions
                     AcceptsTab = false
                 };
 
+                var removeRowButton = new WPF.Button()
+                {
+                    Width = 50,
+                    Height = 20,
+                    Content = "-"
+                };
+
+                removeRowButton.Click += (sender, args) =>
+                {
+                    var index = Children.IndexOf(panel);
+                    _rows.RemoveAt(index);
+                    Children.RemoveAt(index);
+                };
+
                 panel.Children.Add((typeTextBox as IUI).GetWPFElement());
                 panel.Children.Add((nameTextBox as IUI).GetWPFElement());
+                panel.Children.Add(removeRowButton);
 
                 Children.Add(panel);
 
