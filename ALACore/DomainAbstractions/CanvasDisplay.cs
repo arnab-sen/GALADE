@@ -136,7 +136,7 @@ namespace DomainAbstractions
             backgroundCanvas.FocusVisualStyle = null; // Remove dashed line when the canvas is focused
             // backgroundCanvas.Loaded += (sender, args) => backgroundCanvas.Focus();
             // backgroundCanvas.PreviewMouseDown += (sender, args) => backgroundCanvas.Focus(); // Use PreviewMouseDown so that this happens before any normal MouseDown events
-            
+
             // Right click is used to reset focus to the backgroundCanvas, when it is the only element found from a hit test.
             // Left click is not used here because elements like combobox dropdown menus are treated as popup windows, and don't appear in the hit test results, meaning
             // that a left click on one of those elements would be mistaken for a left click on the blank backgroundCanvas, and unintentionally resetting the focus
@@ -158,13 +158,16 @@ namespace DomainAbstractions
             //     }
             // };
 
-            StateTransition.StateChanged += transition =>
+            if (StateTransition != null)
             {
-                if (transition.Item2 == Enums.DiagramMode.Idle)
-                {
-                    backgroundCanvas.Focus();
-                }
-            };
+                StateTransition.StateChanged += transition =>
+                    {
+                        if (transition.Item2 == Enums.DiagramMode.Idle)
+                        {
+                            backgroundCanvas.Focus();
+                        }
+                    }; 
+            }
 
             backgroundCanvas.MouseRightButtonDown += (sender, args) =>
             {

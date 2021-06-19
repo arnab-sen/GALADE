@@ -27,6 +27,7 @@ namespace StoryAbstractions
         // Private fields
         private WPF.StackPanel _contents = new WPF.StackPanel()
         {
+            Orientation = WPF.Orientation.Horizontal,
             Margin = new Thickness(5)
         };
 
@@ -37,7 +38,10 @@ namespace StoryAbstractions
 
         // Ports
         private IDataFlow<AbstractionModel> generatedModel;
-        private IEvent createdButtonPressed;
+        private IEvent previewButtonClicked;
+        private IEvent createButtonClicked;
+        private IUI previewTextDisplay;
+        private IUI previewNodeDisplay;
 
 
         // Methods
@@ -46,9 +50,10 @@ namespace StoryAbstractions
         {
             // All info should be output to some common data object, maybe an AbstractionModel
 
-            var panel = _contents;
 
-            panel.Children.Add(new WPF.Label()
+            var userConfigPanel = new WPF.StackPanel();
+
+            userConfigPanel.Children.Add(new WPF.Label()
             {
                 Content = "Class name:"
             });
@@ -62,10 +67,10 @@ namespace StoryAbstractions
                 AcceptsTab = false
             };
 
-            panel.Children.Add(classNameTextBox);
+            userConfigPanel.Children.Add(classNameTextBox);
 
             // Implemented ports
-            panel.Children.Add(new WPF.Label()
+            userConfigPanel.Children.Add(new WPF.Label()
             {
                 Content = "Implemented ports:"
             });
@@ -73,7 +78,7 @@ namespace StoryAbstractions
             var implementedPortBundle = new RowBundle();
             _domainAbstractionInputPortBundles.Add(implementedPortBundle);
 
-            panel.Children.Add(implementedPortBundle);
+            userConfigPanel.Children.Add(implementedPortBundle);
 
             var addImplementedPortButton = new WPF.Button()
             {
@@ -85,11 +90,11 @@ namespace StoryAbstractions
 
             addImplementedPortButton.Click += (sender, args) => implementedPortBundle.AddRow();
 
-            panel.Children.Add(addImplementedPortButton);
+            userConfigPanel.Children.Add(addImplementedPortButton);
 
 
             // Accepted ports
-            panel.Children.Add(new WPF.Label()
+            userConfigPanel.Children.Add(new WPF.Label()
             {
                 Content = "Accepted ports:"
             });
@@ -97,7 +102,7 @@ namespace StoryAbstractions
             var acceptedPortBundle = new RowBundle();
             _domainAbstractionInputPortBundles.Add(acceptedPortBundle);
 
-            panel.Children.Add(acceptedPortBundle);
+            userConfigPanel.Children.Add(acceptedPortBundle);
 
             var addAcceptedPortButton = new WPF.Button()
             {
@@ -109,7 +114,31 @@ namespace StoryAbstractions
 
             addAcceptedPortButton.Click += (sender, args) => acceptedPortBundle.AddRow();
 
-            panel.Children.Add(addAcceptedPortButton);
+            userConfigPanel.Children.Add(addAcceptedPortButton);
+
+            var previewButton = new WPF.Button()
+            {
+                Width = 100,
+                Height = 20,
+                Content = "Preview",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            List<Tuple<string, string>> implementedPortData;
+            List<Tuple<string, string>> acceptedPortData;
+
+            previewButton.Click += (sender, args) =>
+            {
+                implementedPortData = implementedPortBundle.GetRowData();
+                acceptedPortData = acceptedPortBundle.GetRowData();
+
+                var model = CreateAbstractionModel(classNameTextBox.Text, implementedPortData, acceptedPortData);
+                GeneratedModel = model;
+
+                if (generatedModel != null) generatedModel.Data = GeneratedModel;                
+                
+                previewButtonClicked?.Execute();
+            };
 
             var getDataButton = new WPF.Button()
             {
@@ -118,10 +147,6 @@ namespace StoryAbstractions
                 Content = "Create",
                 HorizontalAlignment = HorizontalAlignment.Left
             };
-
-
-            List<Tuple<string, string>> implementedPortData;
-            List<Tuple<string, string>> acceptedPortData;
 
             getDataButton.Click += (sender, args) =>
             {
@@ -133,11 +158,30 @@ namespace StoryAbstractions
 
                 if (generatedModel != null) generatedModel.Data = GeneratedModel;
 
-                createdButtonPressed?.Execute();
+                createButtonClicked?.Execute();
             };
 
-            panel.Children.Add(getDataButton);
-            
+            var buttonPanel = new WPF.StackPanel()
+            {
+                Orientation = WPF.Orientation.Horizontal
+            };
+
+            buttonPanel.Children.Add(previewButton);
+            buttonPanel.Children.Add(getDataButton);
+            userConfigPanel.Children.Add(buttonPanel);
+
+            _contents.Children.Add(userConfigPanel);
+
+            if (previewTextDisplay != null)
+            {
+                _contents.Children.Add(previewTextDisplay.GetWPFElement());
+            }
+
+            if (previewNodeDisplay != null)
+            {
+                _contents.Children.Add(previewNodeDisplay.GetWPFElement());
+            }
+
         }
 
         private AbstractionModel CreateAbstractionModel(string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
