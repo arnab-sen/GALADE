@@ -132,10 +132,11 @@ namespace StoryAbstractions
             }
         }
 
-        public Graph Graph { get; set; }
+        public Graph Graph { get; set; } = new Graph();
+
         // public List<object> Edges { get; } = new List<object>();
         public Canvas Canvas { get; set; }
-        public StateTransition<Enums.DiagramMode> StateTransition { get; set; }
+        public StateTransition<Enums.DiagramMode> StateTransition { get; set; } = new StateTransition<Enums.DiagramMode>(Enums.DiagramMode.None);
         public UIElement Render { get; set; }
         public int DefaultZIndex { get; set; } = 0;
         public Brush NodeBackground { get; set; } = Utilities.BrushFromHex("#d2ecf9");
@@ -1452,7 +1453,7 @@ namespace StoryAbstractions
             {
                 if (wire.Render == null) continue;
                 Canvas.SetZIndex(wire.Render, 100);
-            }
+            } 
         }
 
         public void UnhighlightNode()

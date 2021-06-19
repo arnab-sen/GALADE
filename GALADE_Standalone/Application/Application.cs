@@ -301,6 +301,8 @@ namespace Application
                 wire.StartMoving(source: false);
             };
 
+            var previewALANode = new ALANode();
+
 #if DEBUG
             var versionCheckSendInitialPulse = false;
             var showDebugMenu = true;
@@ -829,13 +831,16 @@ namespace Application
             DataFlowConnector<string> id_883ae58e7ce04cf4823099b91856d9df = new DataFlowConnector<string>() {InstanceName="id_883ae58e7ce04cf4823099b91856d9df"}; /* {"IsRoot":false} */
             Apply<string, string> id_eff37028c6144b45a849e5b625e064c2 = new Apply<string, string>() {InstanceName="id_eff37028c6144b45a849e5b625e064c2",Lambda=filepath => Path.GetDirectoryName(filepath)}; /* {"IsRoot":false} */
             DataFlowConnector<string> id_7f855649f4394ebf99e86812f27f2840 = new DataFlowConnector<string>() {InstanceName="id_7f855649f4394ebf99e86812f27f2840"}; /* {"IsRoot":false} */
-            TextBox id_0d68415ddf7c4dcd8217f181ad604194 = new TextBox() {InstanceName="id_0d68415ddf7c4dcd8217f181ad604194",Height=500,Width=200}; /* {"IsRoot":false} */
-            CanvasDisplay id_6585a1ddf3e64ea3b0bfde2eb1c92e47 = new CanvasDisplay() {InstanceName="id_6585a1ddf3e64ea3b0bfde2eb1c92e47",Height=500,Width=200}; /* {"IsRoot":false} */
+            TextBox id_0d68415ddf7c4dcd8217f181ad604194 = new TextBox() {InstanceName="id_0d68415ddf7c4dcd8217f181ad604194",Height=500,Width=500}; /* {"IsRoot":false} */
+            CanvasDisplay id_6585a1ddf3e64ea3b0bfde2eb1c92e47 = new CanvasDisplay() {InstanceName="id_6585a1ddf3e64ea3b0bfde2eb1c92e47",Height=500,Width=500}; /* {"IsRoot":false} */
             DataFlowConnector<AbstractionModel> id_d85c7d1c163b4d0b8d2a1eca0b942a38 = new DataFlowConnector<AbstractionModel>() {InstanceName="id_d85c7d1c163b4d0b8d2a1eca0b942a38"}; /* {"IsRoot":false} */
             CreateAbstraction id_4c483d61eddd4de08f7fa898afeaaae9 = new CreateAbstraction() {InstanceName="id_4c483d61eddd4de08f7fa898afeaaae9"}; /* {"IsRoot":false} */
             Data<AbstractionModel> id_ff9971d3a3044cd69380caf48dd96325 = new Data<AbstractionModel>() {InstanceName="id_ff9971d3a3044cd69380caf48dd96325"}; /* {"IsRoot":false} */
             EventConnector id_b5706c11b0cb44cc8a4a5953aa9c5512 = new EventConnector() {InstanceName="id_b5706c11b0cb44cc8a4a5953aa9c5512"}; /* {"IsRoot":false} */
             Data<AbstractionModel> id_84fd00cd666f4996a5998dba96574e45 = new Data<AbstractionModel>() {InstanceName="id_84fd00cd666f4996a5998dba96574e45"}; /* {"IsRoot":false} */
+            ApplyAction<WPFCanvas> id_d04cf74d57854cc593d417d4c13c4571 = new ApplyAction<WPFCanvas>() {InstanceName="id_d04cf74d57854cc593d417d4c13c4571",Lambda=canvas => {    canvas.HorizontalAlignment = HorizontalAlignment.Center;    canvas.VerticalAlignment = VerticalAlignment.Center;    previewALANode.Canvas = canvas;    previewALANode.CreateInternals();    previewALANode.LoadDefaultModel(new AbstractionModel());    canvas.Children.Add(previewALANode.Render);    WPFCanvas.SetLeft(previewALANode.Render, 120);    WPFCanvas.SetTop(previewALANode.Render, 220);}}; /* {"IsRoot":false} */
+            DataFlowConnector<AbstractionModel> id_3dd4ba1f987b4788a34468a5235041ba = new DataFlowConnector<AbstractionModel>() {InstanceName="id_3dd4ba1f987b4788a34468a5235041ba"}; /* {"IsRoot":false} */
+            ApplyAction<AbstractionModel> id_0192d71d2f0f46d8ac41a85ba89d3125 = new ApplyAction<AbstractionModel>() {InstanceName="id_0192d71d2f0f46d8ac41a85ba89d3125",Lambda=model => {        previewALANode.Render.Dispatcher.Invoke(() => previewALANode.ChangeTypeInUI(model.FullType));    previewALANode.Model.CloneFrom(model);    previewALANode.Render.Dispatcher.Invoke(() => previewALANode.UpdateUI());}}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED WIRING FOR GALADE_Standalone
@@ -1433,14 +1438,17 @@ namespace Application
             id_b5706c11b0cb44cc8a4a5953aa9c5512.WireTo(createAbstractionPopupWindow, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"PopupWindow","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_0d68415ddf7c4dcd8217f181ad604194, "previewTextDisplay"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_6585a1ddf3e64ea3b0bfde2eb1c92e47, "previewNodeDisplay"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"CanvasDisplay","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_d85c7d1c163b4d0b8d2a1eca0b942a38, "generatedModel"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["AbstractionModel"]} */
-            id_ff9971d3a3044cd69380caf48dd96325.WireTo(id_4c483d61eddd4de08f7fa898afeaaae9, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"CreateAbstraction","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":[]} */
-            id_4c483d61eddd4de08f7fa898afeaaae9.WireTo(id_0d68415ddf7c4dcd8217f181ad604194, "fileContentsOutput"); /* {"SourceType":"CreateAbstraction","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_ff9971d3a3044cd69380caf48dd96325, "previewButtonClicked"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["AbstractionModel"]} */
+            id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_d85c7d1c163b4d0b8d2a1eca0b942a38, "generatedModel"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["AbstractionModel"]} */
+            id_3dd4ba1f987b4788a34468a5235041ba.WireTo(id_4c483d61eddd4de08f7fa898afeaaae9, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"CreateAbstraction","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":[]} */
+            id_4c483d61eddd4de08f7fa898afeaaae9.WireTo(id_0d68415ddf7c4dcd8217f181ad604194, "fileContentsOutput"); /* {"SourceType":"CreateAbstraction","SourceIsReference":false,"DestinationType":"TextBox","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_ff9971d3a3044cd69380caf48dd96325.WireTo(id_d85c7d1c163b4d0b8d2a1eca0b942a38, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":["AbstractionModel"]} */
             id_540ff570baaa41f093c2d4ee34b6f740.WireTo(id_b5706c11b0cb44cc8a4a5953aa9c5512, "createButtonClicked"); /* {"SourceType":"AbstractionTemplateCreator","SourceIsReference":false,"DestinationType":"EventConnector","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             id_b5706c11b0cb44cc8a4a5953aa9c5512.WireTo(id_84fd00cd666f4996a5998dba96574e45, "fanoutList"); /* {"SourceType":"EventConnector","SourceIsReference":false,"DestinationType":"Data","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["AbstractionModel"]} */
             id_84fd00cd666f4996a5998dba96574e45.WireTo(id_d85c7d1c163b4d0b8d2a1eca0b942a38, "inputDataB"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":["AbstractionModel"]} */
+            id_6585a1ddf3e64ea3b0bfde2eb1c92e47.WireTo(id_d04cf74d57854cc593d417d4c13c4571, "canvasOutput"); /* {"SourceType":"CanvasDisplay","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":["WPFCanvas"]} */
+            id_ff9971d3a3044cd69380caf48dd96325.WireTo(id_3dd4ba1f987b4788a34468a5235041ba, "dataOutput"); /* {"SourceType":"Data","SourceIsReference":false,"DestinationType":"DataFlowConnector","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":["AbstractionModel"]} */
+            id_3dd4ba1f987b4788a34468a5235041ba.WireTo(id_0192d71d2f0f46d8ac41a85ba89d3125, "fanoutList"); /* {"SourceType":"DataFlowConnector","SourceIsReference":false,"DestinationType":"ApplyAction","DestinationIsReference":false,"Description":"","SourceGenerics":["AbstractionModel"],"DestinationGenerics":["AbstractionModel"]} */
             // END AUTO-GENERATED WIRING FOR GALADE_Standalone
 
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR Debugger
