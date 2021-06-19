@@ -26,11 +26,13 @@ namespace DomainAbstractions
         private string rootFilePath;
         private HashSet<string> desiredDirectories = new HashSet<string>();
         private Dictionary<string, List<string>> _foundDirectories = new Dictionary<string, List<string>>();
-        private Dictionary<string, List<string>> _foundFiles = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> _foundFilesByDir = new Dictionary<string, List<string>>();
+        private List<string> _allFoundFiles = new List<string>();
 
         // Ports
         private IDataFlow<Dictionary<string, List<string>>> foundDirectories;
-        private IDataFlow<Dictionary<string, List<string>>> foundFiles;
+        private IDataFlow<Dictionary<string, List<string>>> foundFilesByDir;
+        private IDataFlow<List<string>> allFoundFiles;
 
         public DirectorySearch(string[] directoriesToFind = null)
         {
@@ -55,15 +57,17 @@ namespace DomainAbstractions
                     _foundDirectories[rootDirectory.Name].AddRange(rootDirectory.GetDirectories().Select(s => s.FullName).ToList());
                 }
 
-                if (!_foundFiles.ContainsKey(rootDirectory.Name))
+                if (!_foundFilesByDir.ContainsKey(rootDirectory.Name))
                 {
-                    _foundFiles[rootDirectory.Name] = rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList();
+                    _foundFilesByDir[rootDirectory.Name] = rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList();
                 }
                 else
                 {
-                    _foundFiles[rootDirectory.Name].AddRange(rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList());
+                    _foundFilesByDir[rootDirectory.Name].AddRange(rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList());
                 }
             }
+
+            _allFoundFiles.AddRange(rootDirectory.GetFiles(FilenameFilter).Select(s => s.FullName).ToList());
 
             var directories = rootDirectory.GetDirectories();
 
@@ -76,7 +80,8 @@ namespace DomainAbstractions
         private void Output()
         {
             if (foundDirectories != null) foundDirectories.Data = _foundDirectories;
-            if (foundFiles != null) foundFiles.Data = _foundFiles;
+            if (foundFilesByDir != null) foundFilesByDir.Data = _foundFilesByDir;
+            if (allFoundFiles != null) allFoundFiles.Data = _allFoundFiles;
         }
 
         // IDataFlow<string> implementation
@@ -85,7 +90,7 @@ namespace DomainAbstractions
             get => rootFilePath;
             set
             {
-                _foundFiles.Clear();
+                _foundFilesByDir.Clear();
                 _foundDirectories.Clear();
                 rootFilePath = value;
 

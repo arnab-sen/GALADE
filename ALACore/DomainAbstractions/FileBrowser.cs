@@ -24,6 +24,7 @@ namespace DomainAbstractions
         public string Mode { get; set; } = "Open";
         public string Filter { get; set; }
         public string DefaultPath { get; set; }
+        public string SelectedFilePath { get; private set; }
 
         // Private fields
         private OpenFileDialog _openBrowser = new OpenFileDialog();
@@ -39,11 +40,11 @@ namespace DomainAbstractions
 
         private void Output(string content)
         {
-            if (selectedFilePathOutput != null) selectedFilePathOutput.Data = content; 
+            SelectedFilePath = content;
+            if (selectedFilePathOutput != null) selectedFilePathOutput.Data = SelectedFilePath; 
         }
 
-        // IEvent implementation
-        void IEvent.Execute()
+        public void Open()
         {
             var mode = Mode.ToLower();
             bool defaultPathIsValid = !string.IsNullOrEmpty(DefaultPath) && Directory.Exists(Path.GetDirectoryName(DefaultPath));
@@ -71,6 +72,12 @@ namespace DomainAbstractions
                     Output(_saveBrowser.FileName);
                 }
             }
+        }
+
+        // IEvent implementation
+        void IEvent.Execute()
+        {
+            Open();
         }
     }
 }

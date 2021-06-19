@@ -49,7 +49,10 @@ namespace DomainAbstractions
 
                 try
                 {
-                    using (var writer = new XmlTextWriter(csprojPath, Encoding.UTF8))
+                    using (var writer = new XmlTextWriter(csprojPath, Encoding.UTF8)
+                    {
+                        Formatting = Formatting.Indented
+                    })
                     {
                         csproj.WriteContentTo(writer);
                         writer.Flush();

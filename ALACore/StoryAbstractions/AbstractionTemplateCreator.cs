@@ -8,6 +8,7 @@ using Libraries;
 using ProgrammingParadigms;
 using DomainAbstractions;
 using System.Windows;
+using Microsoft.Win32;
 using WPF = System.Windows.Controls;
 using static DomainAbstractions.SourceFileGenerator;
 
@@ -39,20 +40,27 @@ namespace StoryAbstractions
         private IEvent createButtonClicked;
         private IUI previewTextDisplay;
         private IUI previewNodeDisplay;
+        private IDataFlow<string> csProjPath;
 
 
         // Methods
 
         private void CreateContents()
         {
-            // All info should be output to some common data object, maybe an AbstractionModel
-
-
-            var userConfigPanel = new WPF.StackPanel();
-
-            userConfigPanel.Children.Add(new WPF.Label()
+            var userConfigPanel = new WPF.StackPanel()
             {
-                Content = "Layer:"
+                
+            };
+
+            var layerDropDownPanel = new WPF.StackPanel()
+            {
+                Orientation = WPF.Orientation.Horizontal
+            };
+
+            layerDropDownPanel.Children.Add(new WPF.Label()
+            {
+                Content = "Layer:",
+                Width = 100
             });
 
             var layerDropDown = new DropDownMenu()
@@ -63,26 +71,37 @@ namespace StoryAbstractions
                     "Story Abstractions"
                 },
                 CanEdit = false,
-                Text = "Domain Abstractions"
+                Text = "Domain Abstractions",
+                Margin = new Thickness(1),
+                Width = 150
             };
 
-            userConfigPanel.Children.Add((layerDropDown as IUI).GetWPFElement());
+            layerDropDownPanel.Children.Add((layerDropDown as IUI).GetWPFElement());
 
-            userConfigPanel.Children.Add(new WPF.Label()
+            userConfigPanel.Children.Add(layerDropDownPanel);
+
+            var classNameDropDownPanel = new WPF.StackPanel()
             {
-                Content = "Class name:"
-            });
+                Orientation = WPF.Orientation.Horizontal
+            };
 
+            classNameDropDownPanel.Children.Add(new WPF.Label()
+            {
+                Content = "Class name:",
+                Width = 100
+            });
 
             var classNameTextBox = new WPF.TextBox()
             {
                 Text = "",
                 Width = 150,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                AcceptsTab = false
+                AcceptsTab = false,
+                Margin = new Thickness(1)
             };
 
-            userConfigPanel.Children.Add(classNameTextBox);
+            classNameDropDownPanel.Children.Add(classNameTextBox);
+            userConfigPanel.Children.Add(classNameDropDownPanel);
 
             // Implemented ports
             userConfigPanel.Children.Add(new WPF.Label()
@@ -105,7 +124,6 @@ namespace StoryAbstractions
             addImplementedPortButton.Click += (sender, args) => implementedPortBundle.AddRow();
 
             userConfigPanel.Children.Add(addImplementedPortButton);
-
 
             // Accepted ports
             userConfigPanel.Children.Add(new WPF.Label()
@@ -134,7 +152,8 @@ namespace StoryAbstractions
                 Width = 100,
                 Height = 20,
                 Content = "Preview",
-                HorizontalAlignment = HorizontalAlignment.Left
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 2, 2, 0)
             };
 
             List<Tuple<string, string>> implementedPortData;
@@ -162,7 +181,8 @@ namespace StoryAbstractions
                 Width = 100,
                 Height = 20,
                 Content = "Create",
-                HorizontalAlignment = HorizontalAlignment.Left
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 2, 2, 0)
             };
 
             getDataButton.Click += (sender, args) =>
@@ -182,6 +202,24 @@ namespace StoryAbstractions
                 createButtonClicked?.Execute();
             };
 
+            var findCsProjButton = new WPF.Button()
+            {
+                Width = 100,
+                Height = 20,
+                Content = "Find .csproj file",
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 2, 2, 0)
+            };
+
+            findCsProjButton.Click += (sender, args) =>
+            {
+                var browser = new OpenFileDialog();
+                if (browser.ShowDialog() == true && csProjPath != null)
+                {
+                    csProjPath.Data = browser.FileName;
+                }
+            };
+            
             var buttonPanel = new WPF.StackPanel()
             {
                 Orientation = WPF.Orientation.Horizontal
@@ -189,6 +227,7 @@ namespace StoryAbstractions
 
             buttonPanel.Children.Add(previewButton);
             buttonPanel.Children.Add(getDataButton);
+            buttonPanel.Children.Add(findCsProjButton);
             userConfigPanel.Children.Add(buttonPanel);
 
             _contents.Children.Add(userConfigPanel);
@@ -207,11 +246,12 @@ namespace StoryAbstractions
 
         private AbstractionModel CreateAbstractionModel(Enums.ALALayer layer, string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
         {
-            var model = new AbstractionModel();
-
-            model.Layer = layer;
-            model.FullType = type;
-            model.Type = type;
+            var model = new AbstractionModel
+            {
+                Layer = layer, 
+                FullType = type, 
+                Type = type
+            };
 
             foreach (var inputPort in implementedPorts)
             {
@@ -315,11 +355,17 @@ namespace StoryAbstractions
             public double Width { get; set; } = 200;
             public double Height { get; set; } = 25;
 
+            public RowBundle()
+            {
+
+            }
+
             public void AddRow()
             {
                 var panel = new WPF.StackPanel()
                 {
-                    Orientation = WPF.Orientation.Horizontal
+                    Orientation = WPF.Orientation.Horizontal,
+                    Margin = new Thickness(0, 0, 0, 2)
                 };
 
                 var typeTextBox = new TextBox()
@@ -333,14 +379,16 @@ namespace StoryAbstractions
                 {
                     Width = Width / 2,
                     Height = Height,
-                    AcceptsTab = false
+                    AcceptsTab = false,
+                    Margin = new Thickness(2, 0, 0, 0)
                 };
 
                 var removeRowButton = new WPF.Button()
                 {
-                    Width = 50,
+                    Width = 20,
                     Height = 20,
-                    Content = "-"
+                    Content = "-",
+                    Margin = new Thickness(2)
                 };
 
                 removeRowButton.Click += (sender, args) =>
