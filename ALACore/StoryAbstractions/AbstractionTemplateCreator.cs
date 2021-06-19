@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Libraries;
 using ProgrammingParadigms;
@@ -244,6 +245,31 @@ namespace StoryAbstractions
 
         }
 
+        /// <summary>
+        /// Reverse ports are output ports that are implemented ports, or input ports that are accepted ports. The main use case of reverse ports is to allow for fan-in lists,
+        /// as C# does not allow a class to implement multiple interfaces of the same type. A fan-in list would look like a fan-out list but with the interface type being a reverse port type.
+        /// <para>For example, a typical fan-out port looks like:</para>
+        /// <code>List&lt;IDataFlow&lt;string&gt;&gt; outputs</code>
+        /// <para>And a fan-in list would look like:</para>
+        /// <code>List&lt;IDataFlow_B&lt;string&gt;&gt; inputs</code>
+        /// <para>Reverse ports types are expected to end with "_B", although for legacy support, "IDataFlowB" and "IEventB" are also supported.</para>
+        /// </summary>
+        /// <param name="portType"></param>
+        /// <returns></returns>
+        private bool IsReversePort(string portType)
+        {
+            if (portType.StartsWith("List<"))
+            {
+                portType = Regex.Match(portType, @"(?<=List<).+(?=>)").Value;
+            }
+
+            if (portType.Contains("<")) portType = portType.Split('<').First();
+
+            var isReverse = portType == "IDataFlowB" || portType == "IEventB" || portType.EndsWith("_B");
+
+            return isReverse;
+        }
+
         private AbstractionModel CreateAbstractionModel(Enums.ALALayer layer, string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
         {
             var model = new AbstractionModel
@@ -255,12 +281,26 @@ namespace StoryAbstractions
 
             foreach (var inputPort in implementedPorts)
             {
-                model.AddImplementedPort(inputPort.Item1, inputPort.Item2);
+                if (IsReversePort(inputPort.Item1))
+                {
+                    model.AddAcceptedPort(inputPort.Item1, inputPort.Item2, isReversePort: true);
+                }
+                else
+                {
+                    model.AddImplementedPort(inputPort.Item1, inputPort.Item2, isReversePort: false);
+                }
             }
 
             foreach (var outputPort in acceptedPorts)
             {
-                model.AddAcceptedPort(outputPort.Item1, outputPort.Item2);
+                if (IsReversePort(outputPort.Item1))
+                {
+                    model.AddImplementedPort(outputPort.Item1, outputPort.Item2, isReversePort: true);
+                }
+                else
+                {
+                    model.AddAcceptedPort(outputPort.Item1, outputPort.Item2, isReversePort: false);
+                }
             }
 
             return model;
