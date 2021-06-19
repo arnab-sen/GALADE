@@ -22,12 +22,13 @@ namespace StoryAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
+        public AbstractionModel GeneratedModel { get; private set; }
 
         // Private fields
-        private TabContainer _tabContainer;
-        private WPF.StackPanel _programmingParadigmTabContents = new WPF.StackPanel();
-        private WPF.StackPanel _domainAbstractionTabContents = new WPF.StackPanel();
-        private WPF.StackPanel _storyAbstractionTabContents = new WPF.StackPanel();
+        private WPF.StackPanel _contents = new WPF.StackPanel()
+        {
+            Margin = new Thickness(5)
+        };
 
         private List<RowBundle> _domainAbstractionInputPortBundles = new List<RowBundle>();
         private List<RowBundle> _domainAbstractionOutputPortBundles = new List<RowBundle>();
@@ -35,43 +36,45 @@ namespace StoryAbstractions
         private Dictionary<string, string> _portSourceFiles = new Dictionary<string, string>();
 
         // Ports
+        private IDataFlow<AbstractionModel> generatedModel;
+
 
         // Methods
 
-        private void CreateProgrammingParadigmTabContents()
-        {
-
-        }
-
-        private void CreateDomainAbstractionTabContents()
+        private void CreateContents()
         {
             // All info should be output to some common data object, maybe an AbstractionModel
 
-            var panel = _domainAbstractionTabContents;
+            var panel = _contents;
 
             panel.Children.Add(new WPF.Label()
             {
                 Content = "Class name:"
             });
 
-            panel.Children.Add(new WPF.TextBox()
+
+            var classNameTextBox = new WPF.TextBox()
             {
                 Text = "",
                 Width = 150,
-                HorizontalAlignment = HorizontalAlignment.Left
-            });
+                HorizontalAlignment = HorizontalAlignment.Left,
+                AcceptsTab = false
+            };
 
+            panel.Children.Add(classNameTextBox);
+
+            // Implemented ports
             panel.Children.Add(new WPF.Label()
             {
-                Content = "Input ports:"
+                Content = "Implemented ports:"
             });
 
-            var inputPortBundle = new RowBundle();
-            _domainAbstractionInputPortBundles.Add(inputPortBundle);
+            var implementedPortBundle = new RowBundle();
+            _domainAbstractionInputPortBundles.Add(implementedPortBundle);
 
-            panel.Children.Add(inputPortBundle);
+            panel.Children.Add(implementedPortBundle);
 
-            var addInputPortButton = new WPF.Button()
+            var addImplementedPortButton = new WPF.Button()
             {
                 Width = 100,
                 Height = 20,
@@ -79,9 +82,33 @@ namespace StoryAbstractions
                 HorizontalAlignment = HorizontalAlignment.Left
             };
 
-            addInputPortButton.Click += (sender, args) => inputPortBundle.AddRow();
+            addImplementedPortButton.Click += (sender, args) => implementedPortBundle.AddRow();
 
-            panel.Children.Add(addInputPortButton);
+            panel.Children.Add(addImplementedPortButton);
+
+
+            // Accepted ports
+            panel.Children.Add(new WPF.Label()
+            {
+                Content = "Accepted ports:"
+            });
+
+            var acceptedPortBundle = new RowBundle();
+            _domainAbstractionInputPortBundles.Add(acceptedPortBundle);
+
+            panel.Children.Add(acceptedPortBundle);
+
+            var addAcceptedPortButton = new WPF.Button()
+            {
+                Width = 100,
+                Height = 20,
+                Content = "Add Port",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            addAcceptedPortButton.Click += (sender, args) => acceptedPortBundle.AddRow();
+
+            panel.Children.Add(addAcceptedPortButton);
 
             var getDataButton = new WPF.Button()
             {
@@ -92,31 +119,39 @@ namespace StoryAbstractions
             };
 
 
-            List<Tuple<string, string>> inputPortData;
+            List<Tuple<string, string>> implementedPortData;
+            List<Tuple<string, string>> acceptedPortData;
 
             getDataButton.Click += (sender, args) =>
             {
-                inputPortData = inputPortBundle.GetRowData();
+                implementedPortData = implementedPortBundle.GetRowData();
+                acceptedPortData = acceptedPortBundle.GetRowData();
+
+                var model = CreateAbstractionModel(classNameTextBox.Text, implementedPortData, acceptedPortData);
+                GeneratedModel = model;
+
+                if (generatedModel != null) generatedModel.Data = GeneratedModel;
             };
 
             panel.Children.Add(getDataButton);
 
         }
 
-        private AbstractionModel CreateAbstractionModel(string type, List<Tuple<string, string>> inputPorts, List<Tuple<string, string>> outputPorts)
+        private AbstractionModel CreateAbstractionModel(string type, List<Tuple<string, string>> implementedPorts, List<Tuple<string, string>> acceptedPorts)
         {
             var model = new AbstractionModel();
 
+            model.FullType = type;
             model.Type = type;
 
-            foreach (var inputPort in inputPorts)
+            foreach (var inputPort in implementedPorts)
             {
                 model.AddImplementedPort(inputPort.Item1, inputPort.Item2);
             }
 
-            foreach (var outputPort in outputPorts)
+            foreach (var outputPort in acceptedPorts)
             {
-                model.AddImplementedPort(outputPort.Item1, outputPort.Item2);
+                model.AddAcceptedPort(outputPort.Item1, outputPort.Item2);
             }
 
             return model;
@@ -171,38 +206,18 @@ namespace StoryAbstractions
         }
 
 
-        private void CreateStoryAbstractionTabContents()
-        {
-
-        }
-
         UIElement IUI.GetWPFElement()
         {
-            _tabContainer = new TabContainer();
-
             // BEGIN AUTO-GENERATED INSTANTIATIONS FOR UI
-            Tab programmingParadigmsTab = new Tab(title:"Programming Paradigm") {InstanceName="programmingParadigmsTab"}; /* {"IsRoot":false} */
-            Tab domainAbstractionsTab = new Tab(title:"Domain Abstraction") {InstanceName="domainAbstractionsTab"}; /* {"IsRoot":false} */
-            Tab storyAbstractionsTab = new Tab(title:"Story Abstraction") {InstanceName="storyAbstractionsTab"}; /* {"IsRoot":false} */
-            UIFactory id_5cc0ec47a0584bf7bcd8d36eae35294a = new UIFactory() {InstanceName="id_5cc0ec47a0584bf7bcd8d36eae35294a",GetUIElement=() => _programmingParadigmTabContents}; /* {"IsRoot":false} */
-            UIFactory id_48fb52366d434827af531605c8e3a898 = new UIFactory() {InstanceName="id_48fb52366d434827af531605c8e3a898",GetUIElement=() => _domainAbstractionTabContents}; /* {"IsRoot":false} */
-            UIFactory id_a124ba50dc5e4962a06314662145f106 = new UIFactory() {InstanceName="id_a124ba50dc5e4962a06314662145f106",GetUIElement=() => _storyAbstractionTabContents}; /* {"IsRoot":false} */
+            UIFactory windowContents = new UIFactory() {InstanceName="windowContents",GetUIElement=() => _contents}; /* {"IsRoot":false} */
             // END AUTO-GENERATED INSTANTIATIONS FOR UI
 
             // BEGIN AUTO-GENERATED WIRING FOR UI
-            _tabContainer.WireTo(programmingParadigmsTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":true,"DestinationType":"Tab","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            _tabContainer.WireTo(domainAbstractionsTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":true,"DestinationType":"Tab","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            _tabContainer.WireTo(storyAbstractionsTab, "childrenTabs"); /* {"SourceType":"TabContainer","SourceIsReference":true,"DestinationType":"Tab","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            programmingParadigmsTab.WireTo(id_5cc0ec47a0584bf7bcd8d36eae35294a, "children"); /* {"SourceType":"Tab","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            domainAbstractionsTab.WireTo(id_48fb52366d434827af531605c8e3a898, "children"); /* {"SourceType":"Tab","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
-            storyAbstractionsTab.WireTo(id_a124ba50dc5e4962a06314662145f106, "children"); /* {"SourceType":"Tab","SourceIsReference":false,"DestinationType":"UIFactory","DestinationIsReference":false,"Description":"","SourceGenerics":[],"DestinationGenerics":[]} */
             // END AUTO-GENERATED WIRING FOR UI
 
-            CreateProgrammingParadigmTabContents();
-            CreateDomainAbstractionTabContents();
-            CreateStoryAbstractionTabContents();
+            CreateContents();
 
-            return (_tabContainer as IUI).GetWPFElement();
+            return (windowContents as IUI).GetWPFElement();
         }
 
         List<string> IDataFlow<List<string>>.Data
@@ -223,9 +238,8 @@ namespace StoryAbstractions
 
         private class RowBundle : WPF.StackPanel
         {
-            private List<Tuple<DropDownMenu, TextBox>> _rows = new List<Tuple<DropDownMenu, TextBox>>();
+            private List<Tuple<TextBox, TextBox>> _rows = new List<Tuple<TextBox, TextBox>>();
 
-            public List<string> DropDownItems { get; set; } = new List<string>();
             public double Width { get; set; } = 200;
             public double Height { get; set; } = 25;
 
@@ -236,25 +250,27 @@ namespace StoryAbstractions
                     Orientation = WPF.Orientation.Horizontal
                 };
 
-                var dropDown = new DropDownMenu()
-                {
-                    Items = DropDownItems,
-                    Width = Width / 2,
-                    Height = Height
-                };
 
-                var textBox = new TextBox()
+                var typeTextBox = new TextBox()
                 {
                     Width = Width / 2,
-                    Height = Height
+                    Height = Height,
+                    AcceptsTab = false
                 };
 
-                panel.Children.Add((dropDown as IUI).GetWPFElement());
-                panel.Children.Add((textBox as IUI).GetWPFElement());
+                var nameTextBox = new TextBox()
+                {
+                    Width = Width / 2,
+                    Height = Height,
+                    AcceptsTab = false
+                };
+
+                panel.Children.Add((typeTextBox as IUI).GetWPFElement());
+                panel.Children.Add((nameTextBox as IUI).GetWPFElement());
 
                 Children.Add(panel);
 
-                _rows.Add(Tuple.Create(dropDown, textBox));
+                _rows.Add(Tuple.Create(typeTextBox, nameTextBox));
             }
 
             public List<Tuple<string, string>> GetRowData()

@@ -21,18 +21,17 @@ namespace StoryAbstractions
     /// <para>2. IDataFlowB&lt;string&gt; classNameInput:</para>
     /// <para>3. IDataFlowB&lt;List&lt;string&gt;&gt; implementedPortsInput:</para>
     /// <para>4. IDataFlowB&lt;List&lt;string&gt;&gt; providedPortsInput:</para>
-    /// <para>5. IDataFlow&lt;string&gt; fileContentsOutput:</para>
+    /// <para>5. IDataFlow&lt;string&gt; fileContentsOutput: The folder that should contain folders for each layer. The created abstraction file will be automatically added to this folder.</para>
+    /// <para>6. IDataFlowB&lt;string&gt; baseFolderPathInput:</para>
     /// </summary>
-    public class CreateAbstraction : IEvent
+    public class CreateAbstraction : IEvent, IDataFlow<AbstractionModel> // create, createFromModel
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
         public Enums.ALALayer Layer { get; set; } = Enums.ALALayer.DomainAbstractions;
-        public bool WriteFile { get; set; } = false;
         public string ClassName { get; set; }
         public List<string> ImplementedPorts { get; set; } = new List<string>();
         public List<string> AcceptedPorts { get; set; } = new List<string>();
-        public string FilePath { get; set; } = "";
         public string NamespacePrefix { get; set; } = "";
 
         // Private fields
@@ -46,6 +45,8 @@ namespace StoryAbstractions
         private IDataFlowB<List<string>> implementedPortsInput;
         private IDataFlowB<List<string>> providedPortsInput;
         private IDataFlow<string> fileContentsOutput;
+        private IDataFlow<string> filePathOutput;
+        private IDataFlowB<string> baseFolderPathInput;
 
 
         public CreateAbstraction()
@@ -335,18 +336,17 @@ namespace StoryAbstractions
 
                 var classFileTemplateContents = cfg.BuildFile();
 
-                if (WriteFile && Directory.Exists(Path.GetDirectoryName(FilePath)))
+
+                if (baseFolderPathInput != null)
                 {
+                    var basePath = baseFolderPathInput.Data;
+
                     var classNameWithoutTypes = GetClassNameWithoutTypes(ClassName);
+                    var filePath = Path.Combine(basePath, $"{Layer}/{classNameWithoutTypes}.cs");
 
-                    File.WriteAllText(Path.Combine(FilePath, $"{classNameWithoutTypes}.cs"), classFileTemplateContents);
+                    File.WriteAllText(filePath, classFileTemplateContents);
 
-                    if (Layer == Enums.ALALayer.StoryAbstractions && File.Exists(Path.Combine(FilePath, $"baseStoryAbstraction.xmind")))
-                    {
-                        // Create xmind diagram 
-                        File.Copy(Path.Combine(FilePath, $"baseStoryAbstraction.xmind"), Path.Combine(FilePath, $"{classNameWithoutTypes}.xmind"));
-                    }
-
+                    if (filePathOutput != null) filePathOutput.Data = filePath;
                 }
 
                 if (fileContentsOutput != null) fileContentsOutput.Data = classFileTemplateContents;
@@ -374,6 +374,22 @@ namespace StoryAbstractions
         // IEvent implementation
         void IEvent.Execute()
         {
+            Create();
+        }
+
+        // IDataFlow<AbstractionModel> implementation
+        AbstractionModel IDataFlow<AbstractionModel>.Data
+        {
+            get => default;
+            set => CreateFromAbstractionModel(value);
+        }
+
+        private void CreateFromAbstractionModel(AbstractionModel model)
+        {
+            ClassName = model.FullType;
+            ImplementedPorts = model.GetImplementedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
+            AcceptedPorts = model.GetAcceptedPorts().Select(p => $"{p.Type} {p.Name}").ToList();
+
             Create();
         }
 

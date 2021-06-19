@@ -271,6 +271,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainAbstractions\AddFileToProject.cs" />
     <Compile Include="DomainAbstractions\Apply.cs" />
     <Compile Include="DomainAbstractions\ApplyAction.cs" />
     <Compile Include="DomainAbstractions\Box.cs" />

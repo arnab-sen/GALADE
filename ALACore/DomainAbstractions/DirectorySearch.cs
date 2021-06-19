@@ -20,7 +20,6 @@ namespace DomainAbstractions
     {
         // Public fields and properties
         public string InstanceName { get; set; } = "Default";
-        public string DirectoryName { get; set; } = "";
         public string FilenameFilter { get; set; } = "*.*";
 
         // Private fields
