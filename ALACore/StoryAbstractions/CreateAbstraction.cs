@@ -166,7 +166,7 @@ namespace StoryAbstractions
                 {
                     Namespace = $"{NamespacePrefix}{Enum.GetName(typeof(Enums.ALALayer), Layer)}",
                     ClassName = ClassName,
-                    ImplementedInterfaces = ImplementedPorts.Select(s => s.Name).ToList(), // Just get interface types
+                    ImplementedInterfaces = ImplementedPorts.Select(s => s.Type).ToList(), // Just get interface types
                     BaseListInlineComment = baseListInlineComment, // Port names combined into a comment
                     IsInterface = Layer == Enums.ALALayer.ProgrammingParadigms
                 };
