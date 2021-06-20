@@ -313,10 +313,10 @@ namespace StoryAbstractions
                     // postWiringInitializeBody.Add("// Utilities.ConnectToVirtualPort(outputInstance, \"portOnOutputInstance\", portInStoryAbstraction);");
                     // postWiringInitializeBody.Add("");
 
-                    foreach (var acceptedPort in ImplementedPorts)
+                    foreach (var implementedPort in ImplementedPorts)
                     {
-                        var type = acceptedPort.Type;
-                        var name = acceptedPort.Name;
+                        var type = implementedPort.Type;
+                        var name = implementedPort.Name;
 
                         // Connector should be an Apply<type, type>
                         if (type.StartsWith("IDataFlow") && !type.StartsWith("IDataFlowB"))
