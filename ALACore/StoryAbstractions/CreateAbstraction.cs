@@ -125,7 +125,7 @@ namespace StoryAbstractions
                         {
                             cfg.AddField($"DataFlowConnector<{internalDataType}>", $"{name}Connector",
                                                 accessLevel: "private",
-                                                defaultValue: $"new DataFlowConnector<{internalDataType}>() {{ InstanceName = \"{name}Connector\", Lambda = input => input }}",
+                                                defaultValue: $"new DataFlowConnector<{internalDataType}>() {{ InstanceName = \"{name}Connector\" }}",
                                                 region: "Output instances"); 
                         }
                     }
