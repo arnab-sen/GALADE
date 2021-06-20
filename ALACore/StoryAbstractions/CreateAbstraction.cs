@@ -253,18 +253,9 @@ namespace StoryAbstractions
                 // Add PostWiringInitialize
                 List<string> postWiringInitializeBody = new List<string>();
 
-                bool postWiringHeaderAdded = false;
-                // postWiringInitializeBody.Add("// if (inputDataFlowBPort != null)");
-                // postWiringInitializeBody.Add("// {");
-                // postWiringInitializeBody.Add("//     inputDataFlowBPort.DataChanged += () => (inputInstance as IDataFlow<T>).Data = inputDataFlowBPort.Data;");
-                // postWiringInitializeBody.Add("// }");
                 foreach (var accepted in AcceptedPorts.Where(p => p.IsReversePort))
                 {
-                    if (!postWiringHeaderAdded)
-                    {
-                        postWiringInitializeBody.Add("// IDataFlowB and IEventB event handlers");
-                        postWiringHeaderAdded = true;
-                    }
+                    postWiringInitializeBody.Add("// IDataFlowB and IEventB event handlers");
 
                     var type = accepted.Type;
                     var name = accepted.Name;
@@ -285,8 +276,10 @@ namespace StoryAbstractions
                         postWiringInitializeBody.Add($"}}");
                         postWiringInitializeBody.Add("");
                     }
-                }
 
+                    cfg.Regions.Add("PostWiringInitialize");
+                    cfg.AddMethod("PostWiringInitialize", accessLevel: "private", methodBody: postWiringInitializeBody, region: "PostWiringInitialize");
+                }
 
                 if (Layer == Enums.ALALayer.StoryAbstractions)
                 {
@@ -308,36 +301,7 @@ namespace StoryAbstractions
                     constructorBody.Add($"// END MANUAL WIRING FOR {ClassName}");
 
                     cfg.ConstructorBody = constructorBody;
-
-                    postWiringInitializeBody.Add("// Mapping to virtual ports");
-                    // postWiringInitializeBody.Add("// Utilities.ConnectToVirtualPort(outputInstance, \"portOnOutputInstance\", portInStoryAbstraction);");
-                    // postWiringInitializeBody.Add("");
-
-                    foreach (var implementedPort in ImplementedPorts)
-                    {
-                        var type = implementedPort.Type;
-                        var name = implementedPort.Name;
-
-                        // Connector should be an Apply<type, type>
-                        if (type.StartsWith("IDataFlow") && !type.StartsWith("IDataFlowB"))
-                        {
-                            // postWiringInitializeBody.Add($"Utilities.ConnectToVirtualPort({name}Connector, \"output\", {name});"); 
-                            postWiringInitializeBody.Add($"if ({name} != null) {name}Connector.WireTo({name}, \"output\");"); 
-                        }
-                        else if (type.StartsWith("IEvent") && !type.StartsWith("IEventB"))
-                        {
-                            // postWiringInitializeBody.Add($"Utilities.ConnectToVirtualPort({name}Connector, \"complete\", {name});");
-                            postWiringInitializeBody.Add($"if ({name} != null) {name}Connector.WireTo({name}, \"complete\");");
-                        }
-                    }
-                    postWiringInitializeBody.Add(""); 
-
-                    postWiringInitializeBody.Add("// Send out initial values");
-                    postWiringInitializeBody.Add("// (instanceNeedingInitialValue as IDataFlow<T>).Data = defaultValue;");
                 }
-
-                cfg.Regions.Add("PostWiringInitialize");
-                cfg.AddMethod("PostWiringInitialize", accessLevel: "private", methodBody: postWiringInitializeBody, region: "PostWiringInitialize");
 
                 var classFileTemplateContents = cfg.BuildFile();
 
