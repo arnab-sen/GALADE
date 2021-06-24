@@ -23,6 +23,7 @@ namespace DomainAbstractions
 
         // Private fields
         private IDataFlowB<string> csprojPathInput;
+        private IEvent complete;
 
         // Ports
 
@@ -46,7 +47,6 @@ namespace DomainAbstractions
                 newInclusion.Attributes.GetNamedItem("Include").Value = sourcePath;
                 nodeBase.ParentNode.AppendChild(newInclusion);
 
-
                 try
                 {
                     using (var writer = new XmlTextWriter(csprojPath, Encoding.UTF8)
@@ -57,6 +57,8 @@ namespace DomainAbstractions
                         csproj.WriteContentTo(writer);
                         writer.Flush();
                     }
+
+                    complete?.Execute();
                 }
                 catch (Exception e)
                 {
