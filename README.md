@@ -95,3 +95,34 @@ Pressing `Ctrl + S` or using `Sync > Diagram to Code` will "save" the diagram, w
 ### Searching the Diagram
 Press `Ctrl + F` to navigate to the Search tab. Type in a query and press `Enter` to search through the types, names, and member rows of each node. Any results that show up can be clicked on to navigate to that node. The query will be treated as a case-insensitive regex pattern.
 ![](https://i.gyazo.com/8e21cc19903090b1b306128296a685dd.gif)
+
+### Abstraction Creation
+New abstraction files can be created and added to your project (via Tools > Create Abstraction):
+![image](https://user-images.githubusercontent.com/15961449/122659165-035d2600-d1c9-11eb-9664-9aadc034bd86.png)
+  * By default, it will assume that you have an ALACore project to store the abstractions related to the diagram, i.e. it will look for an ALACore.csproj file and add the created file to your project by editing that. If your project name is different, then you can click "Find .csproj file" and select the one relevant to your project.
+
+### Visual Studio Debugger Support
+* You can set a breakpoint in a method or in a property (both setter and getter) in a given node's source file in Visual Studio 2019:
+  * A new breakpoint can be added like so:
+![](https://i.gyazo.com/41757d1c2bce112cfc2150699b6c17f6.gif)
+  * If a breakpoint already exists, then its condition will be ORed with the new condition: 
+![](https://i.gyazo.com/734f4fbebdb911b19a30f8059324f814.gif)
+  * Note that the conditional breakpoints require InstanceNames, and may not work correctly when domain abstractions have InstanceName fields instead of properties, so please ensure that every domain abstraction has an InstanceName property
+  * If multiple methods of the same name exist in the file (e.g. method overloads or multiple instances of a method across different classes in the one file), then the same breakpoint will be added to each of them
+  * Note that if multiple instances of Visual Studio 2019 are opened, then this will only apply to the one that was opened first. The instance that is connected to can be changed by closing VS 2019 instances until your desired one is the "first" one, and then selecting "Tools > Connect to Visual Studio Debugger". On app startup, the first VS 2019 instance will be connected to by default
+    * Clearing all breakpoints in a given node's source file in Visual Studio 2019 can be done like so: 
+![](https://i.gyazo.com/e913d56d0b16efe47fee2c0542f3c196.gif)
+
+
+* You can choose between different opened instances of Visual Studio (via Debugger > Connect to Visual Studio Instance). They will be differentiated by the current document they have open:
+![image](https://user-images.githubusercontent.com/15961449/107187294-a7300b80-6a4a-11eb-9eb1-51a800c4648d.png)
+  * If debug options are executed before Debugger > Connect to Visual Studio Instance is used, then the first instance of Visual Studio found that is either idle or in debugging mode (i.e. not running) will be connected to
+* When execution is paused in Visual Studio, press "Refresh Call Stack" in the Debugger tab in GALADE to view the execution status in the diagram
+ * The currently active wire will be highlighted green, and if the active wire is an IDataFlow wire, then the value being sent through will appear in a floating text above the destination node. All wires involved in the stack trace other than the active wire will be highlighted orange:
+![image](https://user-images.githubusercontent.com/15961449/123381334-b6bc8500-d5e4-11eb-8127-8d1339c3d560.png)
+  * Every node now has an indicator (red = true, grey = false) that shows whether its source file currently has a conditional breakpoint with its InstanceName (i.e. has a breakpoint with at least one "InstanceName == <instance name>") in its source file, in the currently connected instance of Visual Studio
+  * The colour of the text in the node overlays will also change to reflect this:
+![image](https://user-images.githubusercontent.com/15961449/107344685-9b664700-6b27-11eb-8c55-6c35e0906c15.png)
+  * This is currently updated when debugging starts, or when breakpoints change (through GALADE)
+  * Note that if no breakpoints are set, F5 will still build and run the application normally, so you no longer have to switch to the VS instance after generating a diagram, although this does still require a VS instance to be opened, with the solution loaded
+* If you are using the debug options in GALADE to step through the code, then changes in the call stack will automatically be updated in GALADE (with a slight ~1s delay to help ensure that the call stack can be accessed correctly - this is a minor workaround, and hopefully this delay will be removed in a later release). If you are using Visual Studio to step through the code, then the "Refresh Call Stack" option can be used at any point while in debug mode to manually update the call stack changes to the diagram
